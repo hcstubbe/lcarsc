@@ -7,6 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @import dplyr
 mod_module_editor_launcher_ui <- function(id) {
   ns = NS(id)
   tagList(
@@ -68,8 +69,8 @@ mod_module_editor_launcher_server <- function(id) {
                            show_vals = c('Visit title' = "visit_title", 'visit_id' = "visit_id_visits", "Order" = "order"),
                            simple = TRUE,
                            modal_width = ".modal-dialog{ width:400px}",
-                           widgets_table_global = read.csv("widgets/widgets_editor.csv"),
-                           all_visits = read.csv('widgets/visits_editor.csv'),
+                           widgets_table_global = widgets_table_global_widgets,
+                           all_visits = all_visits_editor,
                            visit_id = "editor",
                            add.copy.btn = TRUE,
                            order.by = "order")
@@ -87,8 +88,8 @@ mod_module_editor_launcher_server <- function(id) {
                            show_vals = c('Input ID' = "inputId", Label = "label", 'visit_id' = "visit_for_var", Panel = "panel", 'Subgroup/Sub-panel' = "subgroup",'Input type' = "type"),
                            simple = TRUE,
                            modal_width = ".modal-dialog{ width:400px}",
-                           widgets_table_global = read.csv("widgets/widgets_editor.csv"),
-                           all_visits = read.csv('widgets/visits_editor.csv'),
+                           widgets_table_global = widgets_table_global_widgets,
+                           all_visits = all_visits_editor,
                            visit_id = "editor",
                            add.copy.btn = TRUE,
                            num_entries = 200,

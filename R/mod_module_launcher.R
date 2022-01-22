@@ -82,9 +82,9 @@ mod_module_launcher_ui <- function(id){
                                         )
                     )
             )
-            # ,
-            # tabItem("editor",
-            #         mod_module_editor_launcher_ui(ns("mod_module_editor")))
+            ,
+            tabItem("editor",
+                    mod_module_editor_launcher_ui(ns("mod_module_editor")))
 
           )
         )
