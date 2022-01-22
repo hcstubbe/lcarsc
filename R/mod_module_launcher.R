@@ -44,10 +44,10 @@ mod_module_launcher_ui <- function(id){
                     )
             ),
 
-            # tabItem("new_pat",
-            #         mod_module_new_pat_ui(ns("mod_module_new_pat"))
-            #
-            # ),
+            tabItem("new_pat",
+                    mod_module_new_pat_ui(ns("mod_module_new_pat"))
+
+            ),
 
             tabItem("pat_list",
                     mod_module_documentation_ui(ns("mod_module_documentation"))

@@ -8,7 +8,7 @@
 #'
 #' @import dplyr
 #' @importFrom shiny NS tagList
-#' @importFrom RMariaDB dbListTables dbAppendTable dbExecute
+#' @importFrom RMariaDB dbListTables dbAppendTable dbExecute dbCreateTable
 #' @importFrom golem get_golem_options
 #' @importFrom shinyvalidate InputValidator sv_required
 #' @importFrom DT dataTableOutput
