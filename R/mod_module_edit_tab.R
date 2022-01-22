@@ -7,22 +7,22 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @importFrom RMariaDB dbListTables dbAppendTable dbExecute
+#' @importFrom golem get_golem_options
 mod_module_edit_tab_ui <- function(id) {
   ns = NS(id)
   tagList(
-    fluidRow(
-      column(10,
-             box(
-               title = lang_sel$menu_inclusion, width = 12, status = "primary", solidHeader = TRUE,
-               div(
-                 module_edit_tab_ui(id = ns("module_edit_tab_inclusion"))
-               )
-             ),
-             box(title = ("Upload patient list"), width = 12, status = "primary", solidHeader = TRUE,
-                 fileInput(ns("pat_upload"), "Upload data file (CSV)",
-                           multiple = FALSE,
-                           accept = c(".csv"))
-             )
+
+    fluidPage(
+      fluidRow(
+        actionButton(ns("add_button"), "Add", icon("plus")),
+        actionButton(ns("edit_button"), "Edit", icon("edit")),
+        actionButton(ns("delete_button"), "Delete", icon("trash-alt")),
+        actionButton(ns("submit_button"), "Submit", icon("paper-plane"))
+      ),
+      br(),
+      fluidRow(width="100%",
+               dataTableOutput(ns("responses_table"), width = "100%")
       )
     )
   )
@@ -31,50 +31,449 @@ mod_module_edit_tab_ui <- function(id) {
 #' module_edit_tab Server Functions
 #'
 #' @noRd
-mod_module_edit_tab_server <- function(id, visit_id, data_table) {
+mod_module_edit_tab_server<- function(id, var_group, tbl_id, widgets_table_global, widget_tab_selection, all_visits, all_tabs = NULL, rv_in = NULL, show_vals = NULL, simple = TRUE, modal_width = ".modal-dialog{ width:400px}", visit_id, create_new_pid = FALSE, add.copy.btn = FALSE, num_entries = 5, order.by) {
+
+
+
   moduleServer(id, function(input, output, session) {
+    ns = session$ns
 
-    # Upload participant file ----
-    observe({
-      if (is.null(input$pat_upload)) return()
+    pool = get_golem_options("pool")
 
-      input_csv = read.csv(input$pat_upload$datapath)
+    rv_uuid = reactiveValues()
 
-      df_generic = list(row_id = sapply(1:nrow(input_csv), function(x) UUIDgenerate()),
-                        user_modified = "NA",
-                        pid = input_csv$Patnr,
-                        date_modified = as.character(date()),
-                        visit_id = "vi",
-                        deleted_row = "FALSE",
-                        submitted_row = "TRUE",
-                        Patnr = input_csv$Patnr,
-                        Fall = input_csv$Fall,
-                        documented_case = "FALSE") %>% data.frame
-      dbAppendTable(pool, data_table, df_generic)
+
+    if(add.copy.btn == TRUE){
+      insertUI(
+        selector = paste("#", ns("submit_button"), sep = ""),
+        where = "afterEnd",
+        ui = actionButton(ns("copy_button"), "Copy", icon("copy"))
+      )
+    }
+
+    ## Add widgets ----
+
+    # Get required fields
+    widgets_table = subset(widgets_table_global, (widget_tab == widget_tab_selection | widget_tab == "all"))
+    fieldsAll = widgets_table$label
+    names(fieldsAll) = widgets_table$inputId
+    sql_tbl_vars = widgets_table$data_type
+    names(sql_tbl_vars) = widgets_table$inputId
+    visit_choices = all_visits$visit_id[!all_visits$inclusion_other_visit]
+    names(visit_choices) = all_visits$visit_title[!all_visits$inclusion_other_visit]
+
+    # Check if database exists and create if required
+    if(!is.element(tbl_id, dbListTables(pool))){
+      dbCreateTable(pool, tbl_id, fields = sql_tbl_vars)
+    }
+
+
+    # Prepare data base access
+    responses_df <- reactive({
+
+      #make reactive to
+      input$submit
+      input$submit_edit
+      input$copy_button
+      input$delete_button
+      input$submit_data_confirm
+
+      db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+
     })
 
-    # Run when starting module ----
-    all_visits = read.csv('widgets/visits.csv')
-    ordered_visits = all_visits %>% filter(!is.na(order)) %>% arrange(order)
-    widgets_table_global = read.csv("widgets/widgets.csv")
-    all_tabs = read.csv('widgets/panel_tabs.csv')
 
-    ## Start sub-module server
-    rv_downstream_visit = reactiveValues()
-    rv_downstream_visit$pid = reactive({"init"})
-    mod_module_edit_tab_server(id = "mod_module_edit_tab_inclusion",
-                           widget_tab_selection = 'visit',
-                           tbl_id = "inclusion_dataset",
-                           rv_in = rv_downstream_visit,
-                           show_vals = c(PID = 'pid', Date = 'date_modified', Visit = 'visit_id', Submitted = 'submitted_row'),
-                           simple = FALSE,
-                           modal_width = '.modal-dialog{ width:95%}',
-                           widgets_table_global = widgets_table_global[widgets_table_global[,"vi"],],
-                           all_tabs = all_tabs,
-                           all_visits = all_visits,
-                           visit_id = "vi",
-                           create_new_pid = TRUE,
-                           order.by = NULL)
+
+
+    # Form for data entry ----
+    entry_form <- function(button_id, visit_id, submit = FALSE){
+      ## Compile widget list
+      if(submit == FALSE){
+        if(simple == TRUE){
+          widget_list = makeWidgetList_simple(widget_data = widgets_table[widgets_table$widget,], ns = ns, pid = rv_in$pid(), tbl_id = tbl_id)
+        }else{
+          widget_list = makeWidgetList_panels(widget_data = widgets_table[widgets_table$widget,], all_tabs = all_tabs, visit_id = visit_id, all_visits = all_visits, row_id = rv_in$row_id(), ns = ns, pid = rv_in$pid(), tbl_id = tbl_id)
+        }
+        showModal(
+          modalDialog(
+            div(id=(ns("entry_form")),
+                tags$head(tags$style(modal_width)),
+                tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+                fluidPage(
+                  fluidRow(
+                    widget_list,
+                    actionButton(button_id, "Save"),
+                    actionButton(ns("submit_cancel"), "Cancel")
+                  )
+                )
+            ),
+            easyClose = FALSE, footer = NULL
+          )
+        )
+      }else{
+        showModal(
+          modalDialog(
+            div(id=(ns("entry_form")),
+                tags$head(tags$style(".modal-dialog{ width:400px}")),
+                tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+                fluidPage(
+                  fluidRow(
+                    actionButton(button_id, "Submit"),
+                    actionButton(ns("submit_cancel"), "Cancel")
+                  )
+                )
+            ),
+            easyClose = FALSE, footer = NULL
+          )
+        )
+      }
+    }
+
+    widgets_only = widgets_table[widgets_table$widget,]
+    widgets_ids = sapply(1:nrow(widgets_only), function(i) widgets_only$inputId[i])
+
+
+
+
+    ## Gather input data ----
+    formData <- reactive({
+      data = sapply(names(fieldsAll), function(x) input[[x]], simplify = FALSE, USE.NAMES = TRUE)
+
+      data = lapply(data, function(x){ # convert NULL to NA
+        y = length(x)
+        if(y == 0){
+          NA
+        }else{x}
+      })
+
+      data = data.frame(data)
+      # Replace "New choice" with actual value from new choice text input
+      choicesFromVar = !sapply(widgets_table$choicesFromVar, function(x) is.null(x) | x=="" | is.na(x))
+      choicesFromVar = names(choicesFromVar) %in% colnames(data) & choicesFromVar
+      if(any(choicesFromVar)){
+        for(i in which(choicesFromVar)){
+          if(data[,widgets_table$choicesFromVar[i]] != ""){
+            data[,widgets_table$inputId[i]] = data[,widgets_table$choicesFromVar[i]]
+          }
+        }
+      }
+
+      if(create_new_pid){
+        data$pid = randomIdGenerator(exisiting_IDs = loadData(pool, "inclusion_dataset")$pid)
+      }else{
+        data$pid = rv_in$pid()
+      }
+      data$row_id = rv_uuid$uuid
+      data$visit_id = all_visits[all_visits[,"visit_id"] == visit_id,"visit_title"]
+      data$user_modified = Sys.getenv("SHINYPROXY_USERNAME")
+      data$date_modified = as.character(date())
+      data$deleted_row = FALSE
+      data$submitted_row = FALSE
+      if(!is.null(data$inputId)){
+        data$inputId = make.names(data$inputId)
+      }
+      if(!is.null(data$visit_id_visits)){
+        data$visit_id_visits = make.names(data$visit_id_visits)
+      }
+      data
+    })
+
+
+
+    # Add data ----
+    appendData <- function(data){
+      dbAppendTable(pool,tbl_id, data)
+    }
+
+    observeEvent(input$add_button, priority = 20,{
+
+      entry_form(ns("submit"), visit_id)
+
+    })
+
+    observeEvent(input$submit, priority = 20,{
+      rv_uuid$uuid = UUIDgenerate()
+      iv$enable()
+      if (iv$is_valid()) {
+        appendData(formData())
+        close()
+        showNotification("Data saved", type = "message")
+        shinyjs::reset("entry_form")
+      }
+
+
+    })
+
+    observeEvent(input$submit_cancel, priority = 20,{
+      rv_uuid$uuid = UUIDgenerate()
+      close()
+      showNotification("Data not saved", type = "warning")
+      shinyjs::reset("entry_form")
+
+
+    })
+
+
+
+    # Delete data ----
+    deleteData <- reactive({
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
+
+      # Set old row as 'deleted_row = TRUE'
+      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
+      dbExecute(pool, db_cmd)
+
+    })
+
+    observeEvent(input$delete_button, priority = 20,{
+      rv_uuid$uuid = UUIDgenerate()
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid)
+      row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
+      if(length(row_submitted) < 1){
+        row_submitted = FALSE
+      }
+
+      if(length(input$responses_table_rows_selected)>=1 & row_submitted == FALSE){
+        deleteData()
+      }
+
+      showModal(
+
+        if(length(input$responses_table_rows_selected) < 1 ){
+          modalDialog(
+            title = "Warning",
+            paste("Please select row(s)." ),easyClose = TRUE
+          )
+        }else{
+          if(row_submitted == TRUE & input$responses_table_rows_selected == 1 ){
+            modalDialog(
+              title = "Warning",
+              paste("Submitted row(s) cannot be deleted." ),easyClose = TRUE
+            )
+          }
+        })
+    })
+
+
+
+    # Copy data ----
+    unique_id <- function(data){
+      replicate(nrow(data), UUIDgenerate())
+    }
+
+    copyData <- reactive({
+
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
+      SQL_df <- SQL_df %>% filter(row_id %in% row_selection)
+      SQL_df$row_id <- unique_id(SQL_df)
+      SQL_df$date_modified = as.character(date())
+      SQL_df$submitted_row = FALSE
+      if(create_new_pid){
+        SQL_df$pid = randomIdGenerator(exisiting_IDs = loadData(pool, "inclusion_dataset")$pid)
+      }
+      dbAppendTable(pool,tbl_id, SQL_df)
+
+    })
+
+    observeEvent(input$copy_button, priority = 20,{
+
+      if(length(input$responses_table_rows_selected)>=1 ){
+        copyData()
+      }
+
+      showModal(
+        if(length(input$responses_table_rows_selected) < 1 ){
+          modalDialog(
+            title = "Warning",
+            paste("Please select row(s)." ),easyClose = TRUE
+          )
+        })
+
+    })
+
+
+
+    # Edit data ----
+
+    ## Functions for updating fields
+    updateSelectInputFromDatabase = updateSelectInput
+    updateNumericInputCouter = updateNumericInput
+    updateTextInputForChoicesFromVar = function(...){
+      NULL
+    }
+
+    start_upper = function(x) {
+      substr(x, 1, 1) = toupper(substr(x, 1, 1))
+      x
+    }
+    select_true = grepl("select", widgets_table$type, TRUE, ignore.case = T) | grepl("radio", widgets_table$type, TRUE, ignore.case = T)
+    widgets_x =  subset(widgets_table, select_true)
+    if(nrow(widgets_x) > 0){
+      field_updates_select = paste("update",
+                                   start_upper(widgets_x[widgets_x$widget,"type"]),
+                                   "(session,'",
+                                   widgets_x[widgets_x$widget,"inputId"],
+                                   "', selected = SQL_df[input$responses_table_rows_selected,'",
+                                   widgets_x[widgets_x$widget,"inputId"],
+                                   "'])",
+                                   sep = "")
+    }else{
+      field_updates_select = NULL
+    }
+
+    widgets_x = subset(widgets_table, !select_true)
+    if(nrow(widgets_x) > 0){
+      field_updates_value = paste("update",
+                                  start_upper(widgets_x[widgets_x$widget,"type"]),
+                                  "(session,'",
+                                  widgets_x[widgets_x$widget,"inputId"],
+                                  "', value = SQL_df[input$responses_table_rows_selected,'",
+                                  widgets_x[widgets_x$widget,"inputId"],
+                                  "'])",
+                                  sep = "")
+    }else{
+      field_updates_value = NULL
+    }
+    field_updates = c(field_updates_select, field_updates_value)
+
+
+
+
+    ## Open edit dialogue
+    observeEvent(input$edit_button, priority = 20,{
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
+
+      if(length(row_submitted) < 1){
+        row_submitted = FALSE
+      }
+
+      showModal(
+        if(length(input$responses_table_rows_selected) > 1 ){
+          modalDialog(
+            title = "Warning",
+            paste("Please select only one row." ),easyClose = TRUE)
+        } else if(length(input$responses_table_rows_selected) < 1){
+          modalDialog(
+            title = "Warning",
+            paste("Please select a row." ),easyClose = TRUE)
+        }else if(length(input$responses_table_rows_selected) == 1 & row_submitted == TRUE){
+          modalDialog(
+            title = "Warning",
+            paste("Submitted row(s) cannot be edited"),easyClose = TRUE
+          )
+        }
+      )
+
+      if(length(input$responses_table_rows_selected) == 1  & row_submitted == FALSE){
+
+        entry_form(ns("submit_edit"), visit_id)
+
+        for(i in field_updates){
+          eval(parse(text=i))
+        }
+      }
+
+    })
+
+
+    #### Update row ----
+    observeEvent(input$submit_edit, priority = 20, {
+
+      iv$enable()
+      if (iv$is_valid()) {
+
+        SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+        row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+
+        # Add new row
+        rv_uuid$uuid = UUIDgenerate()
+        appendData(formData())
+
+        # Set old row as 'deleted_row = TRUE'
+        db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
+        dbExecute(pool, db_cmd)
+
+        # Close modal
+        close()
+        showNotification("Data added", type = "message")
+        shinyjs::reset("entry_form")
+      }
+
+    })
+
+
+    # Submit data ----
+    observeEvent(input$submit_button, priority = 20,{
+
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
+      if(length(row_submitted) < 1){
+        row_submitted = FALSE
+      }
+
+      showModal(
+        if(length(input$responses_table_rows_selected) > 1 ){
+          modalDialog(
+            title = "Warning",
+            paste("Please select only one row." ),easyClose = TRUE)
+        } else if(length(input$responses_table_rows_selected) < 1){
+          modalDialog(
+            title = "Warning",
+            paste("Please select a row." ),easyClose = TRUE)
+        }else if(length(input$responses_table_rows_selected) == 1 & row_submitted == TRUE){
+          modalDialog(
+            title = "Warning",
+            paste("The seclected row(s) are submitted!"),easyClose = TRUE
+          )
+        }
+      )
+
+      if(row_submitted == FALSE & length(input$responses_table_rows_selected) == 1 ){
+        entry_form(ns("submit_data_confirm"), submit = TRUE)
+      }
+    })
+
+    observeEvent(input$submit_data_confirm, priority = 20,{
+
+
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+
+      # Set old row as 'deleted_row = TRUE'
+      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET submitted_row = TRUE WHERE row_id = '%s'"), row_selection)
+      dbExecute(pool, db_cmd)
+      removeModal()
+
+
+    })
+
+    # Render entry table --------
+    output$responses_table <- DT::renderDataTable({
+      table = responses_df()
+      table = table[,show_vals]
+      names(table) = names(show_vals)
+      table <- datatable(table,
+                         rownames = FALSE,
+                         options = list(searching = FALSE, lengthChange = FALSE, pageLength = num_entries),
+                         selection = c("single")
+      )
+
+    })
+
+    ####-------- Observe mandatory fields --------####
+
+    iv <- InputValidator$new()
+    required_fields = widgets_table[widgets_table$widget & widgets_table$mandatory,]$inputId
+    sapply(required_fields, function(x) iv$add_rule(x, sv_required()))
+
+    close <- function() {
+      removeModal()
+      iv$disable()
+    }
+
 
   })
 

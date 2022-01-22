@@ -5,6 +5,7 @@
 #' @import shiny shinydashboard DT
 #' @noRd
 app_server <- function( input, output, session ) {
+
   # Your application server logic
   mod_module_launcher_server("mod_module_launcher_1")
 }

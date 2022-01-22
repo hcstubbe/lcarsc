@@ -1,0 +1,62 @@
+inputId,widget_tab,data_type,r_class,label,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choice8,widget,form_required,conditional,appear_if,vi,vn,v0,diagnosis,medication
+row_id,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+user_modified,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+pid,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+date_modified,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+visit_id,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+deleted_row,all,BOOLEAN,logical,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+submitted_row,all,BOOLEAN,logical,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+documented_case,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+diag_start,diagnosis,TEXT,character,Start,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_diagnosis,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE,FALSE
+diag_end,diagnosis,TEXT,character,End,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_diagnosis,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE,FALSE
+diag_name,diagnosis,TEXT,character,Diagnosis,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,,,,NA,NA,TRUE,TRUE,FALSE,NA,FALSE,FALSE,FALSE,TRUE,FALSE
+diag_icd_10,diagnosis,TEXT,character,ICD-10,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE,FALSE
+diag_stage_system,diagnosis,TEXT,character,Staging system,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE,FALSE
+diag_stage,diagnosis,TEXT,character,Stage,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE,FALSE
+diag_classification_system,diagnosis,TEXT,character,Classification system,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE,FALSE
+diag_classification,diagnosis,TEXT,character,Classification,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE,FALSE
+diagn_comment,diagnosis,TEXT,character,Comment,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE,FALSE
+med_start,medication,TEXT,character,Start,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_medication,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,FALSE,TRUE
+med_end,medication,TEXT,character,End,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_medication,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,FALSE,TRUE
+med_dosing,medication,DOUBLE,double,Dosis,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,numericInput,widgets_medication,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,FALSE,TRUE
+med_dosing_unit,medication,TEXT,character,Unit,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,mg,g,UI,ml,Âµg,gtt,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,FALSE,TRUE
+med_formulation,medication,TEXT,character,Formulation,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,pill,soulution,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,FALSE,TRUE
+med_route,medication,TEXT,character,Route of application,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,p.o.,s.c.,s.l.,i.v.,p.i.,NA,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,FALSE,TRUE
+med_substance,medication,TEXT,character,Substance,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,,,,,,,NA,NA,TRUE,TRUE,FALSE,NA,FALSE,FALSE,FALSE,FALSE,TRUE
+med_comment,medication,TEXT,character,Comment,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,,,,,,,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,FALSE,TRUE
+v0_age,visit,INTEGER,integer,Age,0,NA,18,120,years,NA,0,150,1,NA,numericInput,General_Demography,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_heartrate,visit,INTEGER,integer,Heart rate,0,NA,20,300,1/min,NA,0,500,1,NA,numericInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+vi_inclusion_req,visit,BOOLEAN,logical,Inclusion requirements are met,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Inclusion_Inclusion,,,,,,,,,NA,TRUE,FALSE,FALSE,,TRUE,FALSE,FALSE,FALSE,FALSE
+v0_bmi,visit,INTEGER,integer,BMI,0,NA,50,10,kg/m²,NA,0,100,1,NA,numericInput,General_None,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_historygibleeingbleeding,visit,BOOLEAN,logical,History of GI bleeding,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,History_None,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_bleedinglocationupper,visit,TEXT,character,Upper GI bleeding,0,NA,NA,NA,,,NA,NA,NA,NA,selectInput,History_None,Unkown,1 episode,>1 episodes,,,,,,NA,TRUE,FALSE,TRUE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_bleedinglocationlower,visit,TEXT,character,Lower GI bleeding,0,NA,NA,NA,,,NA,NA,NA,NA,radioButtons,History_None,Unkown,1 episode,> 1 episodes,,,,,Unkown,NA,TRUE,FALSE,TRUE,,FALSE,FALSE,TRUE,FALSE,FALSE
+vn_heartrate,visit,INTEGER,integer,Heart rate,0,NA,20,300,1/min,NA,0,500,1,NA,numericInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE,FALSE
+v0_systolicbp,visit,INTEGER,integer,Systolic blood pressure,0,NA,40,300,mmHg,NA,0,500,1,NA,numericInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_diastolicbp,visit,INTEGER,integer,Diastolic blood pressure,0,NA,40,300,mmHg,NA,0,500,1,NA,numericInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+vn_systolicbp,visit,INTEGER,integer,Systolic blood pressure,0,NA,40,300,mmHg,NA,0,500,1,NA,numericInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE,FALSE
+vn_diastolicbp,visit,INTEGER,integer,Diastolic blood pressure,0,NA,40,300,mmHg,NA,0,500,1,NA,numericInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE,FALSE
+v0_spo2,visit,INTEGER,integer,SpO2,0,NA,70,100,%,NA,0,100,1,NA,numericInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+vn_spo2,visit,INTEGER,integer,SpO2,0,NA,70,100,%,NA,0,100,1,NA,numericInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE,FALSE
+v0_dizziness,visit,BOOLEAN,logical,Dizziness,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Signs...Symptoms_Symptoms,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_hematemesis,visit,BOOLEAN,logical,Hematemesis,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_melena,visit,BOOLEAN,logical,Melena,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_hematochezia,visit,BOOLEAN,logical,Hematochezia,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_nausea,visit,TEXT,character,Nausea,0,NA,NA,NA,,,NA,NA,NA,NA,textInput,Signs...Symptoms_Symptoms,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_vomiting,visit,TEXT,character,Vomiting,0,NA,NA,NA,,,NA,NA,NA,NA,textInput,Signs...Symptoms_Signs,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_painstomach,visit,BOOLEAN,logical,Stomach pain,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Signs...Symptoms_Symptoms,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_painintensitynrs,visit,INTEGER,integer,NRS pain intensity,0,NA,0,10,,NA,0,10,1,NA,numericInput,Signs...Symptoms_Symptoms,,,,,,,,,NA,TRUE,FALSE,TRUE,input.painstomach,FALSE,FALSE,TRUE,FALSE,FALSE
+vn_treatmentintervention,visit,TEXT,character,Intervention,0,NA,NA,NA,,,NA,NA,NA,NA,selectInput,Treatment_Interventional,None,Gastroscopy,Colonoscopy,Double-balloon enteroscopy,Angiography,,,None,NA,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE,FALSE
+vn_endoscopy_clips,visit,BOOLEAN,logical,Clip(s),0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Treatment_Interventional,,,,,,,,,NA,TRUE,FALSE,TRUE,input.vn_treatmentintervention == 'Gastroscopy' | input.vn_treatmentintervention == 'Colonoscopy' | input.vn_treatmentintervention == 'Double-balloon enteroscopy',FALSE,TRUE,FALSE,FALSE,FALSE
+vn_angiography_coil,visit,BOOLEAN,logical,Coiling,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Treatment_Interventional,,,,,,,,,NA,TRUE,FALSE,TRUE,input.vn_treatmentintervention == 'Angiography',FALSE,TRUE,FALSE,FALSE,FALSE
+vn_endoscopy_argon,visit,BOOLEAN,logical,Argon beamer,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Treatment_Interventional,,,,,,,,,NA,TRUE,FALSE,TRUE,input.vn_treatmentintervention == 'Gastroscopy' | input.vn_treatmentintervention == 'Colonoscopy' | input.vn_treatmentintervention == 'Double-balloon enteroscopy',FALSE,TRUE,FALSE,FALSE,FALSE
+vn_endoscopy_firbin,visit,BOOLEAN,logical,Fibrin application,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Treatment_Interventional,,,,,,,,,NA,TRUE,FALSE,TRUE,input.vn_treatmentintervention == 'Gastroscopy' | input.vn_treatmentintervention == 'Colonoscopy' | input.vn_treatmentintervention == 'Double-balloon enteroscopy',FALSE,TRUE,FALSE,FALSE,FALSE
+vn_endoscopy_firbin_1,visit,TEXT,character,Outcome of the intervention,0,NA,NA,NA,,,NA,NA,NA,NA,radioButtons,Treatment_Interventional,Unkown,Success,Failure,,,,,Unkown,NA,TRUE,FALSE,TRUE,input.vn_treatmentintervention == 'Angiography' | input.vn_treatmentintervention == 'Gastroscopy' | input.vn_treatmentintervention == 'Colonoscopy' | input.vn_treatmentintervention == 'Double-balloon enteroscopy',FALSE,TRUE,FALSE,FALSE,FALSE
+vn_outcomebleeding,visit,BOOLEAN,logical,Re bleeding or continious bleeding,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Outcome_Endpoints,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE,FALSE
+v0_outcome_survival_overall,visit,TEXT,character,Outcome after discharge: overall survival,0,NA,NA,NA,,,NA,NA,NA,NA,radioButtons,Outcome_Endpoints,Unkown,Death in hospital,Death within 12 weeks,Death after > 12 weeks,,,,Unkown,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+v0_outcome_survival_bleeding,visit,TEXT,character,Outcome after discharge: death due to bleeding,0,NA,NA,NA,,,NA,NA,NA,NA,radioButtons,Outcome_Endpoints,Unkown,Death in hospital,Death within 12 weeks,Death after > 12 weeks,,,,Unkown,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE
+vn_outcome_bleeding_episode_bleeding,visit,TEXT,character,Outcome of episode: bleeding,0,NA,NA,NA,,,NA,NA,NA,NA,radioButtons,Outcome_Endpoints,Unkown,Re bleeding within 24 h,Re bleeding within 72 h,Re bleeding > 72 h,Bleeding could not be stopped,,,Unkown,NA,TRUE,FALSE,TRUE,input.vn_outcomebleeding,FALSE,TRUE,FALSE,FALSE,FALSE
+vn_outcomedeath,visit,BOOLEAN,logical,Death,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,Outcome_Endpoints,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE,FALSE
+vn_outcome_bleeding_episode_death,visit,TEXT,character,Outcome of episode: any cause death,0,NA,NA,NA,,,NA,NA,NA,NA,radioButtons,Outcome_Endpoints,Unkown,Death within 24 h,Death within 72 h,Death after > 72 h,,,,Unkown,NA,TRUE,FALSE,TRUE,input.vn_outcomedeath,FALSE,TRUE,FALSE,FALSE,FALSE
+vn_outcome_bleeding_episode_death_bleeding,visit,TEXT,character,Outcome of episode:  death due to bleeding,0,NA,NA,NA,,,NA,NA,NA,NA,radioButtons,Outcome_Endpoints,Unkown,Death within 24 h,Death within 72 h,Death after > 72 h,,,,Unkown,NA,TRUE,FALSE,TRUE,input.vn_outcomedeath,FALSE,TRUE,FALSE,FALSE,FALSE
+v0_gib,visit,TEXT,character,GI Blood,0,NA,NA,NA,,,NA,NA,NA,NA,textInput,GI.Bleeding_GI.Bleeding,,,,,,,,,NA,TRUE,FALSE,FALSE,,FALSE,FALSE,TRUE,FALSE,FALSE

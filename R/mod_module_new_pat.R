@@ -53,11 +53,6 @@ mod_module_new_pat_server <- function(id, visit_id, data_table) {
       dbAppendTable(pool, data_table, df_generic)
     })
 
-    # Run when starting module ----
-    all_visits = read.csv('widgets/visits.csv')
-    ordered_visits = all_visits %>% filter(!is.na(order)) %>% arrange(order)
-    widgets_table_global = read.csv("widgets/widgets.csv")
-    all_tabs = read.csv('widgets/panel_tabs.csv')
 
     ## Start sub-module server
     rv_downstream_visit = reactiveValues()

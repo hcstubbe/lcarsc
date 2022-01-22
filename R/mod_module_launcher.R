@@ -44,10 +44,10 @@ mod_module_launcher_ui <- function(id){
                     )
             ),
 
-            tabItem("new_pat",
-                    mod_module_new_pat_ui(ns("mod_module_new_pat"))
-
-            ),
+            # tabItem("new_pat",
+            #         mod_module_new_pat_ui(ns("mod_module_new_pat"))
+            #
+            # ),
 
             tabItem("pat_list",
                     mod_module_documentation_ui(ns("mod_module_documentation"))
@@ -55,12 +55,6 @@ mod_module_launcher_ui <- function(id){
 
             ),
 
-            # tabItem("split_documentation",
-            #         mod_module_split_documentation_ui(ns("mod_module_documentation_split"))
-            #
-            #
-            #
-            # ),
 
             # Dashboard item providing Contact data
             tabItem("contact",
@@ -87,13 +81,10 @@ mod_module_launcher_ui <- function(id){
                                                HTML("E-mail: <a href='mailto:ujjwal_mukund.mahajan@med.uni-muenchen.de' target='_top'>ujjwal_mukund.mahajan@med.uni-muenchen.de</a>")
                                         )
                     )
-            ),
-            tabItem("editor",
-                    mod_module_editor_launcher_ui(ns("mod_module_editor"))
-
-
-
             )
+            # ,
+            # tabItem("editor",
+            #         mod_module_editor_launcher_ui(ns("mod_module_editor")))
 
           )
         )
@@ -120,14 +111,7 @@ mod_module_launcher_server <- function(id){
     # Module in Tab 2
     mod_module_documentation_server(id = "mod_module_documentation",
                                 data_table1 = "inclusion_dataset",
-                                data_table2 = "scientific_dataset"
-    )
-
-    # # Module in Tab 2a
-    # mod_module_split_documentation_server(id = "mod_module_documentation_split",
-    #                             data_table1 = "inclusion_dataset",
-    #                             data_table2 = "scientific_dataset"
-    # )
+                                data_table2 = "scientific_dataset")
 
     # Module editor
     mod_module_editor_launcher_server(id = "mod_module_editor")
