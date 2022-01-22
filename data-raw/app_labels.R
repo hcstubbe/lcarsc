@@ -116,4 +116,4 @@ lang_en = list(
 
 lang_sel = lang_en
 
-usethis::use_data(lang_sel, overwrite = TRUE, internal = TRUE)
+usethis::use_data(lang_sel, internal = FALSE)

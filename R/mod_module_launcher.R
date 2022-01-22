@@ -5,7 +5,7 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#'
+#' @import dplyr
 #' @importFrom shiny NS tagList
 mod_module_launcher_ui <- function(id){
   ns = NS(id)

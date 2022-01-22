@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @importFrom dplyr arrange
+#' @import dplyr
 mod_module_documentation_ui  <- function(id) {
   ns = NS(id)
   tagList(
@@ -35,6 +35,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
 
     # Requirements ----
     ns = session$ns
+    pool = get_golem_options("pool")
     rv_downstream = reactiveValues()
 
     # Auxiliary functions ----
@@ -49,13 +50,10 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
                     options = list(pageLength = 5), selection = c("single"))}
 
 
+    # Select non-inclusion visits
+    ordered_visits = ordered_visits %>% filter(visit_id != "vi")
 
-    # Run when starting module ----
-    all_visits = read.csv('widgets/visits.csv')
-    ordered_visits = all_visits %>% filter(!is.na(order)) %>% filter(visit_id != "vi") %>% arrange(order)
-    widgets_table_global = read.csv("widgets/widgets.csv")
-    all_tabs = read.csv('widgets/panel_tabs.csv')
-    visit_choices = all_visits$visit_id[!all_visits$inclusion_other_visit]
+
 
     ## Start sub-module servers
     rv_downstream_visit = reactiveValues()

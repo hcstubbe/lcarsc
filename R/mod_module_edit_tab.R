@@ -6,10 +6,13 @@
 #'
 #' @noRd
 #'
+#' @import dplyr
 #' @importFrom shiny NS tagList
 #' @importFrom RMariaDB dbListTables dbAppendTable dbExecute
 #' @importFrom golem get_golem_options
-#' @importFrom shinyvalidate InputValidator
+#' @importFrom shinyvalidate InputValidator sv_required
+#' @importFrom DT dataTableOutput
+#' @importFrom uuid UUIDgenerate
 mod_module_edit_tab_ui <- function(id) {
   ns = NS(id)
   tagList(
