@@ -9,6 +9,7 @@
 #' @importFrom shiny NS tagList
 #' @importFrom RMariaDB dbListTables dbAppendTable dbExecute
 #' @importFrom golem get_golem_options
+#' @importFrom shinyvalidate InputValidator
 mod_module_edit_tab_ui <- function(id) {
   ns = NS(id)
   tagList(

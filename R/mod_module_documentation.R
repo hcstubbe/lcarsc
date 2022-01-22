@@ -7,6 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @importFrom dplyr arrange
 mod_module_documentation_ui  <- function(id) {
   ns = NS(id)
   tagList(
