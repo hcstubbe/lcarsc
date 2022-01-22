@@ -34,6 +34,7 @@ golem::add_fct("makeWidgetList_simple", with_test = TRUE)
 golem::add_fct("makeWidgetList_panels", with_test = TRUE)
 golem::add_fct("loadData", with_test = TRUE)
 golem::add_fct("randomIdGenerator", with_test = TRUE)
+golem::add_fct("format_input_for_database", with_test = TRUE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
