@@ -11,14 +11,24 @@ Imports:
     glue,
     golem (>= 0.3.1.9003),
     htmltools,
-    shiny (>= 1.7.1)
+    shiny (>= 1.7.1),
+    dplyr,
+    pool,
+    RMariaDB,
+    shinydashboard,
+    shinyvalidate,
+    uuid,
+    pkgload
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
 Suggests: 
+    rmarkdown,
+    knitr,
     spelling,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Language: en-US
 Depends: 
     R (>= 2.10)
+VignetteBuilder: knitr

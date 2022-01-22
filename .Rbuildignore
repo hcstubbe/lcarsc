@@ -6,3 +6,8 @@ dev_history.R
 $run_dev.*
 ^LICENSE\.md$
 ^README\.Rmd$
+^doc$
+^Meta$
+^app\.R$
+^rsconnect$
+^Dockerfile$
