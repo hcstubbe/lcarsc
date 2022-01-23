@@ -8,6 +8,8 @@
 #'
 #' @importFrom shiny NS tagList
 #' @importFrom utils zip
+#' @importFrom readr write_csv
+#' @importFrom RMariaDB dbReadTable dbListTables dbRemoveTable
 mod_module_editor_controls_ui <- function(id) {
   ns = NS(id)
   shinydashboard::box(title = "Controls", status = "info", width = 12,
@@ -72,7 +74,7 @@ mod_module_editor_controls_server <- function(id) {
     })
 
 
-    # Reset dialogue
+    # Download dialogue
     observeEvent(input$download_widgets_button, {
 
       # Export widget data from database to local folder
@@ -106,7 +108,20 @@ mod_module_editor_controls_server <- function(id) {
 
     })
 
-    # Reset dialogue
+    # Download handler
+    output$downloadData <- downloadHandler(
+
+      filename = "database_export.zip",
+
+      content <- function(file) {
+        file.copy("zip/database_export.zip", file)
+      },
+      contentType = "application/zip"
+    )
+
+
+
+    # Reset dialogue ----
     observeEvent(input$reset_widgets_button, {
       showModal(
         modalDialog(
@@ -135,18 +150,6 @@ mod_module_editor_controls_server <- function(id) {
       showNotification("Database reset!", type = "message")
       session$reload()
     })
-
-
-    # Download button ----
-    output$downloadData <- downloadHandler(
-
-      filename = "database_export.zip",
-
-      content <- function(file) {
-        file.copy("zip/database_export.zip", file)
-      },
-      contentType = "application/zip"
-    )
 
   })
 }
