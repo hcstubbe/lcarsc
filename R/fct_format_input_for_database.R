@@ -33,6 +33,29 @@ format_input_for_database = function(input_data,
     }
   }
 
+
+  if(any(widgets_table$conditional == TRUE)) {
+    appear_if = widgets_table$appear_if
+    appear_if[appear_if == ""] = NA
+    appear_if = sub("input.", "input_data$", appear_if, fixed = TRUE)
+    appear_if = gsub(" input.", "input_data$", appear_if, fixed = TRUE)
+    appear_if = gsub("!input.", "!input_data$", appear_if, fixed = TRUE)
+    appear_if = gsub("|input.", "|input_data$", appear_if, fixed = TRUE)
+    appear_if = gsub("&input.", "&input_data$", appear_if, fixed = TRUE)
+
+    appear_if = sapply(appear_if,
+                       function(x) eval(parse(text = x)),
+                       simplify = TRUE,
+                       USE.NAMES = FALSE)
+    appear_if[is.na(appear_if)] = FALSE
+    widgets_table$appear_if_true = appear_if
+
+    inputs_to_set_na = widgets_table$inputId[widgets_table$appear_if_true == FALSE & widgets_table$conditional == TRUE]
+    for (i in inputs_to_set_na) {
+      input_data[1,i] = NA
+    }
+  }
+
   if(create_new_pid){
     pool = get_golem_options("pool")
     input_data$pid = randomIdGenerator(exisiting_IDs = loadData(pool, "inclusion_dataset")$pid)
