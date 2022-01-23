@@ -35,7 +35,22 @@ mod_module_edit_tab_ui <- function(id) {
 #' module_edit_tab Server Functions
 #'
 #' @noRd
-mod_module_edit_tab_server<- function(id, var_group, tbl_id, widgets_table_global, widget_tab_selection, all_visits, all_tabs = NULL, rv_in = NULL, show_vals = NULL, simple = TRUE, modal_width = ".modal-dialog{ width:400px}", visit_id, create_new_pid = FALSE, add.copy.btn = FALSE, num_entries = 5, order.by) {
+mod_module_edit_tab_server<- function(id,
+                                      var_group,
+                                      tbl_id,
+                                      widgets_table_global,
+                                      widget_tab_selection,
+                                      all_visits,
+                                      all_tabs = NULL,
+                                      rv_in = NULL,
+                                      show_vals = NULL,
+                                      simple = TRUE,
+                                      modal_width = ".modal-dialog{ width:400px}",
+                                      visit_id,
+                                      create_new_pid = FALSE,
+                                      add.copy.btn = FALSE,
+                                      num_entries = 5,
+                                      order.by) {
 
 
 
@@ -92,11 +107,22 @@ mod_module_edit_tab_server<- function(id, var_group, tbl_id, widgets_table_globa
     # Form for data entry ----
     entry_form <- function(button_id, visit_id, submit = FALSE){
       ## Compile widget list
+
       if(submit == FALSE){
         if(simple == TRUE){
-          widget_list = makeWidgetList_simple(widget_data = widgets_table[widgets_table$widget,], ns = ns, pid = rv_in$pid(), tbl_id = tbl_id)
+          widget_list = makeWidgetList_simple(widget_data = widgets_table[widgets_table$widget,],
+                                              ns = ns,
+                                              pid = rv_in$pid(),
+                                              tbl_id = tbl_id)
         }else{
-          widget_list = makeWidgetList_panels(widget_data = widgets_table[widgets_table$widget,], all_tabs = all_tabs, visit_id = visit_id, all_visits = all_visits, row_id = rv_in$row_id(), ns = ns, pid = rv_in$pid(), tbl_id = tbl_id)
+          widget_list = makeWidgetList_panels(widget_data = widgets_table[widgets_table$widget,],
+                                              all_tabs = all_tabs,
+                                              visit_id = visit_id,
+                                              all_visits = all_visits,
+                                              row_id = rv_in$row_id(),
+                                              ns = ns,
+                                              pid = rv_in$pid(),
+                                              tbl_id = tbl_id)
         }
         showModal(
           modalDialog(
@@ -150,6 +176,7 @@ mod_module_edit_tab_server<- function(id, var_group, tbl_id, widgets_table_globa
                                        input_uuid = rv_uuid$uuid,
                                        visit_id = visit_id,
                                        widgets_table = widgets_table,
+                                       all_visits = all_visits,
                                        create_new_pid = create_new_pid)
       input_data
     })
@@ -181,8 +208,6 @@ mod_module_edit_tab_server<- function(id, var_group, tbl_id, widgets_table_globa
       close()
       showNotification("Data not saved", type = "warning")
       shinyjs::reset("entry_form")
-
-
     })
 
 

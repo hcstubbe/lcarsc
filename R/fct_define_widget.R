@@ -64,10 +64,12 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
 
     if(widget_data$type[i] == "selectInputFromDatabase" & widget_data$conditional[i] == FALSE){
       if(is.na(widget_data$tbl_id[[i]]) | widget_data$tbl_id[[i]] == ""){
+        pool = get_golem_options("pool")
         sql_df = loadData(pool, tbl_id) %>% filter(deleted_row == FALSE) # here loadData does not match the pid. Therefore the choices will be selected from all possible values from the referenced table.
         choices = c(sql_df[,widget_data$choicesFromVar[i]] %>% as.factor() %>% levels(),
                     sql_df[,widget_data$inputId[i]] %>% as.factor() %>% levels())
       }else{
+        pool = get_golem_options("pool")
         sql_df = loadData(pool, widget_data$tbl_id[[i]]) %>% filter(deleted_row == FALSE) # here loadData does not match the pid. Therefore the choices will be selected from all possible values from the referenced table.
         choices = c(sql_df[,widget_data$choicesFromVar[i]] %>% as.factor() %>% levels())
       }
@@ -120,6 +122,7 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
 
 
     if(widget_data$type[i] == "numericInputCouter" & widget_data$conditional[i] == FALSE){
+      pool = get_golem_options("pool")
       var_count = max(db_read_select(pool, tbl_id, "vars")[,"order_of_var"]) + 1
       wlist_i = list(numericInput(inputId = ns(widget_data$inputId[i]),
                                   label = sub(" NA","", paste(widget_data$label[i],
@@ -228,6 +231,7 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
     }
 
     if(widget_data$type[i] == "selectInputFromDatabase" & widget_data$conditional[i] == TRUE){
+      pool = get_golem_options("pool")
       choices = c(db_read_select(pool, tbl_id, pid)[,widget_data$choicesFromVar[i]] %>% as.factor() %>% levels(),
                   db_read_select(pool, tbl_id, pid)[,widget_data$inputId[i]] %>% as.factor() %>% levels())
       choices = c(widget_data$choice1[[i]],

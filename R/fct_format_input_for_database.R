@@ -5,7 +5,14 @@
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-format_input_for_database = function(input_data, pid, input_uuid, visit_id, widgets_table, create_new_pid){
+format_input_for_database = function(input_data,
+                                     pid,
+                                     input_uuid,
+                                     visit_id,
+                                     widgets_table,
+                                     all_visits,
+                                     create_new_pid){
+
   input_data = lapply(input_data, function(x){ # convert NULL to NA
     y = length(x)
     if(y == 0){
@@ -14,6 +21,7 @@ format_input_for_database = function(input_data, pid, input_uuid, visit_id, widg
   })
 
   input_data = data.frame(input_data)
+
   # Replace "New choice" with actual value from new choice text input
   choicesFromVar = !sapply(widgets_table$choicesFromVar, function(x) is.null(x) | x == "" | is.na(x))
   choicesFromVar = names(choicesFromVar) %in% colnames(input_data) & choicesFromVar
@@ -31,12 +39,14 @@ format_input_for_database = function(input_data, pid, input_uuid, visit_id, widg
   }else{
     input_data$pid = pid
   }
+
   input_data$row_id = input_uuid
   input_data$visit_id = all_visits[all_visits[,"visit_id"] == visit_id,"visit_title"]
   input_data$user_modified = Sys.getenv("SHINYPROXY_USERNAME")
   input_data$date_modified = as.character(date())
   input_data$deleted_row = FALSE
   input_data$submitted_row = FALSE
+
   if(!is.null(input_data$inputId)){
     input_data$inputId = make.names(input_data$inputId)
   }
