@@ -23,7 +23,25 @@ mod_module_editor_launcher_ui <- function(id) {
                                                        mod_module_edit_tab_ui(ns("mod_module_editor_vars"))
                                               )
 
-                                   )))
+                                   ))),
+      fluidRow(shinydashboard::box(title = ("Upload visits"),
+                                   width = 12,
+                                   status = "info",
+                                   solidHeader = FALSE,
+                                   collapsible = TRUE,
+                                   collapsed = TRUE,
+                                   fileInput(ns("visits_upload"), "Upload data file (CSV)",
+                                             multiple = FALSE,
+                                             accept = c(".csv")))),
+      fluidRow(shinydashboard::box(title = ("Upload variables"),
+                                   width = 12, status = "info",
+                                   solidHeader = FALSE,
+                                   collapsible = TRUE,
+                                   collapsed = TRUE,
+                                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
+                    multiple = FALSE,
+                    accept = c(".csv"))
+      ))
     )
 
   )
@@ -95,6 +113,20 @@ mod_module_editor_launcher_server <- function(id) {
                            num_entries = 200,
                            order.by = "order_of_var")
 
+
+    # Handle uploads ----
+
+    observe({
+      if (is.null(input$visits_upload)) return()
+      input_csv_visits = read.csv(input$visits_upload$datapath)
+      dbAppendTable(pool, "editor_table_visit", input_csv_visits)
+    })
+
+    observe({
+      if (is.null(input$vars_upload)) return()
+      input_csv_vars = read.csv(input$vars_upload$datapath)
+      dbAppendTable(pool, "editor_table_vars", input_csv_vars)
+    })
 
   })
 }
