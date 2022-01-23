@@ -32,7 +32,11 @@ choice3,vars,TEXT,character,Choice 3,FALSE,,,,,,,,,,textInput,widgets_editor,,,,
 choice4,vars,TEXT,character,Choice 4,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
 choice5,vars,TEXT,character,Choice 5,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
 choice6,vars,TEXT,character,Choice 6,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice7,vars,TEXT,character,Choice 7,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice8,vars,TEXT,character,Choice 8,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice9,vars,TEXT,character,Choice 9,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice10,vars,TEXT,character,Choice 10,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice11,vars,TEXT,character,Choice 11,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice12,vars,TEXT,character,Choice 12,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
 description,vars,TEXT,character,Description,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 conditional,vars,BOOLEAN,logical,Conditional variable,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 appear_if,vars,TEXT,character,Condition (use JavaScript expressions; e.g.: input.[Input ID] == 'Yes'),FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.conditional

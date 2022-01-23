@@ -34,7 +34,12 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
                      widget_data$choice4[[i]],
                      widget_data$choice5[[i]],
                      widget_data$choice6[[i]],
-                     widget_data$choice7[[i]])
+                     widget_data$choice7[[i]],
+                     widget_data$choice8[[i]],
+                     widget_data$choice9[[i]],
+                     widget_data$choice10[[i]],
+                     widget_data$choice11[[i]],
+                     widget_data$choice12[[i]])
       choices = choices[!is.na(choices)]
       choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
       wlist_i = list(
@@ -52,7 +57,12 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
                      widget_data$choice4[[i]],
                      widget_data$choice5[[i]],
                      widget_data$choice6[[i]],
-                     widget_data$choice7[[i]])
+                     widget_data$choice7[[i]],
+                     widget_data$choice8[[i]],
+                     widget_data$choice9[[i]],
+                     widget_data$choice10[[i]],
+                     widget_data$choice11[[i]],
+                     widget_data$choice12[[i]])
       choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
       names(choices) = choices
       wlist_i = list(selectInput(inputId = ns(widget_data$inputId[i]),
@@ -81,6 +91,11 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
                   widget_data$choice5[[i]],
                   widget_data$choice6[[i]],
                   widget_data$choice7[[i]],
+                  widget_data$choice8[[i]],
+                  widget_data$choice9[[i]],
+                  widget_data$choice10[[i]],
+                  widget_data$choice11[[i]],
+                  widget_data$choice12[[i]],
                   choices)
       choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
       names(choices) = choices
@@ -197,7 +212,12 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
                      widget_data$choice4[[i]],
                      widget_data$choice5[[i]],
                      widget_data$choice6[[i]],
-                     widget_data$choice7[[i]])
+                     widget_data$choice7[[i]],
+                     widget_data$choice8[[i]],
+                     widget_data$choice9[[i]],
+                     widget_data$choice10[[i]],
+                     widget_data$choice11[[i]],
+                     widget_data$choice12[[i]])
       choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
       names(choices) = choices
       wlist_i = list(
@@ -217,7 +237,12 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
                      widget_data$choice4[[i]],
                      widget_data$choice5[[i]],
                      widget_data$choice6[[i]],
-                     widget_data$choice7[[i]])
+                     widget_data$choice7[[i]],
+                     widget_data$choice8[[i]],
+                     widget_data$choice9[[i]],
+                     widget_data$choice10[[i]],
+                     widget_data$choice11[[i]],
+                     widget_data$choice12[[i]])
       choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
       names(choices) = choices
       wlist_i = list(
@@ -241,6 +266,11 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
                   widget_data$choice5[[i]],
                   widget_data$choice6[[i]],
                   widget_data$choice7[[i]],
+                  widget_data$choice8[[i]],
+                  widget_data$choice9[[i]],
+                  widget_data$choice10[[i]],
+                  widget_data$choice11[[i]],
+                  widget_data$choice12[[i]],
                   choices)
       choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
       names(choices) = choices
