@@ -7,7 +7,8 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @importFrom utils zip
+#' @importFrom utils zip read.csv
+#' @importFrom usethis use_data
 mod_module_editor_controls_ui <- function(id) {
   ns = NS(id)
   shinydashboard::box(title = "Controls", status = "info", width = 12,
@@ -62,9 +63,11 @@ mod_module_editor_controls_server <- function(id) {
         )
       )
     })
+    # Update widgets in data
     observeEvent(input$update_widgets_button_confirm, {
-
       make_widget_tables(pool = pool, write_widget_tables = TRUE, remove_old_tables = TRUE)
+      widgets_table_global = utils::read.csv("widgets/widgets.csv")
+      usethis::use_data(widgets_table_global, overwrite = TRUE, internal = FALSE)
       removeModal()
       showNotification("Widgets updated", type = "message")
       session$reload()

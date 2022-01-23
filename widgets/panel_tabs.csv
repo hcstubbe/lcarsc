@@ -1,8 +1,3 @@
 position,tab_id,tab_title,panel1up,panel2up,panel1down,panel2down
-1,General,General,General_Demography,General_None,,
-2,Signs...Symptoms,Signs & Symptoms,Signs...Symptoms_Signs,Signs...Symptoms_Symptoms,,
-3,Inclusion,Inclusion,Inclusion_Inclusion,,,
-4,History,History,History_None,,,
-5,Treatment,Treatment,Treatment_Interventional,,,
-6,Outcome,Outcome,Outcome_Endpoints,,,
-7,GI.Bleeding,GI Bleeding,GI.Bleeding_GI.Bleeding,,,
+1,Inclusion,Inclusion,Inclusion_None,,,
+2,General,General,General_Documentation,,,

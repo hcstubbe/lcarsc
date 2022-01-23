@@ -1,6 +1,5 @@
-order,visit_id,visit_title,General,GI.Bleeding,History,Inclusion,Outcome,Signs...Symptoms,Treatment,choicesFromVar,inclusion_other_visit,inclusion_criteria
-1,vi,Inclusion,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,NA,TRUE,TRUE
-2,vn,Intervention,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,NA,FALSE,FALSE
-3,v0,Baseline,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,FALSE,NA,FALSE,FALSE
-NA,diagnosis,Diagnosis,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,NA,TRUE,FALSE
-NA,medication,Medication,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,NA,TRUE,FALSE
+order,visit_id,visit_title,General,Inclusion,choicesFromVar,inclusion_other_visit,inclusion_criteria
+0,vi,vi,FALSE,TRUE,NA,TRUE,TRUE
+1,v0,v0,TRUE,FALSE,NA,FALSE,FALSE
+NA,diagnosis,Diagnosis,FALSE,FALSE,NA,TRUE,FALSE
+NA,medication,Medication,FALSE,FALSE,NA,TRUE,FALSE
