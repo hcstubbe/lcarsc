@@ -7,6 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @importFrom utils zip
 mod_module_editor_controls_ui <- function(id) {
   ns = NS(id)
   shinydashboard::box(title = "Controls", status = "info", width = 12,
@@ -38,6 +39,7 @@ mod_module_editor_controls_server <- function(id) {
 
     # Requirements ----
     ns = session$ns
+    pool = get_golem_options("pool")
 
 
     # Observers ----
