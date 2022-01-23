@@ -45,7 +45,7 @@ format_input_for_database = function(input_data,
     appear_if = gsub("&input.", "&input_data$", appear_if, fixed = TRUE)
 
     appear_if = sapply(appear_if,
-                       function(x) eval(parse(text = x)),
+                       function(x) tryCatch(eval(parse(text = "x")), error = function(e) NA),
                        simplify = TRUE,
                        USE.NAMES = FALSE)
     appear_if[is.na(appear_if)] = FALSE

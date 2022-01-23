@@ -57,6 +57,7 @@ mod_module_editor_launcher_server <- function(id) {
 
     # Requirements ----
     ns = session$ns
+    pool = get_golem_options("pool")
     rv_downstream = reactiveValues()
 
     # Auxiliary functions ----
@@ -119,13 +120,19 @@ mod_module_editor_launcher_server <- function(id) {
     observe({
       if (is.null(input$visits_upload)) return()
       input_csv_visits = read.csv(input$visits_upload$datapath)
-      dbAppendTable(pool, "editor_table_visit", input_csv_visits)
+      tryCatch(dbAppendTable(pool,
+                             "editor_table_visit",
+                             input_csv_visits),
+               error = function(e) showNotification("Data not saved: check format!", type = "error"))
     })
 
     observe({
       if (is.null(input$vars_upload)) return()
       input_csv_vars = read.csv(input$vars_upload$datapath)
-      dbAppendTable(pool, "editor_table_vars", input_csv_vars)
+      tryCatch(dbAppendTable(pool,
+                             "editor_table_vars",
+                             input_csv_vars),
+               error = function(e) showNotification("Data not saved: check format!", type = "error"))
     })
 
   })
