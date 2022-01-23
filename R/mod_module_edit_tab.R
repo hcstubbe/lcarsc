@@ -141,19 +141,22 @@ mod_module_edit_tab_server<- function(id, var_group, tbl_id, widgets_table_globa
 
     ## Gather input data ----
     formData <- reactive({
-      data = sapply(names(fieldsAll), function(x) input[[x]], simplify = FALSE, USE.NAMES = TRUE)
-
-      data = format_input_for_database(data = data, pid = rv_in$pid(), input_uuid = rv_uuid$uuid)
-
+      input_data = sapply(names(fieldsAll),
+                    function(x) input[[x]],
+                    simplify = FALSE,
+                    USE.NAMES = TRUE)
+      input_data = format_input_for_database(input_data = input_data,
+                                       pid = rv_in$pid(),
+                                       input_uuid = rv_uuid$uuid,
+                                       visit_id = visit_id,
+                                       widgets_table = widgets_table,
+                                       create_new_pid = create_new_pid)
+      input_data
     })
 
 
 
     # Add data ----
-    appendData <- function(data){
-      dbAppendTable(pool,tbl_id, data)
-    }
-
     observeEvent(input$add_button, priority = 20,{
 
       entry_form(ns("submit"), visit_id)
@@ -164,7 +167,7 @@ mod_module_edit_tab_server<- function(id, var_group, tbl_id, widgets_table_globa
       rv_uuid$uuid = UUIDgenerate()
       iv$enable()
       if (iv$is_valid()) {
-        appendData(formData())
+        dbAppendTable(pool, tbl_id, formData())
         close()
         showNotification("Data saved", type = "message")
         shinyjs::reset("entry_form")
@@ -359,7 +362,7 @@ mod_module_edit_tab_server<- function(id, var_group, tbl_id, widgets_table_globa
 
         # Add new row
         rv_uuid$uuid = UUIDgenerate()
-        appendData(formData())
+        dbAppendTable(pool, tbl_id, formData())
 
         # Set old row as 'deleted_row = TRUE'
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
