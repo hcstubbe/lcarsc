@@ -24,4 +24,6 @@ ADD . /build_zone
 WORKDIR /build_zone
 RUN R -e 'remotes::install_local(upgrade="never")'
 EXPOSE 3838
-CMD  ["R", "-e", "options('shiny.port'=3838,shiny.host='0.0.0.0');lcarsc::run_app(dbuser = 'user', dbpassword = 'user', dbhost = 'dbeditor', dbname = 'mydbeditor')"]
+COPY . /lcarsc
+WORKDIR /lcarsc
+CMD  ["R", "-e", "shiny::runApp(host = '0.0.0.0', port = 3838)"]
