@@ -23,5 +23,5 @@ run_app(database_connection = pool::dbPool(RSQLite::SQLite(),
                                            user = "user",
                                            password = "user",
                                            host = "db",
-                                           db = "mydb"))
+                                           db = "mydb.sqlite3"))
 
