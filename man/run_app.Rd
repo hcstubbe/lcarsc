@@ -9,7 +9,10 @@ run_app(
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
-  database_connection,
+  dbuser,
+  dbpassword,
+  dbhost,
+  dbname,
   ...
 )
 }

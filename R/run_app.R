@@ -13,7 +13,10 @@ run_app <- function(
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
-  database_connection,
+  dbuser,
+  dbpassword,
+  dbhost,
+  dbname,
   ...
 ) {
   with_golem_options(
@@ -25,6 +28,10 @@ run_app <- function(
       enableBookmarking = enableBookmarking,
       uiPattern = uiPattern
     ),
-    golem_opts = list(pool = database_connection)
+    golem_opts = list(pool = pool::dbPool(RMariaDB::MariaDB(),
+                                          user = dbuser,
+                                          password = dbpassword,
+                                          host = dbhost,
+                                          db = dbname))
   )
 }

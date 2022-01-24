@@ -23,6 +23,5 @@ RUN mkdir /build_zone
 ADD . /build_zone
 WORKDIR /build_zone
 RUN R -e 'remotes::install_local(upgrade="never")'
-RUN rm -rf /build_zone
 EXPOSE 3838
-CMD  ["R", "-e", "options('shiny.port'=3838,shiny.host='0.0.0.0');lcarsc::run_app(database_connection = pool::dbPool(RMariaDB::MariaDB(), user = 'user', password = 'user', host = 'dbeditor', db = 'mydbeditor'))"]
+CMD  ["R", "-e", "options('shiny.port'=3838,shiny.host='0.0.0.0');lcarsc::run_app(dbuser = 'user', dbpassword = 'user', dbhost = 'dbeditor', dbname = 'mydbeditor')"]
