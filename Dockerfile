@@ -8,7 +8,6 @@ RUN Rscript -e 'remotes::install_version("pkgload",upgrade="never", version = "1
 RUN Rscript -e 'remotes::install_version("attempt",upgrade="never", version = "0.3.1")'
 RUN Rscript -e 'remotes::install_version("shiny",upgrade="never", version = "1.7.1")'
 RUN Rscript -e 'remotes::install_version("config",upgrade="never", version = "0.3.1")'
-RUN Rscript -e 'remotes::install_version("spelling",upgrade="never", version = "2.2")'
 RUN Rscript -e 'remotes::install_version("rmarkdown",upgrade="never", version = "2.11")'
 RUN Rscript -e 'remotes::install_version("shinyjs",upgrade="never", version = "2.0.0")'
 RUN Rscript -e 'remotes::install_version("RSQLite",upgrade="never", version = "2.2.9")'
