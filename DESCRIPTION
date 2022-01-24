@@ -1,6 +1,6 @@
 Package: lcarsc
 Title: Leight weight assessmet and recording software for clinical data
-Version: 0.0.0.9000
+Version: 0.2.0.0000
 Authors@R: person('Hans', 'Stubbe', email = 'hstubb@med.lmu.de', role = c('cre', 'aut'))
 Description: LCARS-C is designed to conduct simple clinical assessments and record clinical data for research use
 License: MIT + file LICENSE

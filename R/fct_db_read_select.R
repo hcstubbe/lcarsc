@@ -5,7 +5,7 @@
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-#' @importFrom RMariaDB db_read_select
+#' @importFrom RMariaDB dbReadTable
 
 # Read table and filter
 db_read_select = function(pool, tbl_id, pid_x, filter_deleted_rows = TRUE, use.pid = TRUE, filter_sumitted_rows = FALSE, order.by = NULL){
