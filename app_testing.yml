@@ -1,0 +1,32 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+  dbeditor:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: coucou
+      MYSQL_DATABASE: mydbeditor
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      
+  lcarsc:
+    image: lcarsc
+    restart: always
+    ports:
+      - 3838:3838
+      
+  rstudio:
+    image: rstudio4test
+    restart: always
+    environment:
+      PASSWORD: test123
+      ADD: shiny
+    ports:
+      - 8787:8787
+        
+networks:
+    backend:
+        # use a custom driver, with no options
+        driver: bridge
