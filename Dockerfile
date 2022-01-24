@@ -8,10 +8,12 @@ RUN Rscript -e 'remotes::install_version("pkgload",upgrade="never", version = "1
 RUN Rscript -e 'remotes::install_version("knitr",upgrade="never", version = "1.36")'
 RUN Rscript -e 'remotes::install_version("attempt",upgrade="never", version = "0.3.1")'
 RUN Rscript -e 'remotes::install_version("shiny",upgrade="never", version = "1.7.1")'
-RUN Rscript -e 'remotes::install_version("testthat",upgrade="never", version = "3.1.0")'
 RUN Rscript -e 'remotes::install_version("config",upgrade="never", version = "0.3.1")'
 RUN Rscript -e 'remotes::install_version("spelling",upgrade="never", version = "2.2")'
 RUN Rscript -e 'remotes::install_version("rmarkdown",upgrade="never", version = "2.11")'
+RUN Rscript -e 'remotes::install_version("shinyjs",upgrade="never", version = "2.0.0")'
+RUN Rscript -e 'remotes::install_version("RSQLite",upgrade="never", version = "2.2.9")'
+RUN Rscript -e 'remotes::install_version("readr",upgrade="never", version = "2.1.1")'
 RUN Rscript -e 'remotes::install_version("uuid",upgrade="never", version = "1.0-3")'
 RUN Rscript -e 'remotes::install_version("shinyvalidate",upgrade="never", version = "0.1.1")'
 RUN Rscript -e 'remotes::install_version("shinydashboard",upgrade="never", version = "0.7.2")'
@@ -25,4 +27,4 @@ WORKDIR /build_zone
 RUN R -e 'remotes::install_local(upgrade="never")'
 RUN rm -rf /build_zone
 EXPOSE 3838
-CMD  ["R", "-e", "options('shiny.port'=3838,shiny.host='0.0.0.0');lcarsc::run_app()"]
+CMD  ["R", "-e", "options('shiny.port'=3838,shiny.host='0.0.0.0');lcarsc::run_app(database_connection = pool::dbPool(RMariaDB::MariaDB(), user = 'user', password = 'user', host = 'dbeditor', db = 'mydbeditor'))"]
