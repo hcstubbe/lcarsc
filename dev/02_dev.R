@@ -16,6 +16,17 @@
 ## Dependencies ----
 ## Add one line by package you want to add as dependency
 usethis::use_package("shiny")
+usethis::use_package("golem")
+usethis::use_package("htmltools")
+usethis::use_package("dplyr")
+usethis::use_package("pool")
+usethis::use_package("RMariaDB")
+usethis::use_package("shinydashboard")
+usethis::use_package("shinyvalidate")
+usethis::use_package("uuid")
+usethis::use_package("readr")
+usethis::use_package("RSQLite")
+usethis::use_package("DT")
 
 ## Add modules ----
 ## Create a module infrastructure in R/

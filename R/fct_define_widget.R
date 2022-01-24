@@ -5,6 +5,7 @@
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
+#' @import shiny
 
 
 # Function definfing each widget
