@@ -192,7 +192,7 @@ make_widget_tables = function(pool, write_widget_tables = FALSE, remove_old_tabl
 
 
   # Add required (i.e. required for technical reasons) variables
-  var_table = widgets_template %>% rbind(var_table)
+  var_table = app_data_internal$widgets_template %>% rbind(var_table)
   for(i in visits$visit_id_visits){
     vars %>% filter(visit_for_var == i)
     var_table[i] = var_table[,"inputId"] %in% paste((vars %>% filter(visit_for_var == i))[,"visit_for_var"], (vars %>% filter(visit_for_var == i))[,"inputId"], sep = "_") | var_table$widget_tab == "all"
