@@ -7,7 +7,6 @@
 #' @noRd
 #' @import dplyr
 #' @importFrom readr write_csv
-#' @importFrom utils read.csv
 #' @importFrom RMariaDB dbReadTable dbListTables dbRemoveTable
 make_widget_tables = function(pool, write_widget_tables = FALSE, remove_old_tables = FALSE) {
 
@@ -193,7 +192,6 @@ make_widget_tables = function(pool, write_widget_tables = FALSE, remove_old_tabl
 
 
   # Add required (i.e. required for technical reasons) variables
-  widgets_template = read.csv("widgets/widgets_template.csv")
   var_table = widgets_template %>% rbind(var_table)
   for(i in visits$visit_id_visits){
     vars %>% filter(visit_for_var == i)
