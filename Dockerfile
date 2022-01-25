@@ -26,4 +26,4 @@ RUN R -e 'remotes::install_local(upgrade="never")'
 EXPOSE 3838
 COPY . /lcarsc
 WORKDIR /lcarsc
-CMD  ["R", "-e", "shiny::runApp(host = '0.0.0.0', port = 3838)"]
+CMD  ["R", "-e", "lcarsc::runApp(host = '0.0.0.0', port = 3838)"]

@@ -2,7 +2,7 @@
 options(golem.app.prod = FALSE) # TRUE = production mode, FALSE = development mode
 
 # Comment this if you don't want the app to be served on a random port
-options(shiny.port = httpuv::randomPort())
+options(shiny.port = 3838)
 
 # Detach all loaded packages and clean your environment
 golem::detach_all_attached()
@@ -12,7 +12,7 @@ golem::detach_all_attached()
 golem::document_and_reload()
 
 # # Run the application using mariaDB
-run_app(dbuser = "user", dbpassword = "user", dbhost = "dbeditor", dbname = "mydbeditor")
+run_app(dbuser = "user", dbpassword = "user", dbhost = "dbeditor", dbname = "mydbeditor", options = list(shiny.port = 3838))
 
 # # Run the application using a local SQL database
 # run_app(database_connection = pool::dbPool(RSQLite::SQLite(),
