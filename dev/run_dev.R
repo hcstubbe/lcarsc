@@ -12,7 +12,7 @@ golem::detach_all_attached()
 golem::document_and_reload()
 
 # # Run the application using mariaDB
-run_app(dbuser = "user", dbpassword = "user", dbhost = "db", dbname = "mydb")
+run_app(dbuser = "user", dbpassword = "user", dbhost = "dbeditor", dbname = "mydbeditor")
 
 # # Run the application using a local SQL database
 # run_app(database_connection = pool::dbPool(RSQLite::SQLite(),
