@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: user
       
   lcarsc:
-    build: ./
+    image: lcarsc
     restart: always
     ports:
       - 3838:3838

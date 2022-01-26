@@ -9,6 +9,7 @@ run_app(
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
+  database_driver = RMariaDB::MariaDB(),
   dbuser,
   dbpassword,
   dbhost,
