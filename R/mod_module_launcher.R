@@ -9,6 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_module_launcher_ui <- function(id){
   ns = NS(id)
+  lang_sel = app_data_internal$lang_sel
   tagList(
     div(
       dashboardPage(
@@ -99,6 +100,7 @@ mod_module_launcher_ui <- function(id){
 mod_module_launcher_server <- function(id){
   moduleServer(id, function(input, output, session) {
 
+	lang_sel = app_data_internal$lang_sel
 
 
     # Launch module servers ----
