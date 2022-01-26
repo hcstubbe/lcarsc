@@ -20,11 +20,11 @@ RUN Rscript -e 'remotes::install_version("pool",upgrade="never", version = "0.1.
 RUN Rscript -e 'remotes::install_version("dplyr",upgrade="never", version = "1.0.7")'
 RUN Rscript -e 'remotes::install_version("DT",upgrade="never", version = "0.20")'
 RUN mkdir /build_zone
-ADD . /build_zone
+COPY . /build_zone
 WORKDIR /build_zone
 RUN R -e 'remotes::install_local(upgrade="never")'
 EXPOSE 3838
-RUN rm -f /build_zone
+RUN rm -r /build_zone
 # In in testing/editor-mode
 # COPY . /lcarsc
 # WORKDIR /lcarsc
