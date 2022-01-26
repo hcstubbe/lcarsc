@@ -51,7 +51,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
 
 
     # Select non-inclusion visits
-    ordered_visits = app_data_internal$ordered_visits %>% filter(visit_id != "vi")
+    ordered_visits = ordered_visits %>% filter(visit_id != "vi")
 
 
 
@@ -67,10 +67,10 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
                              show_vals = c(PID = 'pid', Date = 'date_modified', Visit = 'visit_id', Submitted = 'submitted_row'),
                              simple = FALSE,
                              modal_width = '.modal-dialog{ width:95%}',
-                             widgets_table_global = app_data_internal$widgets_table_global[app_data_internal$widgets_table_global[,i],],
-                             all_tabs = app_data_internal$all_tabs,
+                             widgets_table_global = widgets_table_global[widgets_table_global[,i],],
+                             all_tabs = all_tabs,
                              order.by = NULL,
-                             all_visits = app_data_internal$all_visits,
+                             all_visits = all_visits,
                              visit_id = '", i, "')", sep = "")
       eval(parse(text = cmd_4_eval))
     }
@@ -85,8 +85,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
                            tbl_id = "diagnoses_table",
                            rv_in = rv_downstream_diag,
                            show_vals = c(Diagnosis = "diag_name", Start = "diag_start", End = "diag_end", Submitted = "submitted_row"),
-                           widgets_table_global = app_data_internal$widgets_table_global,
-                           all_visits = app_data_internal$all_visits,
+                           widgets_table_global = widgets_table_global,
+                           all_visits = all_visits,
                            visit_id = "diagnosis",
                            order.by = NULL
     )
@@ -98,8 +98,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
                            tbl_id = "medication_table",
                            rv_in = rv_downstream_med,
                            show_vals = c(Substance = "med_substance", Dosis = "med_dosing", 'Application route' = "med_route", Start = "med_start", End = "med_end", Submitted = "submitted_row"),
-                           widgets_table_global = app_data_internal$widgets_table_global,
-                           all_visits = app_data_internal$all_visits,
+                           widgets_table_global = widgets_table_global,
+                           all_visits = all_visits,
                            visit_id = "medication",
                            order.by = NULL)
 
@@ -127,8 +127,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
     })
 
     # Render menu when participant is selected
-	visit_choices = app_data_internal$visit_choices
-    names(visit_choices) = app_data_internal$all_visits$visit_title[!app_data_internal$all_visits$inclusion_other_visit]
+    names(visit_choices) = all_visits$visit_title[!all_visits$inclusion_other_visit]
     output$visit_submission_panel = renderUI({
 
       if(length(input$responses_user_rows_selected) == 1){

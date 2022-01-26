@@ -64,9 +64,9 @@ mod_module_new_pat_server <- function(id, visit_id, data_table) {
                            show_vals = c(PID = 'pid', Date = 'date_modified', Visit = 'visit_id', Submitted = 'submitted_row'),
                            simple = FALSE,
                            modal_width = '.modal-dialog{ width:95%}',
-                           widgets_table_global = app_data_internal$widgets_table_global[app_data_internal$widgets_table_global[,"vi"],],
-                           all_tabs = app_data_internal$all_tabs,
-                           all_visits = app_data_internal$all_visits,
+                           widgets_table_global = widgets_table_global[widgets_table_global[,"vi"],],
+                           all_tabs = all_tabs,
+                           all_visits = all_visits,
                            visit_id = "vi",
                            create_new_pid = TRUE,
                            order.by = NULL)
