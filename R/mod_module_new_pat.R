@@ -36,6 +36,11 @@ mod_module_new_pat_ui <- function(id) {
 mod_module_new_pat_server <- function(id, visit_id, data_table) {
   moduleServer(id, function(input, output, session) {
 
+	# Load reaquired data
+	widgets_table_global = app_data_internal$widgets_table_global
+	all_visits = app_data_internal$all_visits
+	all_tabs = app_data_internal$all_tabs
+	
     # Upload participant file ----
     observe({
       if (is.null(input$pat_upload)) return()
