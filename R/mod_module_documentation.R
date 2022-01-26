@@ -37,8 +37,13 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
     # Requirements ----
     ns = session$ns
     pool = get_golem_options("pool")
-    lang_sel = app_data_internal$lang_sel
-    rv_downstream = reactiveValues()
+    
+	lang_sel = app_data_internal$lang_sel
+	widgets_table_global = app_data_internal$widgets_table_global
+	all_visits = app_data_internal$all_visits
+	all_tabs = app_data_internal$all_tabs
+    
+	rv_downstream = reactiveValues()
 
     # Auxiliary functions ----
 
