@@ -26,4 +26,7 @@ RUN R -e 'remotes::install_local(upgrade="never")'
 EXPOSE 3838
 COPY . /lcarsc
 WORKDIR /lcarsc
-CMD  ["R", "-e", "lcarsc::runApp(host = '0.0.0.0', port = 3838)"]
+# In in testing/editor-mode
+# CMD  ["R", "-e", "lcarsc::runApp(host = '0.0.0.0', port = 3838)"]
+# In production
+CMD  ["R", "-e", "lcarsc::run_app(dbuser = 'user', dbpassword = 'user', dbhost = 'dbeditor', dbname = 'mydbeditor', options = list(port = 3838))"]
