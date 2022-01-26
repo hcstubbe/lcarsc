@@ -59,7 +59,7 @@ mod_module_editor_launcher_server <- function(id) {
     ns = session$ns
     pool = get_golem_options("pool")
 	all_visits_editor = app_data_internal$all_visits_editor
-	widgets_table_global_widgets = app_data_internalwidgets_table_global_widgets
+	widgets_table_global_widgets = app_data_internal$widgets_table_global_widgets
 	
     rv_downstream = reactiveValues()
 
