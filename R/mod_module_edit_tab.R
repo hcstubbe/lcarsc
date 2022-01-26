@@ -60,6 +60,7 @@ mod_module_edit_tab_server<- function(id,
     pool = get_golem_options("pool")
 	
 	widgets_table_global_widgets = app_data_internal$widgets_table_global_widgets
+	
 
     rv_uuid = reactiveValues()
 
