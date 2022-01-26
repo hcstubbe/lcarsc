@@ -43,6 +43,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
 	all_visits = app_data_internal$all_visits
 	all_tabs = app_data_internal$all_tabs
     ordered_visits = app_data_internal$ordered_visits
+	visit_choices = app_data_internal$visit_choices
 	
 	rv_downstream = reactiveValues()
 
