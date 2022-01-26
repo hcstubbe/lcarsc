@@ -42,8 +42,9 @@ mod_module_documentation_server <- function(id, data_table1, data_table2) {
 	widgets_table_global = app_data_internal$widgets_table_global
 	all_visits = app_data_internal$all_visits
 	all_tabs = app_data_internal$all_tabs
-    
-	rv_downstream = reactiveValues()
+    ordered_visits = ordered_visits
+	
+	rv_downstream = app_data_internal$reactiveValues()
 
     # Auxiliary functions ----
 
