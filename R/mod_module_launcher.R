@@ -9,7 +9,6 @@
 #' @importFrom shiny NS tagList
 mod_module_launcher_ui <- function(id){
   ns = NS(id)
-  lang_sel = app_data_internal$lang_sel
   tagList(
     div(
       dashboardPage(

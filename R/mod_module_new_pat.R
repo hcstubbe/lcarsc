@@ -9,7 +9,6 @@
 #' @importFrom shiny NS tagList
 mod_module_new_pat_ui <- function(id) {
   ns = NS(id)
-  lang_sel = app_data_internal$lang_sel
   tagList(
     fluidRow(
       column(10,
