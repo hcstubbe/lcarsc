@@ -30,7 +30,7 @@ mod_module_data_center_server <- function(id){
     pool = get_golem_options("pool")
 
     output$responses_table <- DT::renderDataTable({
-      table = dbReadTable(pool, "app_tbl")[,-c(1,2, 3:7)]
+      table = dbReadTable(pool, "app_tbl")[,-c(1,2, 4:7)]
       table <- datatable(table,
                          rownames = FALSE,
                          options = list(searching = TRUE, lengthChange = FALSE, pageLength = 10, scrollX = TRUE),
