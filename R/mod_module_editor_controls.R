@@ -66,7 +66,9 @@ mod_module_editor_controls_server <- function(id) {
     })
     # Update widgets in data
     observeEvent(input$update_widgets_button_confirm, {
-      make_widget_tables(pool = pool, write_widget_tables = TRUE, remove_old_tables = TRUE)
+      app_data_internal <<- (make_widget_tables(pool = pool, ## Danger zone (<<-) !!!
+                                                write_widget_tables = TRUE,
+                                                remove_old_tables = TRUE))$app_data_internal
       removeModal()
       showNotification("Widgets updated", type = "message")
       session$reload()
@@ -83,10 +85,14 @@ mod_module_editor_controls_server <- function(id) {
         write_csv(tab_x, paste0("database_export/", x, ".csv"))
       })
 
+      # Create widget files
+
+
       # Zip widget files and data base export
       dir.create(file.path("zip/database_export"), showWarnings = FALSE)
+      make_widget_tables(pool = pool, write_widget_tables = TRUE, remove_old_tables = TRUE)
       zip(zipfile = 'zip/database_export', files = c('widgets/widgets.csv', "widgets/visits.csv", "widgets/panel_tabs.csv"))
-      zip(zipfile = 'zip/database_export', files = c('database_export/editor_table_vars.csv', 'database_export/editor_table_visit.csv'))
+      zip(zipfile = 'zip/database_export', files = c('database_export/editor_table_vars.csv', 'database_export/editor_table_visit.csv', 'database_export/app_data_internal.RDS'))
 
       showNotification("Ready for download!", type = "message")
 
