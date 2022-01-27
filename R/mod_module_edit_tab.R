@@ -11,7 +11,7 @@
 #' @importFrom RMariaDB dbListTables dbAppendTable dbExecute dbCreateTable
 #' @importFrom golem get_golem_options
 #' @importFrom shinyvalidate InputValidator sv_required
-#' @importFrom DT dataTableOutput
+#' @importFrom DT dataTableOutput renderDataTable
 #' @importFrom uuid UUIDgenerate
 mod_module_edit_tab_ui <- function(id) {
   ns = NS(id)

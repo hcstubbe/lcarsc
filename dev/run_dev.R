@@ -12,7 +12,7 @@ rm(list=ls(all.names = TRUE))
 golem::document_and_reload()
 
 # # Run the application using mariaDB
-# run_app(dbuser = "user", dbpassword = "user", dbhost = "dbeditor", dbname = "mydbeditor", options = list(host = "0.0.0.0", shiny.port = 3838))
+run_app(dbuser = "user", dbpassword = "user", dbhost = "dbeditor", dbname = "mydbeditor", options = list(host = "0.0.0.0", shiny.port = 3838))
 
 # # Run the application using a local SQL database
-run_app(database_driver = RSQLite::SQLite(), dbuser = "user", dbpassword = "user", dbhost = "dbeditor", dbname = "mydb.sqlite3", options = list(host = "0.0.0.0", shiny.port = 3838))
+# run_app(database_driver = RSQLite::SQLite(), dbuser = "user", dbpassword = "user", dbhost = "dbeditor", dbname = "mydb.sqlite3", options = list(host = "0.0.0.0", shiny.port = 3838))
