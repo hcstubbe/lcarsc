@@ -215,7 +215,9 @@ make_widget_tables = function(pool, write_widget_tables = FALSE, remove_old_tabl
   widget_tables = list("visits" = visits, "panel_tabs" = panel_tabs, "widgets" = var_table)
 
   if(write_widget_tables == TRUE){
+    dir.create(file.path("widgets"), showWarnings = T)
     lapply(names(widget_tables), function(x) write_csv(widget_tables[[x]], paste0("widgets/", x, ".csv")))
+    app_data_internal <<- create_app_data_internal(lang_sel = app_data_internal$lang_sel)
   }
 
   widget_tables

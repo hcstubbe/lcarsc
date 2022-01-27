@@ -67,7 +67,6 @@ mod_module_editor_controls_server <- function(id) {
     # Update widgets in data
     observeEvent(input$update_widgets_button_confirm, {
       make_widget_tables(pool = pool, write_widget_tables = TRUE, remove_old_tables = TRUE)
-      source("data-raw/widgets.R", echo=TRUE)
       removeModal()
       showNotification("Widgets updated", type = "message")
       session$reload()
@@ -78,12 +77,14 @@ mod_module_editor_controls_server <- function(id) {
     observeEvent(input$download_widgets_button, {
 
       # Export widget data from database to local folder
+      dir.create(file.path("database_export"), showWarnings = FALSE)
       lapply(c("editor_table_visit", "editor_table_vars"), function(x) {
         tab_x = dbReadTable(pool, x)
         write_csv(tab_x, paste0("database_export/", x, ".csv"))
       })
 
       # Zip widget files and data base export
+      dir.create(file.path("zip/database_export"), showWarnings = FALSE)
       zip(zipfile = 'zip/database_export', files = c('widgets/widgets.csv', "widgets/visits.csv", "widgets/panel_tabs.csv"))
       zip(zipfile = 'zip/database_export', files = c('database_export/editor_table_vars.csv', 'database_export/editor_table_visit.csv'))
 
