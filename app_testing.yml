@@ -25,8 +25,17 @@ services:
       ADD: shiny
     ports:
       - 8787:8787
+      
+  lcarsm:
+    image: hstubbe/lcarsm:latest
+    restart: always
+    ports:
+      - 3939:3838
         
 networks:
     backend:
         # use a custom driver, with no options
         driver: bridge
+        
+        
+        
