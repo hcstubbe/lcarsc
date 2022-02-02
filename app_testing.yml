@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: user
       
   lcarsc:
-    image: lcarsc
+    image: hstubbe/recrf:editor
     restart: always
     ports:
       - 3838:3838
