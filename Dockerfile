@@ -19,7 +19,7 @@ RUN Rscript -e 'remotes::install_version("RMariaDB",upgrade="never", version = "
 RUN Rscript -e 'remotes::install_version("pool",upgrade="never", version = "0.1.6")'
 RUN Rscript -e 'remotes::install_version("dplyr",upgrade="never", version = "1.0.7")'
 RUN Rscript -e 'remotes::install_version("DT",upgrade="never", version = "0.20")'
-RUN Rscript -e 'remotes::install_version("fmsb",upgrade="never", version = "0.20")'
+RUN Rscript -e 'remotes::install_version("fmsb",upgrade="never")'
 RUN mkdir /build_zone
 COPY . /build_zone
 WORKDIR /build_zone
