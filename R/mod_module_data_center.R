@@ -14,12 +14,18 @@
 #'
 mod_module_data_center_ui <- function(id){
   ns <- NS(id)
+  pool = get_golem_options("pool")
   tagList(
-    fluidRow(width="100%",
-             plotOutput(ns("user_radarchart"))
+    shinydashboard::box(title = "Summary", status = "primary", collapsible = TRUE, collapsed = FALSE, width = 12,solidHeader = TRUE,
+                        column(2,
+                               selectInput(ns("pid_radar_selector"), "Select PID", choices = c("All", (dbReadTable(pool, "app_tbl"))$pid))),
+                        column(5, plotOutput(ns("user_radarchart_severity"))),
+                        column(5, plotOutput(ns("user_radarchart_promis")))
+
+
     ),
-    fluidRow(width="100%",
-             DT::dataTableOutput(ns("responses_table"), width = "100%")
+    shinydashboard::box(title = "Raw data", status = "primary", collapsible = TRUE, collapsed = TRUE, width = 12,solidHeader = TRUE,
+                        DT::dataTableOutput(ns("responses_table"), width = "100%")
     )
   )
 }
@@ -35,29 +41,63 @@ mod_module_data_center_server <- function(id){
 
 
 
-    ## Render radar chart
-    output$user_radarchart <- renderPlot({
+    ## Render radar charts
+
+    #### Symptom severity
+    output$user_radarchart_severity <- renderPlot({
       input_radar_df = dbReadTable(pool, "app_tbl")[,-c(1,2, 4:8)]
 
       rownames(input_radar_df) = input_radar_df$pid
+      if(input$pid_radar_selector != "All"){
+        input_radar_df = input_radar_df %>% filter(pid == input$pid_radar_selector)
+      }
       normal_vals = rbind(Min. = rep(0, ncol(input_radar_df)), Max. = rep(3, ncol(input_radar_df)))
       colnames(normal_vals) = colnames(input_radar_df)
 
       radar_df = normal_vals %>%
         rbind(input_radar_df) %>%
         select(ends_with("severity")) %>%
-        rbind(min = rep(0, ncol(.))) %>%
         mutate(across(1:ncol(.), ~ ifelse(is.na(.x), 0, .x) )) %>%
         mutate(across(1:ncol(.), ~ gsub("[^[:digit:]]","", .x) )) %>%
         mutate(across(1:ncol(.), ~ as.integer(.x) ))
+      colnames(radar_df) = gsub("v0_|_severity","",colnames(radar_df))
 
-      radarchart(radar_df,
-                 cglty = 1,       # Grid line type
-                 cglcol = "gray", # Grid line color
-                 pcol = 2:4,      # Color for each line
-                 plwd = 2,        # Width for each line
-                 plty = 1)        # Line type for each line
+      fmsb::radarchart(radar_df,
+                       title = "Symptom severity",
+                       cglty = 1,       # Grid line type
+                       cglcol = "gray", # Grid line color
+                       pcol = 2:4,      # Color for each line
+                       plwd = 2,        # Width for each line
+                       plty = 1)        # Line type for each line
+    })
 
+
+    #### PROMIS
+    output$user_radarchart_promis <- renderPlot({
+      input_radar_df = dbReadTable(pool, "app_tbl")[,-c(1,2, 4:8)]
+
+      rownames(input_radar_df) = input_radar_df$pid
+      if(input$pid_radar_selector != "All"){
+        input_radar_df = input_radar_df %>% filter(pid == input$pid_radar_selector)
+      }
+      normal_vals = rbind(Min. = rep(0, ncol(input_radar_df)), Max. = rep(5, ncol(input_radar_df)))
+      colnames(normal_vals) = colnames(input_radar_df)
+
+      radar_df = normal_vals %>%
+        rbind(input_radar_df) %>%
+        select(contains("promis"))%>%
+        mutate(across(1:ncol(.), ~ ifelse(is.na(.x), 0, .x) )) %>%
+        mutate(across(1:ncol(.), ~ gsub("[^[:digit:]]","", .x) )) %>%
+        mutate(across(1:ncol(.), ~ as.integer(.x) ))
+      colnames(radar_df) = gsub("v0_promis_","",colnames(radar_df))
+
+      fmsb::radarchart(radar_df,
+                       title = "PROMIS",
+                       cglty = 1,       # Grid line type
+                       cglcol = "gray", # Grid line color
+                       pcol = 2:4,      # Color for each line
+                       plwd = 2,        # Width for each line
+                       plty = 1)        # Line type for each line
     })
 
 
