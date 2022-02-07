@@ -15,4 +15,4 @@ golem::document_and_reload()
 lcarsc::run_app(dbuser = 'user', dbpassword = 'user', dbhost = 'dbeditor', dbname = 'mydbeditor', options = list(host = '0.0.0.0', port = 3838))
 
 # # Run the application using a local SQL database
-# run_app(database_driver = RSQLite::SQLite(), dbuser = "user", dbpassword = "user", dbhost = "dbeditor", dbname = "mydb.sqlite3", options = list(host = "0.0.0.0", shiny.port = 3838))
+# lcarsc::run_app(database_driver = RSQLite::SQLite(), dbuser = 'user', dbpassword = 'user', dbhost = 'dbeditor', dbname = 'mydb.sqlite3', options = list(host = '0.0.0.0', port = 3838))
