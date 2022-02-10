@@ -20,8 +20,9 @@ mod_module_launcher_ui <- function(id){
             menuItem(lang_sel$button_newpat, tabName = "new_pat"),
             menuItem(lang_sel$main_menu_visit, tabName = "pat_list"),
             menuItem(lang_sel$module_launcher_menu_contact, tabName = "contact"),
-            menuItem("Editor", tabName = "editor"),
-            menuItem("Data center", tabName = "data_center")
+            menuItem("Editor", tabName = "editor")
+            #,
+            # menuItem("Data center", tabName = "data_center")
           )
         ),
         dashboardBody(
@@ -85,10 +86,12 @@ mod_module_launcher_ui <- function(id){
                     )
             ),
             tabItem("editor",
-                    mod_module_editor_launcher_ui(ns("mod_module_editor"))),
+                    mod_module_editor_launcher_ui(ns("mod_module_editor")))
 
-            tabItem("data_center",
-                    mod_module_data_center_ui(ns("module_data_center_1")))
+            # ,
+            #
+            # tabItem("data_center",
+            #         mod_module_data_center_ui(ns("module_data_center_1")))
 
 
           )
@@ -122,9 +125,9 @@ mod_module_launcher_server <- function(id){
     # Module editor
     mod_module_editor_launcher_server(id = "mod_module_editor")
 
-
-    # Module data center
-    mod_module_data_center_server("module_data_center_1")
+#
+#     # Module data center
+#     mod_module_data_center_server("module_data_center_1")
 
 
   })
