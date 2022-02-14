@@ -1,4 +1,4 @@
-#' module_preview UI Function
+#' module_preview_mobile UI Function
 #'
 #' @description A shiny Module.
 #'
@@ -7,17 +7,17 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_module_preview_ui <- function(id){
+mod_module_preview_mobile_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h4("Preview")
+    h4("Preview mobile")
   )
 }
 
-#' module_preview Server Functions
+#' module_preview_mobile Server Functions
 #'
 #' @noRd
-mod_module_preview_server <- function(id){
+mod_module_preview_mobile_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -25,7 +25,7 @@ mod_module_preview_server <- function(id){
 }
 
 ## To be copied in the UI
-# mod_module_preview_ui("module_preview_1")
+# mod_module_preview_mobile_ui("module_preview_mobile_1")
 
 ## To be copied in the server
-# mod_module_preview_server("module_preview_1")
+# mod_module_preview_mobile_server("module_preview_mobile_1")

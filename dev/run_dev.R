@@ -21,7 +21,7 @@ golem::document_and_reload()
 #                                port = 3838))
 
 # Run the application using a local SQL database
-lcarsc::run_app(production_mode = "production", # if in production switch to "production", if in editing "editor"
+lcarsc::run_app(production_mode = "editor", # if in production switch to "production", if in editing "editor"
                 database_driver = RSQLite::SQLite(),
                 dbuser = 'user',
                 dbpassword = 'user',

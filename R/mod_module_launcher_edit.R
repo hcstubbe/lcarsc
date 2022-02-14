@@ -18,9 +18,10 @@ mod_module_launcher_edit_ui <- function(id){
           sidebarMenu(
             menuItem(lang_sel$tab_start, tabName = "start"),
             menuItem(lang_sel$module_launcher_menu_contact, tabName = "contact"),
-            menuItem("Editor", tabName = "editor")
-            ,
-            menuItem("Preview", tabName = "preview")
+            menuItem("Editor", tabName = "editor"),
+            menuItem("Preview", tabName = "preview"),
+            menuItem("Preview mobile", tabName = "preview_mobile")
+
           )
         ),
         dashboardBody(
@@ -79,6 +80,10 @@ mod_module_launcher_edit_ui <- function(id){
 
             tabItem("preview",
                     mod_module_preview_ui(ns("module_preview_1")))
+            ,
+
+            tabItem("preview_mobile",
+                    mod_module_preview_mobile_ui(ns("module_preview_mobile_1")))
 
 
           )
@@ -102,9 +107,11 @@ mod_module_launcher_edit_server <- function(id){
     # Module editor
     mod_module_editor_launcher_server(id = "mod_module_editor")
 
-#
-#     # Module data center
-#     mod_module_data_center_server("module_data_center_1")
+  	# Module preview
+	  mod_module_preview_server(id = "mod_module_preview_1")
+
+  	# Module preview mobile
+  	mod_module_preview_mobile_server(id = "mod_module_preview_mobile_1")
 
 
   })
