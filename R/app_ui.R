@@ -3,13 +3,22 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @importFrom golem get_golem_options
 #' @noRd
 app_ui <- function(request) {
+
+  production_mode = get_golem_options("production_mode")
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    mod_module_launcher_ui("mod_module_launcher_1")
+    if(production_mode == "production"){
+      mod_module_launcher_ui("mod_module_launcher_1")
+    }else if(production_mode == "editor"){
+      mod_module_launcher_edit_ui("mod_module_launcher_edit_1")
+    }
+
   )
 }
 

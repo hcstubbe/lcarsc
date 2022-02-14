@@ -12,7 +12,8 @@ rm(list=ls(all.names = TRUE))
 golem::document_and_reload()
 
 # # Run the application using mariaDB
-# lcarsc::run_app(dbuser = 'user',
+# lcarsc::run_app(production_mode = "editor", # if in production switch to "production", if in editing "editor"
+#                 dbuser = 'user',
 #                 dbpassword = 'user',
 #                 dbhost = 'dbeditor',
 #                 dbname = 'mydbeditor',
@@ -20,7 +21,8 @@ golem::document_and_reload()
 #                                port = 3838))
 
 # Run the application using a local SQL database
-lcarsc::run_app(database_driver = RSQLite::SQLite(),
+lcarsc::run_app(production_mode = "production", # if in production switch to "production", if in editing "editor"
+                database_driver = RSQLite::SQLite(),
                 dbuser = 'user',
                 dbpassword = 'user',
                 dbhost = 'dbeditor',

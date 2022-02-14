@@ -7,7 +7,7 @@
 #' @noRd
 #' @import dplyr
 #' @importFrom shiny NS tagList
-mod_module_launcher_ui <- function(id){
+mod_module_launcher_edit_ui <- function(id){
   ns = NS(id)
   lang_sel = app_data_internal$lang_sel
   tagList(
@@ -17,12 +17,10 @@ mod_module_launcher_ui <- function(id){
         dashboardSidebar(
           sidebarMenu(
             menuItem(lang_sel$tab_start, tabName = "start"),
-            menuItem(lang_sel$button_newpat, tabName = "new_pat"),
-            menuItem(lang_sel$main_menu_visit, tabName = "pat_list"),
-            menuItem(lang_sel$module_launcher_menu_contact, tabName = "contact")
-            # menuItem("Editor", tabName = "editor")
-            #,
-            # menuItem("Data center", tabName = "data_center")
+            menuItem(lang_sel$module_launcher_menu_contact, tabName = "contact"),
+            menuItem("Editor", tabName = "editor")
+            ,
+            menuItem("Preview", tabName = "preview")
           )
         ),
         dashboardBody(
@@ -46,18 +44,6 @@ mod_module_launcher_ui <- function(id){
                                         HTML("E-mail: <a href='mailto:hans_christian.stubbe@med.uni-muenchen.de' target='_top'>hans_christian.stubbe@med.uni-muenchen.de</a>")
                     )
             ),
-
-            tabItem("new_pat",
-                    mod_module_new_pat_ui(ns("mod_module_new_pat"))
-
-            ),
-
-            tabItem("pat_list",
-                    mod_module_documentation_ui(ns("mod_module_documentation"))
-
-
-            ),
-
 
             # Dashboard item providing Contact data
             tabItem("contact",
@@ -85,14 +71,14 @@ mod_module_launcher_ui <- function(id){
                                         )
                     )
             )
-            # ,
-            # tabItem("editor",
-            #         mod_module_editor_launcher_ui(ns("mod_module_editor")))
+            ,
+            tabItem("editor",
+                    mod_module_editor_launcher_ui(ns("mod_module_editor")))
 
-            # ,
-            #
-            # tabItem("data_center",
-            #         mod_module_data_center_ui(ns("module_data_center_1")))
+            ,
+
+            tabItem("preview",
+                    mod_module_preview_ui(ns("module_preview_1")))
 
 
           )
@@ -105,7 +91,7 @@ mod_module_launcher_ui <- function(id){
 #' module_launcher Server Functions
 #'
 #' @noRd
-mod_module_launcher_server <- function(id){
+mod_module_launcher_edit_server <- function(id){
   moduleServer(id, function(input, output, session) {
 
 	lang_sel = app_data_internal$lang_sel
@@ -113,18 +99,8 @@ mod_module_launcher_server <- function(id){
 
     # Launch module servers ----
 
-    # Module in Tab 1
-    mod_module_new_pat_server(id = "mod_module_new_pat",
-                          visit_id = "vi",
-                          data_table = "inclusion_dataset")
-
-    # Module in Tab 2
-    mod_module_documentation_server(id = "mod_module_documentation",
-                                data_table1 = "inclusion_dataset",
-                                data_table2 = "scientific_dataset")
-#
-#     # Module editor
-#     mod_module_editor_launcher_server(id = "mod_module_editor")
+    # Module editor
+    mod_module_editor_launcher_server(id = "mod_module_editor")
 
 #
 #     # Module data center

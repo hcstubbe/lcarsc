@@ -38,6 +38,7 @@ golem::add_module(name = "module_edit_tab", with_test = TRUE) # Name of the modu
 golem::add_module(name = "module_editor_controls", with_test = TRUE) # Name of the module
 golem::add_module(name = "module_editor_launcher", with_test = TRUE) # Name of the module
 golem::add_module(name = "module_data_center", with_test = TRUE) # Name of the module
+golem::add_module(name = "module_preview", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
