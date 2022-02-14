@@ -26,7 +26,7 @@ COPY . /build_files
 WORKDIR /build_files
 RUN R -e 'remotes::install_local(upgrade="never", force = TRUE)'
 
-RUN rm -r /build_zone
+RUN rm -r /build_files
 
 
 CMD  ["R", "-e", "lcarsc::run_app(dbuser = 'user', dbpassword = 'user', dbhost = 'dbeditor', dbname = 'mydbeditor', options = list(host = '0.0.0.0', port = 3838))"]
