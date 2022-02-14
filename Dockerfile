@@ -20,15 +20,13 @@ RUN Rscript -e 'remotes::install_version("pool",upgrade="never", version = "0.1.
 RUN Rscript -e 'remotes::install_version("dplyr",upgrade="never", version = "1.0.7")'
 RUN Rscript -e 'remotes::install_version("DT",upgrade="never", version = "0.20")'
 RUN Rscript -e 'remotes::install_version("fmsb",upgrade="never")'
-RUN mkdir /build_zone
-COPY . /build_zone
-WORKDIR /build_zone
-RUN R -e 'remotes::install_local(upgrade="never")'
+
 EXPOSE 3838
+COPY . /build_files
+WORKDIR /build_files
+RUN R -e 'remotes::install_local(upgrade="never", force = TRUE)'
+
 RUN rm -r /build_zone
-# In in testing/editor-mode
-# COPY . /lcarsc
-# WORKDIR /lcarsc
-# CMD  ["R", "-e", "lcarsc::runApp(host = '0.0.0.0', port = 3838)"]
-# In production
+
+
 CMD  ["R", "-e", "lcarsc::run_app(dbuser = 'user', dbpassword = 'user', dbhost = 'dbeditor', dbname = 'mydbeditor', options = list(host = '0.0.0.0', port = 3838))"]
