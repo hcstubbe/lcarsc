@@ -6,11 +6,22 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @importFrom shiny NS tagList div h4
+#' @importFrom golem get_golem_options
+#' @importFrom RSQLite SQLite
+#' @importFrom lcarsM run_app
+#'
 mod_module_preview_mobile_ui <- function(id){
   ns <- NS(id)
+  app_data_internal = golem::get_golem_options("app_data_internal")
   tagList(
-    h4("Preview mobile")
+    create_app_ui(lcarsM::run_app(database_driver = RSQLite::SQLite(),
+                                  dbuser = 'user',
+                                  dbpassword = 'user',
+                                  dbhost = 'dbeditor',
+                                  dbname = 'mydb.sqlite3',
+                                  options = list(host = '0.0.0.0', port = 3838),
+                                  input_widget_data = app_data_internal$widgets_table_global[-c(7:40),]), landscape = TRUE, device = "galaxyNote8", color = NULL)
   )
 }
 
