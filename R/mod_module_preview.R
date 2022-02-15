@@ -7,10 +7,19 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @importFrom pool dbPool
+#' @importFrom RSQLite SQLite
 mod_module_preview_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h4("Preview")
+    tabsetPanel(type = "tabs",
+                tabPanel("Inclusion", br(),
+                         mod_module_new_pat_ui(ns("mod_module_new_pat_test"))
+                         ),
+                tabPanel("Documentation", br(),
+                         mod_module_documentation_ui(ns("mod_module_documentation_test"))
+                         )
+    )
   )
 }
 
@@ -19,7 +28,22 @@ mod_module_preview_ui <- function(id){
 #' @noRd
 mod_module_preview_server <- function(id){
   moduleServer( id, function(input, output, session){
-    ns <- session$ns
+
+
+    lang_sel = app_data_internal$lang_sel
+
+
+    # Launch module servers ----
+
+    # Module in Tab 1
+    mod_module_new_pat_server(id = "mod_module_new_pat_test",
+                              visit_id = "vi",
+                              data_table = "inclusion_dataset")
+
+    # Module in Tab 2
+    mod_module_documentation_server(id = "mod_module_documentation_test",
+                                    data_table1 = "inclusion_dataset",
+                                    data_table2 = "scientific_dataset")
 
   })
 }

@@ -108,10 +108,10 @@ mod_module_launcher_edit_server <- function(id){
     mod_module_editor_launcher_server(id = "mod_module_editor")
 
   	# Module preview
-	  mod_module_preview_server(id = "mod_module_preview_1")
+	  mod_module_preview_server(id = "module_preview_1")
 
   	# Module preview mobile
-  	mod_module_preview_mobile_server(id = "mod_module_preview_mobile_1")
+  	mod_module_preview_mobile_server(id = "module_preview_mobile_1")
 
 
   })

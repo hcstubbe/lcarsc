@@ -28,3 +28,12 @@ lcarsc::run_app(production_mode = "editor", # if in production switch to "produc
                 dbhost = 'dbeditor',
                 dbname = 'mydb.sqlite3',
                 options = list(host = '0.0.0.0', port = 3838))
+
+
+# pool = pool::dbPool(
+#   drv = RSQLite::SQLite(),
+#   dbname = "mydb.sqlite3",
+#   host = "dbeditor",
+#   username = "user",
+#   password = "user"
+# )
