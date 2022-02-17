@@ -21,6 +21,7 @@ golem::document_and_reload()
 #                                port = 3838))
 
 # Run the application using a local SQL database
+# devtools::install_local("/home/rstudio/lcarsM", force = T)
 lcarsc::run_app(production_mode = "editor", # if in production switch to "production", if in editing "editor"
                 database_driver = RSQLite::SQLite(),
                 dbuser = 'user',
@@ -28,7 +29,6 @@ lcarsc::run_app(production_mode = "editor", # if in production switch to "produc
                 dbhost = 'dbeditor',
                 dbname = 'mydb.sqlite3',
                 options = list(host = '0.0.0.0', port = 3838))
-
 
 # pool = pool::dbPool(
 #   drv = RSQLite::SQLite(),
