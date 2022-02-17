@@ -31,20 +31,20 @@ mod_module_documentation_ui  <- function(id) {
 #' module_documentation Server Functions
 #'
 #' @noRd
-mod_module_documentation_server <- function(id, data_table1, data_table2) {
+mod_module_documentation_server <- function(id, data_table1, data_table2, app_data_internal_submodule = app_data_internal) {
   moduleServer(id, function(input, output, session) {
 
     # Requirements ----
     ns = session$ns
     pool = get_golem_options("pool")
-    
-	lang_sel = app_data_internal$lang_sel
-	widgets_table_global = app_data_internal$widgets_table_global
-	all_visits = app_data_internal$all_visits
-	all_tabs = app_data_internal$all_tabs
-    ordered_visits = app_data_internal$ordered_visits
-	visit_choices = app_data_internal$visit_choices
-	
+
+	lang_sel = app_data_internal_submodule$lang_sel
+	widgets_table_global = app_data_internal_submodule$widgets_table_global
+	all_visits = app_data_internal_submodule$all_visits
+	all_tabs = app_data_internal_submodule$all_tabs
+    ordered_visits = app_data_internal_submodule$ordered_visits
+	visit_choices = app_data_internal_submodule$visit_choices
+
 	rv_downstream = reactiveValues()
 
     # Auxiliary functions ----

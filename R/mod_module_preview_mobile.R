@@ -13,16 +13,17 @@
 #'
 mod_module_preview_mobile_ui <- function(id){
   ns <- NS(id)
-  app_data_internal = golem::get_golem_options("app_data_internal")
+  widgetdata_input = read_widget_data(app_data_internal)$widgets_table_global
+  saveRDS(widgetdata_input, "widgetdata_input.RDS")
   tagList(
     create_app_ui(lcarsM::run_app(production_mode = "editor",
                                   database_driver = RSQLite::SQLite(),
                                   dbuser = 'user',
                                   dbpassword = 'user',
                                   dbhost = 'dbeditor',
-                                  dbname = 'mydb.sqlite3',
+                                  dbname = 'mydb_werwer.sqlite3',
                                   options = list(host = '0.0.0.0', port = 3838),
-                                  input_widget_data = internal_data$widget_data$widgets), landscape = TRUE, device = "galaxyNote8", color = NULL)
+                                  input_widget_data = widgetdata_input), landscape = TRUE, device = "galaxyNote8", color = NULL)
   )
 }
 

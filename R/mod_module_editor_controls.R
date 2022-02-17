@@ -66,9 +66,11 @@ mod_module_editor_controls_server <- function(id) {
     })
     # Update widgets in data
     observeEvent(input$update_widgets_button_confirm, {
-      app_data_internal <<- (make_widget_tables(pool = pool, ## Danger zone (<<-) !!!
-                                                write_widget_tables = TRUE,
-                                                remove_old_tables = TRUE))$app_data_internal
+      dir.create("tmp_widgetdata", showWarnings = F)
+      saveRDS((make_widget_tables(pool = pool, ## Danger zone (<<-) !!!
+                                  write_widget_tables = TRUE,
+                                  remove_old_tables = TRUE))$app_data_internal,
+              "tmp_widgetdata/tmp_widgetdata.RDS")
       removeModal()
       showNotification("Widgets updated", type = "message")
       session$reload()

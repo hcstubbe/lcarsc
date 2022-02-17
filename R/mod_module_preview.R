@@ -38,12 +38,14 @@ mod_module_preview_server <- function(id){
     # Module in Tab 1
     mod_module_new_pat_server(id = "mod_module_new_pat_test",
                               visit_id = "vi",
-                              data_table = "inclusion_dataset")
+                              data_table = "inclusion_dataset",
+                              app_data_internal_submodule = read_widget_data(app_data_internal))
 
     # Module in Tab 2
     mod_module_documentation_server(id = "mod_module_documentation_test",
                                     data_table1 = "inclusion_dataset",
-                                    data_table2 = "scientific_dataset")
+                                    data_table2 = "scientific_dataset",
+                                    app_data_internal_submodule = read_widget_data(app_data_internal))
 
   })
 }

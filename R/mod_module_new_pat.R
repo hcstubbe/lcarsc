@@ -10,7 +10,7 @@
 mod_module_new_pat_ui <- function(id) {
   ns = NS(id)
   lang_sel = app_data_internal$lang_sel
-  
+
   tagList(
     fluidRow(
       column(10,
@@ -33,14 +33,14 @@ mod_module_new_pat_ui <- function(id) {
 #' module_new_pat Server Functions
 #'
 #' @noRd
-mod_module_new_pat_server <- function(id, visit_id, data_table) {
+mod_module_new_pat_server <- function(id, visit_id, data_table, app_data_internal_submodule = app_data_internal) {
   moduleServer(id, function(input, output, session) {
 
 	# Load reaquired data
-	widgets_table_global = app_data_internal$widgets_table_global
-	all_visits = app_data_internal$all_visits
-	all_tabs = app_data_internal$all_tabs
-	
+	widgets_table_global = app_data_internal_submodule$widgets_table_global
+	all_visits = app_data_internal_submodule$all_visits
+	all_tabs = app_data_internal_submodule$all_tabs
+
     # Upload participant file ----
     observe({
       if (is.null(input$pat_upload)) return()
