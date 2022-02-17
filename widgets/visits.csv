@@ -1,5 +1,5 @@
-order,visit_id,visit_title,General,choicesFromVar,inclusion_other_visit,inclusion_criteria
-0,vi,Inclusion,FALSE,NA,TRUE,TRUE
-0,v_mobile,mobile visit,TRUE,NA,FALSE,FALSE
-NA,diagnosis,Diagnosis,FALSE,NA,TRUE,FALSE
-NA,medication,Medication,FALSE,NA,TRUE,FALSE
+order,visit_id,visit_title,General,Signs...Symptoms,choicesFromVar,inclusion_other_visit,inclusion_criteria
+0,vi,Inclusion,FALSE,FALSE,NA,TRUE,TRUE
+100,v_mobile,Mobile visit,TRUE,TRUE,NA,FALSE,FALSE
+NA,diagnosis,Diagnosis,FALSE,FALSE,NA,TRUE,FALSE
+NA,medication,Medication,FALSE,FALSE,NA,TRUE,FALSE

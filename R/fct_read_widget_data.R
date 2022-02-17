@@ -15,3 +15,12 @@ read_widget_data = function(app_data_internal, production_mode, db_path = "tmp_w
   }
   return(app_data_internal)
 }
+
+read_widget_data_path = function(production_mode, widget_data_path = "tmp_widgetdata/tmp_widgetdata.RDS"){
+  if(production_mode != "editor"){
+    return(NULL)
+  }
+
+  return(widget_data_path)
+
+}

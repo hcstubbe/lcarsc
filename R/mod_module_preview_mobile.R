@@ -15,14 +15,7 @@ mod_module_preview_mobile_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    create_app_ui(lcarsM::run_app(production_mode = "editor",
-                                  database_driver = RSQLite::SQLite(),
-                                  dbuser = 'user',
-                                  dbpassword = 'user',
-                                  dbhost = 'dbeditor',
-                                  dbname = 'mydb_werwer.sqlite3',
-                                  options = list(host = '0.0.0.0', port = 3838)),
-                  landscape = TRUE)
+    uiOutput(ns("app_preview"))
   )
 
    # create_app_ui(h1("test"))
@@ -39,6 +32,17 @@ mod_module_preview_mobile_ui <- function(id){
 mod_module_preview_mobile_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    output$app_preview = renderUI({
+      create_app_ui(lcarsM::run_app(production_mode = "editor",
+                                    database_driver = RSQLite::SQLite(),
+                                    dbuser = 'user',
+                                    dbpassword = 'user',
+                                    dbhost = 'dbeditor',
+                                    dbname = 'mydb_werwer.sqlite3',
+                                    options = list(host = '0.0.0.0', port = 3838)),
+                    landscape = TRUE)
+    })
 
   })
 }

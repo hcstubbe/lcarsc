@@ -24,4 +24,8 @@ med_formulation,medication,TEXT,character,Formulation,0,NA,NA,NA,NA,NA,NA,NA,NA,
 med_route,medication,TEXT,character,Route of application,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,p.o.,s.c.,s.l.,i.v.,p.i.,NA,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE
 med_substance,medication,TEXT,character,Substance,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,TRUE,FALSE,NA,FALSE,FALSE,FALSE,TRUE
 med_comment,medication,TEXT,character,Comment,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,FALSE,TRUE
-v_mobile_test.mob,visit,TEXT,character,test mob,0,NA,NA,NA,,,NA,NA,NA,NA,textInput,General_None,,,,,,,,,,,,,,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE
+v_mobile_consent,visit,BOOLEAN,logical,I consent to this study,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,General_None,,,,,,,,,,,,,,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE
+v_mobile_NRS,visit,INTEGER,integer,NRS,0,NA,0,10,,0,0,10,1,1,numericInput,Signs...Symptoms_None,,,,,,,,,,,,,,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE
+v_mobile_pain,visit,TEXT,character,Pain,0,NA,NA,NA,,,NA,NA,NA,NA,radioButtons,General_None,No,Yes,No,,,,,,,,,,,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE
+v_mobile_Health,visit,INTEGER,integer,Health scale,0,NA,NA,NA,,NA,0,100,1,NA,numericInput,General_None,,,,,,,,,,,,,,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE
+v_mobile_Cough,visit,BOOLEAN,logical,Cough,0,NA,NA,NA,,FALSE,NA,NA,NA,NA,checkboxInput,General_None,,,,,,,,,,,,,,TRUE,FALSE,FALSE,,FALSE,TRUE,FALSE,FALSE
