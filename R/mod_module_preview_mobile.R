@@ -18,12 +18,6 @@ mod_module_preview_mobile_ui <- function(id){
     uiOutput(ns("app_preview"))
   )
 
-   # create_app_ui(h1("test"))
-
-
-
-
-
 }
 
 #' module_preview_mobile Server Functions
