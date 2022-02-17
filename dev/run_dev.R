@@ -27,7 +27,7 @@ lcarsc::run_app(production_mode = "editor", # if in production switch to "produc
                 dbuser = 'user',
                 dbpassword = 'user',
                 dbhost = 'dbeditor',
-                dbname = 'lcarsc_editor_test_db.sqlite3',
+                dbname = 'db_lcarsc_editor_test.sqlite3',
                 options = list(host = '0.0.0.0', port = 3838))
 
 # pool = pool::dbPool(

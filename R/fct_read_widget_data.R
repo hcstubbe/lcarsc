@@ -6,8 +6,8 @@
 #'
 #' @noRd
 #'
-read_widget_data = function(app_data_internal){
-  if(file.exists("tmp_widgetdata/tmp_widgetdata.RDS")){
+read_widget_data = function(app_data_internal, db_path = "tmp_widgetdata/tmp_widgetdata.RDS"){
+  if(file.exists(db_path)){
     app_data_internal = readRDS("~/lcarsc/tmp_widgetdata/tmp_widgetdata.RDS")
   }
   return(app_data_internal)
