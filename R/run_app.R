@@ -35,6 +35,7 @@ run_app <- function(
                                           user = dbuser,
                                           password = dbpassword,
                                           host = dbhost,
-                                          db = dbname))
+                                          db = dbname),
+                      input_widget_data = read_widget_data(app_data_internal, production_mode))
   )
 }

@@ -6,7 +6,10 @@
 #'
 #' @noRd
 #'
-read_widget_data = function(app_data_internal, db_path = "tmp_widgetdata/tmp_widgetdata.RDS"){
+read_widget_data = function(app_data_internal, production_mode, db_path = "tmp_widgetdata/tmp_widgetdata.RDS"){
+  if(production_mode != "editor"){
+    return(NULL)
+  }
   if(file.exists(db_path)){
     app_data_internal = readRDS("~/lcarsc/tmp_widgetdata/tmp_widgetdata.RDS")
   }

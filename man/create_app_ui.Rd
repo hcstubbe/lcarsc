@@ -2,20 +2,22 @@
 % Please edit documentation in R/fct_preview_mobile.R
 \name{create_app_ui}
 \alias{create_app_ui}
-\title{Create the app UI}
+\title{Allow to preview a given app
+Create the app UI}
 \usage{
-create_app_ui(iframe, device, color, landscape)
+create_app_ui(iframe, landscape = FALSE)
 }
 \arguments{
 \item{iframe}{iframe tag designed by \link{preview_mobile}.}
 
+\item{landscape}{See \link{preview_mobile} input.}
+
 \item{device}{See \link{preview_mobile} input.}
 
 \item{color}{See \link{preview_mobile} input.}
-
-\item{landscape}{See \link{preview_mobile} input.}
 }
 \description{
+Allow to preview a given app
 Create the app UI
 }
 \keyword{Internal}
