@@ -8,18 +8,32 @@
 #' @import dplyr
 #' @importFrom shiny NS tagList div
 #' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar dropdownMenu menuItem dashboardBody tabItems tabItem
+#' @importFrom shinyWidgets sendSweetAlert
+#' @import dplyr
+#' @import purrr
 mod_module_launcher_edit_ui <- function(id){
+
   ns = NS(id)
   lang_sel = app_data_internal$lang_sel
+
+
+  # Create drop down menu items
+  dropdown_menu_list = list(notificationItem("General settings", icon = shiny::icon("tools", verify_fa = FALSE), status = "primary"),
+            notificationItem("Database setup", icon = shiny::icon("database", verify_fa = FALSE), status = "primary"),
+            notificationItem("Deployment", status = "danger"))
+  for(i in 1:length(dropdown_menu_list)){
+    dropdown_menu_list[[i]]$children[[1]] <- a(href="#","onclick"=paste0("clickFunction('",paste0("menuitem_", i),"'); return false;"),
+                               dropdown_menu_list[[i]]$children[[1]]$children)
+  }
+
+
+
   tagList(
     div(
       shinydashboard::dashboardPage(skin = "yellow",
         dashboardHeader(title = "LCARS (Editor)",
-                        dropdownMenu(type = "notification", badgeStatus = NULL, icon = shiny::icon("gear", verify_fa = FALSE),headerText = "Setup",
-                                     notificationItem("General settings",icon = shiny::icon("tools", verify_fa = FALSE), status = "primary"),
-                                     notificationItem("Database setup",icon = shiny::icon("database", verify_fa = FALSE), status = "primary"),
-                                     notificationItem("Deployment", status = "danger")
-                                     )),
+                        dropdownMenu(.list = dropdown_menu_list, type = "notification", badgeStatus = NULL, icon = shiny::icon("gear", verify_fa = FALSE),headerText = "Setup")
+                        ),
         dashboardSidebar(
           sidebarMenu(
             menuItem(lang_sel$tab_start, tabName = "start"),
@@ -31,6 +45,10 @@ mod_module_launcher_edit_ui <- function(id){
           )
         ),
         dashboardBody(
+          tags$script(HTML(paste0("function clickFunction(link){
+                      var rndm = Math.random();
+                       Shiny.onInputChange('", ns("linkClicked"), "', {data:link, nonce: Math.random()});}")
+          )),
           tabItems(
             tabItem("start",
                     shinydashboard::box(title = "The Post-COVID-Care-Study", status = "primary", solidHeader = FALSE,
@@ -106,6 +124,8 @@ mod_module_launcher_edit_server <- function(id){
   moduleServer(id, function(input, output, session) {
 
 	lang_sel = app_data_internal$lang_sel
+	ns = session$ns
+
 
 
     # Launch module servers ----
@@ -118,6 +138,28 @@ mod_module_launcher_edit_server <- function(id){
 
   	# Module preview mobile
   	mod_module_preview_mobile_server(id = "module_preview_mobile_1")
+
+  	# Module drop down menu
+  	mod_module_deploy_server("module_deploy_1")
+
+
+
+    # Observe drop down menu ----
+  	observeEvent(input$linkClicked, {
+
+      showModal(
+
+        if( input$linkClicked$data == "menuitem_3" ){
+          modalDialog(
+            title = "Deploy",
+            mod_module_deploy_ui(ns("module_deploy_1")))
+        }else{
+          modalDialog(title = "Access denied", "Required permissions are not met.")
+        }
+
+      )
+
+  	})
 
 
   })

@@ -22,7 +22,7 @@ golem::document_and_reload()
 
 # Run the application using a local SQL database
 # devtools::install_local("/home/rstudio/lcarsM", force = T)
-run_app(options = list(production_mode = "production",host = '0.0.0.0', port = 3838))
+run_app(options = list(host = '0.0.0.0', port = 3838))
 
 # pool = pool::dbPool(
 #   drv = RSQLite::SQLite(),

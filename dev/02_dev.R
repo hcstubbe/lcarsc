@@ -40,6 +40,7 @@ golem::add_module(name = "module_editor_launcher", with_test = TRUE) # Name of t
 golem::add_module(name = "module_data_center", with_test = TRUE) # Name of the module
 golem::add_module(name = "module_preview", with_test = TRUE) # Name of the module
 golem::add_module(name = "module_preview_mobile", with_test = TRUE) # Name of the module
+golem::add_module(name = "module_deploy", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
