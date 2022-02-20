@@ -29,23 +29,29 @@ mod_module_preview_ui <- function(id){
 mod_module_preview_server <- function(id){
   moduleServer( id, function(input, output, session){
 
-
+    # Load static labels
     lang_sel = app_data_internal$lang_sel
 
 
-    # Launch module servers ----
+    # Remove preview db file on starting the module
+    if(file.exists("editor_preview_temp.sqlite3")){
+      file.remove("editor_preview_temp.sqlite3")
+    }
 
+    # Launch module servers ----
     # Module in Tab 1
     mod_module_new_pat_server(id = "mod_module_new_pat_test",
                               visit_id = "vi",
                               data_table = "inclusion_dataset",
-                              app_data_internal_submodule = read_widget_data(app_data_internal, production_mode = "editor"))
+                              app_data_internal_submodule = read_widget_data(app_data_internal, production_mode = "editor"),
+                              preview = TRUE)
 
     # Module in Tab 2
     mod_module_documentation_server(id = "mod_module_documentation_test",
                                     data_table1 = "inclusion_dataset",
                                     data_table2 = "scientific_dataset",
-                                    app_data_internal_submodule = read_widget_data(app_data_internal, production_mode = "editor"))
+                                    app_data_internal_submodule = read_widget_data(app_data_internal, production_mode = "editor"),
+                                    preview = TRUE)
 
   })
 }

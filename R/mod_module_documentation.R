@@ -31,14 +31,29 @@ mod_module_documentation_ui  <- function(id) {
 #' module_documentation Server Functions
 #'
 #' @noRd
-mod_module_documentation_server <- function(id, data_table1, data_table2, app_data_internal_submodule = app_data_internal) {
+mod_module_documentation_server <- function(id, data_table1, data_table2, app_data_internal_submodule = app_data_internal, preview = FALSE) {
   moduleServer(id, function(input, output, session) {
 
     # Requirements ----
     ns = session$ns
+
+    # Get the data base connection
     pool = get_golem_options("pool")
 
-	lang_sel = app_data_internal_submodule$lang_sel
+    # If the form is used for the preview, use local database
+    prod_mod = get_production_mode(production_mode = get_golem_options("production_mode"),
+                                   pool_config = get_golem_options("pool_config"))
+    if(prod_mod == "editor" & preview == TRUE){
+      pool = pool::dbPool(
+        drv = RSQLite::SQLite(),
+        dbname = "editor_preview_temp.sqlite3",
+        host = "dbeditor",
+        username = "user",
+        password = "user"
+      )
+    }
+
+  lang_sel = app_data_internal_submodule$lang_sel
 	widgets_table_global = app_data_internal_submodule$widgets_table_global
 	all_visits = app_data_internal_submodule$all_visits
 	all_tabs = app_data_internal_submodule$all_tabs
@@ -79,6 +94,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, app_da
                              widgets_table_global = widgets_table_global[widgets_table_global[,i],],
                              all_tabs = all_tabs,
                              order.by = NULL,
+                             preview = preview,
                              all_visits = all_visits,
                              visit_id = '", i, "')", sep = "")
       eval(parse(text = cmd_4_eval))
@@ -97,7 +113,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, app_da
                            widgets_table_global = widgets_table_global,
                            all_visits = all_visits,
                            visit_id = "diagnosis",
-                           order.by = NULL
+                           order.by = NULL,
+                           preview = preview
     )
 
     rv_downstream_med = reactiveValues()
@@ -110,7 +127,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, app_da
                            widgets_table_global = widgets_table_global,
                            all_visits = all_visits,
                            visit_id = "medication",
-                           order.by = NULL)
+                           order.by = NULL,
+                           preview = preview)
 
 
 

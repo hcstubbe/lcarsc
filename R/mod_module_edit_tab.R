@@ -50,14 +50,29 @@ mod_module_edit_tab_server<- function(id,
                                       create_new_pid = FALSE,
                                       add.copy.btn = FALSE,
                                       num_entries = 5,
-                                      order.by) {
+                                      order.by,
+                                      preview = FALSE) {
 
 
 
   moduleServer(id, function(input, output, session) {
     ns = session$ns
 
+    # Get the data base connection
     pool = get_golem_options("pool")
+
+    # If the form is used for the preview, use local database
+    prod_mod = get_production_mode(production_mode = get_golem_options("production_mode"),
+                                   pool_config = get_golem_options("pool_config"))
+    if(prod_mod == "editor" & preview == TRUE){
+      pool = pool::dbPool(
+        drv = RSQLite::SQLite(),
+        dbname = "editor_preview_temp.sqlite3",
+        host = "dbeditor",
+        username = "user",
+        password = "user"
+      )
+    }
 
     rv_uuid = reactiveValues()
 

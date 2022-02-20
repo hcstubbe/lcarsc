@@ -33,7 +33,7 @@ mod_module_preview_mobile_server <- function(id){
                                     dbuser = 'user',
                                     dbpassword = 'user',
                                     dbhost = 'dbeditor',
-                                    dbname = 'mydb_werwer.sqlite3',
+                                    dbname = 'mobile_preview.sqlite3',
                                     options = list(host = '0.0.0.0', port = 3838)),
                     landscape = TRUE)
     })

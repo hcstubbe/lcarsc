@@ -33,7 +33,7 @@ mod_module_new_pat_ui <- function(id) {
 #' module_new_pat Server Functions
 #'
 #' @noRd
-mod_module_new_pat_server <- function(id, visit_id, data_table, app_data_internal_submodule = app_data_internal) {
+mod_module_new_pat_server <- function(id, visit_id, data_table, app_data_internal_submodule = app_data_internal, preview = FALSE) {
   moduleServer(id, function(input, output, session) {
 
 	# Load reaquired data
@@ -76,7 +76,8 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, app_data_interna
                            all_visits = all_visits,
                            visit_id = "vi",
                            create_new_pid = TRUE,
-                           order.by = NULL)
+                           order.by = NULL,
+                           preview = preview)
 
   })
 
