@@ -6,14 +6,20 @@
 #'
 #' @noRd
 #' @import dplyr
-#' @importFrom shiny NS tagList
+#' @importFrom shiny NS tagList div
+#' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar dropdownMenu menuItem dashboardBody tabItems tabItem
 mod_module_launcher_edit_ui <- function(id){
   ns = NS(id)
   lang_sel = app_data_internal$lang_sel
   tagList(
     div(
-      dashboardPage(
-        dashboardHeader(title = lang_sel$app_title),
+      shinydashboard::dashboardPage(skin = "yellow",
+        dashboardHeader(title = "LCARS (Editor)",
+                        dropdownMenu(type = "notification", badgeStatus = NULL, icon = shiny::icon("gear", verify_fa = FALSE),headerText = "Setup",
+                                     notificationItem("General settings",icon = shiny::icon("tools", verify_fa = FALSE), status = "primary"),
+                                     notificationItem("Database setup",icon = shiny::icon("database", verify_fa = FALSE), status = "primary"),
+                                     notificationItem("Deployment", status = "danger")
+                                     )),
         dashboardSidebar(
           sidebarMenu(
             menuItem(lang_sel$tab_start, tabName = "start"),

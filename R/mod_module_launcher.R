@@ -7,13 +7,15 @@
 #' @noRd
 #' @import dplyr
 #' @importFrom shiny NS tagList
+#' @importFrom shinydashboard dashboardPage
 mod_module_launcher_ui <- function(id){
   ns = NS(id)
   lang_sel = app_data_internal$lang_sel
   tagList(
     div(
-      dashboardPage(
-        dashboardHeader(title = lang_sel$app_title),
+      shinydashboard::dashboardPage(
+        skin = "blue",
+        dashboardHeader(title = "LCARS"),
         dashboardSidebar(
           sidebarMenu(
             menuItem(lang_sel$tab_start, tabName = "start"),
