@@ -151,7 +151,7 @@ mod_module_launcher_edit_server <- function(id){
 
         if( input$linkClicked$data == "menuitem_3" ){
           modalDialog(
-            title = "Deploy",
+            title = "Deployment",
             mod_module_deploy_ui(ns("module_deploy_1")))
         }else{
           modalDialog(title = "Access denied", "Required permissions are not met.")

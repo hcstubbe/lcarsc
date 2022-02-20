@@ -7,15 +7,21 @@
 #' @noRd
 app_ui <- function(request) {
 
-  production_mode = get_golem_options("production_mode")
+  pool_config = get_golem_options("pool_config")
+  prod_mod = get_golem_options("production_mode")
+
+  prod_mod = get_production_mode(production_mode = prod_mod,
+                                        pool_config = pool_config )
+
+
 
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    if(production_mode == "production"){
+    if(prod_mod == "production"){
       mod_module_launcher_ui("mod_module_launcher_1")
-    }else if(production_mode == "editor"){
+    }else if(prod_mod == "editor"){
       mod_module_launcher_edit_ui("mod_module_launcher_edit_1")
     }
 
