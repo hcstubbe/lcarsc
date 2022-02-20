@@ -13,12 +13,17 @@ run_app <- function(
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
-  production_mode,
-  database_driver = RMariaDB::MariaDB(),
-  dbuser,
-  dbpassword,
-  dbhost,
-  dbname,
+  production_mode = NULL,
+  ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
+  ecrf_dbuser = "default_user",
+  ecrf_dbpassword = "default_password",
+  ecrf_dbhost = "db_ecrf_data",
+  ecrf_dbname = "db_ecrf_data.sqlite3",
+  config_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
+  config_dbuser = "config_user",
+  config_dbpassword = "config_password",
+  config_dbhost = "db_config",
+  config_dbname = "db_config.sqlite3",
   ...
 ) {
   with_golem_options(
@@ -30,12 +35,27 @@ run_app <- function(
       enableBookmarking = enableBookmarking,
       uiPattern = uiPattern
     ),
-    golem_opts = list(production_mode = production_mode,
-                      pool = pool::dbPool(drv = database_driver,
-                                          user = dbuser,
-                                          password = dbpassword,
-                                          host = dbhost,
-                                          db = dbname),
-                      input_widget_data = read_widget_data_path(production_mode))
+    golem_opts = list(production_mode = get_production_mode(production_mode = production_mode,
+                                                            pool_config = pool::dbPool(drv = config_database_driver,
+                                                                                          user = config_dbuser,
+                                                                                          password = config_dbpassword,
+                                                                                          host = config_dbhost,
+                                                                                          db = config_dbname)),
+                      pool = pool::dbPool(drv = ecrf_database_driver,
+                                          user = ecrf_dbuser,
+                                          password = ecrf_dbpassword,
+                                          host = ecrf_dbhost,
+                                          db = ecrf_dbname),
+                      pool_config = pool::dbPool(drv = config_database_driver,
+                                               user = config_dbuser,
+                                               password = config_dbpassword,
+                                               host = config_dbhost,
+                                               db = config_dbname),
+                      input_widget_data = read_widget_data_path(get_production_mode(production_mode = production_mode,
+                                                                                    pool_config = pool::dbPool(drv = config_database_driver,
+                                                                                                               user = config_dbuser,
+                                                                                                               password = config_dbpassword,
+                                                                                                               host = config_dbhost,
+                                                                                                               db = config_dbname))))
   )
 }

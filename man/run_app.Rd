@@ -9,12 +9,17 @@ run_app(
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
-  production_mode,
-  database_driver = RMariaDB::MariaDB(),
-  dbuser,
-  dbpassword,
-  dbhost,
-  dbname,
+  production_mode = NULL,
+  ecrf_database_driver = RSQLite::SQLite(),
+  ecrf_dbuser = "default_user",
+  ecrf_dbpassword = "default_password",
+  ecrf_dbhost = "db_ecrf_data",
+  ecrf_dbname = "db_ecrf_data.sqlite3",
+  config_database_driver = RSQLite::SQLite(),
+  config_dbuser = "config_user",
+  config_dbpassword = "config_password",
+  config_dbhost = "db_config",
+  config_dbname = "db_config.sqlite3",
   ...
 )
 }

@@ -54,6 +54,7 @@ golem::add_fct("make_widget_tables", with_test = TRUE)
 golem::add_fct("app_data_internal", with_test = TRUE)
 golem::add_fct("preview_mobile", with_test = TRUE)
 golem::add_fct("read_widget_data", with_test = TRUE)
+golem::add_fct("get_production_mode", with_test = TRUE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
