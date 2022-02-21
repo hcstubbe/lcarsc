@@ -10,7 +10,7 @@
 #' @importFrom shinydashboard dashboardPage
 mod_module_launcher_ui <- function(id){
   ns = NS(id)
-  lang_sel = app_data_internal$lang_sel
+
   tagList(
     div(
       shinydashboard::dashboardPage(
@@ -110,20 +110,20 @@ mod_module_launcher_ui <- function(id){
 mod_module_launcher_server <- function(id){
   moduleServer(id, function(input, output, session) {
 
-	lang_sel = app_data_internal$lang_sel
-
 
     # Launch module servers ----
 
     # Module in Tab 1
     mod_module_new_pat_server(id = "mod_module_new_pat",
                           visit_id = "vi",
-                          data_table = "inclusion_dataset")
+                          data_table = "inclusion_dataset",
+                          app_data_internal_submodule = golem::get_golem_options("app_data_internal"))
 
     # Module in Tab 2
     mod_module_documentation_server(id = "mod_module_documentation",
                                 data_table1 = "inclusion_dataset",
-                                data_table2 = "scientific_dataset")
+                                data_table2 = "scientific_dataset",
+                                app_data_internal_submodule = golem::get_golem_options("app_data_internal"))
 #
 #     # Module editor
 #     mod_module_editor_launcher_server(id = "mod_module_editor")

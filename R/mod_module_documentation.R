@@ -10,7 +10,6 @@
 #' @import dplyr
 mod_module_documentation_ui  <- function(id) {
   ns = NS(id)
-  lang_sel = app_data_internal$lang_sel
   tagList(
     fluidRow(
       column(5,
@@ -31,7 +30,7 @@ mod_module_documentation_ui  <- function(id) {
 #' module_documentation Server Functions
 #'
 #' @noRd
-mod_module_documentation_server <- function(id, data_table1, data_table2, app_data_internal_submodule = app_data_internal, preview = FALSE) {
+mod_module_documentation_server <- function(id, data_table1, data_table2, app_data_internal_submodule, preview = FALSE) {
   moduleServer(id, function(input, output, session) {
 
     # Requirements ----

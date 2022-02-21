@@ -14,8 +14,6 @@
 mod_module_launcher_edit_ui <- function(id){
 
   ns = NS(id)
-  lang_sel = app_data_internal$lang_sel
-
 
   # Create drop down menu items
   dropdown_menu_list = list(notificationItem("General settings", icon = shiny::icon("tools", verify_fa = FALSE), status = "primary"),
@@ -123,7 +121,6 @@ mod_module_launcher_edit_ui <- function(id){
 mod_module_launcher_edit_server <- function(id){
   moduleServer(id, function(input, output, session) {
 
-	lang_sel = app_data_internal$lang_sel
 	ns = session$ns
 
 

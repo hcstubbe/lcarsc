@@ -1,4 +1,4 @@
-## code to prepare `widgets` dataset goes here
+## code to prepare `lang_sel` dataset goes here
 
 lang_en = list(
   app_title ="R-eCRF",
@@ -116,16 +116,7 @@ lang_en = list(
 
 lang_sel = lang_en
 
-
-library(dplyr)
-source("R/fct_app_data_internal.R", echo=FALSE)
-app_data_internal = create_app_data_internal(lang_sel)
-
-
-
-
-
 # Import widget data
-usethis::use_data(app_data_internal,
+usethis::use_data(lang_sel,
                     overwrite = TRUE,
                   internal = TRUE)

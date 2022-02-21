@@ -58,6 +58,7 @@ mod_module_editor_launcher_server <- function(id) {
     # Requirements ----
     ns = session$ns
     pool = get_golem_options("pool")
+    app_data_internal = golem::get_golem_options("app_data_internal")
   	all_visits_editor = app_data_internal$all_visits_editor
   	widgets_table_global_widgets = app_data_internal$widgets_table_global_widgets
 

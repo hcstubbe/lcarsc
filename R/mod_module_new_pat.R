@@ -9,7 +9,6 @@
 #' @importFrom shiny NS tagList
 mod_module_new_pat_ui <- function(id) {
   ns = NS(id)
-  lang_sel = app_data_internal$lang_sel
 
   tagList(
     fluidRow(
@@ -33,7 +32,7 @@ mod_module_new_pat_ui <- function(id) {
 #' module_new_pat Server Functions
 #'
 #' @noRd
-mod_module_new_pat_server <- function(id, visit_id, data_table, app_data_internal_submodule = app_data_internal, preview = FALSE) {
+mod_module_new_pat_server <- function(id, visit_id, data_table, app_data_internal_submodule, preview = FALSE) {
   moduleServer(id, function(input, output, session) {
 
 	# Load reaquired data

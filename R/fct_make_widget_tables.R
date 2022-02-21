@@ -8,7 +8,15 @@
 #' @import dplyr
 #' @importFrom readr write_csv
 #' @importFrom RMariaDB dbReadTable dbListTables dbRemoveTable
-make_widget_tables = function(pool, write_widget_tables = FALSE, remove_old_tables = FALSE) {
+#' @importFrom golem get_golem_options
+#'
+make_widget_tables = function(pool,
+                              pool_config,
+                              write_widget_tables = FALSE,
+                              remove_old_tables = FALSE) {
+
+  # Get app_data_internal
+  app_data_internal = golem::get_golem_options("app_data_internal")
 
   # Remove all old tables
   if(remove_old_tables){
@@ -191,7 +199,7 @@ make_widget_tables = function(pool, write_widget_tables = FALSE, remove_old_tabl
   }
 
 
-  # Add required (i.e. required for technical reasons) variables
+  # Add required variables (i.e. required for technical reasons)
   var_table = app_data_internal$widgets_template %>% rbind(var_table)
   for(i in visits$visit_id_visits){
     vars %>% filter(visit_for_var == i)
@@ -202,24 +210,24 @@ make_widget_tables = function(pool, write_widget_tables = FALSE, remove_old_tabl
   var_table$medication = var_table$widget_tab == "medication" | var_table$widget_tab == "all"
 
 
-  # var_table$panel = as.factor(var_table$panel)
-  # make.unique(make.names(levels(var_table$panel)))
-  # var_table$panel = as.character(var_table$panel)
-
   # Make variable names unique
   var_table$inputId = make.unique(var_table$inputId, sep = "_")
 
 
-  # Save results and writ tables
+  # Save results and write tables to file and database
   colnames(visits)[colnames(visits) == "visit_id_visits"] = "visit_id"
   widget_tables = list("visits" = visits, "panel_tabs" = panel_tabs, "widgets" = var_table)
 
-  if(write_widget_tables == TRUE){
-    dir.create(file.path("widgets"), showWarnings = FALSE)
-    lapply(names(widget_tables), function(x) write_csv(widget_tables[[x]], paste0("widgets/", x, ".csv")))
-    app_data_internal = create_app_data_internal(lang_sel = app_data_internal$lang_sel)
-    saveRDS(app_data_internal, "widgets/app_data_internal.RDS")
-  }
+
+  # Update tables on database
+  db_replace_tables(pool = pool_config, table_list = widget_tables)
+
+  # if(write_widget_tables == TRUE){
+  #   dir.create(file.path("widgets"), showWarnings = FALSE)
+  #   lapply(names(widget_tables), function(x) write_csv(widget_tables[[x]], paste0("widgets/", x, ".csv")))
+  #   app_data_internal = create_app_data_internal(lang_sel = app_data_internal$lang_sel)
+  #   saveRDS(app_data_internal, "widgets/app_data_internal.RDS")
+  # }
 
   widget_tables$app_data_internal = app_data_internal
   widget_tables
