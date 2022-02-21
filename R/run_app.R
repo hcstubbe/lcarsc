@@ -51,12 +51,7 @@ run_app <- function(
                                                                                 password = config_dbpassword,
                                                                                 host = config_dbhost,
                                                                                 db = config_dbname),
-                                                                   production_mode = production_mode),
-                      input_widget_data = read_widget_data_path(get_production_mode(production_mode = production_mode,
-                                                                                    pool_config = pool::dbPool(drv = config_database_driver,
-                                                                                                               user = config_dbuser,
-                                                                                                               password = config_dbpassword,
-                                                                                                               host = config_dbhost,
-                                                                                                               db = config_dbname))))
+                                                                   production_mode = production_mode)
+    )
   )
 }
