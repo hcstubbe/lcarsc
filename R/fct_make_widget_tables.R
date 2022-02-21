@@ -1,6 +1,6 @@
 #' make_widget_tables
 #'
-#' @description A fct function
+#' @description This function creates the widget tables and stores them in the config database
 #'
 #' @return The return value, if any, from executing the function.
 #'
@@ -15,23 +15,11 @@ make_widget_tables = function(pool,
                               write_widget_tables = FALSE,
                               remove_old_tables = FALSE) {
 
-  # Get app_data_internal
-  app_data_internal = golem::get_golem_options("app_data_internal")
-
-  # Remove all old tables
-  if(remove_old_tables){
-    tbl_ids = dbListTables(pool)
-    tbl_ids = tbl_ids[!tbl_ids %in% c("medication_table", "diagnoses_table", "editor_table_visit", "editor_table_vars")]
-    if(length(tbl_ids) > 0){
-      for (i in tbl_ids) {
-        dbRemoveTable(pool, i)
-      }
-    }
-  }
-
 
   # Read input widget data
-  visits = dbReadTable(pool, "editor_table_visit") %>% filter(deleted_row == FALSE) %>% select(order, visit_id_visits , visit_title) %>%
+  visits = dbReadTable(pool, "editor_table_visit") %>%
+    filter(deleted_row == FALSE) %>%
+    select(order, visit_id_visits , visit_title) %>%
     rbind(list(order = NA, visit_id_visits = "diagnosis", visit_title = "Diagnosis"))  %>%
     rbind(list(order = NA, visit_id_visits = "medication", visit_title = "Medication")) %>%
     arrange(order)
@@ -220,7 +208,7 @@ make_widget_tables = function(pool,
 
 
   # Update tables on database
-  db_replace_tables(pool = pool_config, table_list = widget_tables)
+  db_replace_tables(conn = pool_config, table_list = widget_tables) # replace configuration tables
 
   # if(write_widget_tables == TRUE){
   #   dir.create(file.path("widgets"), showWarnings = FALSE)
