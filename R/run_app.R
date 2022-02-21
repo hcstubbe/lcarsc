@@ -46,7 +46,7 @@ run_app <- function(
                                                password = config_dbpassword,
                                                host = config_dbhost,
                                                db = config_dbname),
-                      app_data_internal = create_app_data_internal(pool::dbPool(drv = config_database_driver,
+                      app_data_internal = load_widget_data(pool_config = pool::dbPool(drv = config_database_driver,
                                                                                 user = config_dbuser,
                                                                                 password = config_dbpassword,
                                                                                 host = config_dbhost,

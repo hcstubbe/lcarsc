@@ -7,8 +7,8 @@
 #' @noRd
 app_server <- function( input, output, session ) {
 
-  pool_config = get_golem_options("pool_config")
-  prod_mod = get_golem_options("production_mode")
+  pool_config = golem::get_golem_options("pool_config")
+  prod_mod = golem::get_golem_options("production_mode")
 
   prod_mod = get_production_mode(production_mode = prod_mod,
                                  pool_config = pool_config )

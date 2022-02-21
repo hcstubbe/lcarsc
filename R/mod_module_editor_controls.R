@@ -42,6 +42,7 @@ mod_module_editor_controls_server <- function(id) {
     # Requirements ----
     ns = session$ns
     pool = get_golem_options("pool")
+    pool_config = get_golem_options("pool_config")
 
 
     # Observers ----
@@ -68,6 +69,7 @@ mod_module_editor_controls_server <- function(id) {
     observeEvent(input$update_widgets_button_confirm, {
       dir.create("tmp_widgetdata", showWarnings = F)
       saveRDS((make_widget_tables(pool = pool,
+                                  pool_config = pool_config,
                                   write_widget_tables = TRUE,
                                   remove_old_tables = TRUE))$app_data_internal,
               "tmp_widgetdata/tmp_widgetdata.RDS")
@@ -92,7 +94,7 @@ mod_module_editor_controls_server <- function(id) {
 
       # Zip widget files and data base export
       dir.create(file.path("zip/database_export"), showWarnings = FALSE)
-      make_widget_tables(pool = pool, write_widget_tables = TRUE, remove_old_tables = FALSE)
+      make_widget_tables(pool = pool, pool_config = pool_config, write_widget_tables = TRUE, remove_old_tables = FALSE)
       zip(zipfile = 'zip/database_export', files = c('widgets/widgets.csv', "widgets/visits.csv", "widgets/panel_tabs.csv", "widgets/app_data_internal.RDS"))
       zip(zipfile = 'zip/database_export', files = c('database_export/editor_table_vars.csv', 'database_export/editor_table_visit.csv'))
 

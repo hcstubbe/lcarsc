@@ -7,20 +7,21 @@
 #' @importFrom RMariaDB dbRemoveTable dbCreateTable dbAppendTable dbExistsTable
 #'
 #' @noRd
-db_replace_tables = function(pool, table_list){
+db_replace_tables = function(conn, table_list){
 
   for ( i in names(table_list) ) {
 
-    if(RMariaDB::dbExistsTable(pool, i)){
-      RMariaDB::dbRemoveTable(conn = pool,
+    if(RMariaDB::dbExistsTable(conn = conn,
+                               name = i)){
+      RMariaDB::dbRemoveTable(conn = conn,
                               name = i)
     }
 
-    RMariaDB::dbCreateTable(conn = pool,
+    RMariaDB::dbCreateTable(conn = conn,
                             name = i,
                             fields = table_list[[i]])
 
-    RMariaDB::dbAppendTable(conn = pool,
+    RMariaDB::dbAppendTable(conn = conn,
                             name = i,
                             value = table_list[[i]])
 
