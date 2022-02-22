@@ -12,8 +12,7 @@ rm(list=ls(all.names = TRUE))
 golem::document_and_reload()
 
 # # Run the application using mariaDB
-# lcarsc::run_app(production_mode = "editor", # if in production switch to "production", if in editing "editor"
-#                 dbuser = 'user',
+# lcarsc::run_app(dbuser = 'user',
 #                 dbpassword = 'user',
 #                 dbhost = 'dbeditor',
 #                 dbname = 'mydbeditor',
@@ -42,17 +41,36 @@ run_app(options = list(host = '0.0.0.0', port = 3838))
 #   RMariaDB::dbRemoveTable(pool_config, "start_config")
 # }
 # reset_config()
-
+# #
 # config_database_driver = RSQLite::SQLite() # RMariaDB::MariaDB()
 # config_dbuser = "config_user"
 # config_dbpassword = "config_password"
 # config_dbhost = "db_config"
 # config_dbname = "db_config.sqlite3"
-# pool_config = pool::dbPool(drv = config_database_driver,user = config_dbuser,password = config_dbpassword,host = config_dbhost,db = config_dbname)
+# # pool_config = pool::dbPool(drv = config_database_driver,user = config_dbuser,password = config_dbpassword,host = config_dbhost,db = config_dbname)
 # x = list()
 # for (i in RMariaDB::dbListTables(conn = pool_config)){
 #   xi = RMariaDB::dbReadTable(conn = pool_config, name = i)
 #   x = c(x , list(xi))
 # }
 # names(x) = RMariaDB::dbListTables(conn = pool_config)
+# x
+#
+#
+# ecrf_database_driver = RSQLite::SQLite() # RMariaDB::MariaDB()
+# ecrf_dbuser = "default_user"
+# ecrf_dbpassword = "default_password"
+# ecrf_dbhost = "db_ecrf_data"
+# ecrf_dbname = "db_ecrf_data.sqlite3"
+# pool = pool::dbPool(drv = ecrf_database_driver,
+#                     user = ecrf_dbuser,
+#                     password = ecrf_dbpassword,
+#                     host = ecrf_dbhost,
+#                     db = ecrf_dbname)
+# x = list()
+# for (i in RMariaDB::dbListTables(conn = pool)){
+#   xi = RMariaDB::dbReadTable(conn = pool, name = i)
+#   x = c(x , list(xi))
+# }
+# names(x) = RMariaDB::dbListTables(conn = pool)
 # x
