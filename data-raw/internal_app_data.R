@@ -119,14 +119,12 @@ lang_sel = lang_en
 # Import widget data
 library(dplyr)
 library(readr)
-all_visits = read.csv('widgets/visits.csv')
-internal_app_data = list(all_visits = all_visits,
-                         ordered_visits = all_visits %>% filter(!is.na(order)) %>% arrange(order),
-                         widgets_table_global = read.csv("widgets/widgets.csv"),
-                         all_tabs = read.csv('widgets/panel_tabs.csv'),
-                         visit_choices = all_visits$visit_id[!all_visits$inclusion_other_visit],
-                         widgets_table_global_widgets = read.csv("widgets/widgets_editor.csv"),
-                         all_visits_editor = read.csv('widgets/visits_editor.csv'),
+
+internal_app_data = list(visits = read.csv('widgets/visits.csv'),
+                         widgets = read.csv("widgets/widgets.csv"),
+                         panel_tabs = read.csv('widgets/panel_tabs.csv'),
+                         widgets_editor = read.csv("widgets/widgets_editor.csv"),
+                         visits_editor. = read.csv('widgets/visits_editor.csv'),
                          widgets_template = read.csv('widgets/widgets_template.csv'),
                          lang_sel = lang_sel)
 
