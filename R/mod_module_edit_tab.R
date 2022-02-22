@@ -479,7 +479,15 @@ mod_module_edit_tab_server<- function(id,
 
     iv <- InputValidator$new()
     required_fields = widgets_table[widgets_table$widget & widgets_table$mandatory,]$inputId
+    numeric_fields = widgets_table[widgets_table$widget & widgets_table$type == "numericInput",]$inputId
     sapply(required_fields, function(x) iv$add_rule(x, sv_required()))
+    sapply(numeric_fields, function(x) {
+      iv$add_rule(x, function(value) {
+        if (value < widgets_table[x,"lower"] | value > widgets_table[x,"upper"] ) {
+          "Check if value is plausible!"
+        }
+      })
+    })
 
     close <- function() {
       removeModal()
