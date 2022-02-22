@@ -17,6 +17,7 @@ mod_module_deploy_ui <- function(id){
   tagList(
     strong("Caution: moving from 'editor' to 'production' cannot be reversed!"),
     br(),
+    br(),
     textInput(ns("confirm_deployment"), label = "Type 'activate production'", placeholder = "Fill to confirm"),
     actionButton(inputId = ns("deploy"), label = "Deploy")
   )
@@ -37,13 +38,22 @@ mod_module_deploy_server <- function(id){
       iv$enable()
       if (iv$is_valid()) {
         pool_config = golem::get_golem_options("pool_config")
-        RMariaDB::dbRemoveTable(conn = pool_config, name = "start_config")
-        RMariaDB::dbCreateTable(conn = pool_config,
-                                name = "start_config",
-                                fields = data.frame(production_mode = "production"))
-        RMariaDB::dbAppendTable(conn = pool_config,
-                                name = "start_config",
-                                value = data.frame(production_mode = "production"))
+
+        start_config = RMariaDB::dbReadTable(pool_config, "start_config")
+        prod_mode = start_config$production_mode
+
+        if(prod_mode != "production"){
+          RMariaDB::dbRemoveTable(conn = pool_config, name = "start_config")
+          RMariaDB::dbCreateTable(conn = pool_config,
+                                  name = "start_config",
+                                  fields = data.frame(production_mode = "production"))
+          RMariaDB::dbAppendTable(conn = pool_config,
+                                  name = "start_config",
+                                  value = data.frame(production_mode = "production"))
+        }else{
+          warning("The prodcution mode has been activated (by other user?)! Latest changes mgith not have been saved!")
+        }
+
         close()
         session$reload()
       }
