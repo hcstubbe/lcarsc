@@ -39,14 +39,12 @@ mod_module_preview_server <- function(id){
     mod_module_new_pat_server(id = "mod_module_new_pat_test",
                               visit_id = "vi",
                               data_table = "inclusion_dataset",
-                              widget_data_input_submodule = golem::get_golem_options("widget_data_input"),
                               preview = TRUE)
 
     # Module in Tab 2
     mod_module_documentation_server(id = "mod_module_documentation_test",
                                     data_table1 = "inclusion_dataset",
                                     data_table2 = "scientific_dataset",
-                                    widget_data_input_submodule = golem::get_golem_options("widget_data_input"),
                                     preview = TRUE)
 
   })

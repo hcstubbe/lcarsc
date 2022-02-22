@@ -116,14 +116,12 @@ mod_module_launcher_server <- function(id){
     # Module in Tab 1
     mod_module_new_pat_server(id = "mod_module_new_pat",
                           visit_id = "vi",
-                          data_table = "inclusion_dataset",
-                          widget_data_input_submodule = golem::get_golem_options("widget_data_input"))
+                          data_table = "inclusion_dataset")
 
     # Module in Tab 2
     mod_module_documentation_server(id = "mod_module_documentation",
                                 data_table1 = "inclusion_dataset",
-                                data_table2 = "scientific_dataset",
-                                widget_data_input_submodule = golem::get_golem_options("widget_data_input"))
+                                data_table2 = "scientific_dataset")
 #
 #     # Module editor
 #     mod_module_editor_launcher_server(id = "mod_module_editor")

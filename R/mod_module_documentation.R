@@ -30,11 +30,12 @@ mod_module_documentation_ui  <- function(id) {
 #' module_documentation Server Functions
 #'
 #' @noRd
-mod_module_documentation_server <- function(id, data_table1, data_table2, widget_data_input_submodule, preview = FALSE) {
+mod_module_documentation_server <- function(id, data_table1, data_table2, preview = FALSE) {
   moduleServer(id, function(input, output, session) {
 
     # Requirements ----
     ns = session$ns
+    widget_data_input = golem::get_golem_options("widget_data_input")
 
     # Get the data base connection
     pool = get_golem_options("pool")
@@ -52,11 +53,11 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, widget
       )
     }
 
-	widgets_table_global = widget_data_input_submodule$widgets_table_global
-	all_visits = widget_data_input_submodule$all_visits
-	all_tabs = widget_data_input_submodule$all_tabs
-    ordered_visits = widget_data_input_submodule$ordered_visits
-	visit_choices = widget_data_input_submodule$visit_choices
+	widgets_table_global = widget_data_input$widgets_table_global
+	all_visits = widget_data_input$all_visits
+	all_tabs = widget_data_input$all_tabs
+    ordered_visits = widget_data_input$ordered_visits
+	visit_choices = widget_data_input$visit_choices
 
 	rv_downstream = reactiveValues()
 

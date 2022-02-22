@@ -32,13 +32,13 @@ mod_module_new_pat_ui <- function(id) {
 #' module_new_pat Server Functions
 #'
 #' @noRd
-mod_module_new_pat_server <- function(id, visit_id, data_table, widget_data_input_submodule, preview = FALSE) {
+mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE) {
   moduleServer(id, function(input, output, session) {
 
 	# Load reaquired data
-	widgets_table_global = widget_data_input_submodule$widgets_table_global
-	all_visits = widget_data_input_submodule$all_visits
-	all_tabs = widget_data_input_submodule$all_tabs
+	widgets_table_global = widget_data_input$widgets_table_global
+	all_visits = widget_data_input$all_visits
+	all_tabs = widget_data_input$all_tabs
 
     # Upload participant file ----
     observe({

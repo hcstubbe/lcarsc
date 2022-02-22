@@ -19,7 +19,7 @@ load_widget_data = function(pool_config, production_mode){
     if ( RMariaDB::dbExistsTable(conn = conn, name = x_table) ){
       x_table = RMariaDB::dbReadTable(conn = conn, name = x_table)
     } else if(prod_mod == "editor"){  # Try to read table from widgets folder, if in editor mode.
-      x_table = utils::read.csv(paste0("widgets/",x_table, ".csv"))
+      x_table = internal_app_data[[x_table]]
     } else {
       stop(paste0(x_table, " could not be found!"))
     }
@@ -38,8 +38,9 @@ load_widget_data = function(pool_config, production_mode){
                      widgets_table_global = db_read_app_data(conn = pool_config, x_table = "widgets", prod_mod = prod_mod),
                      all_tabs = db_read_app_data(conn = pool_config, x_table = "panel_tabs", prod_mod = prod_mod),
                      visit_choices = all_visits$visit_id[!all_visits$inclusion_other_visit],
-                     widgets_table_global_widgets = utils::read.csv("widgets/widgets_editor.csv"),
-                     all_visits_editor = utils::read.csv('widgets/visits_editor.csv'),
-                     widgets_template = utils::read.csv('widgets/widgets_template.csv'))
+                     widgets_table_global_widgets = db_read_app_data(conn = pool_config, x_table = "widgets_editor", prod_mod = prod_mod),
+                     all_visits_editor = db_read_app_data(conn = pool_config, x_table = "visits_editor", prod_mod = prod_mod),
+                     widgets_template = db_read_app_data(conn = pool_config, x_table = "widgets_template", prod_mod = prod_mod))
+  saveRDS(widget_data , "widget_data.RDS")
   widget_data
 }
