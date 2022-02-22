@@ -320,7 +320,7 @@ mod_module_edit_tab_server<- function(id,
       substr(x, 1, 1) = toupper(substr(x, 1, 1))
       x
     }
-    select_true = grepl("select", widgets_table$type, TRUE, ignore.case = T) | grepl("radio", widgets_table$type, TRUE, ignore.case = T)
+    select_true = base::grepl(pattern = "select", x = widgets_table$type, fixed = TRUE, ignore.case = T) | base::grepl(pattern = "radio", x = widgets_table$type, fixed = TRUE, ignore.case = T)
     widgets_x =  subset(widgets_table, select_true)
     if(nrow(widgets_x) > 0){
       field_updates_select = paste("update",
