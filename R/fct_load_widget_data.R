@@ -40,7 +40,6 @@ load_widget_data = function(pool_config, production_mode){
                      visit_choices = all_visits$visit_id[!all_visits$inclusion_other_visit],
                      widgets_table_global_widgets = utils::read.csv("widgets/widgets_editor.csv"),
                      all_visits_editor = utils::read.csv('widgets/visits_editor.csv'),
-                     widgets_template = utils::read.csv('widgets/widgets_template.csv'),
-                     lang_sel = lang_sel)
+                     widgets_template = utils::read.csv('widgets/widgets_template.csv'))
   widget_data
 }

@@ -34,8 +34,8 @@ mod_module_launcher_edit_ui <- function(id){
                         ),
         dashboardSidebar(
           sidebarMenu(
-            menuItem(lang_sel$tab_start, tabName = "start"),
-            menuItem(lang_sel$module_launcher_menu_contact, tabName = "contact"),
+            menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),
+            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact"),
             menuItem("Editor", tabName = "editor"),
             menuItem("Preview", tabName = "preview"),
             menuItem("Preview mobile", tabName = "preview_mobile")
@@ -70,7 +70,7 @@ mod_module_launcher_edit_ui <- function(id){
 
             # Dashboard item providing Contact data
             tabItem("contact",
-                    shinydashboard::box(title = lang_sel$module_launcher_menu_contact_technical, status = "primary", solidHeader = FALSE,
+                    shinydashboard::box(title = internal_app_data$lang_sel$module_launcher_menu_contact_technical, status = "primary", solidHeader = FALSE,
                                         width = 10,
                                         column(6,
                                                h4("Dr. med. Hans Christian Stubbe"), br(),

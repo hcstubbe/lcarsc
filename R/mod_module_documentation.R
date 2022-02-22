@@ -13,8 +13,8 @@ mod_module_documentation_ui  <- function(id) {
   tagList(
     fluidRow(
       column(5,
-             box(title = (lang_sel$module_documentation_pt_list_title), width = 12, status = "primary", solidHeader = TRUE,
-                 actionButton(ns("update_pull_user"), label = lang_sel$update_pull, icon("sync")),
+             box(title = (internal_app_data$lang_sel$module_documentation_pt_list_title), width = 12, status = "primary", solidHeader = TRUE,
+                 actionButton(ns("update_pull_user"), label = internal_app_data$lang_sel$update_pull, icon("sync")),
                  br(),
                  br(),
                  br(),
@@ -52,7 +52,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, widget
       )
     }
 
-  lang_sel = widget_data_input_submodule$lang_sel
+  internal_app_data$lang_sel = widget_data_input_submodule$internal_app_data$lang_sel
 	widgets_table_global = widget_data_input_submodule$widgets_table_global
 	all_visits = widget_data_input_submodule$all_visits
 	all_tabs = widget_data_input_submodule$all_tabs
@@ -159,24 +159,24 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, widget
       if(length(input$responses_user_rows_selected) == 1){
         div(
           shinydashboard::box(
-            title = (lang_sel$module_documentation_visit_menu),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE,
+            title = (internal_app_data$lang_sel$module_documentation_visit_menu),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE,
             wellPanel(
               selectInput(
                 inputId = ns("visit_selector"),
-                label = lang_sel$module_documentation_visit_selector,
+                label = internal_app_data$lang_sel$module_documentation_visit_selector,
                 choices = c(visit_choices)
               )
             ),
             uiOutput(ns("docu_tab_ui"))
           ),
           shinydashboard::box(
-            title = (lang_sel$module_documentation_diagnoses_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
-            #strong(lang_sel$module_documentation_diagnoses_info),
+            title = (internal_app_data$lang_sel$module_documentation_diagnoses_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+            #strong(internal_app_data$lang_sel$module_documentation_diagnoses_info),
             mod_module_edit_tab_ui(ns("mod_module_edit_tab_diag"))
           ),
           box(
-            title = (lang_sel$module_documentation_medication_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
-            #strong(lang_sel$module_documentation_medication_info),
+            title = (internal_app_data$lang_sel$module_documentation_medication_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+            #strong(internal_app_data$lang_sel$module_documentation_medication_info),
             mod_module_edit_tab_ui(ns("mod_module_edit_tab_med"))
           )
         )

@@ -67,7 +67,7 @@ mod_module_edit_tab_server<- function(id,
     if(prod_mod == "editor" & preview == TRUE){
       pool = pool::dbPool(
         drv = RSQLite::SQLite(),
-        dbname = "editor_preview_temp.sqlite3",
+        dbname = "db_preview.sqlite3",
         host = "dbeditor",
         username = "user",
         password = "user"

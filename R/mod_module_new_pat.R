@@ -14,7 +14,7 @@ mod_module_new_pat_ui <- function(id) {
     fluidRow(
       column(10,
              box(
-               title = lang_sel$menu_inclusion, width = 12, status = "primary", solidHeader = TRUE,
+               title = internal_app_data$lang_sel$menu_inclusion, width = 12, status = "primary", solidHeader = TRUE,
                div(
                  mod_module_edit_tab_ui(id = ns("mod_module_edit_tab_inclusion"))
                )
