@@ -37,7 +37,9 @@ mod_module_new_pat_ui <- function(id) {
 mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE) {
   moduleServer(id, function(input, output, session) {
 
-    widget_data_input = golem::get_golem_options("widget_data_input")
+    widget_data_input = load_widget_data(pool_config = golem::get_golem_options("pool_config"),
+                                         production_mode = golem::get_golem_options("production_mode"))
+
 
   	# Load required data
   	widgets_table_global = widget_data_input$widgets_table_global

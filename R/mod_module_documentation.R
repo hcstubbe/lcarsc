@@ -35,7 +35,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
     # Requirements ----
     ns = session$ns
-    widget_data_input = golem::get_golem_options("widget_data_input")
+    widget_data_input = load_widget_data(pool_config = golem::get_golem_options("pool_config"),
+                                         production_mode = golem::get_golem_options("production_mode"))
 
     # Get the data base connection
     pool = get_golem_options("pool")
