@@ -30,7 +30,7 @@ mod_module_documentation_ui  <- function(id) {
 #' module_documentation Server Functions
 #'
 #' @noRd
-mod_module_documentation_server <- function(id, data_table1, data_table2, app_data_internal_submodule, preview = FALSE) {
+mod_module_documentation_server <- function(id, data_table1, data_table2, widget_data_input_submodule, preview = FALSE) {
   moduleServer(id, function(input, output, session) {
 
     # Requirements ----
@@ -52,12 +52,12 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, app_da
       )
     }
 
-  lang_sel = app_data_internal_submodule$lang_sel
-	widgets_table_global = app_data_internal_submodule$widgets_table_global
-	all_visits = app_data_internal_submodule$all_visits
-	all_tabs = app_data_internal_submodule$all_tabs
-    ordered_visits = app_data_internal_submodule$ordered_visits
-	visit_choices = app_data_internal_submodule$visit_choices
+  lang_sel = widget_data_input_submodule$lang_sel
+	widgets_table_global = widget_data_input_submodule$widgets_table_global
+	all_visits = widget_data_input_submodule$all_visits
+	all_tabs = widget_data_input_submodule$all_tabs
+    ordered_visits = widget_data_input_submodule$ordered_visits
+	visit_choices = widget_data_input_submodule$visit_choices
 
 	rv_downstream = reactiveValues()
 
