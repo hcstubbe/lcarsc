@@ -32,7 +32,6 @@ make_widget_tables = function(pool,
   vars = dbReadTable(pool, "editor_table_vars") %>% filter(deleted_row == FALSE)%>%
     arrange(order_of_var)
 
-
   # Determine which tabs are displayed for each visit
   visit_tabs = levels(as.factor(vars$panel))
   visit_tabs_logic = c()
@@ -49,6 +48,7 @@ make_widget_tables = function(pool,
   visits$inclusion_other_visit = visits$visit_id_visits %in% c("diagnosis", "medication", "vi") # inclusion visits needs to have the id "vi"!
   visits$inclusion_criteria = FALSE
   visits$inclusion_criteria = visits$visit_id_visits == "vi"
+
 
   # Make tabs
 
@@ -188,7 +188,7 @@ make_widget_tables = function(pool,
 
 
   # Add required variables (i.e. required for technical reasons)
-  var_table = widget_data_input$widgets_template %>% rbind(var_table)
+  var_table = internal_app_data$widgets_template %>% rbind(var_table)
   for(i in visits$visit_id_visits){
     vars %>% filter(visit_for_var == i)
     var_table[i] = var_table[,"inputId"] %in% paste((vars %>% filter(visit_for_var == i))[,"visit_for_var"], (vars %>% filter(visit_for_var == i))[,"inputId"], sep = "_") | var_table$widget_tab == "all"
@@ -213,9 +213,9 @@ make_widget_tables = function(pool,
   if(write_widget_tables == TRUE){
     dir.create(file.path("widgets"), showWarnings = FALSE)
     lapply(names(widget_tables), function(x) write_csv(widget_tables[[x]], paste0("widgets/", x, ".csv")))
-    widget_data_input = create_widget_data_input(lang_sel = widget_data_input$lang_sel)
   }
 
   widget_tables
+  saveRDS(widget_tables, "widget_tables.RDS")
 
 }

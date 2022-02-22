@@ -42,3 +42,17 @@ run_app(options = list(host = '0.0.0.0', port = 3838))
 #   RMariaDB::dbRemoveTable(pool_config, "start_config")
 # }
 # reset_config()
+
+# config_database_driver = RSQLite::SQLite() # RMariaDB::MariaDB()
+# config_dbuser = "config_user"
+# config_dbpassword = "config_password"
+# config_dbhost = "db_config"
+# config_dbname = "db_config.sqlite3"
+# pool_config = pool::dbPool(drv = config_database_driver,user = config_dbuser,password = config_dbpassword,host = config_dbhost,db = config_dbname)
+# x = list()
+# for (i in RMariaDB::dbListTables(conn = pool_config)){
+#   xi = RMariaDB::dbReadTable(conn = pool_config, name = i)
+#   x = c(x , list(xi))
+# }
+# names(x) = RMariaDB::dbListTables(conn = pool_config)
+# x
