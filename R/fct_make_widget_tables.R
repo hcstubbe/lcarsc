@@ -204,20 +204,18 @@ make_widget_tables = function(pool,
 
   # Save results and write tables to file and database
   colnames(visits)[colnames(visits) == "visit_id_visits"] = "visit_id"
-  widget_tables = list("visits" = visits, "panel_tabs" = panel_tabs, "widgets" = var_table)
+  widget_tables = c(list("visits" = visits, "panel_tabs" = panel_tabs, "widgets" = var_table), internal_app_data[c("widgets_editor", "visits_editor", "widgets_template")])
 
 
   # Update tables on database
   db_replace_tables(conn = pool_config, table_list = widget_tables) # replace configuration tables
 
-  # if(write_widget_tables == TRUE){
-  #   dir.create(file.path("widgets"), showWarnings = FALSE)
-  #   lapply(names(widget_tables), function(x) write_csv(widget_tables[[x]], paste0("widgets/", x, ".csv")))
-  #   widget_data_input = create_widget_data_input(lang_sel = widget_data_input$lang_sel)
-  #   saveRDS(widget_data_input, "widgets/widget_data_input.RDS")
-  # }
+  if(write_widget_tables == TRUE){
+    dir.create(file.path("widgets"), showWarnings = FALSE)
+    lapply(names(widget_tables), function(x) write_csv(widget_tables[[x]], paste0("widgets/", x, ".csv")))
+    widget_data_input = create_widget_data_input(lang_sel = widget_data_input$lang_sel)
+  }
 
-  widget_tables$widget_data_input = widget_data_input
   widget_tables
 
 }
