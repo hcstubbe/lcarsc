@@ -45,7 +45,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, widget
     if(prod_mod == "editor" & preview == TRUE){
       pool = pool::dbPool(
         drv = RSQLite::SQLite(),
-        dbname = "editor_preview_temp.sqlite3",
+        dbname = "db_preview.sqlite3",
         host = "dbeditor",
         username = "user",
         password = "user"

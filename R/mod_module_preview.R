@@ -30,8 +30,8 @@ mod_module_preview_server <- function(id){
   moduleServer( id, function(input, output, session){
 
     # Remove preview db file on starting the module
-    if(file.exists("editor_preview_temp.sqlite3")){
-      file.remove("editor_preview_temp.sqlite3")
+    if(file.exists("db_preview.sqlite3")){
+      file.remove("db_preview.sqlite3")
     }
 
     # Launch module servers ----
