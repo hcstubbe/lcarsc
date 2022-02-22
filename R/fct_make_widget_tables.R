@@ -216,6 +216,5 @@ make_widget_tables = function(pool,
   }
 
   widget_tables
-  saveRDS(widget_tables, "widget_tables.RDS")
 
 }

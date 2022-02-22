@@ -18,7 +18,7 @@ load_widget_data = function(pool_config, production_mode){
 
     if ( RMariaDB::dbExistsTable(conn = conn, name = x_table) ){
       x_table = RMariaDB::dbReadTable(conn = conn, name = x_table)
-    } else if(prod_mod == "editor"){  # Try to read table from widgets folder, if in editor mode.
+    } else if(prod_mod == "editor"){  # Try to read table from internal data, if in editor mode.
       x_table = internal_app_data[[x_table]]
     } else {
       stop(paste0(x_table, " could not be found!"))
