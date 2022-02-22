@@ -52,7 +52,6 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, widget
       )
     }
 
-  internal_app_data$lang_sel = widget_data_input_submodule$internal_app_data$lang_sel
 	widgets_table_global = widget_data_input_submodule$widgets_table_global
 	all_visits = widget_data_input_submodule$all_visits
 	all_tabs = widget_data_input_submodule$all_tabs
