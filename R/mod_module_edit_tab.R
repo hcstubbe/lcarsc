@@ -10,7 +10,7 @@
 #' @importFrom shiny NS tagList
 #' @importFrom RMariaDB dbListTables dbAppendTable dbExecute dbCreateTable
 #' @importFrom golem get_golem_options
-#' @importFrom shinyvalidate InputValidator sv_required
+#' @importFrom shinyvalidate InputValidator sv_required sv_between sv_optional
 #' @importFrom DT dataTableOutput renderDataTable
 #' @importFrom uuid UUIDgenerate
 mod_module_edit_tab_ui <- function(id) {
@@ -202,12 +202,13 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$add_button, priority = 20,{
 
       entry_form(ns("submit"), visit_id)
+      iv$enable()
 
     })
 
     observeEvent(input$submit, priority = 20,{
       rv_uuid$uuid = UUIDgenerate()
-      iv$enable()
+
       if (iv$is_valid()) {
         dbAppendTable(pool, tbl_id, formData())
         close()
@@ -478,15 +479,16 @@ mod_module_edit_tab_server<- function(id,
     ####-------- Observe mandatory fields --------####
 
     iv <- InputValidator$new()
+
     required_fields = widgets_table[widgets_table$widget & widgets_table$mandatory,]$inputId
-    numeric_fields = widgets_table[widgets_table$widget & widgets_table$type == "numericInput",]$inputId
     sapply(required_fields, function(x) iv$add_rule(x, sv_required()))
+
+    numeric_fields = widgets_table[widgets_table$widget & widgets_table$type == "numericInput",]$inputId
+
     sapply(numeric_fields, function(x) {
-      iv$add_rule(x, function(value) {
-        if (value < widgets_table[x,"lower"] | value > widgets_table[x,"upper"] ) {
-          "Check if value is plausible!"
-        }
-      })
+      iv$add_rule(x, sv_between(left = widgets_table[widgets_table$inputId == x,]$min,
+                                 right = widgets_table[widgets_table$inputId == x,]$max,
+                                 allow_na = TRUE))
     })
 
     close <- function() {
