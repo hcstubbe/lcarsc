@@ -139,19 +139,24 @@ mod_module_launcher_edit_server <- function(id){
   	# Module drop down menu
   	mod_module_deploy_server("module_deploy_1")
 
+  	# Module general settings
+  	mod_module_settings_server("module_settings_1")
 
 
     # Observe drop down menu ----
   	observeEvent(input$linkClicked, {
 
       showModal(
-
         if( input$linkClicked$data == "menuitem_3" ){
           modalDialog(
             title = "Deployment",
             mod_module_deploy_ui(ns("module_deploy_1")))
-        }else{
+        }else if(input$linkClicked$data == "menuitem_2"){
           modalDialog(title = "Access denied", "Required permissions are not met.")
+        }else if(input$linkClicked$data == "menuitem_1"){
+          modalDialog(size = "l",
+            title = "General settings",
+            mod_module_settings_ui(ns("module_settings_1")))
         }
 
       )

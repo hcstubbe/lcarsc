@@ -105,31 +105,31 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     rv_downstream_diag = reactiveValues()
     rv_downstream_diag$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
 
-    # mod_module_edit_tab_server(id = "mod_module_edit_tab_diag",
-    #                        widget_tab_selection = "diagnosis",
-    #                        tbl_id = "diagnoses_table",
-    #                        rv_in = rv_downstream_diag,
-    #                        show_vals = c(Diagnosis = "diag_name", Start = "diag_start", End = "diag_end", Submitted = "submitted_row"),
-    #                        widgets_table_global = widgets_table_global,
-    #                        all_visits = all_visits,
-    #                        visit_id = "diagnosis",
-    #                        order.by = NULL,
-    #                        preview = preview
-    # )
-    #
-    # rv_downstream_med = reactiveValues()
-    # rv_downstream_med$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
-    # mod_module_edit_tab_server(id = "mod_module_edit_tab_med",
-    #                        widget_tab_selection = "medication",
-    #                        tbl_id = "medication_table",
-    #                        rv_in = rv_downstream_med,
-    #                        show_vals = c(Substance = "med_substance", Dosis = "med_dosing", 'Application route' = "med_route", Start = "med_start", End = "med_end", Submitted = "submitted_row"),
-    #                        widgets_table_global = widgets_table_global,
-    #                        all_visits = all_visits,
-    #                        visit_id = "medication",
-    #                        order.by = NULL,
-    #                        preview = preview)
-    #
+    mod_module_edit_tab_server(id = "mod_module_edit_tab_diag",
+                           widget_tab_selection = "diagnosis",
+                           tbl_id = "diagnoses_table",
+                           rv_in = rv_downstream_diag,
+                           show_vals = c(Diagnosis = "diag_name", Start = "diag_start", End = "diag_end", Submitted = "submitted_row"),
+                           widgets_table_global = widgets_table_global,
+                           all_visits = all_visits,
+                           visit_id = "diagnosis",
+                           order.by = NULL,
+                           preview = preview
+    )
+
+    rv_downstream_med = reactiveValues()
+    rv_downstream_med$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+    mod_module_edit_tab_server(id = "mod_module_edit_tab_med",
+                           widget_tab_selection = "medication",
+                           tbl_id = "medication_table",
+                           rv_in = rv_downstream_med,
+                           show_vals = c(Substance = "med_substance", Dosis = "med_dosing", 'Application route' = "med_route", Start = "med_start", End = "med_end", Submitted = "submitted_row"),
+                           widgets_table_global = widgets_table_global,
+                           all_visits = all_visits,
+                           visit_id = "medication",
+                           order.by = NULL,
+                           preview = preview)
+
 
 
     # Observers ----
