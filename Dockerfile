@@ -31,4 +31,4 @@ RUN R -e 'devtools::install_local("dependencies/lcarsM.tar.gz", force = T)'
 RUN rm -r /build_files
 
 
-CMD  ["R", "-e", "lcarsc::run_app(dbuser = 'user', dbpassword = 'user', dbhost = 'dbeditor', dbname = 'mydbeditor', options = list(host = '0.0.0.0', port = 3838))"]
+CMD  ["R", "-e", "lcarsc::run_app(options = list(host = '0.0.0.0', port = 3838))"]
