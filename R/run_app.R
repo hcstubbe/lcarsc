@@ -14,17 +14,28 @@ run_app <- function(
   enableBookmarking = NULL,
   uiPattern = "/",
   production_mode = NULL,
-  ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
-  ecrf_dbuser = "default_user",
-  ecrf_dbpassword = "default_password",
-  ecrf_dbhost = "db_ecrf_data",
-  ecrf_dbname = "db_ecrf_data.sqlite3",
-  config_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
-  config_dbuser = "config_user",
-  config_dbpassword = "config_password",
-  config_dbhost = "db_config",
-  config_dbname = "db_config.sqlite3",
+  ecrf_database_driver = RMariaDB::MariaDB(),
+  ecrf_dbuser = "user",
+  ecrf_dbpassword = "user",
+  ecrf_dbhost = "dbeditor",
+  ecrf_dbname = "mydbeditor",
+  config_database_driver = RMariaDB::MariaDB(),
+  config_dbuser = "user",
+  config_dbpassword = "user",
+  config_dbhost = "dbeditor",
+  config_dbname = "mydbeditor",
   preview_mobile = TRUE,
+  # ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
+  # ecrf_dbuser = "default_user",
+  # ecrf_dbpassword = "default_password",
+  # ecrf_dbhost = "db_ecrf_data",
+  # ecrf_dbname = "db_ecrf_data.sqlite3",
+  # config_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
+  # config_dbuser = "config_user",
+  # config_dbpassword = "config_password",
+  # config_dbhost = "db_config",
+  # config_dbname = "db_config.sqlite3",
+  # preview_mobile = TRUE,
   ...
 ) {
   with_golem_options(

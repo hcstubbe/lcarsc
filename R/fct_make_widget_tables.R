@@ -12,8 +12,7 @@
 #'
 make_widget_tables = function(pool,
                               pool_config,
-                              write_widget_tables = FALSE,
-                              remove_old_tables = FALSE) {
+                              write_widget_tables = FALSE) {
 
 
   # Read input widget data
