@@ -25,6 +25,7 @@ EXPOSE 3838
 COPY . /build_files
 WORKDIR /build_files
 RUN R -e 'remotes::install_local(upgrade="never", force = TRUE)'
+RUN R -e 'devtools::install_local("dependencies/lcarsM.tar.gz", force = T)'
 
 RUN rm -r /build_files
 
