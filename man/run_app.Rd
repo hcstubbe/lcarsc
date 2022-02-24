@@ -13,13 +13,13 @@ run_app(
   ecrf_database_driver = RMariaDB::MariaDB(),
   ecrf_dbuser = "user",
   ecrf_dbpassword = "user",
-  ecrf_dbhost = "db",
-  ecrf_dbname = "mydb",
+  ecrf_dbhost = "dbeditor",
+  ecrf_dbname = "mydbeditor",
   config_database_driver = RMariaDB::MariaDB(),
   config_dbuser = "user",
   config_dbpassword = "user",
-  config_dbhost = "db",
-  config_dbname = "mydb",
+  config_dbhost = "dbeditor",
+  config_dbname = "mydbeditor",
   preview_mobile = TRUE,
   ...
 )
