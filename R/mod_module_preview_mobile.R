@@ -34,6 +34,12 @@ mod_module_preview_mobile_server <- function(id){
                                     dbpassword = 'user',
                                     dbhost = 'dbeditor',
                                     dbname = 'mobile_preview.sqlite3',
+                                    cfg_database_driver = RSQLite::SQLite(),
+                                    cfg_dbuser = 'user',
+                                    cfg_dbpassword = 'user',
+                                    cfg_dbhost = 'dbcfg',
+                                    cfg_dbname = 'mobile_preview.sqlite3',
+                                    preview_mobile = TRUE,
                                     options = list(host = '0.0.0.0', port = 3838)),
                     landscape = TRUE)
     })

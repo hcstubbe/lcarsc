@@ -24,6 +24,7 @@ run_app <- function(
   config_dbpassword = "config_password",
   config_dbhost = "db_config",
   config_dbname = "db_config.sqlite3",
+  preview_mobile = TRUE,
   ...
 ) {
   with_golem_options(
@@ -36,6 +37,7 @@ run_app <- function(
       uiPattern = uiPattern
     ),
     golem_opts = list(production_mode = production_mode,
+                      preview_mobile = preview_mobile,
                       pool = pool::dbPool(drv = ecrf_database_driver,
                                           user = ecrf_dbuser,
                                           password = ecrf_dbpassword,

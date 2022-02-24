@@ -20,6 +20,7 @@ run_app(
   config_dbpassword = "config_password",
   config_dbhost = "db_config",
   config_dbname = "db_config.sqlite3",
+  preview_mobile = TRUE,
   ...
 )
 }
