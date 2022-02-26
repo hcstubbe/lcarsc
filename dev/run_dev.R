@@ -12,8 +12,14 @@ rm(list=ls(all.names = TRUE))
 golem::document_and_reload()
 
 # Run the application using a local SQL database
-# devtools::install_local("/home/rstudio/lcarsM", force = T)
-run_app(options = list(host = '0.0.0.0', port = 3838))
+# devtools::install_local("dependencies/lcarsM.tar.gz", force = T)
+run_app(ecrf_database_driver = RMariaDB::MariaDB(), # RSQLite::SQLite(),
+        ecrf_dbhost = "dbdev",
+        ecrf_dbname = "mydbdev",
+        config_database_driver = RMariaDB::MariaDB(),
+        config_dbhost = "dbdev",
+        config_dbname = "mydbdev",
+        options = list(host = '0.0.0.0', port = 3838))
 
 # run_app( config_database_driver = RMariaDB::MariaDB(),
 #          config_dbuser = "user",
