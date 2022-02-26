@@ -93,7 +93,7 @@ mod_module_editor_controls_server <- function(id) {
 
       # Zip widget files and data base export
       dir.create(file.path("zip/database_export"), showWarnings = FALSE)
-      make_widget_tables(pool = pool, pool_config = pool_config, write_widget_tables = TRUE, remove_old_tables = FALSE)
+      make_widget_tables(pool = pool, pool_config = pool_config, write_widget_tables = TRUE)
       zip(zipfile = 'zip/database_export', files = c('widgets/widgets.csv', "widgets/visits.csv", "widgets/panel_tabs.csv", "widgets/widget_data_input.RDS"))
       zip(zipfile = 'zip/database_export', files = c('database_export/editor_table_vars.csv', 'database_export/editor_table_visit.csv'))
 
