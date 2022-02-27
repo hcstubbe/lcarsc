@@ -28,6 +28,8 @@ make_widget_tables = function(pool,
     visits = rbind(list(order = 0, visit_id_visits = "vi", visit_title = "Inclusion"), visits)
   }
 
+
+
   vars = dbReadTable(pool, "editor_table_vars") %>% filter(deleted_row == FALSE)%>%
     arrange(order_of_var)
 
@@ -89,6 +91,27 @@ make_widget_tables = function(pool,
     mtx = cbind(panel_tabs_temp$tab_id[i], mtx)
     if(length(panels_i) > 4){
       mtx[,1] = paste(mtx[,1], 1:nrow(mtx), sep = "_")
+
+      xi = c()
+      for ( i in 1:nrow(mtx) ) {
+        xi = cbind(xi, visits[,mtx[1,2]])
+      }
+      colnames(xi) = mtx[,1]
+
+      pos_insert = which(colnames(visits) == mtx[1,2])
+      if (ncol(visits) == pos_insert) {
+        new_vists = cbind(visits[,1:pos_insert], xi)
+        new_vists = new_vists[,-pos_insert]
+      } else if (ncol(visits) > 1){
+        new_vists = cbind(visits[,1:pos_insert], xi)
+        new_vists = cbind(new_vists, visits[,(pos_insert+1):ncol(visits)])
+        new_vists = new_vists[,-pos_insert]
+      } else {
+        stop("Only one visit detected!")
+      }
+      visits = new_vists
+
+
     }
     mtx = cbind("", mtx)
 
@@ -97,10 +120,8 @@ make_widget_tables = function(pool,
     panel_tabs = rbind(panel_tabs, mtx)
   }
 
+
   panel_tabs$position = 1:nrow(panel_tabs)
-  # Make vars file
-
-
 
   # Make widget table
   var_table = data.frame(list(

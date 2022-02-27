@@ -35,12 +35,12 @@ load_widget_data = function(pool_config, production_mode){
                                  pool_config = pool_config)
 
   all_visits = db_read_app_data(conn = pool_config, x_table = "visits", prod_mod = prod_mod)
-  x = all_visits
+
   widget_data = list(all_visits = all_visits,
                      ordered_visits = all_visits %>% filter(!is.na(order)) %>% arrange(order),
                      widgets_table_global = db_read_app_data(conn = pool_config, x_table = "widgets", prod_mod = prod_mod),
                      all_tabs = db_read_app_data(conn = pool_config, x_table = "panel_tabs", prod_mod = prod_mod),
-                     visit_choices = all_visits$visit_id[!(all_visits$inclusion_other_visit)],
+                     visit_choices = all_visits$visit_id[!(all_visits$inclusion_other_visit == TRUE)],
                      widgets_table_global_widgets = db_read_app_data(conn = pool_config, x_table = "widgets_editor", prod_mod = prod_mod),
                      all_visits_editor = db_read_app_data(conn = pool_config, x_table = "visits_editor", prod_mod = prod_mod),
                      widgets_template = db_read_app_data(conn = pool_config, x_table = "widgets_template", prod_mod = prod_mod))

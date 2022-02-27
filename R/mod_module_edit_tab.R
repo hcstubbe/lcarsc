@@ -93,8 +93,8 @@ mod_module_edit_tab_server<- function(id,
     names(fieldsAll) = widgets_table$inputId
     sql_tbl_vars = widgets_table$data_type
     names(sql_tbl_vars) = widgets_table$inputId
-    visit_choices = all_visits$visit_id[!all_visits$inclusion_other_visit]
-    names(visit_choices) = all_visits$visit_title[!all_visits$inclusion_other_visit]
+    visit_choices = all_visits$visit_id[!(all_visits$inclusion_other_visit == TRUE)]
+    names(visit_choices) = all_visits$visit_title[!(all_visits$inclusion_other_visit == TRUE)]
 
     # Check if database exists and create if required
     if(!is.element(tbl_id, dbListTables(pool))){
@@ -125,12 +125,12 @@ mod_module_edit_tab_server<- function(id,
 
       if(submit == FALSE){
         if(simple == TRUE){
-          widget_list = makeWidgetList_simple(widget_data = widgets_table[widgets_table$widget,],
+          widget_list = makeWidgetList_simple(widget_data = widgets_table[widgets_table$widget == TRUE,],
                                               ns = ns,
                                               pid = rv_in$pid(),
                                               tbl_id = tbl_id)
         }else{
-          widget_list = makeWidgetList_panels(widget_data = widgets_table[widgets_table$widget,],
+          widget_list = makeWidgetList_panels(widget_data = widgets_table[widgets_table$widget == TRUE,],
                                               all_tabs = all_tabs,
                                               visit_id = visit_id,
                                               all_visits = all_visits,
@@ -174,7 +174,7 @@ mod_module_edit_tab_server<- function(id,
       }
     }
 
-    widgets_only = widgets_table[widgets_table$widget,]
+    widgets_only = widgets_table[widgets_table$widget == TRUE,]
     widgets_ids = sapply(1:nrow(widgets_only), function(i) widgets_only$inputId[i])
 
 
@@ -325,11 +325,11 @@ mod_module_edit_tab_server<- function(id,
     widgets_x =  subset(widgets_table, select_true)
     if(nrow(widgets_x) > 0){
       field_updates_select = paste("update",
-                                   start_upper(widgets_x[widgets_x$widget,"type"]),
+                                   start_upper(widgets_x[widgets_x$widget == TRUE,"type"]),
                                    "(session,'",
-                                   widgets_x[widgets_x$widget,"inputId"],
+                                   widgets_x[widgets_x$widget == TRUE,"inputId"],
                                    "', selected = SQL_df[input$responses_table_rows_selected,'",
-                                   widgets_x[widgets_x$widget,"inputId"],
+                                   widgets_x[widgets_x$widget == TRUE,"inputId"],
                                    "'])",
                                    sep = "")
     }else{
@@ -339,11 +339,11 @@ mod_module_edit_tab_server<- function(id,
     widgets_x = subset(widgets_table, !select_true)
     if(nrow(widgets_x) > 0){
       field_updates_value = paste("update",
-                                  start_upper(widgets_x[widgets_x$widget,"type"]),
+                                  start_upper(widgets_x[widgets_x$widget == TRUE,"type"]),
                                   "(session,'",
-                                  widgets_x[widgets_x$widget,"inputId"],
+                                  widgets_x[widgets_x$widget == TRUE,"inputId"],
                                   "', value = SQL_df[input$responses_table_rows_selected,'",
-                                  widgets_x[widgets_x$widget,"inputId"],
+                                  widgets_x[widgets_x$widget == TRUE,"inputId"],
                                   "'])",
                                   sep = "")
     }else{
@@ -480,10 +480,10 @@ mod_module_edit_tab_server<- function(id,
 
     iv <- InputValidator$new()
 
-    required_fields = widgets_table[widgets_table$widget & widgets_table$mandatory,]$inputId
+    required_fields = widgets_table[widgets_table$widget == TRUE & widgets_table$mandatory == TRUE,]$inputId
     sapply(required_fields, function(x) iv$add_rule(x, sv_required()))
 
-    numeric_fields = widgets_table[widgets_table$widget & widgets_table$type == "numericInput",]$inputId
+    numeric_fields = widgets_table[widgets_table$widget == TRUE & widgets_table$type == "numericInput",]$inputId
 
     sapply(numeric_fields, function(x) {
       iv$add_rule(x, sv_between(left = widgets_table[widgets_table$inputId == x,]$min,

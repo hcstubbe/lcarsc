@@ -16,7 +16,7 @@ makeWidgetList_panels = function(widget_data, all_tabs, all_visits, visit_id, ro
 
 
   ## Compile widget list
-  widget_data_i = widget_data[widget_data$widget & widget_data[,visit_id],]
+  widget_data_i = widget_data[widget_data$widget == TRUE & widget_data[,visit_id] == TRUE,]
   widget_data_i_levels = levels(factor(widget_data_i$panel))
   if(length(widget_data_i_levels) > 1){
     widget_list=sapply(widget_data_i_levels,
@@ -47,7 +47,6 @@ makeWidgetList_panels = function(widget_data, all_tabs, all_visits, visit_id, ro
   }else{
     panel_list = list(make_panels(widget_list))
   }
-
 
   ## Function for putting panels into tabs of navbar
   make_navbar_tabs = function(i, panel_list, all_tabs, visit_id){
@@ -81,9 +80,9 @@ makeWidgetList_panels = function(widget_data, all_tabs, all_visits, visit_id, ro
                     panel2down))
   }
 
-
   ## Compile all tabs for each visit
   app_title = all_visits[all_visits$visit_id == visit_id,"visit_title"]
+
   all_tabs_sub = all_tabs[unlist(all_visits[all_visits$visit_id == visit_id,all_tabs$tab_id]),]
 
   if(length(widget_data_i_levels) > 1){
