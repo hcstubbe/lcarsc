@@ -310,69 +310,26 @@ mod_module_edit_tab_server<- function(id,
 
     # Edit data ----
 
-    ## Functions for updating fields
-    updateSelectInputFromDatabase = updateSelectInput
-    updateNumericInputCouter = updateNumericInput
-    updateTextInputForChoicesFromVar = function(...){
-      NULL
-    }
-
-    start_upper = function(x) {
-      substr(x, 1, 1) = toupper(substr(x, 1, 1))
-      x
-    }
-    select_true = base::grepl(pattern = "select", x = widgets_table$type, perl = TRUE, ignore.case = T) | base::grepl(pattern = "radio", x = widgets_table$type, perl = TRUE, ignore.case = T)
-    widgets_x =  subset(widgets_table, select_true)
-    if(nrow(widgets_x) > 0){
-      field_updates_select = paste("update",
-                                   start_upper(widgets_x[widgets_x$widget == TRUE,"type"]),
-                                   "(session,'",
-                                   widgets_x[widgets_x$widget == TRUE,"inputId"],
-                                   "', selected = SQL_df[input$responses_table_rows_selected,'",
-                                   widgets_x[widgets_x$widget == TRUE,"inputId"],
-                                   "'])",
-                                   sep = "")
-    }else{
-      field_updates_select = NULL
-    }
-
-    widgets_x = subset(widgets_table, !select_true)
-    if(nrow(widgets_x) > 0){
-      field_updates_value = paste("update",
-                                  start_upper(widgets_x[widgets_x$widget == TRUE,"type"]),
-                                  "(session,'",
-                                  widgets_x[widgets_x$widget == TRUE,"inputId"],
-                                  "', value = SQL_df[input$responses_table_rows_selected,'",
-                                  widgets_x[widgets_x$widget == TRUE,"inputId"],
-                                  "'])",
-                                  sep = "")
-    }else{
-      field_updates_value = NULL
-    }
-    field_updates = c(field_updates_select, field_updates_value)
-
-
-
-
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by)
       row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
+      SQL_df_selected = SQL_df[input$responses_table_rows_selected, ]
 
       if(length(row_submitted) < 1){
         row_submitted = FALSE
       }
 
       showModal(
-        if(length(input$responses_table_rows_selected) > 1 ){
+        if (length(input$responses_table_rows_selected) > 1 ) {
           modalDialog(
             title = "Warning",
             paste("Please select only one row." ),easyClose = TRUE)
-        } else if(length(input$responses_table_rows_selected) < 1){
+        } else if (length(input$responses_table_rows_selected) < 1){
           modalDialog(
             title = "Warning",
             paste("Please select a row." ),easyClose = TRUE)
-        }else if(length(input$responses_table_rows_selected) == 1 & row_submitted == TRUE){
+        } else if (length(input$responses_table_rows_selected) == 1 & row_submitted == TRUE) {
           modalDialog(
             title = "Warning",
             paste("Submitted row(s) cannot be edited"),easyClose = TRUE
@@ -384,9 +341,10 @@ mod_module_edit_tab_server<- function(id,
 
         entry_form(ns("submit_edit"), visit_id)
 
-        for(i in field_updates){
-          eval(parse(text=i))
-        }
+        update_all_fields(session = session,
+                          db_data = SQL_df_selected,
+                          widget_data = widgets_table[widgets_table$widget == TRUE,])
+
       }
 
     })
