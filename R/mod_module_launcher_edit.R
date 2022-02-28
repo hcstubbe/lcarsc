@@ -142,6 +142,7 @@ mod_module_launcher_edit_server <- function(id){
   	# Module general settings
   	rv_settings = reactiveValues()
   	rv_settings$settings_menu_started = reactive({0})
+  	rv_settings$save_settings_button = reactive({0})
   	mod_module_settings_server("module_settings_1", rv = rv_settings)
 
 
@@ -170,7 +171,7 @@ mod_module_launcher_edit_server <- function(id){
   	})
 
   	observeEvent(input$save_settings_button,{
-      rv_settings$save_settings_button = input$save_settings_button
+      rv_settings$save_settings_button = reactive({rv_settings$save_settings_button() + 1})
   	})
 
   	observeEvent(input$close_settings_button,{

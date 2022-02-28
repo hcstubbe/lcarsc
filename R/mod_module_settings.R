@@ -89,10 +89,12 @@ mod_module_settings_server <- function(id, rv){
                           function(x) input[[x]],
                           simplify = FALSE,
                           USE.NAMES = TRUE)
-      input_data = data.frame(input_data)
-      input_list = list(input_data)
-      names(input_list) = server_settings_tbl_id
-      db_replace_tables(conn = pool_config, table_list = input_list)
+      if(!all(sapply(input_data, is.null))){
+        input_data = data.frame(input_data)
+        input_list = list(input_data)
+        names(input_list) = server_settings_tbl_id
+        db_replace_tables(conn = pool_config, table_list = input_list)
+      }
     })
 
     # Update
