@@ -10,7 +10,6 @@
 #'
 update_all_fields = function(session, db_data, widget_data){
 
-  saveRDS(list(db_data = db_data, widget_data = widget_data), "zz_update.RDS")
   widget_ids = widget_data$inputId
 
 
@@ -24,6 +23,14 @@ update_all_fields = function(session, db_data, widget_data){
 
     if(widget_type == "numericInput" | widget_type == "numericInputCouter"){
       shiny::updateNumericInput(inputId = x, session = session, value = db_data[,x])
+    }
+
+    if(widget_type == "dateInput" | widget_type == "numericInputCouter"){
+      shiny::updateDateInput(inputId = x, session = session, value = db_data[,x])
+    }
+
+    if(widget_type == "checkboxInput" | widget_type == "numericInputCouter"){
+      shiny::updateCheckboxInput(inputId = x, session = session, value = db_data[,x])
     }
 
     if(widget_type == "selectInput" | widget_type == "selectInputFromDatabase"){
