@@ -35,7 +35,6 @@ format_input_for_database = function(input_data,
 
 
   # Set conditional variables to NA, if their condition (appear_if) is FALSE
-  saveRDS(widgets_table, "zz_widgets_table.RDS")
   if(any(widgets_table$conditional == TRUE)) {
     appear_if = widgets_table$appear_if
     appear_if[appear_if == ""] = NA
