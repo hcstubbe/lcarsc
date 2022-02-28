@@ -15,6 +15,7 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
 
 
   # Function for making choice variables
+  # This does not affect  'selectInputFromDatabase()'
   make_choices = function(widget_data, i){
     choices_i = c(widget_data$choice1[[i]],
                   widget_data$choice2[[i]],
