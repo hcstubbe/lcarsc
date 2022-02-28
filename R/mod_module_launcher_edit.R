@@ -8,7 +8,7 @@
 #' @import dplyr
 #' @importFrom shiny NS tagList div
 #' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar dropdownMenu menuItem dashboardBody tabItems tabItem
-#' @importFrom shinyWidgets sendSweetAlert
+#' @importFrom shinyWidgets sendSweetAlert show_toast
 #' @import dplyr
 #' @import purrr
 mod_module_launcher_edit_ui <- function(id){
@@ -172,6 +172,8 @@ mod_module_launcher_edit_server <- function(id){
 
   	observeEvent(input$save_settings_button,{
       rv_settings$save_settings_button = reactive({rv_settings$save_settings_button() + 1})
+      showNotification("Data saved", type = "message")
+      # shinyWidgets::show_toast(title = "Update study info", text = "Data saved!", type = "success", position = "bottom")
   	})
 
   	observeEvent(input$close_settings_button,{
