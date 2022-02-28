@@ -14,6 +14,29 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
   wlist_all = list()
 
 
+  # Function for making choice variables
+  make_choices = function(widget_data, i){
+    choices_i = c(widget_data$choice1[[i]],
+                  widget_data$choice2[[i]],
+                  widget_data$choice3[[i]],
+                  widget_data$choice4[[i]],
+                  widget_data$choice5[[i]],
+                  widget_data$choice6[[i]],
+                  widget_data$choice7[[i]],
+                  widget_data$choice8[[i]],
+                  widget_data$choice9[[i]],
+                  widget_data$choice10[[i]],
+                  widget_data$choice11[[i]],
+                  widget_data$choice12[[i]])
+    choices_i = choices_i[!is.na(choices_i) & !duplicated(choices_i) & choices_i != ""]
+    choices = choices_i
+
+    selected = widget_data$selected[i]
+
+    return(list(choices = choices, selected = selected))
+  }
+
+
   for(i in selection){
 
     wlist_i = NULL
@@ -29,47 +52,21 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
     }
 
     if(widget_data$type[i] == "radioButtons" & widget_data$conditional[i] == FALSE){
-      choices = list(widget_data$choice1[[i]],
-                     widget_data$choice2[[i]],
-                     widget_data$choice3[[i]],
-                     widget_data$choice4[[i]],
-                     widget_data$choice5[[i]],
-                     widget_data$choice6[[i]],
-                     widget_data$choice7[[i]],
-                     widget_data$choice8[[i]],
-                     widget_data$choice9[[i]],
-                     widget_data$choice10[[i]],
-                     widget_data$choice11[[i]],
-                     widget_data$choice12[[i]])
-      choices = choices[!is.na(choices)]
-      choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
+      choices_list = make_choices(widget_data, i)
       wlist_i = list(
         radioButtons(inputId = ns(widget_data$inputId[i]),
                      label = widget_data$label[i],
-                     choices = choices,
-                     selected = widget_data$selected[i])
+                     choices = choices_list$choices,
+                     selected = choices_list$selected)
       )
     }
 
     if(widget_data$type[i] == "selectInput" & widget_data$conditional[i] == FALSE){
-      choices = list(widget_data$choice1[[i]],
-                     widget_data$choice2[[i]],
-                     widget_data$choice3[[i]],
-                     widget_data$choice4[[i]],
-                     widget_data$choice5[[i]],
-                     widget_data$choice6[[i]],
-                     widget_data$choice7[[i]],
-                     widget_data$choice8[[i]],
-                     widget_data$choice9[[i]],
-                     widget_data$choice10[[i]],
-                     widget_data$choice11[[i]],
-                     widget_data$choice12[[i]])
-      choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
-      names(choices) = choices
+      choices_list = make_choices(widget_data, i)
       wlist_i = list(selectInput(inputId = ns(widget_data$inputId[i]),
                                  label = widget_data$label[i],
-                                 choices = choices,
-                                 selected = widget_data$selected[i])
+                                 choices = choices_list$choices,
+                                 selected = choices_list$selected)
       )
     }
 
@@ -207,51 +204,25 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
 
 
     if(widget_data$type[i] == "radioButtons" & widget_data$conditional[i] == TRUE){
-      choices = list(widget_data$choice1[[i]],
-                     widget_data$choice2[[i]],
-                     widget_data$choice3[[i]],
-                     widget_data$choice4[[i]],
-                     widget_data$choice5[[i]],
-                     widget_data$choice6[[i]],
-                     widget_data$choice7[[i]],
-                     widget_data$choice8[[i]],
-                     widget_data$choice9[[i]],
-                     widget_data$choice10[[i]],
-                     widget_data$choice11[[i]],
-                     widget_data$choice12[[i]])
-      choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
-      names(choices) = choices
+      choices_list = make_choices(widget_data, i)
       wlist_i = list(
         conditionalPanel(condition = widget_data$appear_if[i],
                          radioButtons(inputId = ns(widget_data$inputId[i]),
                                       label = widget_data$label[i],
-                                      choices = choices,
-                                      selected = widget_data$selected[i]),
+                                      choices = choices_list$choices,
+                                      selected = choices_list$selected),
                          ns = ns)
       )
     }
 
     if(widget_data$type[i] == "selectInput" & widget_data$conditional[i] == TRUE){
-      choices = list(widget_data$choice1[[i]],
-                     widget_data$choice2[[i]],
-                     widget_data$choice3[[i]],
-                     widget_data$choice4[[i]],
-                     widget_data$choice5[[i]],
-                     widget_data$choice6[[i]],
-                     widget_data$choice7[[i]],
-                     widget_data$choice8[[i]],
-                     widget_data$choice9[[i]],
-                     widget_data$choice10[[i]],
-                     widget_data$choice11[[i]],
-                     widget_data$choice12[[i]])
-      choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
-      names(choices) = choices
+      choices_list = make_choices(widget_data, i)
       wlist_i = list(
         conditionalPanel(condition = widget_data$appear_if[i],
                          selectInput(inputId = ns(widget_data$inputId[i]),
                                      label = widget_data$label[i],
-                                     choices = choices,
-                                     selected = widget_data$selected[i]),
+                                     choices = choices_list$choices,
+                                     selected = choices_list$selected),
                          ns = ns)
       )
     }
