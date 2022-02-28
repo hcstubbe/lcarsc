@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny updateTextInput
+#' @importFrom shiny updateTextInput updateNumericInput updateSelectInput updateRadioButtons
 #'
 update_all_fields = function(session, db_data, widget_data){
 
@@ -20,6 +20,18 @@ update_all_fields = function(session, db_data, widget_data){
 
     if(widget_type == "textInput"){
       shiny::updateTextInput(inputId = x, session = session, value = db_data[,x])
+    }
+
+    if(widget_type == "numericInput" | widget_type == "numericInputCouter"){
+      shiny::updateNumericInput(inputId = x, session = session, value = db_data[,x])
+    }
+
+    if(widget_type == "selectInput" | widget_type == "updateSelectInputFromDatabase"){
+      shiny::updateSelectInput(inputId = x, session = session, selected = db_data[,x])
+    }
+
+    if(widget_type == "radioButtons"){
+      shiny::updateRadioButtons(inputId = x, session = session, selected = db_data[,x])
     }
 
 
