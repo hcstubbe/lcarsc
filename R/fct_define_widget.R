@@ -115,7 +115,7 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
     if(widget_data$type[i] == "dateInput" & widget_data$conditional[i] == FALSE){
       wlist_i = list(dateInput(inputId = ns(widget_data$inputId[i]),
                                label = widget_data$label[i],
-                               value = NULL
+                               value = ""
       )
       )
     }
