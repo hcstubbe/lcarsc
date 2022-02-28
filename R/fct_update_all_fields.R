@@ -25,7 +25,7 @@ update_all_fields = function(session, db_data, widget_data){
       shiny::updateNumericInput(inputId = x, session = session, value = db_data[,x])
     }
 
-    if(widget_type == "dateInput" | widget_type == "numericInputCouter"){
+    if(widget_type == "dateInput"){
       shiny::updateDateInput(inputId = x, session = session, value = db_data[,x])
     }
 
