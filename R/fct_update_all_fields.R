@@ -29,7 +29,7 @@ update_all_fields = function(session, db_data, widget_data){
       shiny::updateDateInput(inputId = x, session = session, value = db_data[,x])
     }
 
-    if(widget_type == "checkboxInput" | widget_type == "numericInputCouter"){
+    if(widget_type == "checkboxInput"){
       shiny::updateCheckboxInput(inputId = x, session = session, value = db_data[,x])
     }
 
