@@ -35,19 +35,28 @@ format_input_for_database = function(input_data,
 
 
   # Set conditional variables to NA, if their condition (appear_if) is FALSE
+  saveRDS(widgets_table, "zz_widgets_table.RDS")
   if(any(widgets_table$conditional == TRUE)) {
     appear_if = widgets_table$appear_if
     appear_if[appear_if == ""] = NA
     appear_if = sub("input.", "input_data$", appear_if, fixed = TRUE)
-    appear_if = gsub(" input.", "input_data$", appear_if, fixed = TRUE)
+    appear_if = gsub("input.", "input_data$", appear_if, fixed = TRUE)
     appear_if = gsub("!input.", "!input_data$", appear_if, fixed = TRUE)
     appear_if = gsub("|input.", "|input_data$", appear_if, fixed = TRUE)
     appear_if = gsub("&input.", "&input_data$", appear_if, fixed = TRUE)
 
     appear_if = sapply(appear_if,
-                       function(x) tryCatch(eval(parse(text = "x")), error = function(e) NA),
+                       function(x) {
+                         y = tryCatch(eval(parse(text = x)), error = function(e) NA)
+                         if(length(y) == 0){
+                           y = NA
+                         }
+                         y
+                       },
                        simplify = TRUE,
                        USE.NAMES = FALSE)
+    appear_if = unlist(appear_if)
+
     appear_if[is.na(appear_if)] = FALSE
     widgets_table$appear_if_true = appear_if
 
