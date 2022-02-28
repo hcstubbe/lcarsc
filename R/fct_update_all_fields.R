@@ -26,12 +26,28 @@ update_all_fields = function(session, db_data, widget_data){
       shiny::updateNumericInput(inputId = x, session = session, value = db_data[,x])
     }
 
-    if(widget_type == "selectInput" | widget_type == "updateSelectInputFromDatabase"){
-      shiny::updateSelectInput(inputId = x, session = session, selected = db_data[,x])
+    if(widget_type == "selectInput" | widget_type == "selectInputFromDatabase"){
+      selected = db_data[,x]
+      if(is.null(selected)){
+        selected = character(0)
+      }else if(length(selected) == 0){
+        selected = character(0)
+      }else if(is.na(selected)){
+        selected = character(0)
+      }
+      shiny::updateSelectInput(inputId = x, session = session, selected = selected)
     }
 
     if(widget_type == "radioButtons"){
-      shiny::updateRadioButtons(inputId = x, session = session, selected = db_data[,x])
+      selected = db_data[,x]
+      if(is.null(selected)){
+        selected = character(0)
+      }else if(length(selected) == 0){
+        selected = character(0)
+      }else if(is.na(selected)){
+        selected = character(0)
+      }
+      shiny::updateRadioButtons(inputId = x, session = session, selected = selected)
     }
 
 
