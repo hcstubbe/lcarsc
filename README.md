@@ -14,10 +14,11 @@ acquisition-research software.
 
 ## Installation
 
-Install from github:
+Clone this reposotory and install including lcarsM dependency:
 
 ``` r
-devtools::install_github("hcstubbe/lcarsc")
+devtools::install_local()
+devtools::install_local("dependencies/lcarsM.tar.gz")
 ```
 
 ## Example
