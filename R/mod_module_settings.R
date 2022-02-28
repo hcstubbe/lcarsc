@@ -1,17 +1,19 @@
 #' module_settings UI Function
 #'
-#' @description This modules holds the general server settings.
+#' @description This modules manages the general server settings/information.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList fluidPage
+#' @importFrom shiny NS tagList fluidPage textInput textAreaInput wellPanel fluidPage column actionButton observeEvent
+#' @importFrom shinydashboard box
+#' @importFrom RMariaDB dbAppendTable
+#'
 mod_module_settings_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidPage(
-      wellPanel(
         shinydashboard::box(width = 12, status = "primary",title = "Study information",
                             textInput(ns("study_title"), label = "Title"),
                             textAreaInput(ns("study_introduction"), label = "Introduction")),
@@ -39,18 +41,69 @@ mod_module_settings_ui <- function(id){
                                    textInput(ns("contact2_mail"), label = "E-mail")
                                    )
                )
-        ),
-      actionButton(inputId = ns("save_contact"), label = "Save")
-      )
+        )
+
   )
 }
 
 #' module_settings Server Functions
 #'
 #' @noRd
-mod_module_settings_server <- function(id){
+mod_module_settings_server <- function(id, rv){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+    pool_config = get_golem_options("pool_config")
+    server_settings_tbl_id = "server_settings_tbl"
+
+    ## Gather input data ----
+    form_input_ids = c("study_title",
+                   "study_introduction",
+                   "contact1_name",
+                   "contact1_institute",
+                   "contact1_department",
+                   "contact1_street",
+                   "contact1_postal_code",
+                   "contact1_phone",
+                   "contact1_fax",
+                   "contact1_mail",
+                   "contact2_name",
+                   "contact2_institute",
+                   "contact2_department",
+                   "contact2_street",
+                   "contact2_postal_code",
+                   "contact2_phone",
+                   "contact2_fax",
+                   "contact2_mail"
+    )
+
+    if(is.element(server_settings_tbl_id, RMariaDB::dbListTables(pool_config))){
+      db_settgins_data = RMariaDB::dbReadTable(pool_config, server_settings_tbl_id)
+      lapply(form_input_ids, function(x){
+        shiny::updateTextInput(inputId = x, session = session, value = db_settgins_data[,x])
+      })
+    }
+
+    # Save submission
+    observeEvent(rv$save_settings_button,{
+      input_data = sapply(form_input_ids,
+                          function(x) input[[x]],
+                          simplify = FALSE,
+                          USE.NAMES = TRUE)
+      input_data = data.frame(input_data)
+      input_list = list(input_data)
+      names(input_list) = server_settings_tbl_id
+      db_replace_tables(conn = pool_config, table_list = input_list)
+    })
+
+    # Update
+    shiny::observeEvent(rv$settings_menu_started,{
+      if(is.element(server_settings_tbl_id, RMariaDB::dbListTables(pool_config))){
+        db_settgins_data = RMariaDB::dbReadTable(pool_config, server_settings_tbl_id)
+        lapply(form_input_ids, function(x){
+          shiny::updateTextInput(inputId = x, value = db_settgins_data[,x])
+        })
+      }
+    }, ignoreInit = TRUE)
 
   })
 }

@@ -140,7 +140,9 @@ mod_module_launcher_edit_server <- function(id){
   	mod_module_deploy_server("module_deploy_1")
 
   	# Module general settings
-  	mod_module_settings_server("module_settings_1")
+  	rv_settings = reactiveValues()
+  	rv_settings$settings_menu_started = reactive({0})
+  	mod_module_settings_server("module_settings_1", rv = rv_settings)
 
 
     # Observe drop down menu ----
@@ -154,13 +156,25 @@ mod_module_launcher_edit_server <- function(id){
         }else if(input$linkClicked$data == "menuitem_2"){
           modalDialog(title = "Access denied", "Required permissions are not met.")
         }else if(input$linkClicked$data == "menuitem_1"){
-          modalDialog(size = "l",
+          modalDialog(size = "m",
             title = "General settings",
-            mod_module_settings_ui(ns("module_settings_1")))
+            mod_module_settings_ui(ns("module_settings_1")),
+            footer = fluidRow(
+              actionButton(ns("save_settings_button"), "Save", icon("save", verify_fa = FALSE)),
+              actionButton(ns("close_settings_button"), "Close", icon("close", verify_fa = FALSE))
+            )
+            )
         }
-
       )
+  	  rv_settings$settings_menu_started = reactive({rv_settings$settings_menu_started() + 1})
+  	})
 
+  	observeEvent(input$save_settings_button,{
+      rv_settings$save_settings_button = input$save_settings_button
+  	})
+
+  	observeEvent(input$close_settings_button,{
+  	  shiny::removeModal()
   	})
 
 
