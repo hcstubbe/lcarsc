@@ -14,11 +14,11 @@ acquisition-research software.
 
 ## Installation
 
-Clone this reposotory and install including lcarsM dependency:
+Clone this repository and install lcarsc from the repository's base folder including the lcarsM dependency:
 
 ``` r
-devtools::install_local()
 devtools::install_local("dependencies/lcarsM.tar.gz")
+devtools::install_local()
 ```
 
 ## Example
