@@ -1,25 +1,16 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
 
 # lcarsc
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of lcarsc is to provide a lightweight clinical data acquisition-research software.
+The goal of lcarsc is to provide a lightweight clinical data
+acquisition-research software.
 
 ## Installation
 
@@ -33,7 +24,7 @@ devtools::install_github("hcstubbe/lcarsc")
 
 Using lcarsc locally
 
-```{r example, eval=FALSE, include=TRUE}
+``` r
 library(lcarsc)
 lcarsc::run_app(ecrf_database_driver = RSQLite::SQLite(),
         ecrf_dbhost = "dbtest",
