@@ -6,6 +6,7 @@
 #'
 #' @noRd
 #' @import shiny
+#' @importFrom shinyWidgets airDatepickerInput
 
 
 # Function definfing each widget
@@ -113,10 +114,8 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
     }
 
     if(widget_data$type[i] == "dateInput" & widget_data$conditional[i] == FALSE){
-      wlist_i = list(dateInput(inputId = ns(widget_data$inputId[i]),
-                               label = widget_data$label[i],
-                               value = ""
-      )
+      wlist_i = list(shinyWidgets::airDatepickerInput(inputId = ns(widget_data$inputId[i]),
+                               label = widget_data$label[i])
       )
     }
 
@@ -195,10 +194,8 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
     if(widget_data$type[i] == "dateInput" & widget_data$conditional[i] == TRUE){
       wlist_i = list(
         conditionalPanel(condition = widget_data$appear_if[i],
-                         dateInput(inputId = ns(widget_data$inputId[i]),
-                                   label = widget_data$label[i],
-                                   value = NULL
-                         ),
+                         shinyWidgets::airDatepickerInput(inputId = ns(widget_data$inputId[i]),
+                                                          label = widget_data$label[i]),
                          ns = ns)
       )
     }
