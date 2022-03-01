@@ -107,7 +107,7 @@ mod_module_editor_controls_server <- function(id) {
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
-                  downloadButton(ns("downloadData"), "Download"),
+                  downloadButton(ns("downloadData"), "Download", icon = shiny::icon("download", verify_fa = FALSE)),
                   modalButton("Back")
                 )
               )
@@ -132,34 +132,34 @@ mod_module_editor_controls_server <- function(id) {
 
 
     # Reset dialogue ----
-    observeEvent(input$reset_widgets_button, {
-      showModal(
-        modalDialog(
-          title = "Confirm reset & reload",
-          div(tags$head(tags$style(".modal-dialog{ width:400px}")),
-              tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
-              fluidPage(
-                fluidRow(
-                  actionButton(ns("reset_widgets_button_confirm"), "Confirm"),
-                  modalButton("Dismiss")
-                )
-              )
-          ),
-          easyClose = TRUE, footer = NULL
-        )
-      )
-    })
-    observeEvent(input$reset_widgets_button_confirm, {
-      tbl_ids = dbListTables(pool)
-      if(length(tbl_ids) > 0){
-        for (i in tbl_ids) {
-          dbRemoveTable(pool, i)
-        }
-      }
-      removeModal()
-      showNotification("Database reset!", type = "message")
-      session$reload()
-    })
+    # observeEvent(input$reset_widgets_button, {
+    #   showModal(
+    #     modalDialog(
+    #       title = "Confirm reset & reload",
+    #       div(tags$head(tags$style(".modal-dialog{ width:400px}")),
+    #           tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+    #           fluidPage(
+    #             fluidRow(
+    #               actionButton(ns("reset_widgets_button_confirm"), "Confirm"),
+    #               modalButton("Dismiss")
+    #             )
+    #           )
+    #       ),
+    #       easyClose = TRUE, footer = NULL
+    #     )
+    #   )
+    # })
+    # observeEvent(input$reset_widgets_button_confirm, {
+    #   tbl_ids = dbListTables(pool)
+    #   if(length(tbl_ids) > 0){
+    #     for (i in tbl_ids) {
+    #       dbRemoveTable(pool, i)
+    #     }
+    #   }
+    #   removeModal()
+    #   showNotification("Database reset!", type = "message")
+    #   session$reload()
+    # })
 
   })
 }
