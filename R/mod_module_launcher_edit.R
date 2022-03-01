@@ -49,13 +49,8 @@ mod_module_launcher_edit_ui <- function(id){
           )),
           tabItems(
             tabItem("start",
-                    shinydashboard::box(title = "The Post-COVID-Care-Study", status = "primary", solidHeader = FALSE,
-                                        "For baseline, please fill out the required variables for patient inclusion. If you find the time to enter the additional sections, it would be great!", br(), br(),
-
-                                        "Please make sure, you ", strong("noted"),  " the ", strong("PID"), "before submitting a new participant!", br(),
-                                        "You need it to complete the follow-up.",br(), br(),
-
-                                        "Please note that the form is ", strong("not saved until you save or submit"),   " the data.", br(), br(),
+                    shinydashboard::box(title = "LCARS-C", status = "primary", solidHeader = FALSE,
+                                        "Please fill out the required visits and variables in the editor.", br(), br(),
 
                                         "Please ", strong("sign out"),   " after working with the eCRF.", br(), br(),
 
