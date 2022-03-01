@@ -37,7 +37,13 @@ mod_module_deploy_server <- function(id){
     observeEvent(input$deploy,{
       iv$enable()
       if (iv$is_valid()) {
+
+        pool = golem::get_golem_options("pool")
         pool_config = golem::get_golem_options("pool_config")
+
+        make_widget_tables(pool = pool,
+                           pool_config = pool_config,
+                           write_widget_tables = FALSE)
 
         start_config = RMariaDB::dbReadTable(pool_config, "start_config")
         prod_mode = start_config$production_mode
