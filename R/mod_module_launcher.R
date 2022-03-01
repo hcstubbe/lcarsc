@@ -11,6 +11,10 @@
 mod_module_launcher_ui <- function(id){
   ns = NS(id)
 
+  server_settings_tbl_id = "server_settings_tbl"
+  pool_config = get_golem_options("pool_config")
+  db_settgins_data = RMariaDB::dbReadTable(pool_config, server_settings_tbl_id)
+
   tagList(
     div(
       shinydashboard::dashboardPage(
@@ -30,22 +34,9 @@ mod_module_launcher_ui <- function(id){
         dashboardBody(
           tabItems(
             tabItem("start",
-                    shinydashboard::box(title = "The Post-COVID-Care-Study", status = "primary", solidHeader = FALSE,
-                                        "For baseline, please fill out the required variables for patient inclusion. If you find the time to enter the additional sections, it would be great!", br(), br(),
-
-                                        "Please make sure, you ", strong("noted"),  " the ", strong("PID"), "before submitting a new participant!", br(),
-                                        "You need it to complete the follow-up.",br(), br(),
-
-                                        "Please note that the form is ", strong("not saved until you save or submit"),   " the data.", br(), br(),
-
-                                        "Please ", strong("sign out"),   " after working with the eCRF.", br(), br(),
-
-                                        "For",  strong("questions"), "or", strong("problems"), "regarding the eCRF, please contact:", br(),
-                                        "Dr. med. Hans Christian Stubbe", br(),
-                                        "Marchioninistr. 15, 81377 München", br(),
-                                        "Tel.: +49 (0)89 4400 0", br(),
-                                        "Fax: +49 (0)89 4400 78856", br(),
-                                        HTML("E-mail: <a href='mailto:hans_christian.stubbe@med.uni-muenchen.de' target='_top'>hans_christian.stubbe@med.uni-muenchen.de</a>")
+                    shinydashboard::box(title = db_settgins_data$study_title,
+                                        status = "primary", solidHeader = FALSE,
+                                        db_settgins_data$study_introduction
                     )
             ),
 
@@ -63,27 +54,29 @@ mod_module_launcher_ui <- function(id){
 
             # Dashboard item providing Contact data
             tabItem("contact",
-                    shinydashboard::box(title = internal_app_data$lang_sel$module_launcher_menu_contact_technical, status = "primary", solidHeader = FALSE,
+                    shinydashboard::box(title = "Contact", status = "primary", solidHeader = FALSE,
                                         width = 10,
                                         column(6,
-                                               h4("Dr. med. Hans Christian Stubbe"), br(),
-                                               "Medizinische Klinik und Poliklinik II", br(),
-                                               "LMU Klinikum München", br(),
-                                               "Campus Großhadern", br(),
-                                               "Marchioninistr. 15, 81377 München", br(),
-                                               "Tel.: +49 (0)89 4400 0", br(),
-                                               "Fax: +49 (0)89 4400 78856", br(),
-                                               HTML("E-mail: <a href='mailto:hans_christian.stubbe@med.uni-muenchen.de' target='_top'>hans_christian.stubbe@med.uni-muenchen.de</a>")
+                                               h4(db_settgins_data$contact1_name), br(),
+                                               db_settgins_data$contact1_department, br(),
+                                               db_settgins_data$contact1_institute, br(),
+                                               db_settgins_data$contact1_street, br(),
+                                               db_settgins_data$contact1_city,
+                                               db_settgins_data$contact1_postal_code, br(),
+                                               paste0("Tel.: ", db_settgins_data$contact1_phone), br(),
+                                               paste0("Fax: ", db_settgins_data$contact1_fax), br(),
+                                               HTML(paste0("E-mail: <a href='mailto:", db_settgins_data$contact1_mail,"' target='_top'>", db_settgins_data$contact1_mail,"</a>"))
                                         ),
                                         column(6,
-                                               h4("Dr. rer. med. Ujjwal Mukund Mahajan"), br(),
-                                               "Medizinische Klinik und Poliklinik II", br(),
-                                               "LMU Klinikum München", br(),
-                                               "Campus Großhadern", br(),
-                                               "Marchioninistr. 15, 81377 München", br(),
-                                               "Tel: +49 (0) 89 4400 76125", br(),
-                                               "Fax:+49 (0) 89 4400 78856", br(),
-                                               HTML("E-mail: <a href='mailto:ujjwal_mukund.mahajan@med.uni-muenchen.de' target='_top'>ujjwal_mukund.mahajan@med.uni-muenchen.de</a>")
+                                               h4(db_settgins_data$contact2_name), br(),
+                                               db_settgins_data$contact2_department, br(),
+                                               db_settgins_data$contact2_institute, br(),
+                                               db_settgins_data$contact2_street, br(),
+                                               db_settgins_data$contact2_city,
+                                               db_settgins_data$contact2_postal_code, br(),
+                                               paste0("Tel.: ", db_settgins_data$contact2_phone), br(),
+                                               paste0("Fax: ", db_settgins_data$contact2_fax), br(),
+                                               HTML(paste0("E-mail: <a href='mailto:", db_settgins_data$contact2_mail,"' target='_top'>", db_settgins_data$contact2_mail,"</a>"))
                                         )
                     )
             )
