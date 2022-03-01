@@ -15,17 +15,17 @@ mod_module_editor_controls_ui <- function(id) {
   shinydashboard::box(title = "Controls", status = "info", width = 12,
                       column(4,
                              shinydashboard::box(title = "Update & reload", status = "warning", collapsible = TRUE, collapsed = TRUE,width = 12,solidHeader = TRUE,
-                                                 actionButton(ns("update_widgets_button"), "Update", icon("update"))
+                                                 actionButton(ns("update_widgets_button"), "Update", icon("update", verify_fa = FALSE))
                              )
                       ),
                       column(4,
                              shinydashboard::box(title = "Export", status = "info", collapsible = TRUE, collapsed = TRUE,width = 12,solidHeader = TRUE,
-                                                 actionButton(ns("download_widgets_button"), "Export", icon("export"))
+                                                 actionButton(ns("download_widgets_button"), "Export", icon("export", verify_fa = FALSE))
                              )
                       ),
                       column(4,
                              shinydashboard::box(title = "Reset", status = "danger", collapsible = TRUE, collapsed = TRUE,width = 12,solidHeader = TRUE,
-                                                 actionButton(ns("reset_widgets_button"), "Reset", icon("reset"))
+                                                 actionButton(ns("reset_widgets_button"), "Reset", icon("reset", verify_fa = FALSE))
                              )
                       )
   )

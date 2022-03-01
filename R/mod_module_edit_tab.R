@@ -19,10 +19,10 @@ mod_module_edit_tab_ui <- function(id) {
 
     fluidPage(
       fluidRow(
-        actionButton(ns("add_button"), "Add", icon("plus")),
-        actionButton(ns("edit_button"), "Edit", icon("edit")),
-        actionButton(ns("delete_button"), "Delete", icon("trash-alt")),
-        actionButton(ns("submit_button"), "Submit", icon("paper-plane"))
+        actionButton(ns("add_button"), "Add", icon("plus", verify_fa = FALSE)),
+        actionButton(ns("edit_button"), "Edit", icon("edit", verify_fa = FALSE)),
+        actionButton(ns("delete_button"), "Delete", icon("trash-alt", verify_fa = FALSE)),
+        actionButton(ns("submit_button"), "Submit", icon("paper-plane", verify_fa = FALSE))
       ),
       br(),
       fluidRow(width="100%",
@@ -81,7 +81,7 @@ mod_module_edit_tab_server<- function(id,
       insertUI(
         selector = paste("#", ns("submit_button"), sep = ""),
         where = "afterEnd",
-        ui = actionButton(ns("copy_button"), "Copy", icon("copy"))
+        ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
       )
     }
 

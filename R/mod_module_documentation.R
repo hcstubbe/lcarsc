@@ -14,7 +14,7 @@ mod_module_documentation_ui  <- function(id) {
     fluidRow(
       column(5,
              box(title = (internal_app_data$lang_sel$module_documentation_pt_list_title), width = 12, status = "primary", solidHeader = TRUE,
-                 actionButton(ns("update_pull_user"), label = internal_app_data$lang_sel$update_pull, icon("sync")),
+                 actionButton(ns("update_pull_user"), label = internal_app_data$lang_sel$update_pull, icon("sync", verify_fa = FALSE)),
                  br(),
                  br(),
                  br(),
