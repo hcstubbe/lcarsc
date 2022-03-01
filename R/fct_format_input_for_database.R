@@ -20,6 +20,14 @@ format_input_for_database = function(input_data,
     }else{x}
   })
 
+  # Convert dates into characters
+  input_data = lapply(input_data, function(x) {
+    if(class(x) == "Date"){
+      x = as.character(x)
+    }
+    return(x)
+  })
+
   input_data = data.frame(input_data)
 
   # Replace "New choice" with actual value from new choice text input
