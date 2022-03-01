@@ -15,7 +15,14 @@ mod_module_deploy_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    strong("Caution: moving from 'editor' to 'production' cannot be reversed!"),
+    strong("Caution:"), "moving from 'editor' to 'production' ", strong("cannot be reversed!"),
+    br(),
+    br(),
+    "Please make sure, ", strong("you tested"), "the ecrf under 'Preview'!",
+    br(),
+    br(),
+    "The deployment will ", strong("update the ecrf from the data base. "), "make sure, you tested using 'Preview' after updating!",
+    br(),
     br(),
     br(),
     textInput(ns("confirm_deployment"), label = "Type 'activate production'", placeholder = "Fill to confirm"),
