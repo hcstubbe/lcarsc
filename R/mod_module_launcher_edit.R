@@ -147,12 +147,15 @@ mod_module_launcher_edit_server <- function(id){
       showModal(
         if( input$linkClicked$data == "menuitem_3" ){
           modalDialog(
+            tags$head(tags$style(".modal-dialog{ width:50% }")),
             title = "Deployment",
             mod_module_deploy_ui(ns("module_deploy_1")))
         }else if(input$linkClicked$data == "menuitem_2"){
-          modalDialog(title = "Access denied", "Required permissions are not met.")
+          modalDialog(tags$head(tags$style(".modal-dialog{ width:50% }")),
+                      title = "Access denied", "Required permissions are not met.")
         }else if(input$linkClicked$data == "menuitem_1"){
-          modalDialog(size = "m",
+          modalDialog(
+            tags$head(tags$style(".modal-dialog{ width:50% }")),
             title = "General settings",
             mod_module_settings_ui(ns("module_settings_1")),
             footer = fluidRow(
