@@ -14,35 +14,39 @@ mod_module_settings_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidPage(
-        shinydashboard::box(width = 12, status = "primary",title = "Study information",
+        shinydashboard::box(width = 12, status = "primary",title = "General settings", solidHeader = TRUE,
+                            textInput(ns("pid_prefix"), label = "PID prefix")),
+        shinydashboard::box(width = 12, status = "primary",title = "Study information", solidHeader = TRUE,
                             textInput(ns("study_title"), label = "Title"),
                             textAreaInput(ns("study_introduction"), label = "Introduction")),
-        column(6,
-               shinydashboard::box(width = 12, status = "primary",title = "Contact 1",
-                                   textInput(ns("contact1_name"), label = "Name of contact"),
-                                   textInput(ns("contact1_institute"), label = "Institute"),
-                                   textInput(ns("contact1_department"), label = "Department"),
-                                   textInput(ns("contact1_street"), label = "Street"),
-                                   textInput(ns("contact1_city"), label = "City"),
-                                   textInput(ns("contact1_postal_code"), label = "Postal code"),
-                                   textInput(ns("contact1_phone"), label = "Phone"),
-                                   textInput(ns("contact1_fax"), label = "Fax"),
-                                   textInput(ns("contact1_mail"), label = "E-mail")
-               )
-        ),
-        column(6,
-               shinydashboard::box(width = 12, status = "primary",title = "Contact 2",
-                                   textInput(ns("contact2_name"), label = "Name of contact"),
-                                   textInput(ns("contact2_institute"), label = "Institute"),
-                                   textInput(ns("contact2_department"), label = "Department"),
-                                   textInput(ns("contact2_street"), label = "Street"),
-                                   textInput(ns("contact2_city"), label = "City"),
-                                   textInput(ns("contact2_postal_code"), label = "Postal code"),
-                                   textInput(ns("contact2_phone"), label = "Phone"),
-                                   textInput(ns("contact2_fax"), label = "Fax"),
-                                   textInput(ns("contact2_mail"), label = "E-mail")
-                                   )
-               )
+        shinydashboard::box(width = 12, status = "primary",title = "Contacts", solidHeader = TRUE,
+          column(6,
+                 shinydashboard::box(width = 12, status = "primary",title = "Contact 1",
+                                     textInput(ns("contact1_name"), label = "Name of contact"),
+                                     textInput(ns("contact1_institute"), label = "Institute"),
+                                     textInput(ns("contact1_department"), label = "Department"),
+                                     textInput(ns("contact1_street"), label = "Street"),
+                                     textInput(ns("contact1_city"), label = "City"),
+                                     textInput(ns("contact1_postal_code"), label = "Postal code"),
+                                     textInput(ns("contact1_phone"), label = "Phone"),
+                                     textInput(ns("contact1_fax"), label = "Fax"),
+                                     textInput(ns("contact1_mail"), label = "E-mail")
+                 )
+          ),
+          column(6,
+                 shinydashboard::box(width = 12, status = "primary",title = "Contact 2",
+                                     textInput(ns("contact2_name"), label = "Name of contact"),
+                                     textInput(ns("contact2_institute"), label = "Institute"),
+                                     textInput(ns("contact2_department"), label = "Department"),
+                                     textInput(ns("contact2_street"), label = "Street"),
+                                     textInput(ns("contact2_city"), label = "City"),
+                                     textInput(ns("contact2_postal_code"), label = "Postal code"),
+                                     textInput(ns("contact2_phone"), label = "Phone"),
+                                     textInput(ns("contact2_fax"), label = "Fax"),
+                                     textInput(ns("contact2_mail"), label = "E-mail")
+                 )
+          )
+        )
         )
 
   )
@@ -57,8 +61,12 @@ mod_module_settings_server <- function(id, rv){
     pool_config = get_golem_options("pool_config")
     server_settings_tbl_id = "server_settings_tbl"
 
+
+
     ## Gather input data ----
-    form_input_ids = c("study_title",
+    form_input_ids = c(
+                   "pid_prefix",
+                   "study_title",
                    "study_introduction",
                    "contact1_name",
                    "contact1_institute",
@@ -80,12 +88,6 @@ mod_module_settings_server <- function(id, rv){
                    "contact2_mail"
     )
 
-    if(is.element(server_settings_tbl_id, RMariaDB::dbListTables(pool_config))){
-      db_settgins_data = RMariaDB::dbReadTable(pool_config, server_settings_tbl_id)
-      lapply(form_input_ids, function(x){
-        shiny::updateTextInput(inputId = x, session = session, value = db_settgins_data[,x])
-      })
-    }
 
     # Save submission
     observeEvent(rv$save_settings_button,{
