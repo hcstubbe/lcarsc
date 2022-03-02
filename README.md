@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 <!-- badges: end -->
 
 The goal of lcarsc is to provide a lightweight clinical data
-acquisition-research software.
+acquisition for research software.
 
 ## Installation
 
