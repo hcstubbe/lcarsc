@@ -320,6 +320,7 @@ mod_module_edit_tab_server<- function(id,
         row_submitted = FALSE
       }
 
+      iv$enable()
       showModal(
         if (length(input$responses_table_rows_selected) > 1 ) {
           modalDialog(
@@ -353,7 +354,6 @@ mod_module_edit_tab_server<- function(id,
     #### Update row ----
     observeEvent(input$submit_edit, priority = 20, {
 
-      iv$enable()
       if (iv$is_valid()) {
 
         SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
