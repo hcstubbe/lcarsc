@@ -27,7 +27,6 @@ update_all_fields = function(session, db_data, widget_data){
     }
 
     val_x = db_data[,x]
-    saveRDS(val_x, "zz_val_x.RDS")
     if(widget_type == "dateInput" & !is.null(val_x)){
       if(is.na(val_x)){
         val_x = NULL
