@@ -18,6 +18,7 @@ mod_module_settings_ui <- function(id){
                             textInput(ns("pid_prefix"), label = "PID prefix")),
         shinydashboard::box(width = 12, status = "primary",title = "Study information", solidHeader = TRUE,
                             textInput(ns("study_title"), label = "Title"),
+                            textInput(ns("study_title_short"), label = "Short study title"),
                             textAreaInput(ns("study_introduction"), label = "Introduction")),
         shinydashboard::box(width = 12, status = "primary",title = "Contacts", solidHeader = TRUE,
           column(6,
@@ -67,6 +68,7 @@ mod_module_settings_server <- function(id, rv){
     form_input_ids = c(
                    "pid_prefix",
                    "study_title",
+                   "study_title_short",
                    "study_introduction",
                    "contact1_name",
                    "contact1_institute",

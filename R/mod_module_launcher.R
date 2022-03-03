@@ -19,7 +19,7 @@ mod_module_launcher_ui <- function(id){
     div(
       shinydashboard::dashboardPage(
         skin = "blue",
-        dashboardHeader(title = "LCARS"),
+        dashboardHeader(title = db_settgins_data$study_title_short),
         dashboardSidebar(
           sidebarMenu(
             menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),

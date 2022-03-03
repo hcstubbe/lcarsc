@@ -29,7 +29,7 @@ mod_module_launcher_edit_ui <- function(id){
   tagList(
     div(
       shinydashboard::dashboardPage(skin = "yellow",
-        dashboardHeader(title = "LCARS (Editor)",
+        dashboardHeader(title = "Editor",
                         dropdownMenu(.list = dropdown_menu_list, type = "notification", badgeStatus = NULL, icon = shiny::icon("gear", verify_fa = FALSE),headerText = "Setup")
                         ),
         dashboardSidebar(
