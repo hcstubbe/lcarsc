@@ -157,7 +157,7 @@ mod_module_edit_tab_server<- function(id,
         )
       }else{
         showModal(
-          modalDialog(
+          modalDialog(title = "Confirm submission",
             div(id=(ns("entry_form")),
                 tags$head(tags$style(".modal-dialog{ width:400px}")),
                 tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
