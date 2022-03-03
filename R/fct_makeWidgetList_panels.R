@@ -17,7 +17,8 @@ makeWidgetList_panels = function(widget_data, all_tabs, all_visits, visit_id, ro
 
   ## Compile widget list
   widget_data_i = widget_data[widget_data$widget == TRUE & widget_data[,visit_id] == TRUE,]
-  widget_data_i_levels = levels(factor(widget_data_i$panel))
+  widget_data_i_levels = widget_data_i$panel[!duplicated(widget_data_i$panel)]
+  widget_data_i_subgroup = widget_data_i$subgroup[!duplicated(widget_data_i$panel)]
   if(length(widget_data_i_levels) > 1){
     widget_list=sapply(widget_data_i_levels,
                        function(x){
@@ -29,10 +30,19 @@ makeWidgetList_panels = function(widget_data, all_tabs, all_visits, visit_id, ro
   }
 
 
+
   ## Function puts widgets into panels
-  make_panels = function(widget_i){
+  make_panels = function(widget_i, i_name){
+    if(is.null(i_name) ){
+      # Do nothing
+    } else if (is.na(i_name)) {
+      i_name = NULL
+    } else if (i_name == "None"){
+      i_name = NULL
+    }
     div(tabPanel("Plot",
                  wellPanel(
+                   h4(i_name),
                    (
                      widget_i
                    ))))
@@ -41,12 +51,15 @@ makeWidgetList_panels = function(widget_data, all_tabs, all_visits, visit_id, ro
 
 
   ## Compile all panels
-
   if(length(widget_data_i_levels) > 1){
-    panel_list = lapply(widget_list, make_panels)
+    w_list_n = seq_along(widget_list)
+    names(w_list_n) = names(widget_list)
+    panel_list = lapply(w_list_n, function(x) make_panels(widget_list[[x]], widget_data_i_subgroup[[x]]))
+    # panel_list = lapply(widget_list, make_panels)
   }else{
-    panel_list = list(make_panels(widget_list))
+    panel_list = list(make_panels(widget_list, widget_data_i_subgroup[1]))
   }
+
 
   ## Function for putting panels into tabs of navbar
   make_navbar_tabs = function(i, panel_list, all_tabs, visit_id){

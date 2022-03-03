@@ -83,7 +83,8 @@ make_widget_tables = function(pool,
 
   panel_tabs = data.frame()
   for(i in 1:nrow(panel_tabs_temp)){
-    panels_i = make.names(paste(vars[(vars$panel %in% panel_tabs_temp$tab_id[i]),"panel"], vars[(vars$panel %in% panel_tabs_temp$tab_id[i]),"subgroup"], sep = "_"))
+    panels_i = make.names(paste(vars[(vars$panel %in% panel_tabs_temp$tab_id[i]),"panel"],
+                                vars[(vars$panel %in% panel_tabs_temp$tab_id[i]),"subgroup"], sep = "_"))
     panels_i = make.unique(make.names(panels_i[!duplicated(panels_i)]))
 
     mtx = t(matrix(c(panels_i, rep("", 4-length(panels_i) %% 4)), nrow = 4))
@@ -142,6 +143,7 @@ make_widget_tables = function(pool,
     width = double(0),
     type = character(0),
     panel = character(0),
+    subgroup = character(0),
     selected = character(0),
     choice1 = character(0),
     choice2 = character(0),
@@ -178,13 +180,18 @@ make_widget_tables = function(pool,
       lower = vars$lower[i],
       upper = vars$upper[i],
       unit = vars$unit[i],
-      value = as.character(ifelse(vars$type[i] == "numericInput", vars$value_numeric[i], ifelse(vars$type[i] == "checkboxInput", FALSE, vars$value_char[i]))),
+      value = as.character(ifelse(vars$type[i] == "numericInput",
+                                  vars$value_numeric[i],
+                                  ifelse(vars$type[i] == "checkboxInput",
+                                         FALSE,
+                                         vars$value_char[i]))),
       min = vars$min[i],
       max = vars$max[i],
       step = vars$step[i],
       width = vars$width[i],
       type = vars$type[i],
       panel = make.names(paste(vars$panel[i], vars$subgroup[i], sep = "_")),
+      subgroup = vars$subgroup[i],
       selected = vars$selected[i],
       choice1 = vars$choice1[i],
       choice2 = vars$choice2[i],
