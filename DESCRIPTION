@@ -1,8 +1,8 @@
 Package: lcarsc
-Title: Leight weight assessmet and recording software for clinical data
-Version: 0.2.0.0000
-Authors@R: person('Hans', 'Stubbe', email = 'hstubb@med.lmu.de', role = c('cre', 'aut'))
-Description: LCARS-C is designed to conduct simple clinical assessments and record clinical data for research use
+Title: Light weight clinical assessment and recording software for clinical studies
+Version: 0.0.0.9000
+Authors@R: person('Hans Christian', 'Stubbe', email = 'hstubbe@med.lmu.de', role = c('cre', 'aut'))
+Description: LCARS-C is designed to conduct simple clinical assessments and record data for research use.
 License: MIT + file LICENSE
 Imports: 
     attempt,
@@ -24,8 +24,7 @@ Imports:
     shinyjs,
     fmsb,
     purrr,
-    shinyWidgets,
-    lcarsM
+    shinyWidgets
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
@@ -38,3 +37,5 @@ Language: en-US
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
+URL: https://github.com/hcstubbe/lcarsc
+BugReports: https://github.com/hcstubbe/lcarsc/issues
