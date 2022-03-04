@@ -27,17 +27,6 @@ run_app <- function(
   config_dbname = "mydbeditor",
   preview_mobile = FALSE,
   confirm_write_db = TRUE,
-  # ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
-  # ecrf_dbuser = "default_user",
-  # ecrf_dbpassword = "default_password",
-  # ecrf_dbhost = "db_ecrf_data",
-  # ecrf_dbname = "db_ecrf_data.sqlite3",
-  # config_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
-  # config_dbuser = "config_user",
-  # config_dbpassword = "config_password",
-  # config_dbhost = "db_config",
-  # config_dbname = "db_config.sqlite3",
-  # preview_mobile = TRUE,
   ...
 ) {
   if(confirm_write_db == TRUE){
