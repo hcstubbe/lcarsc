@@ -25,10 +25,12 @@ mod_module_launcher_ui <- function(id){
             menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),
             menuItem(internal_app_data$lang_sel$button_newpat, tabName = "new_pat"),
             menuItem(internal_app_data$lang_sel$main_menu_visit, tabName = "pat_list"),
-            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact")
-            # menuItem("Editor", tabName = "editor")
-            #,
-            # menuItem("Data center", tabName = "data_center")
+            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact"),
+            if(TRUE){
+              menuItem("Admin", tabName = "admin")
+            }else{
+              NULL
+            }
           )
         ),
         dashboardBody(
@@ -79,17 +81,14 @@ mod_module_launcher_ui <- function(id){
                                                HTML(paste0("E-mail: <a href='mailto:", db_settgins_data$contact2_mail,"' target='_top'>", db_settgins_data$contact2_mail,"</a>"))
                                         )
                     )
-            )
-            # ,
-            # tabItem("editor",
-            #         mod_module_editor_launcher_ui(ns("mod_module_editor")))
+            ),
 
-            # ,
-            #
-            # tabItem("data_center",
-            #         mod_module_data_center_ui(ns("module_data_center_1")))
-
-
+            if(TRUE){
+              tabItem("admin",
+                      mod_module_admin_ui(ns("module_admin_1")))
+            }else{
+              NULL
+            }
           )
         )
       )

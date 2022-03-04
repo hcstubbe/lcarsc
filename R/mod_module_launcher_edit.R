@@ -140,8 +140,13 @@ mod_module_launcher_edit_server <- function(id){
 # 	    mod_module_preview_mobile_server(id = "module_preview_mobile_1")
 # 	  }
 
+	  # Module admin
+	  if(TRUE){
+	    mod_module_admin_server(id = "module_admin_1")
+	  }
+
   	# Module drop down menu
-  	mod_module_deploy_server("module_deploy_1")
+  	mod_module_deploy_server(id = "module_deploy_1")
 
   	# Module general settings
   	rv_settings = reactiveValues()
