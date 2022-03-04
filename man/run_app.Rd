@@ -20,7 +20,7 @@ run_app(
   config_dbpassword = "user",
   config_dbhost = "dbeditor",
   config_dbname = "mydbeditor",
-  preview_mobile = TRUE,
+  preview_mobile = FALSE,
   confirm_write_db = TRUE,
   ...
 )

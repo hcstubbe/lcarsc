@@ -25,7 +25,7 @@ run_app <- function(
   config_dbpassword = "user",
   config_dbhost = "dbeditor",
   config_dbname = "mydbeditor",
-  preview_mobile = TRUE,
+  preview_mobile = FALSE,
   confirm_write_db = TRUE,
   # ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
   # ecrf_dbuser = "default_user",
