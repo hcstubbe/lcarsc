@@ -15,7 +15,7 @@ mod_module_db_settings_ui <- function(id){
                           textInput(ns("env_user_group"), label = "User group", value = "SHINYPROXY_USERGROUPS"),
                           textInput(ns("env_user_name"), label = "User name", value = "SHINYPROXY_USERNAME")),
       shinydashboard::box(width = 12, status = "primary",title = "User groups", solidHeader = TRUE,
-                          textInput(ns("group_admin"), label = "Admin group", value = "admins"),
+                          textInput(ns("group_admin"), label = "Admin group", value = "admin"),
                           textInput(ns("group_reviewer"), label = "Reviewer group", value = "reviewer"),
                           textInput(ns("group_user"), label = "User group", value = "user"))
     )
@@ -47,7 +47,7 @@ mod_module_db_settings_server <- function(id, rv){
     stdandard_values = list(
       "env_user_group" = "SHINYPROXY_USERGROUPS",
       "env_user_name" = "SHINYPROXY_USERNAME",
-      "group_admin" = "admins",
+      "group_admin" = "admin",
       "group_reviewer" = "reviewer",
       "group_user" = "user"
     )
