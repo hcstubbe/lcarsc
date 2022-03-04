@@ -47,14 +47,21 @@ mod_module_db_settings_server <- function(id, rv){
     # Save submission
     observeEvent(rv$save_db_settings_button,{
       input_data = sapply(form_input_ids,
-                          function(x) input[[x]],
+                          function(x) make.names(input[[x]]),
                           simplify = FALSE,
                           USE.NAMES = TRUE)
+      make.names(names = input_data, unique = TRUE)
       if(!all(sapply(input_data, is.null))){
         input_data = data.frame(input_data)
         input_list = list(input_data)
         names(input_list) = server_db_settings_tbl_id
         db_replace_tables(conn = pool_config, table_list = input_list)
+
+        # update fields (e.g. if name had to be repaired)
+        db_settgins_data = RMariaDB::dbReadTable(pool_config, server_db_settings_tbl_id)
+        lapply(form_input_ids, function(x){
+          shiny::updateTextInput(inputId = x, value = db_settgins_data[,x])
+        })
       }
     })
 
