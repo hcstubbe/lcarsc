@@ -37,8 +37,9 @@ mod_module_launcher_edit_ui <- function(id){
             menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),
             menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact"),
             menuItem("Editor", tabName = "editor"),
-            menuItem("Preview", tabName = "preview"),
-            menuItem("Preview mobile", tabName = "preview_mobile")
+            menuItem("Preview", tabName = "preview")
+            # ,
+            # menuItem("Preview mobile", tabName = "preview_mobile")
 
           )
         ),
@@ -97,15 +98,15 @@ mod_module_launcher_edit_ui <- function(id){
 
             tabItem("preview",
                     mod_module_preview_ui(ns("module_preview_1")))
-            ,
-
-
-            if("lcarsM" %in% rownames(installed.packages())){
-              tabItem("preview_mobile",
-                      mod_module_preview_mobile_ui(ns("module_preview_mobile_1")))
-            }else{
-              NULL
-            }
+            # ,
+            #
+            #
+            # if("lcarsM" %in% rownames(installed.packages())){
+            #   tabItem("preview_mobile",
+            #           mod_module_preview_mobile_ui(ns("module_preview_mobile_1")))
+            # }else{
+            #   NULL
+            # }
 
 
 
@@ -134,10 +135,10 @@ mod_module_launcher_edit_server <- function(id){
   	# Module preview
 	  mod_module_preview_server(id = "module_preview_1")
 
-  	# Module preview mobile
-	  if("lcarsM" %in% rownames(installed.packages())){
-	    mod_module_preview_mobile_server(id = "module_preview_mobile_1")
-	  }
+#   	# Module preview mobile
+# 	  if("lcarsM" %in% rownames(installed.packages())){
+# 	    mod_module_preview_mobile_server(id = "module_preview_mobile_1")
+# 	  }
 
   	# Module drop down menu
   	mod_module_deploy_server("module_deploy_1")
