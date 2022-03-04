@@ -140,6 +140,12 @@ mod_module_launcher_edit_server <- function(id){
   	rv_settings$save_settings_button = reactive({0})
   	mod_module_settings_server("module_settings_1", rv = rv_settings)
 
+  	# Module database settings
+  	rv_db_settings = reactiveValues()
+  	rv_db_settings$settings_menu_started = reactive({0})
+  	rv_db_settings$save_settings_button = reactive({0})
+  	mod_module_db_settings_server("module_db_settings_1", rv = rv_db_settings)
+
 
     # Observe drop down menu ----
   	observeEvent(input$linkClicked, {
@@ -151,8 +157,15 @@ mod_module_launcher_edit_server <- function(id){
             title = "Deployment",
             mod_module_deploy_ui(ns("module_deploy_1")))
         }else if(input$linkClicked$data == "menuitem_2"){
-          modalDialog(tags$head(tags$style(".modal-dialog{ width:50% }")),
-                      title = "Access denied", "Required permissions are not met.")
+          modalDialog(
+            tags$head(tags$style(".modal-dialog{ width:50% }")),
+            title = "Database settings",
+            mod_module_db_settings_ui(ns("module_db_settings_1")),
+            footer = fluidRow(
+              actionButton(ns("save_db_settings_button"), "Save", icon("save", verify_fa = FALSE)),
+              actionButton(ns("close_sb_settings_button"), "Close", icon("close", verify_fa = FALSE))
+            )
+          )
         }else if(input$linkClicked$data == "menuitem_1"){
           modalDialog(
             tags$head(tags$style(".modal-dialog{ width:50% }")),
@@ -166,17 +179,32 @@ mod_module_launcher_edit_server <- function(id){
         }
       )
   	  rv_settings$settings_menu_started = reactive({rv_settings$settings_menu_started() + 1})
+  	  rv_db_settings$db_settings_menu_started = reactive({rv_db_settings$db_settings_menu_started() + 1})
   	})
 
+  	# Observer for settings module
   	observeEvent(input$save_settings_button,{
       rv_settings$save_settings_button = reactive({rv_settings$save_settings_button() + 1})
       showNotification("Data saved", type = "message")
       # shinyWidgets::show_toast(title = "Update study info", text = "Data saved!", type = "success", position = "bottom")
   	})
-
   	observeEvent(input$close_settings_button,{
   	  shiny::removeModal()
   	})
+
+
+  	# Observer for database settings module
+  	observeEvent(input$save_db_settings_button,{
+  	  rv_db_settings$save_db_settings_button = reactive({rv_db_settings$save_db_settings_button() + 1})
+  	  showNotification("Data saved", type = "message")
+  	  # shinyWidgets::show_toast(title = "Update study info", text = "Data saved!", type = "success", position = "bottom")
+  	})
+  	observeEvent(input$close_sb_settings_button,{
+  	  shiny::removeModal()
+  	})
+
+
+
 
 
   })
