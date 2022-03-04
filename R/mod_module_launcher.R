@@ -8,25 +8,27 @@
 #' @import dplyr
 #' @importFrom shiny NS tagList
 #' @importFrom shinydashboard dashboardPage
+#' @importFrom golem get_golem_options
+#' @importFrom RMariaDB dbReadTable
 mod_module_launcher_ui <- function(id){
   ns = NS(id)
 
   server_settings_tbl_id = "server_settings_tbl"
   pool_config = get_golem_options("pool_config")
-  db_settgins_data = RMariaDB::dbReadTable(pool_config, server_settings_tbl_id)
+  settgins_data = RMariaDB::dbReadTable(pool_config, server_settings_tbl_id)
 
   tagList(
     div(
       shinydashboard::dashboardPage(
         skin = "blue",
-        dashboardHeader(title = db_settgins_data$study_title_short),
+        dashboardHeader(title = settgins_data$study_title_short),
         dashboardSidebar(
           sidebarMenu(
             menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),
             menuItem(internal_app_data$lang_sel$button_newpat, tabName = "new_pat"),
             menuItem(internal_app_data$lang_sel$main_menu_visit, tabName = "pat_list"),
             menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact"),
-            if(TRUE){
+            if(get_golem_options("user_is_admin")){
               menuItem("Admin", tabName = "admin")
             }else{
               NULL
@@ -36,9 +38,9 @@ mod_module_launcher_ui <- function(id){
         dashboardBody(
           tabItems(
             tabItem("start",
-                    shinydashboard::box(title = db_settgins_data$study_title,
+                    shinydashboard::box(title = settgins_data$study_title,
                                         status = "primary", solidHeader = FALSE,
-                                        db_settgins_data$study_introduction
+                                        settgins_data$study_introduction
                     )
             ),
 
@@ -59,35 +61,34 @@ mod_module_launcher_ui <- function(id){
                     shinydashboard::box(title = "Contact", status = "primary", solidHeader = FALSE,
                                         width = 10,
                                         column(6,
-                                               h4(db_settgins_data$contact1_name), br(),
-                                               db_settgins_data$contact1_department, br(),
-                                               db_settgins_data$contact1_institute, br(),
-                                               db_settgins_data$contact1_street, br(),
-                                               db_settgins_data$contact1_city,
-                                               db_settgins_data$contact1_postal_code, br(),
-                                               paste0("Tel.: ", db_settgins_data$contact1_phone), br(),
-                                               paste0("Fax: ", db_settgins_data$contact1_fax), br(),
-                                               HTML(paste0("E-mail: <a href='mailto:", db_settgins_data$contact1_mail,"' target='_top'>", db_settgins_data$contact1_mail,"</a>"))
+                                               h4(settgins_data$contact1_name), br(),
+                                               settgins_data$contact1_department, br(),
+                                               settgins_data$contact1_institute, br(),
+                                               settgins_data$contact1_street, br(),
+                                               settgins_data$contact1_city,
+                                               settgins_data$contact1_postal_code, br(),
+                                               paste0("Tel.: ", settgins_data$contact1_phone), br(),
+                                               paste0("Fax: ", settgins_data$contact1_fax), br(),
+                                               HTML(paste0("E-mail: <a href='mailto:", settgins_data$contact1_mail,"' target='_top'>", settgins_data$contact1_mail,"</a>"))
                                         ),
                                         column(6,
-                                               h4(db_settgins_data$contact2_name), br(),
-                                               db_settgins_data$contact2_department, br(),
-                                               db_settgins_data$contact2_institute, br(),
-                                               db_settgins_data$contact2_street, br(),
-                                               db_settgins_data$contact2_city,
-                                               db_settgins_data$contact2_postal_code, br(),
-                                               paste0("Tel.: ", db_settgins_data$contact2_phone), br(),
-                                               paste0("Fax: ", db_settgins_data$contact2_fax), br(),
-                                               HTML(paste0("E-mail: <a href='mailto:", db_settgins_data$contact2_mail,"' target='_top'>", db_settgins_data$contact2_mail,"</a>"))
+                                               h4(settgins_data$contact2_name), br(),
+                                               settgins_data$contact2_department, br(),
+                                               settgins_data$contact2_institute, br(),
+                                               settgins_data$contact2_street, br(),
+                                               settgins_data$contact2_city,
+                                               settgins_data$contact2_postal_code, br(),
+                                               paste0("Tel.: ", settgins_data$contact2_phone), br(),
+                                               paste0("Fax: ", settgins_data$contact2_fax), br(),
+                                               HTML(paste0("E-mail: <a href='mailto:", settgins_data$contact2_mail,"' target='_top'>", settgins_data$contact2_mail,"</a>"))
                                         )
                     )
             ),
-
-            if(TRUE){
+            if(get_golem_options("user_is_admin")){
               tabItem("admin",
                       mod_module_admin_ui(ns("module_admin_1")))
             }else{
-              NULL
+              tabItem("admin")
             }
           )
         )
@@ -114,14 +115,10 @@ mod_module_launcher_server <- function(id){
     mod_module_documentation_server(id = "mod_module_documentation",
                                 data_table1 = "inclusion_dataset",
                                 data_table2 = "scientific_dataset")
-#
-#     # Module editor
-#     mod_module_editor_launcher_server(id = "mod_module_editor")
 
-#
-#     # Module data center
-#     mod_module_data_center_server("module_data_center_1")
-
+    if(get_golem_options("user_is_admin")){
+      mod_module_admin_server("module_admin_1")
+    }
 
   })
 }

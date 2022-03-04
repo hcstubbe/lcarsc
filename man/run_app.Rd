@@ -22,6 +22,7 @@ run_app(
   config_dbname = "mydbeditor",
   preview_mobile = FALSE,
   confirm_write_db = TRUE,
+  start_as_admin = FALSE,
   ...
 )
 }
@@ -67,6 +68,8 @@ expression in order for the match to be considered successful.}
 \item{preview_mobile}{TRUE if mobile app preview should be shown (this requires lcarsM)}
 
 \item{confirm_write_db}{TRUE if user input should be requested before writing local database files.}
+
+\item{start_as_admin}{If TRUE, the user will have admin privileges without checking the user group. If FALSE, the user will never have admin privileges regardless of user group. If null, the software checks against the database, if the user is an admin.}
 
 \item{...}{arguments to pass to golem_opts.
 See `?golem::get_golem_options` for more details.}

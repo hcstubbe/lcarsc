@@ -14,6 +14,7 @@
 #' @param config_dbname Name of the config database.
 #' @param preview_mobile TRUE if mobile app preview should be shown (this requires lcarsM)
 #' @param confirm_write_db TRUE if user input should be requested before writing local database files.
+#' @param start_as_admin If TRUE, the user will have admin privileges without checking the user group. If FALSE, the user will never have admin privileges regardless of user group. If null, the software checks against the database, if the user is an admin.
 #' @param ... arguments to pass to golem_opts.
 #' See `?golem::get_golem_options` for more details.
 #' @inheritParams shiny::shinyApp
@@ -23,6 +24,8 @@
 #' @importFrom golem with_golem_options
 #' @importFrom pool dbPool
 #' @importFrom utils askYesNo
+#' @importFrom golem get_golem_options
+#' @importFrom RMariaDB dbReadTable
 run_app <- function(
   onStart = NULL,
   options = list(),
@@ -41,6 +44,7 @@ run_app <- function(
   config_dbname = "mydbeditor",
   preview_mobile = FALSE,
   confirm_write_db = TRUE,
+  start_as_admin = FALSE,
   ...
 ) {
   if(confirm_write_db == TRUE){
@@ -60,6 +64,12 @@ run_app <- function(
     ),
     golem_opts = list(production_mode = production_mode,
                       preview_mobile = preview_mobile,
+                      user_is_admin = user_is_admin(pool_config = pool::dbPool(drv = config_database_driver,
+                                                                               user = config_dbuser,
+                                                                               password = config_dbpassword,
+                                                                               host = config_dbhost,
+                                                                               db = config_dbname),
+                                                    start_as_admin = start_as_admin),
                       pool = pool::dbPool(drv = ecrf_database_driver,
                                           user = ecrf_dbuser,
                                           password = ecrf_dbpassword,

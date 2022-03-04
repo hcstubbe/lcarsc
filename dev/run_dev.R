@@ -20,6 +20,7 @@ run_app(ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB(), # RSQLi
         config_dbhost = "dbdev",
         config_dbname = "db_ecrf_data.sqlite3",
         confirm_write_db = FALSE,
+        start_as_admin = TRUE,
         options = list(host = '0.0.0.0', port = 3838))
 
 # run_app( config_database_driver = RMariaDB::MariaDB(),

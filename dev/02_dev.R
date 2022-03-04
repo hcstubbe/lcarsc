@@ -60,6 +60,8 @@ golem::add_fct("preview_mobile", with_test = TRUE)
 golem::add_fct("get_production_mode", with_test = TRUE)
 golem::add_fct("db_replace_tables", with_test = TRUE)
 golem::add_fct("update_all_fields", with_test = TRUE)
+golem::add_fct("user_is_admin", with_test = TRUE)
+golem::add_fct("user_is_reviewer", with_test = TRUE)
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
