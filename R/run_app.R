@@ -8,6 +8,7 @@
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
 #' @importFrom pool dbPool
+#' @importFrom utils askYesNo
 run_app <- function(
   onStart = NULL,
   options = list(),
@@ -25,6 +26,7 @@ run_app <- function(
   config_dbhost = "dbeditor",
   config_dbname = "mydbeditor",
   preview_mobile = TRUE,
+  confirm_write_db = TRUE,
   # ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB()
   # ecrf_dbuser = "default_user",
   # ecrf_dbpassword = "default_password",
@@ -38,6 +40,12 @@ run_app <- function(
   # preview_mobile = TRUE,
   ...
 ) {
+  if(confirm_write_db == TRUE){
+    x = utils::askYesNo(msg = "The package writes database files to the current working directory, if run locally. Continue?")
+    if(x == FALSE){
+      return(NULL)
+    }
+  }
   with_golem_options(
     app = shinyApp(
       ui = app_ui,

@@ -21,6 +21,7 @@ run_app(
   config_dbhost = "dbeditor",
   config_dbname = "mydbeditor",
   preview_mobile = TRUE,
+  confirm_write_db = TRUE,
   ...
 )
 }
