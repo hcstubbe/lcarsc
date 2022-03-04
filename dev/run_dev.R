@@ -15,10 +15,10 @@ golem::document_and_reload()
 # devtools::install_local("dependencies/lcarsM.tar.gz", force = T)
 run_app(ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB(), # RSQLite::SQLite(),
         ecrf_dbhost = "dbdev",
-        ecrf_dbname = "db_post_covid_care_data.sqlite3",
+        ecrf_dbname = "db_ecrf_data.sqlite3",
         config_database_driver = RSQLite::SQLite(),
         config_dbhost = "dbdev",
-        config_dbname = "db_post_covid_care_data.sqlite3",
+        config_dbname = "db_ecrf_data.sqlite3",
         options = list(host = '0.0.0.0', port = 3838))
 
 # run_app( config_database_driver = RMariaDB::MariaDB(),

@@ -44,6 +44,24 @@ mod_module_db_settings_server <- function(id, rv){
     )
 
 
+    stdandard_values = list(
+      "env_user_group" = "SHINYPROXY_USERGROUPS",
+      "env_user_name" = "SHINYPROXY_USERNAME",
+      "group_admin" = "admins",
+      "group_reviewer" = "reviewer",
+      "group_user" = "user"
+    )
+
+
+
+    # Populate database on first start of module with standard values, if table does not exist
+    if (!is.element(server_db_settings_tbl_id, RMariaDB::dbListTables(pool_config))) {
+      input_data_standard = data.frame(stdandard_values)
+      input_list_standard = list(input_data_standard)
+      names(input_list_standard) = server_db_settings_tbl_id
+      db_replace_tables(conn = pool_config, table_list = input_list_standard)
+    }
+
     # Save submission
     observeEvent(rv$save_db_settings_button,{
       input_data = sapply(form_input_ids,
