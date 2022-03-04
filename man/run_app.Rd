@@ -46,6 +46,28 @@ request to determine whether the \code{ui} should be used to handle the
 request. Note that the entire request path must match the regular
 expression in order for the match to be considered successful.}
 
+\item{production_mode}{Set production mode before running the package (usually this should be NULL).}
+
+\item{ecrf_database_driver}{Set the database driver.}
+
+\item{ecrf_dbuser}{Username of the database.}
+
+\item{ecrf_dbname}{Name of the database.}
+
+\item{config_database_driver}{Set the config database driver.}
+
+\item{config_dbuser}{Username of the config database.}
+
+\item{config_dbpassword}{Password of the config database.}
+
+\item{config_dbhost}{Hostname of the config database.}
+
+\item{config_dbname}{Name of the config database.}
+
+\item{preview_mobile}{TRUE if mobile app preview should be shown (this requires lcarsM)}
+
+\item{confirm_write_db}{TRUE if user input should be requested before writing local database files.}
+
 \item{...}{arguments to pass to golem_opts.
 See `?golem::get_golem_options` for more details.}
 }

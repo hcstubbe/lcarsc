@@ -1,5 +1,19 @@
 #' Run the Shiny Application
 #'
+#'
+#' @param production_mode Set production mode before running the package (usually this should be NULL).
+#' @param ecrf_database_driver Set the database driver.
+#' @param ecrf_dbuser Username of the database.
+#' @param config_dbpassword Password of the database.
+#' @param config_dbhost Hostname of the database.
+#' @param ecrf_dbname Name of the database.
+#' @param config_database_driver Set the config database driver.
+#' @param config_dbuser Username of the config database.
+#' @param config_dbpassword  Password of the config database.
+#' @param config_dbhost Hostname of the config database.
+#' @param config_dbname Name of the config database.
+#' @param preview_mobile TRUE if mobile app preview should be shown (this requires lcarsM)
+#' @param confirm_write_db TRUE if user input should be requested before writing local database files.
 #' @param ... arguments to pass to golem_opts.
 #' See `?golem::get_golem_options` for more details.
 #' @inheritParams shiny::shinyApp
