@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @importFrom shiny NS tagList h4 br
 #' @importFrom golem get_golem_options
 #' @importFrom RMariaDB dbReadTable
 #' @importFrom shinyvalidate sv_equal sv_required InputValidator
@@ -38,6 +38,11 @@ mod_module_admin_ui <- function(id){
                               collapsed = TRUE,
                               width = 4,
                               solidHeader = TRUE,
+                              "This removes a record ", strong("irreversibly"),
+                              " from all tables of this database. Once removed,  ",
+                              strong("this cannot be undone!"),
+                              br(),
+                              br(),
                               textInput(ns("pid_to_delete"), label = "PID to remove from database"),
                               actionButton(ns("delete_pid_dialog"), label = "Delete record")
 
@@ -65,6 +70,7 @@ mod_module_admin_server <- function(id){
         if(iv$is_valid()){
           shiny::showModal(
             shiny::modalDialog(
+              tags$head(tags$style(".modal-dialog{ width:50% }")),
               textInput(ns("pid_to_delete_confirm"), label = "Confirm PID to remove from database - This cannot be undone!"),
               actionButton(ns("delete_pid"), label = "Delete reccord"),
               footer = actionButton(ns("cancel_delete"), label = "Cancel")
@@ -80,6 +86,7 @@ mod_module_admin_server <- function(id){
         iv_confirm$enable()
         if(iv_confirm$is_valid()){
           pid = input$pid_to_delete
+          success_all = c()
           for( i in RMariaDB::dbListTables(pool) ) {
             db_cmd = paste0("DELETE FROM ", i, " WHERE (pid = '", pid, "');")
             success = tryCatch(RMariaDB::dbExecute(pool, db_cmd), error = function(x) FALSE)
@@ -95,6 +102,12 @@ mod_module_admin_server <- function(id){
                                       type = "error",
                                       duration = 10)
             }
+            success_all = cbind(success_all, success)
+          }
+          if(all(success_all == FALSE)){
+            shiny::showNotification(strong("No enries have been removed!"),
+                                    type = "warning",
+                                    duration = 10)
           }
           close_modal()
         }
