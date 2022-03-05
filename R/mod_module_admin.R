@@ -29,6 +29,9 @@ mod_module_admin_ui <- function(id){
                               collapsed = FALSE,
                               width = 4,
                               solidHeader = TRUE,
+                              "Here, the data tables of this database can be downloaded. This includes the scientific datasets as well as widget data of the eCRF.",
+                              br(),
+                              br(),
                               downloadButton(ns("downloadData"), "Download", icon = shiny::icon("download", verify_fa = FALSE))
 
           )
