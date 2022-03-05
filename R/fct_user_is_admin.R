@@ -24,7 +24,11 @@ user_is_admin = function(pool_config, start_as_admin = FALSE) {
 
 
   server_db_settings_tbl_id = "server_db_settings_tbl"
-  db_settgins_data = RMariaDB::dbReadTable(pool_config, server_db_settings_tbl_id)
+  db_settgins_data = tryCatch(RMariaDB::dbReadTable(pool_config, server_db_settings_tbl_id), error = function(x) NULL)
+
+  if(is.null(db_settgins_data)){
+    return(FALSE)
+  }
 
   # Check if user is admin
   user_group = Sys.getenv(db_settgins_data$env_user_group)
