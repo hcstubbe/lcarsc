@@ -43,7 +43,7 @@ run_app <- function(
   config_dbhost = "dbeditor",
   config_dbname = "mydbeditor",
   preview_mobile = FALSE,
-  confirm_write_db = TRUE,
+  confirm_write_db = FALSE,
   start_as_admin = NULL,
   ...
 ) {
