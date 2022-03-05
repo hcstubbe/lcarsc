@@ -98,7 +98,7 @@ mod_module_editor_controls_server <- function(id) {
 
         for (i in 1:length(all_tables)){
           fileName = paste0(names(all_tables)[[i]],".csv")
-          write.csv(all_tables[[i]],fileName)
+          write_csv(all_tables[[i]], fileName)
           files = c(fileName,files)
         }
         # create zip file
