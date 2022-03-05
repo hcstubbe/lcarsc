@@ -10,6 +10,7 @@
 #' @importFrom golem get_golem_options
 #' @importFrom RMariaDB dbReadTable
 #' @importFrom shinyvalidate sv_equal sv_required InputValidator
+#' @importFrom utils zip
 #'
 #'
 mod_module_admin_ui <- function(id){
@@ -27,7 +28,8 @@ mod_module_admin_ui <- function(id){
                               collapsible = TRUE,
                               collapsed = FALSE,
                               width = 4,
-                              solidHeader = TRUE
+                              solidHeader = TRUE,
+                              downloadButton(ns("downloadData"), "Download", icon = shiny::icon("download", verify_fa = FALSE))
 
           )
         ),
@@ -63,6 +65,36 @@ mod_module_admin_server <- function(id){
     pool = get_golem_options("pool")
 
 
+    # Download data
+    output$downloadData <- downloadHandler(
+      filename = function(){
+        paste0("database_export",".zip")
+
+      },
+      content = function(file){
+        # use temp dir to avoid permission issues
+        owd <- setwd(tempdir())
+        on.exit(setwd(owd))
+        files <- NULL;
+
+        # loop through tabs
+        all_tables = sapply(RMariaDB::dbListTables(pool),
+                            function(x) RMariaDB::dbReadTable(pool, x),
+                            USE.NAMES = TRUE,
+                            simplify = FALSE)
+
+        for (i in 1:length(all_tables)){
+          fileName = paste0(names(all_tables)[[i]],".csv")
+          write.csv(all_tables[[i]],fileName)
+          files = c(fileName,files)
+        }
+        # create zip file
+        zip(file,files)
+      }
+    )
+
+
+    # Deleting records
     if(get_golem_options("user_is_admin")){
 
       observeEvent(input$delete_pid_dialog, {
@@ -117,7 +149,9 @@ mod_module_admin_server <- function(id){
         close_modal()
       })
 
-      # Add input valdiation
+
+
+      # Input valdiation
       iv <- InputValidator$new()
       iv$add_rule("pid_to_delete", sv_required())
 
@@ -132,10 +166,6 @@ mod_module_admin_server <- function(id){
       }
 
     }
-
-
-
-
   })
 }
 
