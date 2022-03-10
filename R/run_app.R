@@ -43,7 +43,7 @@ run_app <- function(
   config_dbhost,
   config_dbname,
   preview_mobile = FALSE,
-  confirm_write_db = FALSE,
+  confirm_write_db = TRUE,
   start_as_admin = NULL,
   ...
 ) {
