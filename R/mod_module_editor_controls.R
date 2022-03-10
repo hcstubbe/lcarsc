@@ -6,10 +6,12 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @importFrom shiny NS tagList fluidRow fluidRow div modalDialog showModal icon textInput actionButton modalButton observeEvent removeModal showNotification column moduleServer
+#' @importFrom shinydashboard box
 #' @importFrom utils zip
 #' @importFrom readr write_csv
 #' @importFrom RMariaDB dbReadTable dbListTables dbRemoveTable
+#' @importFrom golem get_golem_options
 mod_module_editor_controls_ui <- function(id) {
   ns = NS(id)
   shinydashboard::box(title = "Controls", status = "info", width = 12,
@@ -20,12 +22,12 @@ mod_module_editor_controls_ui <- function(id) {
                       ),
                       column(4,
                              shinydashboard::box(title = "Export", status = "info", collapsible = TRUE, collapsed = TRUE,width = 12,solidHeader = TRUE,
-                                                 downloadButton(ns("downloadData"), "Download", icon = shiny::icon("download", verify_fa = FALSE))
+                                                 downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE))
                              )
                       ),
                       column(4,
-                             shinydashboard::box(title = "Reset", status = "danger", collapsible = TRUE, collapsed = TRUE,width = 12,solidHeader = TRUE,
-                                                 actionButton(ns("reset_widgets_button"), "Reset", icon("reset", verify_fa = FALSE))
+                             shinydashboard::box(title = "Delete", status = "danger", collapsible = TRUE, collapsed = TRUE,width = 12,solidHeader = TRUE,
+                                                 actionButton(ns("delete_widgets_button"), "Delete", icon("delete", verify_fa = FALSE))
                              )
                       )
   )
@@ -108,35 +110,62 @@ mod_module_editor_controls_server <- function(id) {
 
 
 
-    # Reset dialogue ----
-    # observeEvent(input$reset_widgets_button, {
-    #   showModal(
-    #     modalDialog(
-    #       title = "Confirm reset & reload",
-    #       div(tags$head(tags$style(".modal-dialog{ width:400px}")),
-    #           tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
-    #           fluidPage(
-    #             fluidRow(
-    #               actionButton(ns("reset_widgets_button_confirm"), "Confirm"),
-    #               modalButton("Dismiss")
-    #             )
-    #           )
-    #       ),
-    #       easyClose = TRUE, footer = NULL
-    #     )
-    #   )
-    # })
-    # observeEvent(input$reset_widgets_button_confirm, {
-    #   tbl_ids = dbListTables(pool)
-    #   if(length(tbl_ids) > 0){
-    #     for (i in tbl_ids) {
-    #       dbRemoveTable(pool, i)
-    #     }
-    #   }
-    #   removeModal()
-    #   showNotification("Database reset!", type = "message")
-    #   session$reload()
-    # })
+    # delete dialogue ----
+    observeEvent(input$delete_widgets_button, {
+      showModal(
+        modalDialog(
+          title = "Delete & reload",
+          div(tags$head(tags$style(".modal-dialog{ width:400px}")),
+              tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+              fluidPage(
+                fluidRow(
+                  selectInput(ns("tab_to_del_pool"), "Select table ID for deleting", choices = c("None", dbListTables(pool))),
+                  selectInput(ns("tab_to_del_config"), "Select table ID for deleting", choices = c("None", dbListTables(pool_config))),
+                  actionButton(ns("delete_widgets_button_confirm"), "Confirm", icon = icon("trash",verify_fa = FALSE)),
+                  actionButton(ns("delete_widgets_button_close"), "Close & relod", icon = icon("update",verify_fa = FALSE))
+                )
+              )
+          ),
+          easyClose = FALSE, footer = NULL
+        )
+      )
+    })
+
+
+    # Observe delete confirmation
+    observeEvent(input$delete_widgets_button_confirm, {
+
+      tab_to_del_pool = input$tab_to_del_pool
+      if(!is.null(tab_to_del_pool)){
+        if(tab_to_del_pool %in% dbListTables(pool)){
+          dbRemoveTable(pool, input$tab_to_del_pool)
+          showNotification(paste0("Data table", tab_to_del_pool, " deleted!"), type = "error")
+        }
+      }
+
+      tab_to_del_config = input$tab_to_del_config
+      if(!is.null(tab_to_del_config)){
+        if(tab_to_del_config %in% dbListTables(pool_config)){
+          dbRemoveTable(pool_config, input$tab_to_del_config)
+          showNotification(paste0("Data table", tab_to_del_config, " deleted!"), type = "error")
+        }
+
+      }
+
+    })
+
+
+    # Function for closing the delete modal
+    close_delete_modal = function(){
+      removeModal()
+      session$reload()
+    }
+
+
+    # Observe closing button of delete modal
+    observeEvent(input$delete_widgets_button_close, {
+      close_delete_modal()
+    })
 
   })
 }
