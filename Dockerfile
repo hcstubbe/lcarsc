@@ -28,6 +28,3 @@ RUN R -e 'remotes::install_local("dependencies/lcarsM.tar.gz", force = T)'
 RUN R -e 'remotes::install_local(upgrade="never", force = TRUE)'
 
 RUN rm -r /build_files
-
-
-CMD  ["R", "-e", "lcarsc::run_app(options = list(host = '0.0.0.0', port = 3838))"]
