@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList fluidRow fluidRow div modalDialog showModal icon textInput actionButton modalButton observeEvent removeModal showNotification column moduleServer
+#' @importFrom shiny NS tagList fluidRow fluidRow div modalDialog showModal icon textInput actionButton modalButton observeEvent removeModal showNotification column moduleServer checkboxGroupInput
 #' @importFrom shinydashboard box
 #' @importFrom utils zip
 #' @importFrom readr write_csv
@@ -119,8 +119,8 @@ mod_module_editor_controls_server <- function(id) {
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
-                  selectInput(ns("tab_to_del_pool"), "Select table ID for deleting", choices = c("None", dbListTables(pool))),
-                  selectInput(ns("tab_to_del_config"), "Select table ID for deleting", choices = c("None", dbListTables(pool_config))),
+                  checkboxGroupInput(ns("tab_to_del_pool"), "Select data table ID for deleting", choices = dbListTables(pool)),
+                  checkboxGroupInput(ns("tab_to_del_config"), "Select config table ID for deleting", choices = dbListTables(pool_config)),
                   actionButton(ns("delete_widgets_button_confirm"), "Confirm", icon = icon("trash",verify_fa = FALSE)),
                   actionButton(ns("delete_widgets_button_close"), "Close & relod", icon = icon("update",verify_fa = FALSE))
                 )
@@ -137,19 +137,23 @@ mod_module_editor_controls_server <- function(id) {
 
       tab_to_del_pool = input$tab_to_del_pool
       if(!is.null(tab_to_del_pool)){
-        if(tab_to_del_pool %in% dbListTables(pool)){
-          dbRemoveTable(pool, input$tab_to_del_pool)
-          showNotification(paste0("Data table", tab_to_del_pool, " deleted!"), type = "error")
+        for (i in tab_to_del_pool){
+          if(i %in% dbListTables(pool)){
+            dbRemoveTable(pool, i)
+            showNotification(paste0("Data table", i, " deleted!"), type = "warning")
+          } else {showNotification(paste0("Data table", i, " NOT found!"), type = "error")}
         }
       }
 
+
       tab_to_del_config = input$tab_to_del_config
       if(!is.null(tab_to_del_config)){
-        if(tab_to_del_config %in% dbListTables(pool_config)){
-          dbRemoveTable(pool_config, input$tab_to_del_config)
-          showNotification(paste0("Data table", tab_to_del_config, " deleted!"), type = "error")
+        for (i in tab_to_del_config){
+          if(i %in% dbListTables(pool_config)){
+            dbRemoveTable(pool_config, i)
+            showNotification(paste0("Config table", i, " deleted!"), type = "warning")
+          } else {showNotification(paste0("Config table", i, " NOT found!"), type = "error")}
         }
-
       }
 
     })
