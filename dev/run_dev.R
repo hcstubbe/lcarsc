@@ -16,9 +16,13 @@ golem::document_and_reload()
 run_app(ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB(), # RSQLite::SQLite(),
         ecrf_dbhost = "dbdev",
         ecrf_dbname = "db_ecrf_data.sqlite3",
+        ecrf_dbuser = "user",
+        ecrf_dbpassword = "user",
         config_database_driver = RSQLite::SQLite(),
         config_dbhost = "dbdev",
         config_dbname = "db_ecrf_cfg.sqlite3",
+        config_dbuser = "user",
+        config_dbpassword = "user",
         confirm_write_db = FALSE,
         start_as_admin = TRUE,
         options = list(host = '0.0.0.0', port = 3838))
