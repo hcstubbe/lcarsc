@@ -35,7 +35,8 @@ mod_module_launcher_edit_ui <- function(id){
         dashboardSidebar(
           sidebarMenu(
             menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),
-            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact"),
+            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact") ,
+            menuItem("Library", tabName = "library"),
             menuItem("Editor", tabName = "editor"),
             menuItem("Preview", tabName = "preview")
             # ,
@@ -93,6 +94,9 @@ mod_module_launcher_edit_ui <- function(id){
                     )
             )
             ,
+            tabItem("library",
+                    mod_module_library_ui(ns("module_library_1")))
+            ,
             tabItem("editor",
                     mod_module_editor_launcher_ui(ns("mod_module_editor")))
 
@@ -140,6 +144,9 @@ mod_module_launcher_edit_server <- function(id){
 
 
     # Launch module servers ----
+
+  	# Module library
+  	mod_module_library_server(id = "module_library_1")
 
     # Module editor
     mod_module_editor_launcher_server(id = "mod_module_editor")
