@@ -20,15 +20,6 @@ mod_module_library_ui <- function(id){
                                               )
 
                                    ))),
-      fluidRow(shinydashboard::box(title = ("Upload visits"),
-                                   width = 12,
-                                   status = "info",
-                                   solidHeader = FALSE,
-                                   collapsible = TRUE,
-                                   collapsed = TRUE,
-                                   fileInput(ns("visits_upload"), "Upload data file (CSV)",
-                                             multiple = FALSE,
-                                             accept = c(".csv")))),
       fluidRow(shinydashboard::box(title = ("Upload variables"),
                                    width = 12, status = "info",
                                    solidHeader = FALSE,
@@ -55,8 +46,8 @@ mod_module_library_server <- function(id){
     pool = get_golem_options("pool")
     widget_data_input = load_widget_data(pool_config = golem::get_golem_options("pool_config"),
                                          production_mode = golem::get_golem_options("production_mode"))
-    all_visits_editor = widget_data_input$all_visits_editor
     widgets_table_global_widgets = widget_data_input$widgets_table_global_widgets
+    widgets_table_global_widgets = widgets_table_global_widgets[widgets_table_global_widgets$inputId != "visit_for_var",]
 
     rv_downstream = reactiveValues()
 
@@ -82,7 +73,7 @@ mod_module_library_server <- function(id){
 
     ## Start sub-module servers
     rv_downstream_vars = reactiveValues()
-    rv_downstream_vars$visit_id = reactive({"editor"})
+    rv_downstream_vars$visit_id = reactive({"library"})
     rv_downstream_vars$pid = reactive({"vars"})
     mod_module_edit_tab_server(id = "mod_module_editor_vars",
                                widget_tab_selection = "vars",
@@ -92,23 +83,14 @@ mod_module_library_server <- function(id){
                                simple = TRUE,
                                modal_width = ".modal-dialog{ width:400px}",
                                widgets_table_global = widgets_table_global_widgets,
-                               all_visits = all_visits_editor,
-                               visit_id = "editor",
+                               all_visits = NULL,
+                               visit_id = "library",
                                add.copy.btn = TRUE,
                                num_entries = 200,
                                order.by = "order_of_var")
 
 
     # Handle uploads ----
-
-    observe({
-      if (is.null(input$visits_upload)) return()
-      input_csv_visits = read.csv(input$visits_upload$datapath)
-      tryCatch(dbAppendTable(pool,
-                             "editor_table_visit",
-                             input_csv_visits),
-               error = function(e) showNotification("Data not saved: check format!", type = "error"))
-    })
 
     observe({
       if (is.null(input$vars_upload)) return()
