@@ -14,24 +14,17 @@
 #' @importFrom golem get_golem_options
 mod_module_editor_controls_ui <- function(id) {
   ns = NS(id)
-  shinydashboard::box(title = "Controls", status = "info", width = 12,
-                      column(4,
-                             shinydashboard::box(title = "Build & reload", status = "warning", collapsible = TRUE, collapsed = TRUE,width = 12,solidHeader = TRUE,
-                                                 actionButton(ns("update_widgets_button"), "Build", icon("update", verify_fa = FALSE))
-                             )
-                      ),
-                      column(4,
-                             shinydashboard::box(title = "Export", status = "info", collapsible = TRUE, collapsed = TRUE,width = 12,solidHeader = TRUE,
-                                                 downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE))
-                             )
-                      ),
-                      column(4,
-                             shinydashboard::box(title = "Delete", status = "danger", collapsible = TRUE, collapsed = TRUE,width = 12,solidHeader = TRUE,
-                                                 actionButton(ns("delete_widgets_button"), "Delete", icon("delete", verify_fa = FALSE))
-                             )
-                      )
+
+  tagList(
+    shinydashboard::box(title = "Controls", status = "info", width = 12,
+                        actionButton(ns("update_widgets_button"), "Build", icon("hammer", verify_fa = FALSE)),
+                        downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE)),
+                        actionButton(ns("uploadData"), "Upload", icon = icon("upload", verify_fa = FALSE)),
+                        actionButton(ns("delete_widgets_button"), "Delete", icon("trash", verify_fa = FALSE))
+    )
   )
 }
+
 
 
 #' module_editor_controls Server Functions
@@ -76,6 +69,30 @@ mod_module_editor_controls_server <- function(id) {
       removeModal()
       showNotification("Widgets updated", type = "message")
       session$reload()
+    })
+
+    # Upload data
+    observeEvent(input$uploadData, {
+      showModal(
+        modalDialog(
+          title = "Upload widget data",
+          div(tags$head(tags$style(".modal-dialog{ width:400px}")),
+              tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+              fluidPage(
+                fluidRow(
+                  fileInput(ns("visits_upload"), "Upload data file (CSV)",
+                            multiple = FALSE,
+                            accept = c(".csv")),
+                  fileInput(ns("vars_upload"), "Upload data file (CSV)",
+                            multiple = FALSE,
+                            accept = c(".csv")),
+                  modalButton("Dismiss")
+                )
+              )
+          ),
+          easyClose = TRUE, footer = NULL
+        )
+      )
     })
 
 
@@ -168,6 +185,26 @@ mod_module_editor_controls_server <- function(id) {
     # Observe closing button of delete modal
     observeEvent(input$delete_widgets_button_close, {
       close_delete_modal()
+    })
+
+    # Handle uploads ----
+
+    observe({
+      if (is.null(input$visits_upload)) return()
+      input_csv_visits = read.csv(input$visits_upload$datapath)
+      tryCatch(dbAppendTable(pool,
+                             "editor_table_visit",
+                             input_csv_visits),
+               error = function(e) showNotification("Data not saved: check format!", type = "error"))
+    })
+
+    observe({
+      if (is.null(input$vars_upload)) return()
+      input_csv_vars = read.csv(input$vars_upload$datapath)
+      tryCatch(dbAppendTable(pool,
+                             "editor_table_vars",
+                             input_csv_vars),
+               error = function(e) showNotification("Data not saved: check format!", type = "error"))
     })
 
   })
