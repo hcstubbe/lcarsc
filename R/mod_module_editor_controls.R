@@ -69,8 +69,7 @@ mod_module_editor_controls_server <- function(id) {
     observeEvent(input$update_widgets_button_confirm, {
       dir.create("tmp_widgetdata", showWarnings = F)
       saveRDS((make_widget_tables(pool = pool,
-                                  pool_config = pool_config,
-                                  write_widget_tables = TRUE))$widget_data_input,
+                                  pool_config = pool_config))$widget_data_input,
               "tmp_widgetdata/tmp_widgetdata.RDS")
       removeModal()
       showNotification("Widgets updated", type = "message")

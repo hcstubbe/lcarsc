@@ -11,8 +11,7 @@
 #' @importFrom golem get_golem_options
 #'
 make_widget_tables = function(pool,
-                              pool_config,
-                              write_widget_tables = FALSE) {
+                              pool_config) {
 
 
   # Read input widget data
@@ -236,11 +235,6 @@ make_widget_tables = function(pool,
 
   # Update tables on database
   db_replace_tables(conn = pool_config, table_list = widget_tables) # replace configuration tables
-
-  if(write_widget_tables == TRUE){
-    dir.create(file.path("widgets"), showWarnings = FALSE)
-    lapply(names(widget_tables), function(x) write_csv(widget_tables[[x]], paste0("widgets/", x, ".csv")))
-  }
 
   widget_tables
 
