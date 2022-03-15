@@ -45,6 +45,7 @@ mod_module_data_center_server <- function(id){
 
     #### Symptom severity
     output$user_radarchart_severity <- renderPlot({
+
       input_radar_df = dbReadTable(pool, "app_tbl")[,-c(1,2, 4:8)]
 
       rownames(input_radar_df) = input_radar_df$pid

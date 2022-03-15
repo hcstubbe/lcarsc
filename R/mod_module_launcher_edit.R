@@ -35,11 +35,14 @@ mod_module_launcher_edit_ui <- function(id){
         dashboardSidebar(
           sidebarMenu(
             menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),
-            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact"),
+            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact") ,
+            menuItem("Library", tabName = "library"),
             menuItem("Editor", tabName = "editor"),
             menuItem("Preview", tabName = "preview")
             # ,
             # menuItem("Preview mobile", tabName = "preview_mobile")
+            ,
+            menuItem("Data", tabName = "Data")
 
           )
         ),
@@ -91,6 +94,9 @@ mod_module_launcher_edit_ui <- function(id){
                     )
             )
             ,
+            tabItem("library",
+                    mod_module_library_ui(ns("module_library_1")))
+            ,
             tabItem("editor",
                     mod_module_editor_launcher_ui(ns("mod_module_editor")))
 
@@ -107,6 +113,16 @@ mod_module_launcher_edit_ui <- function(id){
             # }else{
             #   NULL
             # }
+            ,
+            if("app_tbl" %in% dbListTables(golem::get_golem_options("pool"))){
+              tabItem("Data",
+                      mod_module_data_center_ui(ns("module_data_center_1")))
+            }else{
+              tabItem("Data",
+                      div())
+            }
+
+
 
 
 
@@ -129,6 +145,9 @@ mod_module_launcher_edit_server <- function(id){
 
     # Launch module servers ----
 
+  	# Module library
+  	mod_module_library_server(id = "module_library_1")
+
     # Module editor
     mod_module_editor_launcher_server(id = "mod_module_editor")
 
@@ -139,6 +158,11 @@ mod_module_launcher_edit_server <- function(id){
 # 	  if("lcarsM" %in% rownames(installed.packages())){
 # 	    mod_module_preview_mobile_server(id = "module_preview_mobile_1")
 # 	  }
+
+	  if("app_tbl" %in% dbListTables(golem::get_golem_options("pool"))){
+	    mod_module_data_center_server("module_data_center_1")
+	  }
+
 
 	  # Module admin
 	  if(TRUE){
