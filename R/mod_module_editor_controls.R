@@ -51,8 +51,8 @@ mod_module_editor_controls_server <- function(id) {
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
-                  actionButton(ns("update_widgets_button_confirm"), "Confirm"),
-                  modalButton("Dismiss")
+                  actionButton(ns("update_widgets_button_confirm"), "Confirm", icon("refresh", verify_fa = FALSE)),
+                  modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
                 )
               )
           ),
@@ -86,7 +86,7 @@ mod_module_editor_controls_server <- function(id) {
                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
                             multiple = FALSE,
                             accept = c(".csv")),
-                  modalButton("Dismiss")
+                  modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
                 )
               )
           ),
@@ -130,6 +130,26 @@ mod_module_editor_controls_server <- function(id) {
     observeEvent(input$delete_widgets_button, {
       showModal(
         modalDialog(
+          title = "Delete",
+          div(tags$head(tags$style(".modal-dialog{ width:400px}")),
+              tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+              fluidPage(
+                fluidRow(
+                  actionButton(ns("delete_widgets_button_dialog"), "Select tables to delete", icon = icon("check-square-o",verify_fa = FALSE)),
+                  modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
+                )
+              )
+          ),
+          easyClose = FALSE, footer = NULL
+        )
+      )
+    })
+
+    # delete dialogue ----
+    observeEvent(input$delete_widgets_button_dialog, {
+      removeModal()
+      showModal(
+        modalDialog(
           title = "Delete & reload",
           div(tags$head(tags$style(".modal-dialog{ width:400px}")),
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
@@ -146,6 +166,7 @@ mod_module_editor_controls_server <- function(id) {
         )
       )
     })
+
 
 
     # Observe delete confirmation
