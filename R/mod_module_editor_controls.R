@@ -88,7 +88,7 @@ mod_module_editor_controls_server <- function(id) {
                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
                             multiple = FALSE,
                             accept = c(".csv")),
-                  modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
+                  modalButton("Done", icon = icon("check", verify_fa = FALSE))
                 )
               )
           ),
