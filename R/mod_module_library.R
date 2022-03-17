@@ -19,16 +19,7 @@ mod_module_library_ui <- function(id){
                                                        mod_module_edit_tab_ui(ns("mod_module_editor_vars"))
                                               )
 
-                                   ))),
-      fluidRow(shinydashboard::box(title = ("Upload variables"),
-                                   width = 12, status = "info",
-                                   solidHeader = FALSE,
-                                   collapsible = TRUE,
-                                   collapsed = TRUE,
-                                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
-                                             multiple = FALSE,
-                                             accept = c(".csv"))
-      ))
+                                   )))
     )
 
   )

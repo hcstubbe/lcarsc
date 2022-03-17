@@ -80,9 +80,11 @@ mod_module_editor_controls_server <- function(id) {
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
+                  h4("Upload visits"),
                   fileInput(ns("visits_upload"), "Upload data file (CSV)",
                             multiple = FALSE,
                             accept = c(".csv")),
+                  h4("Upload variables"),
                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
                             multiple = FALSE,
                             accept = c(".csv")),
