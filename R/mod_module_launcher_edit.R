@@ -16,9 +16,9 @@ mod_module_launcher_edit_ui <- function(id){
   ns = NS(id)
 
   # Create drop down menu items
-  dropdown_menu_list = list(notificationItem("General settings", icon = shiny::icon("tools", verify_fa = FALSE), status = "primary"),
-            notificationItem("Database setup", icon = shiny::icon("database", verify_fa = FALSE), status = "primary"),
-            notificationItem("Deployment", status = "danger"))
+  dropdown_menu_list = list(notificationItem("General settings", icon = icon("tools", verify_fa = FALSE), status = "primary"),
+            notificationItem("Database setup", icon = icon("database", verify_fa = FALSE), status = "primary"),
+            notificationItem("Deployment", status = "danger", icon = icon("warning", verify_fa = FALSE)))
   for(i in 1:length(dropdown_menu_list)){
     dropdown_menu_list[[i]]$children[[1]] <- a(href="#","onclick"=paste0("clickFunction('",paste0("menuitem_", i),"'); return false;"),
                                dropdown_menu_list[[i]]$children[[1]]$children)
