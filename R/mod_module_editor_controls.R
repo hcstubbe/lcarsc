@@ -46,12 +46,12 @@ mod_module_editor_controls_server <- function(id) {
     observeEvent(input$update_widgets_button, {
       showModal(
         modalDialog(
-          title = "Confirm update & reload",
+          title = "Build & reload",
           div(tags$head(tags$style(".modal-dialog{ width:400px}")),
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
-                  actionButton(ns("update_widgets_button_confirm"), "Confirm", icon("refresh", verify_fa = FALSE)),
+                  actionButton(ns("update_widgets_button_confirm"), "Build", icon("hammer", verify_fa = FALSE)),
                   modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
                 )
               )
