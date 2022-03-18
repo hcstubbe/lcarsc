@@ -11,7 +11,7 @@ mod_module_library_ui <- function(id){
   ns = NS(id)
   tagList(
     fluidPage(
-      fluidRow(mod_module_editor_controls_ui(ns("mod_module_editor_controls"))),
+      fluidRow(mod_module_library_controls_ui(ns("mod_module_editor_controls"))),
       br(),
       fluidRow(shinydashboard::box(title = NULL, status = "info", width = 12,
                                    navbarPage("Library",
@@ -59,7 +59,7 @@ mod_module_library_server <- function(id){
 
     ## Start sub-module servers
 
-    mod_module_editor_controls_server("mod_module_editor_controls")
+    mod_module_library_controls_server("mod_module_editor_controls")
 
 
     ## Start sub-module servers
