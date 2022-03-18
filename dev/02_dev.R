@@ -45,6 +45,7 @@ golem::add_module(name = "module_settings", with_test = TRUE) # Name of the modu
 golem::add_module(name = "module_db_settings", with_test = TRUE) # Name of the module
 golem::add_module(name = "module_admin", with_test = TRUE) # Name of the module
 golem::add_module(name = "module_library", with_test = TRUE) # Name of the module
+golem::add_module(name = "module_library_controls", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
