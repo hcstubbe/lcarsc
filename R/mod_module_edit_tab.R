@@ -454,6 +454,13 @@ mod_module_edit_tab_server<- function(id,
       iv$disable()
     }
 
+    selected_row_id = reactive({
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+    })
+
+
+    rv_out = selected_row_id
 
   })
 

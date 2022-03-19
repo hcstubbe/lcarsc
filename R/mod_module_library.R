@@ -11,15 +11,16 @@ mod_module_library_ui <- function(id){
   ns = NS(id)
   tagList(
     fluidPage(
-      fluidRow(mod_module_library_controls_ui(ns("mod_module_editor_controls"))),
+      fluidRow(mod_module_library_controls_ui(ns("mod_module_library_controls"))),
       br(),
       fluidRow(shinydashboard::box(title = NULL, status = "info", width = 12,
                                    navbarPage("Library",
                                               tabPanel("Variables",
-                                                       mod_module_edit_tab_ui(ns("mod_module_editor_vars"))
+                                                       mod_module_edit_tab_ui(ns("mod_module_library_vars"))
                                               )
 
-                                   )))
+                                   )),
+               uiOutput(ns('sel_row')))
     )
 
   )
@@ -57,16 +58,12 @@ mod_module_library_server <- function(id){
 
     # Run when starting module ----
 
-    ## Start sub-module servers
-
-    mod_module_library_controls_server("mod_module_editor_controls")
-
 
     ## Start sub-module servers
     rv_downstream_vars = reactiveValues()
     rv_downstream_vars$visit_id = reactive({"library"})
     rv_downstream_vars$pid = reactive({"vars"})
-    mod_module_edit_tab_server(id = "mod_module_editor_vars",
+    sel_row = mod_module_edit_tab_server(id = "mod_module_library_vars",
                                widget_tab_selection = "vars",
                                tbl_id = "library_table_vars",
                                rv_in = rv_downstream_vars,
@@ -85,6 +82,9 @@ mod_module_library_server <- function(id){
                                order.by = "order_of_var")
 
 
+    mod_module_library_controls_server("mod_module_library_controls", selected_row = sel_row)
+
+
     # Handle uploads ----
 
     observe({
@@ -95,6 +95,8 @@ mod_module_library_server <- function(id){
                              input_csv_vars),
                error = function(e) showNotification("Data not saved: check format!", type = "error"))
     })
+
+    output$sel_row = shiny::renderUI({h4(sel_row())})
 
   })
 }

@@ -28,7 +28,7 @@ mod_module_library_controls_ui <- function(id) {
 #' module_library_controls Server Functions
 #'
 #' @noRd
-mod_module_library_controls_server <- function(id) {
+mod_module_library_controls_server <- function(id, selected_row) {
   moduleServer(id, function(input, output, session) {
 
 
