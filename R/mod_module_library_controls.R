@@ -43,6 +43,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
     # Add dialogue
     observeEvent(input$addvars, {
 
+      # Get inputIds to add to editor
       vars_table_sql <- dbReadTable(pool, "library_table_vars")
       sel_inputIds = vars_table_sql[vars_table_sql$row_id %in% selected_row(), "inputId"]
 
@@ -226,6 +227,10 @@ mod_module_library_controls_server <- function(id, selected_row) {
     observe({
       if (is.null(input$vars_upload)) return()
       input_csv_vars = read.csv(input$vars_upload$datapath)
+      visit_for_var_col = which(colnames(input_csv_vars) == "visit_for_var")
+      if(length(visit_for_var_col) > 0){
+        input_csv_vars = input_csv_vars[,-visit_for_var_col]
+      }
       tryCatch(dbAppendTable(pool,
                              "library_table_vars",
                              input_csv_vars),
