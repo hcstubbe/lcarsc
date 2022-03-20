@@ -18,8 +18,8 @@ mod_module_library_ui <- function(id){
                                               tabPanel("Variables",
                                                        mod_module_edit_tab_ui(ns("mod_module_library_vars"))
                                               )
-
-                                   )),
+                                      )
+                                   ),
                uiOutput(ns('sel_row')))
     )
 
@@ -79,7 +79,8 @@ mod_module_library_server <- function(id){
                                visit_id = "library",
                                add.copy.btn = TRUE,
                                num_entries = 200,
-                               order.by = "order_of_var")
+                               order.by = "order_of_var",
+                               select_multiple = TRUE)
 
 
     mod_module_library_controls_server("mod_module_library_controls", selected_row = sel_row)
@@ -96,7 +97,7 @@ mod_module_library_server <- function(id){
                error = function(e) showNotification("Data not saved: check format!", type = "error"))
     })
 
-    output$sel_row = shiny::renderUI({h4(sel_row())})
+    output$sel_row = shiny::renderUI({h4(paste(sel_row(), collapse = ", "))})
 
   })
 }

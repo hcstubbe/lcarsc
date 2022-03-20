@@ -31,17 +31,24 @@ mod_module_library_controls_ui <- function(id) {
 mod_module_library_controls_server <- function(id, selected_row) {
   moduleServer(id, function(input, output, session) {
 
-
     # Requirements ----
     ns = session$ns
     pool = get_golem_options("pool")
     pool_config = get_golem_options("pool_config")
 
 
+
     # Observers ----
 
     # Add dialogue
     observeEvent(input$addvars, {
+
+      vars_table_sql <- dbReadTable(pool, "library_table_vars")
+      sel_inputIds = vars_table_sql[vars_table_sql$row_id %in% selected_row(), "inputId"]
+
+      visits_table <- dbReadTable(pool, "editor_table_visit")[,c("visit_id_visits", "visit_title")]
+      visit_choices = visits_table$visit_id_visits
+      names(visit_choices) = visits_table$visit_title
       showModal(
         modalDialog(
           title = "Add",
@@ -49,7 +56,11 @@ mod_module_library_controls_server <- function(id, selected_row) {
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
-                  h4(selected_row()),
+                  h4("Add the following variables to the editor: "),
+                  paste(sel_inputIds, collapse = ", "),
+                  br(),
+                  br(),
+                  selectInput(ns("visit_for_var"), label = "Select visit for varsiables", choices = visit_choices),
                   actionButton(ns("addvars_confirm"), "Add", icon("plus", verify_fa = FALSE)),
                   modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
                 )
@@ -61,11 +72,18 @@ mod_module_library_controls_server <- function(id, selected_row) {
     })
     # Add library data to editor
     observeEvent(input$addvars_confirm, {
-      make_widget_tables(pool = pool,
-                         pool_config = pool_config)
+
+      # Add data
+      SQL_df <- dbReadTable(pool, "library_table_vars")
+
+      SQL_df$visit_for_var = input$visit_for_var
+
+      tryCatch(dbAppendTable(pool,
+                             "editor_table_vars",
+                             SQL_df[SQL_df$row_id %in% selected_row() & SQL_df$deleted_row == FALSE, ]),
+               error = function(e) showNotification("Data not saved: check format!", type = "error"))
       removeModal()
       showNotification("Widgets updated", type = "message")
-      session$reload()
     })
 
     # Upload data
@@ -77,10 +95,6 @@ mod_module_library_controls_server <- function(id, selected_row) {
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
-                  h4("Upload visits"),
-                  fileInput(ns("visits_upload"), "Upload data file (CSV)",
-                            multiple = FALSE,
-                            accept = c(".csv")),
                   h4("Upload variables"),
                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
                             multiple = FALSE,
@@ -210,19 +224,10 @@ mod_module_library_controls_server <- function(id, selected_row) {
     # Handle uploads ----
 
     observe({
-      if (is.null(input$visits_upload)) return()
-      input_csv_visits = read.csv(input$visits_upload$datapath)
-      tryCatch(dbAppendTable(pool,
-                             "editor_table_visit",
-                             input_csv_visits),
-               error = function(e) showNotification("Data not saved: check format!", type = "error"))
-    })
-
-    observe({
       if (is.null(input$vars_upload)) return()
       input_csv_vars = read.csv(input$vars_upload$datapath)
       tryCatch(dbAppendTable(pool,
-                             "editor_table_vars",
+                             "library_table_vars",
                              input_csv_vars),
                error = function(e) showNotification("Data not saved: check format!", type = "error"))
     })

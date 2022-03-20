@@ -51,7 +51,8 @@ mod_module_edit_tab_server<- function(id,
                                       add.copy.btn = FALSE,
                                       num_entries = 5,
                                       order.by,
-                                      preview = FALSE) {
+                                      preview = FALSE,
+                                      select_multiple = FALSE) {
 
 
 
@@ -247,7 +248,7 @@ mod_module_edit_tab_server<- function(id,
         row_submitted = FALSE
       }
 
-      if(length(input$responses_table_rows_selected)>=1 & row_submitted == FALSE){
+      if(length(input$responses_table_rows_selected) == 1 & row_submitted == FALSE){
         deleteData()
       }
 
@@ -256,13 +257,18 @@ mod_module_edit_tab_server<- function(id,
         if(length(input$responses_table_rows_selected) < 1 ){
           modalDialog(
             title = "Warning",
-            paste("Please select row(s)." ),easyClose = TRUE
+            paste("Please select a row." ),easyClose = TRUE
+          )
+        }else if(length(input$responses_table_rows_selected) > 1 ){
+          modalDialog(
+            title = "Warning",
+            paste("Please select only one row." ),easyClose = TRUE
           )
         }else{
           if(row_submitted == TRUE & input$responses_table_rows_selected == 1 ){
             modalDialog(
               title = "Warning",
-              paste("Submitted row(s) cannot be deleted." ),easyClose = TRUE
+              paste("Submitted rows cannot be deleted." ),easyClose = TRUE
             )
           }
         })
@@ -422,6 +428,11 @@ mod_module_edit_tab_server<- function(id,
     })
 
     # Render entry table --------
+    if(select_multiple == FALSE){
+      selection_tab = c("single")
+    }else{
+      selection_tab = c("multiple")
+    }
     output$responses_table <- DT::renderDataTable({
       table = responses_df()
       table = table[,show_vals]
@@ -429,7 +440,7 @@ mod_module_edit_tab_server<- function(id,
       table <- datatable(table,
                          rownames = FALSE,
                          options = list(searching = FALSE, lengthChange = FALSE, pageLength = num_entries),
-                         selection = c("single")
+                         selection = selection_tab
       )
 
     })
@@ -456,7 +467,7 @@ mod_module_edit_tab_server<- function(id,
 
     selected_row_id = reactive({
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
-      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
     })
 
 
