@@ -49,6 +49,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
+                  h4(selected_row()),
                   actionButton(ns("addvars_confirm"), "Add", icon("plus", verify_fa = FALSE)),
                   modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
                 )
