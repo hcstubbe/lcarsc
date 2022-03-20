@@ -16,8 +16,8 @@ mod_module_library_controls_ui <- function(id) {
   ns = NS(id)
 
   tagList(
-    shinydashboard::box(title = "Controls", status = "info", width = 12,
-                        actionButton(ns("update_widgets_button"), "Build", icon("hammer", verify_fa = FALSE)),
+    shinydashboard::box(title = "Library controls", status = "info", width = 12,
+                        actionButton(ns("addvars"), "Add vars to editor", icon("plus", verify_fa = FALSE)),
                         downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE)),
                         actionButton(ns("uploadData"), "Upload", icon = icon("upload", verify_fa = FALSE)),
                         actionButton(ns("delete_widgets_button"), "Delete", icon("trash", verify_fa = FALSE))
@@ -40,16 +40,16 @@ mod_module_library_controls_server <- function(id, selected_row) {
 
     # Observers ----
 
-    # Update dialogue
-    observeEvent(input$update_widgets_button, {
+    # Add dialogue
+    observeEvent(input$addvars, {
       showModal(
         modalDialog(
-          title = "Build & reload",
+          title = "Add",
           div(tags$head(tags$style(".modal-dialog{ width:400px}")),
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
-                  actionButton(ns("update_widgets_button_confirm"), "Build", icon("hammer", verify_fa = FALSE)),
+                  actionButton(ns("addvars_confirm"), "Add", icon("plus", verify_fa = FALSE)),
                   modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
                 )
               )
@@ -58,12 +58,10 @@ mod_module_library_controls_server <- function(id, selected_row) {
         )
       )
     })
-    # Update widgets in data
-    observeEvent(input$update_widgets_button_confirm, {
-      dir.create("tmp_widgetdata", showWarnings = F)
-      saveRDS((make_widget_tables(pool = pool,
-                                  pool_config = pool_config))$widget_data_input,
-              "tmp_widgetdata/tmp_widgetdata.RDS")
+    # Add library data to editor
+    observeEvent(input$addvars_confirm, {
+      make_widget_tables(pool = pool,
+                         pool_config = pool_config)
       removeModal()
       showNotification("Widgets updated", type = "message")
       session$reload()
@@ -227,6 +225,8 @@ mod_module_library_controls_server <- function(id, selected_row) {
                              input_csv_vars),
                error = function(e) showNotification("Data not saved: check format!", type = "error"))
     })
+
+
 
   })
 }
