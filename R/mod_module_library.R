@@ -7,31 +7,30 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_module_library_ui <- function(id){
+mod_module_library_ui <- function(id) {
   ns = NS(id)
   tagList(
-    fluidPage(
-      fluidRow(mod_module_library_controls_ui(ns("mod_module_library_controls"))),
-      br(),
-      fluidRow(shinydashboard::box(title = NULL, status = "info", width = 12,
-                                   navbarPage("Library",
-                                              tabPanel("Variables",
-                                                       mod_module_edit_tab_ui(ns("mod_module_library_vars"))
-                                              )
-                                      )
-                                   ),
-               uiOutput(ns('sel_row')))
+    fluidRow(
+      column(5,
+             box(title = (internal_app_data$lang_sel$module_documentation_pt_list_title), width = 12, status = "primary", solidHeader = TRUE,
+                 actionButton(ns("update_pull_user"), label = internal_app_data$lang_sel$update_pull, icon("sync", verify_fa = FALSE)),
+                 br(),
+                 br(),
+                 br(),
+                 DT::dataTableOutput(ns("responses_user")))
+      ),
+      column(7,
+             uiOutput(ns("visit_submission_panel"))
+      )
     )
-
   )
 }
 
 #' module_library Server Functions
 #'
 #' @noRd
-mod_module_library_server <- function(id){
+mod_module_library_server <- function(id, data_table1, data_table2, preview = FALSE) {
   moduleServer(id, function(input, output, session) {
-
 
     # Requirements ----
     ns = session$ns
@@ -47,8 +46,14 @@ mod_module_library_server <- function(id){
 
     # Functions for loading data for rendering data table
     computeFT = function(){
-      y = loadData("input_vars")[,c("date_modified")]
-      y
+      y = loadData(pool, "library_table_vars")
+      if(is.null(y)){
+        return(y)
+      }else{
+        panel = list(Panel = levels(factor(y$panel)))
+        panel = data.frame(panel)
+        return(panel)
+      }
     }
     load_dt_for_render = function(){
       DT::datatable(computeFT(),
@@ -60,45 +65,75 @@ mod_module_library_server <- function(id){
 
 
     ## Start sub-module servers
+    get_panel = reactive({
+      x_tab = computeFT()
+      row_selection = input$responses_user_rows_selected
+      x_panel = x_tab[row_selection, "Panel"]
+      x_panel
+      })
     rv_downstream_vars = reactiveValues()
     rv_downstream_vars$visit_id = reactive({"library"})
     rv_downstream_vars$pid = reactive({"vars"})
     sel_row = mod_module_edit_tab_server(id = "mod_module_library_vars",
-                               widget_tab_selection = "vars",
-                               tbl_id = "library_table_vars",
-                               rv_in = rv_downstream_vars,
-                               show_vals = c('Input ID' = "inputId",
-                                             'Label' = "label",
-                                             'Panel' = "panel",
-                                             'Subgroup/Sub-panel' = "subgroup",
-                                             'Input type' = "type"),
-                               simple = TRUE,
-                               modal_width = ".modal-dialog{ width:400px}",
-                               widgets_table_global = widgets_table_global_widgets,
-                               all_visits = NULL,
-                               visit_id = "library",
-                               add.copy.btn = TRUE,
-                               num_entries = 200,
-                               order.by = "order_of_var",
-                               select_multiple = TRUE)
+                                         widget_tab_selection = "vars",
+                                         tbl_id = "library_table_vars",
+                                         rv_in = rv_downstream_vars,
+                                         show_vals = c('Input ID' = "inputId",
+                                                       'Label' = "label",
+                                                       'Panel' = "panel",
+                                                       'Subgroup/Sub-panel' = "subgroup",
+                                                       'Input type' = "type"),
+                                         simple = TRUE,
+                                         modal_width = ".modal-dialog{ width:400px}",
+                                         widgets_table_global = widgets_table_global_widgets,
+                                         all_visits = NULL,
+                                         visit_id = "library",
+                                         add.copy.btn = TRUE,
+                                         num_entries = 200,
+                                         order.by = "order_of_var",
+                                         select_multiple = TRUE,
+                                         filter_panel = get_panel)
 
 
-    mod_module_library_controls_server("mod_module_library_controls", selected_row = sel_row)
 
-
-    # Handle uploads ----
-
-    observe({
-      if (is.null(input$vars_upload)) return()
-      input_csv_vars = read.csv(input$vars_upload$datapath)
-      tryCatch(dbAppendTable(pool,
-                             "editor_table_vars",
-                             input_csv_vars),
-               error = function(e) showNotification("Data not saved: check format!", type = "error"))
+    # Observers ----
+    ## Update participant table ----
+    observeEvent(input$update_pull_user, {
+      output$responses_user <- DT::renderDataTable({
+        load_dt_for_render()
+      })
     })
 
-    output$sel_row = shiny::renderUI({h4(paste(sel_row(), collapse = ", "))})
+    # Render UI elements ----
 
+    ## Load data from database for included patients
+    output$responses_user <- DT::renderDataTable({
+      load_dt_for_render()
+    })
+
+
+    ##
+    output$docu_tab_ui = renderUI({
+      mod_module_edit_tab_ui(id = ns("mod_module_library_vars"))
+    })
+
+    # Render menu when participant is selected
+    output$visit_submission_panel = renderUI({
+
+      if(length(input$responses_user_rows_selected) == 1){
+        div(
+          shinydashboard::box(
+            title = (internal_app_data$lang_sel$module_documentation_visit_menu),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE,
+            wellPanel(h4("Here!")
+            ),
+            uiOutput(ns("docu_tab_ui"))
+          )
+        )
+
+      }else{
+        return(NULL)
+      }
+    })
   })
 }
 

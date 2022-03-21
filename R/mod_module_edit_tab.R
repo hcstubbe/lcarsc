@@ -52,7 +52,8 @@ mod_module_edit_tab_server<- function(id,
                                       num_entries = 5,
                                       order.by,
                                       preview = FALSE,
-                                      select_multiple = FALSE) {
+                                      select_multiple = FALSE,
+                                      filter_panel = reactive({NULL})) {
 
 
 
@@ -113,7 +114,7 @@ mod_module_edit_tab_server<- function(id,
       input$delete_button
       input$submit_data_confirm
 
-      db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_panel = filter_panel())
 
     })
 
@@ -231,7 +232,7 @@ mod_module_edit_tab_server<- function(id,
 
     # Delete data ----
     deleteData <- reactive({
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_panel = filter_panel())
       row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
 
       # Set old row as 'deleted_row = TRUE'
@@ -283,7 +284,7 @@ mod_module_edit_tab_server<- function(id,
 
     copyData <- reactive({
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_panel = filter_panel())
       row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
       SQL_df <- SQL_df %>% filter(row_id %in% row_selection)
       SQL_df$row_id <- unique_id(SQL_df)
@@ -318,7 +319,7 @@ mod_module_edit_tab_server<- function(id,
 
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by)
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_panel = filter_panel())
       row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
       SQL_df_selected = SQL_df[input$responses_table_rows_selected, ]
 
@@ -362,7 +363,7 @@ mod_module_edit_tab_server<- function(id,
 
       if (iv$is_valid()) {
 
-        SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+        SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_panel = filter_panel())
         row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
 
         # Add new row
@@ -385,7 +386,7 @@ mod_module_edit_tab_server<- function(id,
     # Submit data ----
     observeEvent(input$submit_button, priority = 20,{
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_panel = filter_panel())
       row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
       if(length(row_submitted) < 1){
         row_submitted = FALSE
@@ -416,7 +417,7 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$submit_data_confirm, priority = 20,{
 
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_panel = filter_panel())
       row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
 
       # Set old row as 'deleted_row = TRUE'
@@ -466,7 +467,7 @@ mod_module_edit_tab_server<- function(id,
     }
 
     selected_row_id = reactive({
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by)
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_panel = filter_panel())
       row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
     })
 
