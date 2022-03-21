@@ -28,7 +28,11 @@ db_read_select = function(pool, tbl_id, pid_x, filter_deleted_rows = TRUE, use.p
   }
 
   if(!is.null(filter_panel)){
-    tab_i = tab_i %>% filter(panel == filter_panel)
+    if(length(filter_panel) > 0){
+      tab_i = tab_i %>% filter(panel == filter_panel & deleted_row == FALSE)
+    }else{
+      tab_i = data.frame(panel = character(0))
+    }
     return(tab_i)
   }
 
