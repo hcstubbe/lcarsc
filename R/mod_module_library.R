@@ -10,6 +10,11 @@
 mod_module_library_ui <- function(id) {
   ns = NS(id)
   tagList(
+    column(12,
+           fluidRow(shinydashboard::box(title = "Manage variables",
+                                 status = "info",
+                                 width = 12,
+                                 mod_module_library_controls_ui(ns("mod_module_library_controls"))))),
     fluidRow(
       column(4,
              box(title = "Select panel", width = 12, status = "primary", solidHeader = TRUE,
@@ -51,9 +56,9 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
         return(y)
       }else{
         y = y[y$deleted_row == FALSE,]
-        panel = list(Panel = levels(factor(y$panel)))
-        panel = data.frame(panel)
-        return(panel)
+        origin_of_variable = list('Origin' = levels(factor(y$origin_of_variable)))
+        origin_of_variable = data.frame(origin_of_variable)
+        return(origin_of_variable)
       }
     }
     load_dt_for_render = function(){
@@ -137,8 +142,12 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
       if(length(input$responses_user_rows_selected) == 1){
         div(
           shinydashboard::box(
-            title = "Add variables",width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE,
-            fluidRow(mod_module_library_controls_ui(ns("mod_module_library_controls"))),
+            title = "Add variables",
+            width = 12,
+            status = "warning",
+            solidHeader = TRUE,
+            collapsible = TRUE,
+            collapsed = FALSE,
             fluidRow(uiOutput(ns("docu_tab_ui")))
           )
         )

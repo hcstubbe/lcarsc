@@ -43,6 +43,7 @@ mod_module_editor_launcher_server <- function(id) {
                                          production_mode = golem::get_golem_options("production_mode"))
   	all_visits_editor = widget_data_input$all_visits_editor
   	widgets_table_global_widgets = widget_data_input$widgets_table_global_widgets
+  	widgets_table_global_widgets = widgets_table_global_widgets[widgets_table_global_widgets$inputId != "origin_of_variable",]
 
     rv_downstream = reactiveValues()
 

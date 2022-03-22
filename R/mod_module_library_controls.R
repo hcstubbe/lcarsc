@@ -16,7 +16,7 @@ mod_module_library_controls_ui <- function(id) {
   ns = NS(id)
 
   tagList(
-    shinydashboard::box(title = "Library controls", status = "info", width = 12,
+    div(
                         actionButton(ns("addvars"), "Add vars to editor", icon("plus", verify_fa = FALSE)),
                         downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE)),
                         actionButton(ns("uploadData"), "Upload", icon = icon("upload", verify_fa = FALSE)),
