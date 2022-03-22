@@ -11,15 +11,15 @@ mod_module_library_ui <- function(id) {
   ns = NS(id)
   tagList(
     fluidRow(
-      column(5,
-             box(title = (internal_app_data$lang_sel$module_documentation_pt_list_title), width = 12, status = "primary", solidHeader = TRUE,
+      column(4,
+             box(title = "Select panel", width = 12, status = "primary", solidHeader = TRUE,
                  actionButton(ns("update_pull_user"), label = internal_app_data$lang_sel$update_pull, icon("sync", verify_fa = FALSE)),
                  br(),
                  br(),
                  br(),
                  DT::dataTableOutput(ns("responses_user")))
       ),
-      column(7,
+      column(8,
              uiOutput(ns("visit_submission_panel"))
       )
     )
@@ -58,7 +58,10 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
     }
     load_dt_for_render = function(){
       DT::datatable(computeFT(),
-                    options = list(pageLength = 5), selection = c("single"))}
+                    options = list(pageLength = 5,
+                                   searching = TRUE,
+                                   lengthChange = FALSE),
+                    selection = c("single"))}
 
 
 
@@ -91,10 +94,12 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
                                          all_visits = NULL,
                                          visit_id = "library",
                                          add.copy.btn = TRUE,
-                                         num_entries = 200,
+                                         num_entries = 50,
                                          order.by = "order_of_var",
                                          select_multiple = TRUE,
-                                         filter_panel = get_panel)
+                                         filter_panel = get_panel,
+                                         search_field = TRUE,
+                                         length_change = FALSE)
 
 
     mod_module_library_controls_server("mod_module_library_controls", selected_row = sel_row)
@@ -118,7 +123,12 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
 
     ##
     output$docu_tab_ui = renderUI({
-      mod_module_edit_tab_ui(id = ns("mod_module_library_vars"))
+      shinydashboard::box(title = "Select/edit variables",
+                          width = 12,
+                          status = "primary",
+                          solidHeader = FALSE,
+                          mod_module_edit_tab_ui(id = ns("mod_module_library_vars"))
+      )
     })
 
     # Render menu when participant is selected
@@ -127,9 +137,9 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
       if(length(input$responses_user_rows_selected) == 1){
         div(
           shinydashboard::box(
-            title = (internal_app_data$lang_sel$module_documentation_visit_menu),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE,
+            title = "Add variables",width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE,
             fluidRow(mod_module_library_controls_ui(ns("mod_module_library_controls"))),
-            uiOutput(ns("docu_tab_ui"))
+            fluidRow(uiOutput(ns("docu_tab_ui")))
           )
         )
 

@@ -53,7 +53,9 @@ mod_module_edit_tab_server<- function(id,
                                       order.by,
                                       preview = FALSE,
                                       select_multiple = FALSE,
-                                      filter_panel = reactive({NULL})) {
+                                      filter_panel = reactive({NULL}),
+                                      search_field = FALSE,
+                                      length_change = FALSE) {
 
 
 
@@ -440,10 +442,10 @@ mod_module_edit_tab_server<- function(id,
       names(table) = names(show_vals)
       table <- datatable(table,
                          rownames = FALSE,
-                         options = list(searching = FALSE, lengthChange = FALSE, pageLength = num_entries),
+                         options = list(searching = search_field, lengthChange = length_change, pageLength = num_entries),
                          selection = selection_tab
       )
-
+      table
     })
 
     ####-------- Observe mandatory fields --------####
