@@ -17,7 +17,7 @@ mod_module_library_ui <- function(id) {
                                  mod_module_library_controls_ui(ns("mod_module_library_controls"))))),
     fluidRow(
       column(4,
-             box(title = "Select panel", width = 12, status = "primary", solidHeader = TRUE,
+             box(title = "Select origin", width = 12, status = "primary", solidHeader = TRUE,
                  actionButton(ns("update_pull_user"), label = internal_app_data$lang_sel$update_pull, icon("sync", verify_fa = FALSE)),
                  br(),
                  br(),
@@ -56,9 +56,9 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
         return(y)
       }else{
         y = y[y$deleted_row == FALSE,]
-        origin_of_variable = list('Origin' = levels(factor(y$origin_of_variable)))
-        origin_of_variable = data.frame(origin_of_variable)
-        return(origin_of_variable)
+        origin_of_var = list('Origin' = levels(factor(y$origin_of_var)))
+        origin_of_var = data.frame(origin_of_var)
+        return(origin_of_var)
       }
     }
     load_dt_for_render = function(){

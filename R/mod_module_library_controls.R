@@ -97,6 +97,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
               fluidPage(
                 fluidRow(
                   h4("Upload variables"),
+                  textInput(ns("origin_of_var"), "Origin of variables"),
                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
                             multiple = FALSE,
                             accept = c(".csv")),
@@ -231,10 +232,13 @@ mod_module_library_controls_server <- function(id, selected_row) {
       if(length(visit_for_var_col) > 0){
         input_csv_vars = input_csv_vars[,-visit_for_var_col]
       }
-      tryCatch(dbAppendTable(pool,
+      input_csv_vars$origin_of_var = input$origin_of_var
+     # tryCatch(
+        dbAppendTable(pool,
                              "library_table_vars",
-                             input_csv_vars),
-               error = function(e) showNotification("Data not saved: check format!", type = "error"))
+                             input_csv_vars)
+        # ,
+        #        error = function(e) showNotification("Data not saved: check format!", type = "error"))
     })
 
 
