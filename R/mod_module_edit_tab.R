@@ -19,7 +19,7 @@ mod_module_edit_tab_ui <- function(id) {
 
     fluidPage(
       fluidRow(
-        actionButton(ns("add_button"), "Add", icon("plus", verify_fa = FALSE)),
+        actionButton(ns("add_button"), "New", icon("plus", verify_fa = FALSE)),
         actionButton(ns("edit_button"), "Edit", icon("edit", verify_fa = FALSE)),
         actionButton(ns("delete_button"), "Delete", icon("trash-alt", verify_fa = FALSE)),
         actionButton(ns("submit_button"), "Submit", icon("paper-plane", verify_fa = FALSE))

@@ -126,29 +126,19 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
     })
 
 
-    ##
-    output$docu_tab_ui = renderUI({
-      shinydashboard::box(title = "Select/edit variables",
-                          width = 12,
-                          status = "primary",
-                          solidHeader = FALSE,
-                          mod_module_edit_tab_ui(id = ns("mod_module_library_vars"))
-      )
-    })
-
     # Render menu when participant is selected
     output$visit_submission_panel = renderUI({
 
       if(length(input$responses_user_rows_selected) == 1){
         div(
           shinydashboard::box(
-            title = "Add variables",
+            title = "Select/modify variables",
             width = 12,
             status = "warning",
             solidHeader = TRUE,
             collapsible = TRUE,
             collapsed = FALSE,
-            fluidRow(uiOutput(ns("docu_tab_ui")))
+            fluidRow(column(12, mod_module_edit_tab_ui(id = ns("mod_module_library_vars"))))
           )
         )
 

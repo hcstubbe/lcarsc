@@ -17,7 +17,7 @@ mod_module_library_controls_ui <- function(id) {
 
   tagList(
     div(
-                        actionButton(ns("addvars"), "Add vars to editor", icon("plus", verify_fa = FALSE)),
+                        actionButton(ns("addvars"), "Add selected variables", icon("plus", verify_fa = FALSE)),
                         downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE)),
                         actionButton(ns("uploadData"), "Upload", icon = icon("upload", verify_fa = FALSE)),
                         actionButton(ns("delete_widgets_button"), "Delete", icon("trash", verify_fa = FALSE))
@@ -50,26 +50,43 @@ mod_module_library_controls_server <- function(id, selected_row) {
       visits_table <- dbReadTable(pool, "editor_table_visit")[,c("visit_id_visits", "visit_title")]
       visit_choices = visits_table$visit_id_visits
       names(visit_choices) = visits_table$visit_title
-      showModal(
-        modalDialog(
-          title = "Add",
-          div(tags$head(tags$style(".modal-dialog{ width:400px}")),
-              tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
-              fluidPage(
-                fluidRow(
-                  h4("Add the following variables to the editor: "),
-                  paste(sel_inputIds, collapse = ", "),
-                  br(),
-                  br(),
-                  selectInput(ns("visit_for_var"), label = "Select visit for varsiables", choices = visit_choices),
-                  actionButton(ns("addvars_confirm"), "Add", icon("plus", verify_fa = FALSE)),
-                  modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
+      if(length(visit_choices) > 0){
+        showModal(
+          modalDialog(
+            title = "Add",
+            div(tags$head(tags$style(".modal-dialog{ width:400px}")),
+                tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+                fluidPage(
+                  fluidRow(
+                    h4("Add the following variables to the editor: "),
+                    paste(sel_inputIds, collapse = ", "),
+                    br(),
+                    br(),
+                    selectInput(ns("visit_for_var"), label = "Select visit for varsiables", choices = visit_choices),
+                    actionButton(ns("addvars_confirm"), "Add", icon("plus", verify_fa = FALSE)),
+                    modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
+                  )
                 )
-              )
-          ),
-          easyClose = TRUE, footer = NULL
+            ),
+            easyClose = TRUE, footer = NULL
+          )
         )
-      )
+      }else{
+        showModal(
+          modalDialog(
+            title = "Visit required!",
+            div(tags$head(tags$style(".modal-dialog{ width:400px}")),
+                tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+                fluidPage(
+                  fluidRow(
+                    h4("Add at least one visit in the editor!"),
+                  )
+                )
+            ),
+            easyClose = TRUE, footer = NULL
+          )
+        )
+      }
     })
     # Add library data to editor
     observeEvent(input$addvars_confirm, {
