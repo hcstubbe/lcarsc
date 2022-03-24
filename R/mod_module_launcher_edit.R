@@ -40,8 +40,8 @@ mod_module_launcher_edit_ui <- function(id){
             menuItem("Preview", tabName = "preview")
             # ,
             # menuItem("Preview mobile", tabName = "preview_mobile")
-            ,
-            menuItem("Data", tabName = "Data")
+            # ,
+            # menuItem("Data", tabName = "Data")
 
           )
         ),
@@ -87,14 +87,14 @@ mod_module_launcher_edit_ui <- function(id){
             # }else{
             #   NULL
             # }
-            ,
-            if("app_tbl" %in% dbListTables(golem::get_golem_options("pool"))){
-              tabItem("Data",
-                      mod_module_data_center_ui(ns("module_data_center_1")))
-            }else{
-              tabItem("Data",
-                      div())
-            }
+            # ,
+            # if("app_tbl" %in% dbListTables(golem::get_golem_options("pool"))){
+            #   tabItem("Data",
+            #           mod_module_data_center_ui(ns("module_data_center_1")))
+            # }else{
+            #   tabItem("Data",
+            #           div())
+            # }
 
 
 
