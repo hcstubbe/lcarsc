@@ -35,7 +35,6 @@ mod_module_launcher_edit_ui <- function(id){
         dashboardSidebar(
           sidebarMenu(
             menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),
-            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact") ,
             menuItem("Library", tabName = "library"),
             menuItem("Editor", tabName = "editor"),
             menuItem("Preview", tabName = "preview")
@@ -54,43 +53,18 @@ mod_module_launcher_edit_ui <- function(id){
           tabItems(
             tabItem("start",
                     shinydashboard::box(title = "LCARS-C", status = "primary", solidHeader = FALSE,
-                                        "Please fill out the required visits and variables in the editor.", br(), br(),
 
-                                        "Please ", strong("sign out"),   " after working with the eCRF.", br(), br(),
+                                        "This software is for research use only.", br(), br(),
 
-                                        "For",  strong("questions"), "or", strong("problems"), "regarding the eCRF, please contact:", br(),
-                                        "Dr. med. Hans Christian Stubbe", br(),
-                                        "Marchioninistr. 15, 81377 München", br(),
-                                        "Tel.: +49 (0)89 4400 0", br(),
-                                        "Fax: +49 (0)89 4400 78856", br(),
-                                        HTML("E-mail: <a href='mailto:hans_christian.stubbe@med.uni-muenchen.de' target='_top'>hans_christian.stubbe@med.uni-muenchen.de</a>")
-                    )
-            ),
+                                        "Use the ",  strong("library"), "to select and add variables to your eCRF.", br(), br(),
 
-            # Dashboard item providing Contact data
-            tabItem("contact",
-                    shinydashboard::box(title = internal_app_data$lang_sel$module_launcher_menu_contact_technical, status = "primary", solidHeader = FALSE,
-                                        width = 10,
-                                        column(6,
-                                               h4("Dr. med. Hans Christian Stubbe"), br(),
-                                               "Medizinische Klinik und Poliklinik II", br(),
-                                               "LMU Klinikum München", br(),
-                                               "Campus Großhadern", br(),
-                                               "Marchioninistr. 15, 81377 München", br(),
-                                               "Tel.: +49 (0)89 4400 0", br(),
-                                               "Fax: +49 (0)89 4400 78856", br(),
-                                               HTML("E-mail: <a href='mailto:hans_christian.stubbe@med.uni-muenchen.de' target='_top'>hans_christian.stubbe@med.uni-muenchen.de</a>")
-                                        ),
-                                        column(6,
-                                               h4("Dr. rer. med. Ujjwal Mukund Mahajan"), br(),
-                                               "Medizinische Klinik und Poliklinik II", br(),
-                                               "LMU Klinikum München", br(),
-                                               "Campus Großhadern", br(),
-                                               "Marchioninistr. 15, 81377 München", br(),
-                                               "Tel: +49 (0) 89 4400 76125", br(),
-                                               "Fax:+49 (0) 89 4400 78856", br(),
-                                               HTML("E-mail: <a href='mailto:ujjwal_mukund.mahajan@med.uni-muenchen.de' target='_top'>ujjwal_mukund.mahajan@med.uni-muenchen.de</a>")
-                                        )
+                                        "Use the ",  strong("editor"), "to create new variables for your eCRF.", br(), br(),
+
+                                        "In the drop-down menu (top-right corner) use ",  strong("Geneal settings"), " to specify informations of your study.", br(),
+                                        "Use ",  strong("Database settings"), " to name user groups and variables (e.g. when deploying on shinyproxy; see documentation).", br(),
+                                        "Use ",  strong("Deployment"), " to deploy your eCRF into production. Be sure that you want to deploy and that you tested everything using ", strong("Preview"), ". This cannot be undone!", br(), br(),
+
+                                        "Please ", strong("sign out"),   " after working with this software."
                     )
             )
             ,
