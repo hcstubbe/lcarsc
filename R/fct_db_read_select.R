@@ -8,7 +8,7 @@
 #' @importFrom RMariaDB dbReadTable
 
 # Read table and filter
-db_read_select = function(pool, tbl_id, pid_x, filter_deleted_rows = TRUE, use.pid = TRUE, filter_sumitted_rows = FALSE, order.by = NULL, filter_panel = NULL){
+db_read_select = function(pool, tbl_id, pid_x, filter_deleted_rows = TRUE, use.pid = TRUE, filter_sumitted_rows = FALSE, order.by = NULL, filter_origin = NULL){
   tab_i = dbReadTable(pool, tbl_id)
 
   if(!is.null(order.by)){
@@ -23,15 +23,15 @@ db_read_select = function(pool, tbl_id, pid_x, filter_deleted_rows = TRUE, use.p
     tab_i = tab_i %>% filter(submitted_row == TRUE)
   }
 
-  if(use.pid == FALSE & is.null(filter_panel)){
+  if(use.pid == FALSE & is.null(filter_origin)){
     return(tab_i)
   }
 
-  if(!is.null(filter_panel)){
-    if(length(filter_panel) > 0){
-      tab_i = tab_i %>% filter(panel == filter_panel & deleted_row == FALSE)
+  if(!is.null(filter_origin)){
+    if(length(filter_origin) > 0){
+      tab_i = tab_i %>% filter(origin_of_var == filter_origin & deleted_row == FALSE)
     }else{
-      tab_i = data.frame(panel = character(0))
+      tab_i = data.frame(origin = character(0))
     }
     return(tab_i)
   }

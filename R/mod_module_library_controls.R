@@ -118,6 +118,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
                             multiple = FALSE,
                             accept = c(".csv")),
+                  actionButton(ns("confirm_upload"), "Save upload", icon = icon("save", verify_fa = FALSE)),
                   modalButton("Done", icon = icon("check", verify_fa = FALSE))
                 )
               )
@@ -125,6 +126,48 @@ mod_module_library_controls_server <- function(id, selected_row) {
           easyClose = TRUE, footer = NULL
         )
       )
+    })
+
+    # Handle uploads ----
+
+    observeEvent(input$confirm_upload, {
+
+      if ( is.null(input$vars_upload) ) {
+        return()
+        removeModal()
+      }
+
+      input_csv_vars = read.csv(input$vars_upload$datapath)
+      visit_for_var_col = which(colnames(input_csv_vars) == "visit_for_var")
+
+      if ( length(visit_for_var_col) > 0 ) {
+        input_csv_vars = input_csv_vars[,-visit_for_var_col]
+      }
+
+      if ( input$origin_of_var == "" ) {
+        input_csv_vars$origin_of_var[length(input_csv_vars$origin_of_var) == 0] = "Unkown"
+      } else {
+        input_csv_vars$origin_of_var = input$origin_of_var
+      }
+
+      input_csv_vars = input_csv_vars[input_csv_vars$deleted_row == FALSE,]
+
+
+      upload_success = tryCatch(
+        dbAppendTable(pool,
+                      "library_table_vars",
+                      input_csv_vars)
+        ,
+        error = function(e) NULL)
+
+
+      if(!is.null(upload_success)){
+        showNotification("Variables uploaded!", duration = 10, type = "message")
+      }else{
+        showNotification("Data not saved: check format!", type = "error")
+      }
+
+      removeModal()
     })
 
 
@@ -240,23 +283,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
       close_delete_modal()
     })
 
-    # Handle uploads ----
 
-    observe({
-      if (is.null(input$vars_upload)) return()
-      input_csv_vars = read.csv(input$vars_upload$datapath)
-      visit_for_var_col = which(colnames(input_csv_vars) == "visit_for_var")
-      if(length(visit_for_var_col) > 0){
-        input_csv_vars = input_csv_vars[,-visit_for_var_col]
-      }
-      input_csv_vars$origin_of_var = input$origin_of_var
-     # tryCatch(
-        dbAppendTable(pool,
-                             "library_table_vars",
-                             input_csv_vars)
-        # ,
-        #        error = function(e) showNotification("Data not saved: check format!", type = "error"))
-    })
 
 
 

@@ -14,7 +14,10 @@ mod_module_library_ui <- function(id) {
            fluidRow(shinydashboard::box(title = "Manage variables",
                                  status = "info",
                                  width = 12,
-                                 mod_module_library_controls_ui(ns("mod_module_library_controls"))))),
+                                 mod_module_library_controls_ui(ns("mod_module_library_controls"))
+                                 )
+                    )
+           ),
     fluidRow(
       column(4,
              box(title = "Select origin", width = 12, status = "primary", solidHeader = TRUE,
@@ -75,10 +78,10 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
 
     ## Start sub-module servers
 
-    get_panel = reactive({
+    get_origin = reactive({
       x_tab = computeFT()
       row_selection = input$responses_user_rows_selected
-      x_panel = x_tab[row_selection, "Panel"]
+      x_panel = x_tab[row_selection, "Origin"]
       x_panel
       })
     rv_downstream_vars = reactiveValues()
@@ -102,7 +105,7 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
                                          num_entries = 50,
                                          order.by = "order_of_var",
                                          select_multiple = TRUE,
-                                         filter_panel = get_panel,
+                                         filter_origin = get_origin,
                                          search_field = TRUE,
                                          length_change = FALSE)
 
