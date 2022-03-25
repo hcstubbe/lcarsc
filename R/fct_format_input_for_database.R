@@ -82,7 +82,7 @@ format_input_for_database = function(input_data,
 
   input_data$row_id = input_uuid
   input_data$visit_id = all_visits[all_visits[,"visit_id"] == visit_id,"visit_title"]
-  input_data$user_modified = Sys.getenv("SHINYPROXY_USERNAME")
+  input_data$user_modified = get_current_user()
   input_data$date_modified = as.character(date())
   input_data$deleted_row = FALSE
   input_data$submitted_row = FALSE
