@@ -225,6 +225,10 @@ mod_module_edit_tab_server<- function(id,
 
     observeEvent(input$submit_cancel, priority = 20,{
       rv_uuid$uuid = UUIDgenerate()
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
+      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
+      dbExecute(pool, db_cmd)
       close()
       showNotification("Data not saved", type = "warning")
       shinyjs::reset("entry_form")
@@ -322,8 +326,22 @@ mod_module_edit_tab_server<- function(id,
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
-      row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
-      SQL_df_selected = SQL_df[input$responses_table_rows_selected, ]
+      row_submitted <- SQL_df[input$responses_table_row_last_clicked, "submitted_row"]
+      SQL_df_selected = SQL_df[input$responses_table_row_last_clicked, ]
+      SQL_df_lock = SQL_df[input$responses_table_row_last_clicked, c("editing_user", "locked_row")]
+      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+
+
+      if(is.null(SQL_df_lock$locked_row)){
+        SQL_df_lock$locked_row = FALSE
+      }
+      if(is.na(SQL_df_lock$locked_row)){
+        SQL_df_lock$locked_row = FALSE
+      }
+      if(SQL_df_lock$locked_row == ""){
+        SQL_df_lock$locked_row = FALSE
+      }
+
 
       if(length(row_submitted) < 1){
         row_submitted = FALSE
@@ -347,7 +365,26 @@ mod_module_edit_tab_server<- function(id,
         }
       )
 
-      if(length(input$responses_table_rows_selected) == 1  & row_submitted == FALSE){
+      if(SQL_df_lock$locked_row == TRUE){
+        showModal(
+          modalDialog(
+            title = "Warning!",
+            paste0("This entry is locked by user ", SQL_df_lock$editing_user, "!"),
+            footer = div(actionButton(ns("force_unlock"), label = "Unlock!", icon = icon("unlock", verify_fa = FALSE)),
+                         modalButton("Dismiss")),
+            easyClose = FALSE
+          )
+        )
+      }
+
+      if(length(input$responses_table_rows_selected) == 1 & row_submitted == FALSE & SQL_df_lock$locked_row == FALSE){
+
+
+        # Set current row as 'editing = current_user_name'
+        db_cmd = sprintf(paste0("UPDATE ", tbl_id, " SET editing_user = '",  get_current_user(), "' WHERE row_id = '%s'"), row_selection)
+        dbExecute(pool, db_cmd)
+        db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = TRUE WHERE row_id = '%s'"), row_selection)
+        dbExecute(pool, db_cmd)
 
         entry_form(ns("submit_edit"), visit_id)
 
@@ -375,6 +412,8 @@ mod_module_edit_tab_server<- function(id,
         # Set old row as 'deleted_row = TRUE'
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
         dbExecute(pool, db_cmd)
+        db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
+        dbExecute(pool, db_cmd)
 
         # Close modal
         close()
@@ -384,6 +423,21 @@ mod_module_edit_tab_server<- function(id,
 
     })
 
+
+    # Force unlock data
+    observeEvent(input$force_unlock, priority = 20,{
+
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
+      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+
+      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
+      dbExecute(pool, db_cmd)
+
+      close()
+
+      showNotification("Entry unlocked!", type = "error")
+      shinyjs::reset("entry_form")
+    })
 
     # Submit data ----
     observeEvent(input$submit_button, priority = 20,{

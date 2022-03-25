@@ -14,4 +14,5 @@ get_current_user = function() {
   env_user_name = db_settgins_data$env_user_name
   user_name = Sys.getenv(env_user_name)
   return(user_name)
+
 }

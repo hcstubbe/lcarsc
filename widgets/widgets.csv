@@ -1,6 +1,8 @@
 inputId,widget_tab,data_type,r_class,label,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choice8,choice9,choice10,choice11,choice12,widget,form_required,conditional,appear_if,vi,v_mobile,diagnosis,medication
 row_id,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE
 user_modified,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE
+editing_user,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE
+locked_row,all,BOOLEAN,logical,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE
 pid,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE
 date_modified,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE
 visit_id,all,TEXT,character,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE
