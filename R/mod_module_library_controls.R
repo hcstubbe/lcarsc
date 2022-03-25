@@ -110,7 +110,9 @@ mod_module_library_controls_server <- function(id, selected_row) {
       SQL_df = SQL_df[SQL_df$row_id %in% selected_row() & SQL_df$deleted_row == FALSE, ]
 
       start_order = max(dbReadTable(pool, "editor_table_vars")$order_of_var)
-      if(start_order < 0) { start_order = 0 }
+      if(start_order < 0) {
+        start_order = 0
+        }
       SQL_df$visit_for_var = input$visit_for_var
       SQL_df$order_of_var = start_order + 1:nrow(SQL_df)
 
