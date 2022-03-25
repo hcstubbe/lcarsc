@@ -49,7 +49,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
       visits_table <- dbReadTable(pool, "editor_table_visit")[,c("visit_id_visits", "visit_title")]
       visit_choices = visits_table$visit_id_visits
       names(visit_choices) = visits_table$visit_title
-      if(length(visit_choices) > 0){
+      if(length(visit_choices) > 0 & length(sel_inputIds) > 0){
         showModal(
           modalDialog(
             title = "Add",
@@ -64,6 +64,21 @@ mod_module_library_controls_server <- function(id, selected_row) {
                     selectInput(ns("visit_for_var"), label = "Select visit for varsiables", choices = visit_choices),
                     actionButton(ns("addvars_confirm"), "Add", icon("plus", verify_fa = FALSE)),
                     modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
+                  )
+                )
+            ),
+            easyClose = TRUE, footer = NULL
+          )
+        )
+      }else if(length(sel_inputIds) == 0){
+        showModal(
+          modalDialog(
+            title = "Select variables!",
+            div(tags$head(tags$style(".modal-dialog{ width:400px}")),
+                tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+                fluidPage(
+                  fluidRow(
+                    h4("Select at least one variable to add to the editor!"),
                   )
                 )
             ),
