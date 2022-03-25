@@ -65,6 +65,8 @@ golem::add_fct("update_all_fields", with_test = TRUE)
 golem::add_fct("user_is_admin", with_test = TRUE)
 golem::add_fct("user_is_reviewer", with_test = TRUE)
 golem::add_fct("get_current_user", with_test = TRUE)
+golem::add_fct("check_lock", with_test = TRUE)
+
 
 ## External resources
 ## Creates .js and .css files at inst/app/www

@@ -237,26 +237,17 @@ mod_module_edit_tab_server<- function(id,
 
 
     # Delete data ----
-    deleteData <- reactive({
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
 
-      # Set old row as 'deleted_row = TRUE'
-      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
-      dbExecute(pool, db_cmd)
-
-    })
-
+    ## Open edit dialogue
     observeEvent(input$delete_button, priority = 20,{
-      rv_uuid$uuid = UUIDgenerate()
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid)
-      row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
+      row_submitted <- SQL_df[input$responses_table_row_last_clicked, "submitted_row"]
+      SQL_df_selected = SQL_df[input$responses_table_row_last_clicked, ]
+      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+
+
       if(length(row_submitted) < 1){
         row_submitted = FALSE
-      }
-
-      if(length(input$responses_table_rows_selected) == 1 & row_submitted == FALSE){
-        deleteData()
       }
 
       showModal(
@@ -272,14 +263,28 @@ mod_module_edit_tab_server<- function(id,
             paste("Please select only one row." ),easyClose = TRUE
           )
         }else{
-          if(row_submitted == TRUE & input$responses_table_rows_selected == 1 ){
+          if(row_submitted == TRUE & input$responses_table_row_last_clicked == 1 ){
             modalDialog(
               title = "Warning",
               paste("Submitted rows cannot be deleted." ),easyClose = TRUE
             )
           }
         })
+
+      SQL_df_lock = check_lock(SQL_df[input$responses_table_row_last_clicked, c("editing_user", "locked_row")], session)
+
+      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & all(SQL_df_lock$locked_row == FALSE)){
+
+        # Set old row as 'deleted_row = TRUE'
+        rv_uuid$uuid = UUIDgenerate()
+        db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
+        dbExecute(pool, db_cmd)
+
+      }
+
     })
+
+
 
 
 
@@ -328,19 +333,7 @@ mod_module_edit_tab_server<- function(id,
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
       row_submitted <- SQL_df[input$responses_table_row_last_clicked, "submitted_row"]
       SQL_df_selected = SQL_df[input$responses_table_row_last_clicked, ]
-      SQL_df_lock = SQL_df[input$responses_table_row_last_clicked, c("editing_user", "locked_row")]
       row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
-
-
-      if(is.null(SQL_df_lock$locked_row)){
-        SQL_df_lock$locked_row = FALSE
-      }
-      if(is.na(SQL_df_lock$locked_row)){
-        SQL_df_lock$locked_row = FALSE
-      }
-      if(SQL_df_lock$locked_row == ""){
-        SQL_df_lock$locked_row = FALSE
-      }
 
 
       if(length(row_submitted) < 1){
@@ -365,19 +358,9 @@ mod_module_edit_tab_server<- function(id,
         }
       )
 
-      if(SQL_df_lock$locked_row == TRUE){
-        showModal(
-          modalDialog(
-            title = "Warning!",
-            paste0("This entry is locked by user ", SQL_df_lock$editing_user, "!"),
-            footer = div(actionButton(ns("force_unlock"), label = "Unlock!", icon = icon("unlock", verify_fa = FALSE)),
-                         modalButton("Dismiss")),
-            easyClose = FALSE
-          )
-        )
-      }
+      SQL_df_lock = check_lock(SQL_df[input$responses_table_row_last_clicked, c("editing_user", "locked_row")], session)
 
-      if(length(input$responses_table_rows_selected) == 1 & row_submitted == FALSE & SQL_df_lock$locked_row == FALSE){
+      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & all(SQL_df_lock$locked_row == FALSE)){
 
 
         # Set current row as 'editing = current_user_name'
@@ -465,7 +448,7 @@ mod_module_edit_tab_server<- function(id,
         }
       )
 
-      if(row_submitted == FALSE & length(input$responses_table_rows_selected) == 1 ){
+      if(all(row_submitted == FALSE) & length(input$responses_table_rows_selected) == 1 ){
         entry_form(ns("submit_data_confirm"), submit = TRUE)
       }
     })
