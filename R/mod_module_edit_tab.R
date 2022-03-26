@@ -106,22 +106,28 @@ mod_module_edit_tab_server<- function(id,
     }
 
 
-    # Prepare data base access
-    responses_df <- reactive({
 
-      #make reactive to
-      input$submit
-      input$submit_edit
-      input$copy_button
-      input$delete_button
-      input$submit_data_confirm
+    # Render entry table --------
+    if(select_multiple == FALSE){
+      selection_tab = c("single")
+    }else{
+      selection_tab = c("multiple")
+    }
+    make_response_table = function(){
+      table = db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
+      table = table[,show_vals]
+      names(table) = names(show_vals)
+      table <- datatable(table,
+                         rownames = FALSE,
+                         options = list(searching = search_field, lengthChange = length_change, pageLength = num_entries),
+                         selection = selection_tab
+                         )
+      table
+      }
 
-      db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-
+    output$responses_table <- DT::renderDataTable({
+      make_response_table()
     })
-
-
-
 
     # Form for data entry ----
     entry_form <- function(button_id, visit_id, submit = FALSE){
@@ -218,6 +224,10 @@ mod_module_edit_tab_server<- function(id,
         close()
         showNotification("Data saved", type = "message")
         shinyjs::reset("entry_form")
+        # Update response table
+        output$responses_table <- DT::renderDataTable({
+          make_response_table()
+        })
       }
 
 
@@ -226,12 +236,17 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$submit_cancel, priority = 20,{
       rv_uuid$uuid = UUIDgenerate()
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
       db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
       dbExecute(pool, db_cmd)
       close()
       showNotification("Data not saved", type = "warning")
       shinyjs::reset("entry_form")
+
+      # Update response table
+      output$responses_table <- DT::renderDataTable({
+        make_response_table()
+      })
     })
 
 
@@ -241,9 +256,9 @@ mod_module_edit_tab_server<- function(id,
     ## Open edit dialogue
     observeEvent(input$delete_button, priority = 20,{
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
-      row_submitted <- SQL_df[input$responses_table_row_last_clicked, "submitted_row"]
-      SQL_df_selected = SQL_df[input$responses_table_row_last_clicked, ]
-      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+      row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
+      SQL_df_selected = SQL_df[input$responses_table_rows_selected, ]
+      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
 
 
       if(length(row_submitted) < 1){
@@ -263,7 +278,7 @@ mod_module_edit_tab_server<- function(id,
             paste("Please select only one row." ),easyClose = TRUE
           )
         }else{
-          if(row_submitted == TRUE & input$responses_table_row_last_clicked == 1 ){
+          if(row_submitted == TRUE & input$responses_table_rows_selected == 1 ){
             modalDialog(
               title = "Warning",
               paste("Submitted rows cannot be deleted." ),easyClose = TRUE
@@ -271,7 +286,7 @@ mod_module_edit_tab_server<- function(id,
           }
         })
 
-      SQL_df_lock = check_lock(SQL_df[input$responses_table_row_last_clicked, c("editing_user", "locked_row")], session)
+      SQL_df_lock = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
 
       if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & all(SQL_df_lock$locked_row == FALSE)){
 
@@ -280,6 +295,10 @@ mod_module_edit_tab_server<- function(id,
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
         dbExecute(pool, db_cmd)
 
+        # Update response table
+        output$responses_table <- DT::renderDataTable({
+          make_response_table()
+        })
       }
 
     })
@@ -312,6 +331,11 @@ mod_module_edit_tab_server<- function(id,
 
       if(length(input$responses_table_rows_selected)>=1 ){
         copyData()
+
+        # Update response table
+        output$responses_table <- DT::renderDataTable({
+          make_response_table()
+        })
       }
 
       showModal(
@@ -331,9 +355,9 @@ mod_module_edit_tab_server<- function(id,
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
-      row_submitted <- SQL_df[input$responses_table_row_last_clicked, "submitted_row"]
-      SQL_df_selected = SQL_df[input$responses_table_row_last_clicked, ]
-      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+      row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
+      SQL_df_selected = SQL_df[input$responses_table_rows_selected, ]
+      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
 
 
       if(length(row_submitted) < 1){
@@ -358,7 +382,7 @@ mod_module_edit_tab_server<- function(id,
         }
       )
 
-      SQL_df_lock = check_lock(SQL_df[input$responses_table_row_last_clicked, c("editing_user", "locked_row")], session)
+      SQL_df_lock = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
 
       if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & all(SQL_df_lock$locked_row == FALSE)){
 
@@ -386,7 +410,7 @@ mod_module_edit_tab_server<- function(id,
       if (iv$is_valid()) {
 
         SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-        row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+        row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
 
         # Add new row
         rv_uuid$uuid = UUIDgenerate()
@@ -402,6 +426,11 @@ mod_module_edit_tab_server<- function(id,
         close()
         showNotification("Data added", type = "message")
         shinyjs::reset("entry_form")
+
+        # Update response table
+        output$responses_table <- DT::renderDataTable({
+          make_response_table()
+        })
       }
 
     })
@@ -411,7 +440,7 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$force_unlock, priority = 20,{
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
 
       db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
       dbExecute(pool, db_cmd)
@@ -431,6 +460,7 @@ mod_module_edit_tab_server<- function(id,
         row_submitted = FALSE
       }
 
+
       showModal(
         if(length(input$responses_table_rows_selected) > 1 ){
           modalDialog(
@@ -448,7 +478,9 @@ mod_module_edit_tab_server<- function(id,
         }
       )
 
-      if(all(row_submitted == FALSE) & length(input$responses_table_rows_selected) == 1 ){
+      SQL_df_lock = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
+
+      if(all(row_submitted == FALSE) & length(input$responses_table_rows_selected) == 1 & all(SQL_df_lock$locked_row == FALSE)){
         entry_form(ns("submit_data_confirm"), submit = TRUE)
       }
     })
@@ -457,33 +489,25 @@ mod_module_edit_tab_server<- function(id,
 
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection <- SQL_df[input$responses_table_row_last_clicked, "row_id"]
+      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
 
-      # Set old row as 'deleted_row = TRUE'
-      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET submitted_row = TRUE WHERE row_id = '%s'"), row_selection)
-      dbExecute(pool, db_cmd)
-      removeModal()
+      if(length(input$responses_table_rows_selected) == 1 ){
 
+        db_cmd = sprintf(paste("UPDATE", tbl_id, "SET submitted_row = TRUE WHERE row_id = '%s'"), row_selection)
+        dbExecute(pool, db_cmd)
+
+      }
+
+
+      close()
+
+      # Update response table
+      output$responses_table <- DT::renderDataTable({
+        make_response_table()
+      })
 
     })
 
-    # Render entry table --------
-    if(select_multiple == FALSE){
-      selection_tab = c("single")
-    }else{
-      selection_tab = c("multiple")
-    }
-    output$responses_table <- DT::renderDataTable({
-      table = responses_df()
-      table = table[,show_vals]
-      names(table) = names(show_vals)
-      table <- datatable(table,
-                         rownames = FALSE,
-                         options = list(searching = search_field, lengthChange = length_change, pageLength = num_entries),
-                         selection = selection_tab
-      )
-      table
-    })
 
     ####-------- Observe mandatory fields --------####
 
