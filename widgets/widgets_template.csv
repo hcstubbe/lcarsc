@@ -26,3 +26,18 @@ med_formulation,medication,TEXT,character,Formulation,FALSE,NA,NA,NA,NA,NA,NA,NA
 med_route,medication,TEXT,character,Route of application,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,NA,p.o.,s.c.,s.l.,i.v.,p.i.,NA,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
 med_substance,medication,TEXT,character,Substance,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,TRUE,FALSE,NA
 med_comment,medication,TEXT,character,Comment,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_acqusition_date,samples,TEXT,character,Acquisition date,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_id,samples,TEXT,character,Sample ID,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,TRUE,FALSE,NA
+smp_origin_blood,samples,BOOLEAN,character,Origin: blood,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_blood,samples,DOUBLE,double,Amount,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_blood 
+smp_origin_saliva,samples,BOOLEAN,character,Origin: saliva,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_saliva,samples,DOUBLE,double,Amount,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_saliva 
+smp_origin_urine,samples,BOOLEAN,character,Origin: urine,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_urine,samples,DOUBLE,double,Amount,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_urine
+smp_origin_stool,samples,BOOLEAN,character,Origin: stool,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_stool,samples,DOUBLE,double,Amount,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_stool
+smp_origin_biopsy,samples,BOOLEAN,character,Origin: biopsy (please specify in comment),FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_biopsy,samples,DOUBLE,double,Amount,FALSE,NA,NA,NA,pcs,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_biopsy
+smp_origin_other,samples,BOOLEAN,character,Origin: other (please specify in comment),FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_other,samples,DOUBLE,double,Amount (please specify amount in comment),FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_other
+smp_comment,samples,TEXT,character,Comment,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA

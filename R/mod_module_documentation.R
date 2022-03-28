@@ -131,6 +131,20 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                            preview = preview)
 
 
+    rv_downstream_smp = reactiveValues()
+    rv_downstream_smp$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+    mod_module_edit_tab_server(id = "mod_module_edit_tab_smp",
+                               widget_tab_selection = "samples",
+                               tbl_id = "samples_table",
+                               rv_in = rv_downstream_smp,
+                               show_vals = c(PID = 'pid', Date = 'date_modified', Visit = 'visit_id', Submitted = 'submitted_row'),
+                               widgets_table_global = widgets_table_global,
+                               all_visits = all_visits,
+                               visit_id = "samples",
+                               order.by = NULL,
+                               preview = preview)
+
+
 
     # Observers ----
     ## Update participant table ----
@@ -179,6 +193,11 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
             title = (internal_app_data$lang_sel$module_documentation_medication_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
             #strong(internal_app_data$lang_sel$module_documentation_medication_info),
             mod_module_edit_tab_ui(ns("mod_module_edit_tab_med"))
+          ),
+          box(
+            title = ("Samples"),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+            #strong(internal_app_data$lang_sel$module_documentation_medication_info),
+            mod_module_edit_tab_ui(ns("mod_module_edit_tab_smp"))
           )
         )
 
