@@ -5,10 +5,10 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#' @import dplyr
 #' @importFrom shiny NS tagList div
 #' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar dropdownMenu menuItem dashboardBody tabItems tabItem
 #' @importFrom shinyWidgets sendSweetAlert show_toast
+#' @importFrom golem get_golem_options
 #' @import dplyr
 #' @import purrr
 mod_module_launcher_edit_ui <- function(id){
@@ -39,7 +39,11 @@ mod_module_launcher_edit_ui <- function(id){
             menuItem("Editor", tabName = "editor"),
             menuItem("Preview", tabName = "preview")
             ,
-            menuItem("Preview mobile", tabName = "preview_mobile")
+            if("lcarsM" %in% rownames(installed.packages()) & golem::get_golem_options("preview_mobile") == TRUE){
+              menuItem("Preview mobile", tabName = "preview_mobile")
+            }else{
+                NULL
+              }
             # ,
             # menuItem("Data", tabName = "Data")
 
@@ -60,11 +64,11 @@ mod_module_launcher_edit_ui <- function(id){
 
                                         "Use the ",  strong("editor"), "to create new variables for your eCRF.", br(), br(),
 
-                                        "In the drop-down menu (top-right corner) use ",  strong("Geneal settings"), " to specify informations of your study.", br(),
+                                        "In the drop-down menu (top-right corner) use ",  strong("General settings"), " to specify informations of your study.", br(),
                                         "Use ",  strong("Database settings"), " to name user groups and variables (e.g. when deploying on shinyproxy; see documentation).", br(),
                                         "Use ",  strong("Deployment"), " to deploy your eCRF into production. Be sure that you want to deploy and that you tested everything using ", strong("Preview"), ". This cannot be undone!", br(), br(),
 
-                                        "Please ", strong("sign out"),   " after working with this software."
+                                        "Please ", strong("sign out"), " after working with this software."
                     )
             )
             ,
@@ -81,11 +85,12 @@ mod_module_launcher_edit_ui <- function(id){
             ,
             #
             #
-            if("lcarsM" %in% rownames(installed.packages())){
+            if("lcarsM" %in% rownames(installed.packages()) & golem::get_golem_options("preview_mobile") == TRUE){
               tabItem("preview_mobile",
                       mod_module_preview_mobile_ui(ns("module_preview_mobile_1")))
             }else{
-              NULL
+              tabItem("Data",
+                      div())
             }
             # ,
             # if("app_tbl" %in% dbListTables(golem::get_golem_options("pool"))){
@@ -95,10 +100,6 @@ mod_module_launcher_edit_ui <- function(id){
             #   tabItem("Data",
             #           div())
             # }
-
-
-
-
 
           )
         )
@@ -129,19 +130,15 @@ mod_module_launcher_edit_server <- function(id){
 	  mod_module_preview_server(id = "module_preview_1")
 
   	# Module preview mobile
-	  if("lcarsM" %in% rownames(installed.packages())){
+	  if("lcarsM" %in% rownames(installed.packages()) & golem::get_golem_options("preview_mobile") == TRUE){
 	    mod_module_preview_mobile_server(id = "module_preview_mobile_1")
 	  }
 
-	  if("app_tbl" %in% dbListTables(golem::get_golem_options("pool"))){
-	    mod_module_data_center_server("module_data_center_1")
-	  }
+	  #
+# 	  if("app_tbl" %in% dbListTables(golem::get_golem_options("pool"))){
+# 	    mod_module_data_center_server("module_data_center_1")
+# 	  }
 
-
-	  # Module admin
-	  if(TRUE){
-	    mod_module_admin_server(id = "module_admin_1")
-	  }
 
   	# Module drop down menu
   	mod_module_deploy_server(id = "module_deploy_1")

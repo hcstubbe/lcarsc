@@ -130,7 +130,7 @@ mod_module_edit_tab_server<- function(id,
     })
 
     # Form for data entry ----
-    entry_form <- function(button_id, visit_id, submit = FALSE){
+    entry_form <- function(button_id, visit_id, submit = FALSE, edit_entry = FALSE){
       ## Compile widget list
 
       if(submit == FALSE){
@@ -158,7 +158,12 @@ mod_module_edit_tab_server<- function(id,
                   fluidRow(
                     widget_list,
                     actionButton(button_id, "Save"),
-                    actionButton(ns("submit_cancel"), "Cancel")
+                    if(edit_entry == TRUE){
+                      actionButton(ns("edit_cancel"), "Cancel")
+                    }else{
+                      actionButton(ns("submit_cancel"), "Cancel")
+                    }
+
                   )
                 )
             ),
@@ -233,7 +238,23 @@ mod_module_edit_tab_server<- function(id,
 
     })
 
+
+    # Observe cancel buttons
+
+    ## Cancel submit button
     observeEvent(input$submit_cancel, priority = 20,{
+      close()
+      showNotification("Data not saved", type = "warning")
+      shinyjs::reset("entry_form")
+
+      # Update response table
+      output$responses_table <- DT::renderDataTable({
+        make_response_table()
+      })
+    })
+
+    ## Cancel edit button
+    observeEvent(input$edit_cancel, priority = 20,{
       rv_uuid$uuid = UUIDgenerate()
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
       row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
@@ -393,7 +414,7 @@ mod_module_edit_tab_server<- function(id,
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = TRUE WHERE row_id = '%s'"), row_selection)
         dbExecute(pool, db_cmd)
 
-        entry_form(ns("submit_edit"), visit_id)
+        entry_form(ns("submit_edit"), visit_id, edit_entry = TRUE)
 
         update_all_fields(session = session,
                           db_data = SQL_df_selected,
