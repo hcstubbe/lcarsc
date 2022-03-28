@@ -437,7 +437,7 @@ mod_module_edit_tab_server<- function(id,
         rv_uuid$uuid = UUIDgenerate()
         dbAppendTable(pool, tbl_id, formData())
 
-        # Set old row as 'deleted_row = TRUE'
+        # Set old row as 'deleted_row = TRUE' and 'locked_row = FALSE'
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
         dbExecute(pool, db_cmd)
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)

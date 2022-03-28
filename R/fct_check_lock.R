@@ -8,20 +8,25 @@
 #'
 #' @noRd
 
-check_lock = function(SQL_df_lock, session){
+check_lock = function(SQL_df_lock, session, silent = FALSE){
 
   ns = session$ns
   if(any(is.null(SQL_df_lock$locked_row))){
-    SQL_df_lock$locked_row = FALSE
+    locked_row = FALSE
   }
   if(any(is.na(SQL_df_lock$locked_row))){
-    SQL_df_lock$locked_row = FALSE
+    locked_row = FALSE
   }
   if(any(SQL_df_lock$locked_row == "")){
-    SQL_df_lock$locked_row = FALSE
+    locked_row = FALSE
+  }
+  if(any(SQL_df_lock$locked_row == TRUE)){
+    locked_row = TRUE
+  }else{
+    locked_row = FALSE
   }
 
-  if(any(SQL_df_lock$locked_row == TRUE)){
+  if(locked_row & silent == FALSE){
     showModal(
       modalDialog(
         title = "Warning!",
@@ -32,5 +37,8 @@ check_lock = function(SQL_df_lock, session){
       ),session = session
     )
   }
-  SQL_df_lock
+
+  SQL_df_lock$locked_row = locked_row
+
+  return(SQL_df_lock$locked_row)
 }
