@@ -106,6 +106,8 @@ mod_module_admin_server <- function(id){
           shiny::showModal(
             shiny::modalDialog(
               tags$head(tags$style(".modal-dialog{ width:50% }")),
+              textInput(ns("reason_deleted"), label = "Pleas state the reason."),
+              br(),
               textInput(ns("pid_to_delete_confirm"), label = "Confirm PID to remove from database - This cannot be undone!"),
               actionButton(ns("delete_pid"), label = "Delete reccord"),
               footer = actionButton(ns("cancel_delete"), label = "Cancel")
@@ -116,6 +118,7 @@ mod_module_admin_server <- function(id){
 
       observeEvent(input$delete_pid,{
         iv_confirm <- InputValidator$new()
+        iv_confirm$add_rule("reason_deleted", sv_required())
         iv_confirm$add_rule("pid_to_delete_confirm", sv_required())
         iv_confirm$add_rule("pid_to_delete_confirm", sv_equal(input$pid_to_delete))
         iv_confirm$enable()
@@ -139,6 +142,28 @@ mod_module_admin_server <- function(id){
             }
             success_all = cbind(success_all, success)
           }
+
+
+          if(any(success_all)){
+
+            if(!RMariaDB::dbExistsTable(conn = pool, name = "entries_deleted_from_database")){
+              sql_fields = c("date_deleted" = "TEXT" , "deleted_by" = "TEXT" , "pid_deleted" = "TEXT", "reason_deleted" = "TEXT")
+              RMariaDB::dbCreateTable(conn = pool,
+                                      name = "entries_deleted_from_database",
+                                      fields = sql_fields)
+            }
+
+            deleted_entry = data.frame(date_deleted = as.character(Sys.Date()),
+                                 deleted_by = get_current_user(),
+                                 pid_deleted = pid,
+                                 reason_deleted = input$reason_deleted)
+            RMariaDB::dbAppendTable(conn = pool,
+                                    name = "entries_deleted_from_database",
+                                    value = deleted_entry)
+
+          }
+
+
           if(all(success_all == FALSE)){
             shiny::showNotification(strong("No enries have been removed!"),
                                     type = "warning",
