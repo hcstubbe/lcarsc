@@ -40,5 +40,5 @@ check_lock = function(SQL_df_lock, session, silent = FALSE){
 
   SQL_df_lock$locked_row = locked_row
 
-  return(SQL_df_lock$locked_row)
+  return(SQL_df_lock)
 }
