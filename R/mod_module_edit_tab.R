@@ -341,6 +341,7 @@ mod_module_edit_tab_server<- function(id,
       SQL_df$row_id <- unique_id(SQL_df)
       SQL_df$date_modified = as.character(date())
       SQL_df$submitted_row = FALSE
+      SQL_df$locked_row = FALSE
       if(create_new_pid){
         SQL_df$pid = randomIdGenerator(exisiting_IDs = loadData(pool, "inclusion_dataset")$pid)
       }
