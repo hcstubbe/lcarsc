@@ -307,9 +307,9 @@ mod_module_edit_tab_server<- function(id,
           }
         })
 
-      SQL_df_lock = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
+      locked_row = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
 
-      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & all(SQL_df_lock$locked_row == FALSE)){
+      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & locked_row == FALSE){
 
         # Set old row as 'deleted_row = TRUE'
         rv_uuid$uuid = UUIDgenerate()
@@ -404,9 +404,10 @@ mod_module_edit_tab_server<- function(id,
         }
       )
 
-      SQL_df_lock = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
+      locked_row = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
 
-      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & all(SQL_df_lock$locked_row == FALSE)){
+
+      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & locked_row == FALSE){
 
 
         # Set current row as 'editing = current_user_name'
@@ -500,9 +501,9 @@ mod_module_edit_tab_server<- function(id,
         }
       )
 
-      SQL_df_lock = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
+      locked_row = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
 
-      if(all(row_submitted == FALSE) & length(input$responses_table_rows_selected) == 1 & all(SQL_df_lock$locked_row == FALSE)){
+      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & locked_row == FALSE){
         entry_form(ns("submit_data_confirm"), submit = TRUE)
       }
     })

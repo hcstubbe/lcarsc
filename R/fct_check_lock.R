@@ -10,28 +10,30 @@
 
 check_lock = function(SQL_df_lock, session, silent = FALSE){
 
+  locked_row = SQL_df_lock$locked_row
+  editing_user = SQL_df_lock$editing_user
 
   ns = session$ns
-  if(any(is.null(SQL_df_lock$locked_row))){
-    SQL_df_lock$locked_row = FALSE
+  if(is.null(locked_row)){
+    locked_row = FALSE
   }
-  if(any(is.na(SQL_df_lock$locked_row))){
-    SQL_df_lock$locked_row = FALSE
+  if(any(is.na(locked_row))){
+    locked_row = FALSE
   }
-  if(any(SQL_df_lock$locked_row == "")){
-    SQL_df_lock$locked_row = FALSE
+  if(any(locked_row == "")){
+    locked_row = FALSE
   }
-  if(any(SQL_df_lock$locked_row == TRUE)){
-    SQL_df_lock$locked_row = TRUE
+  if(any(locked_row == TRUE)){
+    locked_row = TRUE
   }else{
-    SQL_df_lock$locked_row = FALSE
+    locked_row = FALSE
   }
 
-  if(any(SQL_df_lock$locked_row == TRUE) & silent == FALSE){
+  if(any(locked_row == TRUE) & silent == FALSE){
     showModal(
       modalDialog(
         title = "Warning!",
-        paste0("This entry is locked by user ", SQL_df_lock$editing_user, "!"),
+        paste0("This entry is locked by user ", editing_user, "!"),
         footer = div(actionButton(ns("force_unlock"), label = "Unlock!", icon = icon("unlock", verify_fa = FALSE)),
                      modalButton("Dismiss")),
         easyClose = FALSE
@@ -39,6 +41,5 @@ check_lock = function(SQL_df_lock, session, silent = FALSE){
     )
   }
 
-
-  return(SQL_df_lock)
+  return(locked_row)
 }
