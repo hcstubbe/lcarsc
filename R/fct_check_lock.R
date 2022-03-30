@@ -33,7 +33,7 @@ check_lock = function(SQL_df_lock, session, silent = FALSE){
     showModal(
       modalDialog(
         title = "Warning!",
-        paste0("This entry is locked by user ", editing_user, "!"),
+        paste0("This entry is locked by user ", editing_user, "! If you unlock this while someone else is editing this entry, changes might get lost!"),
         footer = div(actionButton(ns("force_unlock"), label = "Unlock!", icon = icon("unlock", verify_fa = FALSE)),
                      modalButton("Dismiss")),
         easyClose = FALSE
