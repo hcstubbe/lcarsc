@@ -105,7 +105,6 @@ format_input_for_database = function(input_data,
   if(create_sample_id == TRUE & !is.null(sample_id_name)){
     pool = get_golem_options("pool")
     exisiting_sampleIDs = loadData(pool, tbl_id)[, sample_id_name]
-    saveRDS(exisiting_sampleIDs, "zz_exisiting_sampleIDs.RDS")
     input_data[, sample_id_name] = randomIdGenerator(exisiting_IDs = exisiting_sampleIDs, noletters = noletters_smp_id)
   }
 
