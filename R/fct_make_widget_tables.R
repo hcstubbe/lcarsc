@@ -18,8 +18,9 @@ make_widget_tables = function(pool,
   visits = dbReadTable(pool, "editor_table_visit") %>%
     filter(deleted_row == FALSE) %>%
     select(order, visit_id_visits , visit_title) %>%
-    rbind(list(order = NA, visit_id_visits = "diagnosis", visit_title = "Diagnosis"))  %>%
+    rbind(list(order = NA, visit_id_visits = "diagnosis", visit_title = "Diagnosis")) %>%
     rbind(list(order = NA, visit_id_visits = "medication", visit_title = "Medication")) %>%
+    rbind(list(order = NA, visit_id_visits = "samples", visit_title = "Samples")) %>%
     arrange(order)
 
   # Force inclusion visit

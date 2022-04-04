@@ -57,7 +57,8 @@ mod_module_edit_tab_server<- function(id,
                                       search_field = FALSE,
                                       length_change = FALSE,
                                       create_sample_id = FALSE,
-                                      sample_id_name = NULL) {
+                                      sample_id_name = NULL,
+                                      noletters_smp_id = TRUE) {
 
 
 
@@ -212,7 +213,8 @@ mod_module_edit_tab_server<- function(id,
                                        create_new_pid = create_new_pid,
                                        create_sample_id = create_sample_id,
                                        sample_id_name = sample_id_name,
-                                       tbl_id = tbl_id)
+                                       tbl_id = tbl_id,
+                                       noletters_smp_id = noletters_smp_id)
       input_data
     })
 

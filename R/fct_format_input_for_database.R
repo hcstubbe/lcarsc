@@ -16,6 +16,7 @@ format_input_for_database = function(input_data,
                                      create_new_pid,
                                      create_sample_id,
                                      sample_id_name,
+                                     noletters_smp_id,
                                      tbl_id){
 
   input_data = lapply(input_data, function(x){ # convert NULL to NA
@@ -101,11 +102,11 @@ format_input_for_database = function(input_data,
   }
 
 
-
   if(create_sample_id == TRUE & !is.null(sample_id_name)){
     pool = get_golem_options("pool")
     exisiting_sampleIDs = loadData(pool, tbl_id)[, sample_id_name]
-    input_data[, sample_id_name] = randomIdGenerator(exisiting_IDs = exisiting_sampleIDs)
+    saveRDS(exisiting_sampleIDs, "zz_exisiting_sampleIDs.RDS")
+    input_data[, sample_id_name] = randomIdGenerator(exisiting_IDs = exisiting_sampleIDs, noletters = noletters_smp_id)
   }
 
   return(input_data)

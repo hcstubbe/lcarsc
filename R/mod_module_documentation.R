@@ -144,7 +144,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                                order.by = NULL,
                                preview = preview,
                                create_sample_id = TRUE,
-                               sample_id_name = "smp_id")
+                               sample_id_name = "smp_id",
+                               noletters_smp_id = TRUE)
 
 
 
