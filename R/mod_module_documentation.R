@@ -137,12 +137,14 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                                widget_tab_selection = "samples",
                                tbl_id = "samples_table",
                                rv_in = rv_downstream_smp,
-                               show_vals = c(PID = 'pid', Date = 'date_modified', Visit = 'visit_id', Submitted = 'submitted_row'),
+                               show_vals = c(PID = 'pid', 'Sample ID' = 'smp_id', Date = 'date_modified', Visit = 'visit_id', Submitted = 'submitted_row'),
                                widgets_table_global = widgets_table_global,
                                all_visits = all_visits,
                                visit_id = "samples",
                                order.by = NULL,
-                               preview = preview)
+                               preview = preview,
+                               create_sample_id = TRUE,
+                               sample_id_name = "smp_id")
 
 
 

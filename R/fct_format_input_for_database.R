@@ -4,6 +4,8 @@
 #'
 #' @return The return value, if any, from executing the function.
 #'
+#' @importFrom golem get_golem_options
+#'
 #' @noRd
 format_input_for_database = function(input_data,
                                      pid,
@@ -11,7 +13,10 @@ format_input_for_database = function(input_data,
                                      visit_id,
                                      widgets_table,
                                      all_visits,
-                                     create_new_pid){
+                                     create_new_pid,
+                                     create_sample_id,
+                                     sample_id_name,
+                                     tbl_id){
 
   input_data = lapply(input_data, function(x){ # convert NULL to NA
     y = length(x)
@@ -90,8 +95,19 @@ format_input_for_database = function(input_data,
   if(!is.null(input_data$inputId)){
     input_data$inputId = make.names(input_data$inputId)
   }
+
   if(!is.null(input_data$visit_id_visits)){
     input_data$visit_id_visits = make.names(input_data$visit_id_visits)
+  }
+
+
+
+  if(create_sample_id == TRUE & !is.null(sample_id_name)){
+    pool = get_golem_options("pool")
+    exisiting_sampleIDs = loadData(pool, tbl_id)
+    saveRDS(exisiting_sampleIDs, paste0("zz_", tbl_id, "_exisiting_sampleIDs.RDS"))
+    exisiting_sampleIDs = NULL
+    input_data[, sample_id_name] = randomIdGenerator(exisiting_IDs = exisiting_sampleIDs)
   }
 
   return(input_data)

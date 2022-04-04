@@ -55,7 +55,9 @@ mod_module_edit_tab_server<- function(id,
                                       select_multiple = FALSE,
                                       filter_origin = reactive({NULL}),
                                       search_field = FALSE,
-                                      length_change = FALSE) {
+                                      length_change = FALSE,
+                                      create_sample_id = FALSE,
+                                      sample_id_name = NULL) {
 
 
 
@@ -207,7 +209,10 @@ mod_module_edit_tab_server<- function(id,
                                        visit_id = visit_id,
                                        widgets_table = widgets_table,
                                        all_visits = all_visits,
-                                       create_new_pid = create_new_pid)
+                                       create_new_pid = create_new_pid,
+                                       create_sample_id = create_sample_id,
+                                       sample_id_name = sample_id_name,
+                                       tbl_id = tbl_id)
       input_data
     })
 
