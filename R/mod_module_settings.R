@@ -15,6 +15,9 @@ mod_module_settings_ui <- function(id){
   tagList(
     fluidPage(
         shinydashboard::box(width = 12, status = "primary",title = "General settings", solidHeader = TRUE,
+                            checkboxInput(inputId = ns("add_diagnoses_panel"), label = "Add diagnoses panel"),
+                            checkboxInput(inputId = ns("add_medication_panel"), label = "Add medication panel"),
+                            checkboxInput(inputId = ns("add_samples_panel"), label = "Add samples panel"),
                             textInput(ns("pid_prefix"), label = "PID prefix")),
         shinydashboard::box(width = 12, status = "primary",title = "Study information", solidHeader = TRUE,
                             textInput(ns("study_title"), label = "Title"),
@@ -65,6 +68,11 @@ mod_module_settings_server <- function(id, rv){
 
 
     ## Gather input data ----
+    form_input_bool_ids = c(
+                   "add_diagnoses_panel",
+                   "add_medication_panel",
+                   "add_samples_panel"
+    )
     form_input_ids = c(
                    "pid_prefix",
                    "study_title",
@@ -93,7 +101,7 @@ mod_module_settings_server <- function(id, rv){
 
     # Save submission
     observeEvent(rv$save_settings_button,{
-      input_data = sapply(form_input_ids,
+      input_data = sapply(c(form_input_ids, form_input_bool_ids),
                           function(x) input[[x]],
                           simplify = FALSE,
                           USE.NAMES = TRUE)
@@ -109,6 +117,15 @@ mod_module_settings_server <- function(id, rv){
     shiny::observeEvent(rv$settings_menu_started,{
       if(is.element(server_settings_tbl_id, RMariaDB::dbListTables(pool_config))){
         db_settgins_data = RMariaDB::dbReadTable(pool_config, server_settings_tbl_id)
+        lapply(form_input_bool_ids, function(x){
+          x_val = db_settgins_data[,x]
+          if(x_val == TRUE){
+            x_val = TRUE
+          }else{
+            x_val = FALSE
+          }
+          shiny::updateCheckboxInput(inputId = x, value = x_val)
+        })
         lapply(form_input_ids, function(x){
           shiny::updateTextInput(inputId = x, value = db_settgins_data[,x])
         })

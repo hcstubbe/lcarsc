@@ -41,6 +41,12 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     # Get the data base connection
     pool = get_golem_options("pool")
 
+
+    # Get the settings data
+    server_settings_tbl_id = "server_settings_tbl"
+    settgins_data = RMariaDB::dbReadTable(get_golem_options("pool_config"), server_settings_tbl_id)
+
+
     # If the form is used for the preview, use local database
     prod_mod = get_production_mode(production_mode = get_golem_options("production_mode"),
                                    pool_config = get_golem_options("pool_config"))
@@ -105,47 +111,58 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     rv_downstream_diag = reactiveValues()
     rv_downstream_diag$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
 
-    mod_module_edit_tab_server(id = "mod_module_edit_tab_diag",
-                           widget_tab_selection = "diagnosis",
-                           tbl_id = "diagnoses_table",
-                           rv_in = rv_downstream_diag,
-                           show_vals = c(Diagnosis = "diag_name", Start = "diag_start", End = "diag_end", Submitted = "submitted_row"),
-                           widgets_table_global = widgets_table_global,
-                           all_visits = all_visits,
-                           visit_id = "diagnosis",
-                           order.by = NULL,
-                           preview = preview
-    )
+    # Diagnoses field
+    if(settgins_data$add_diagnoses_panel == TRUE){
+      mod_module_edit_tab_server(id = "mod_module_edit_tab_diag",
+                                 widget_tab_selection = "diagnosis",
+                                 tbl_id = "diagnoses_table",
+                                 rv_in = rv_downstream_diag,
+                                 show_vals = c(Diagnosis = "diag_name", Start = "diag_start", End = "diag_end", Submitted = "submitted_row"),
+                                 widgets_table_global = widgets_table_global,
+                                 all_visits = all_visits,
+                                 visit_id = "diagnosis",
+                                 order.by = NULL,
+                                 preview = preview
+      )
+    }
 
-    rv_downstream_med = reactiveValues()
-    rv_downstream_med$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
-    mod_module_edit_tab_server(id = "mod_module_edit_tab_med",
-                           widget_tab_selection = "medication",
-                           tbl_id = "medication_table",
-                           rv_in = rv_downstream_med,
-                           show_vals = c(Substance = "med_substance", Dosis = "med_dosing", 'Application route' = "med_route", Start = "med_start", End = "med_end", Submitted = "submitted_row"),
-                           widgets_table_global = widgets_table_global,
-                           all_visits = all_visits,
-                           visit_id = "medication",
-                           order.by = NULL,
-                           preview = preview)
+    # Medication field
+    if(settgins_data$add_medication_panel == TRUE){
+      rv_downstream_med = reactiveValues()
+      rv_downstream_med$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+      mod_module_edit_tab_server(id = "mod_module_edit_tab_med",
+                                 widget_tab_selection = "medication",
+                                 tbl_id = "medication_table",
+                                 rv_in = rv_downstream_med,
+                                 show_vals = c(Substance = "med_substance", Dosis = "med_dosing", 'Application route' = "med_route", Start = "med_start", End = "med_end", Submitted = "submitted_row"),
+                                 widgets_table_global = widgets_table_global,
+                                 all_visits = all_visits,
+                                 visit_id = "medication",
+                                 order.by = NULL,
+                                 preview = preview)
+    }
 
 
-    rv_downstream_smp = reactiveValues()
-    rv_downstream_smp$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
-    mod_module_edit_tab_server(id = "mod_module_edit_tab_smp",
-                               widget_tab_selection = "samples",
-                               tbl_id = "samples_table",
-                               rv_in = rv_downstream_smp,
-                               show_vals = c(PID = 'pid', 'Sample ID' = 'smp_id', Date = 'date_modified', User = 'user_modified', Submitted = 'submitted_row'),
-                               widgets_table_global = widgets_table_global,
-                               all_visits = all_visits,
-                               visit_id = "samples",
-                               order.by = NULL,
-                               preview = preview,
-                               create_sample_id = TRUE,
-                               sample_id_name = "smp_id",
-                               noletters_smp_id = TRUE)
+    # Samples field
+    if(settgins_data$add_samples_panel == TRUE){
+
+      rv_downstream_smp = reactiveValues()
+      rv_downstream_smp$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+      mod_module_edit_tab_server(id = "mod_module_edit_tab_smp",
+                                 widget_tab_selection = "samples",
+                                 tbl_id = "samples_table",
+                                 rv_in = rv_downstream_smp,
+                                 show_vals = c(PID = 'pid', 'Sample ID' = 'smp_id', Date = 'date_modified', User = 'user_modified', Submitted = 'submitted_row'),
+                                 widgets_table_global = widgets_table_global,
+                                 all_visits = all_visits,
+                                 visit_id = "samples",
+                                 order.by = NULL,
+                                 preview = preview,
+                                 create_sample_id = TRUE,
+                                 sample_id_name = "smp_id",
+                                 noletters_smp_id = TRUE)
+
+    }
 
 
 
@@ -187,21 +204,27 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
             ),
             uiOutput(ns("docu_tab_ui"))
           ),
-          shinydashboard::box(
-            title = (internal_app_data$lang_sel$module_documentation_diagnoses_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
-            #strong(internal_app_data$lang_sel$module_documentation_diagnoses_info),
-            mod_module_edit_tab_ui(ns("mod_module_edit_tab_diag"))
-          ),
-          box(
-            title = (internal_app_data$lang_sel$module_documentation_medication_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
-            #strong(internal_app_data$lang_sel$module_documentation_medication_info),
-            mod_module_edit_tab_ui(ns("mod_module_edit_tab_med"))
-          ),
-          box(
-            title = ("Samples"),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
-            #strong(internal_app_data$lang_sel$module_documentation_medication_info),
-            mod_module_edit_tab_ui(ns("mod_module_edit_tab_smp"))
-          )
+          if(settgins_data$add_diagnoses_panel == TRUE){
+            shinydashboard::box(
+              title = (internal_app_data$lang_sel$module_documentation_diagnoses_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+              #strong(internal_app_data$lang_sel$module_documentation_diagnoses_info),
+              mod_module_edit_tab_ui(ns("mod_module_edit_tab_diag"))
+            )
+          },
+          if(settgins_data$add_medication_panel == TRUE){
+            box(
+              title = (internal_app_data$lang_sel$module_documentation_medication_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+              #strong(internal_app_data$lang_sel$module_documentation_medication_info),
+              mod_module_edit_tab_ui(ns("mod_module_edit_tab_med"))
+            )
+          },
+          if(settgins_data$add_samples_panel == TRUE){
+            box(
+              title = ("Samples"),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+              #strong(internal_app_data$lang_sel$module_documentation_medication_info),
+              mod_module_edit_tab_ui(ns("mod_module_edit_tab_smp"))
+            )
+          }
         )
 
       }else{
