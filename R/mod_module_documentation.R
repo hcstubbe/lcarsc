@@ -44,7 +44,14 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
     # Get the settings data
     server_settings_tbl_id = "server_settings_tbl"
-    settgins_data = RMariaDB::dbReadTable(get_golem_options("pool_config"), server_settings_tbl_id)
+    if(RMariaDB::dbExistsTable(get_golem_options("pool_config"), server_settings_tbl_id)){
+      settgins_data = RMariaDB::dbReadTable(get_golem_options("pool_config"), server_settings_tbl_id)
+    }else{
+      settgins_data = data.frame(add_diagnoses_panel = FALSE,
+                                 add_medication_panel = FALSE,
+                                 add_samples_panel = FALSE)
+    }
+
 
 
     # If the form is used for the preview, use local database
