@@ -46,7 +46,7 @@ make_widget_tables = function(pool,
   rownames(visit_tabs_logic) = visits$visit_id_visits
   visits = cbind(visits, visit_tabs_logic)
   visits = cbind(visits, choicesFromVar = NA)
-  visits$inclusion_other_visit = visits$visit_id_visits %in% c("diagnosis", "medication", "vi") # inclusion visits needs to have the id "vi"!
+  visits$inclusion_other_visit = visits$visit_id_visits %in% c("diagnosis", "medication", "samples", "vi") # inclusion visits needs to have the id "vi"!
   visits$inclusion_criteria = FALSE
   visits$inclusion_criteria = visits$visit_id_visits == "vi"
 
