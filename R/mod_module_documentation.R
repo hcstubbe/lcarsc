@@ -44,12 +44,21 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
     # Get the settings data
     server_settings_tbl_id = "server_settings_tbl"
+
+    # Fill settigns data with dummy data if it does not exist
     if(RMariaDB::dbExistsTable(get_golem_options("pool_config"), server_settings_tbl_id)){
       settgins_data = RMariaDB::dbReadTable(get_golem_options("pool_config"), server_settings_tbl_id)
     }else{
       settgins_data = data.frame(add_diagnoses_panel = FALSE,
                                  add_medication_panel = FALSE,
                                  add_samples_panel = FALSE)
+    }
+    for(i in c("add_diagnoses_panel",
+               "add_medication_panel",
+               "add_samples_panel")){
+      if(is.null(settgins_data[,i])){
+        settgins_data[,i] = FALSE
+      }
     }
 
 
