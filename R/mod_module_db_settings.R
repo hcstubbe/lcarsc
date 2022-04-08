@@ -55,7 +55,7 @@ mod_module_db_settings_server <- function(id, rv){
 
 
     # Populate database on first start of module with standard values, if table does not exist
-    if (!is.element(server_db_settings_tbl_id, RMariaDB::dbListTables(pool_config))) {
+    if (!RMariaDB::dbExistsTable(pool_config, server_db_settings_tbl_id)) {
       input_data_standard = data.frame(stdandard_values)
       input_list_standard = list(input_data_standard)
       names(input_list_standard) = server_db_settings_tbl_id
