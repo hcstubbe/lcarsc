@@ -2,7 +2,7 @@
 #'
 #' @description A fct function
 #'
-#' @return Returns TRUE if the user is member of the admin group.
+#' @return Returns TRUE if the user is member of the admin group. The user must be member of the admin group ONLY.
 #'
 #' @param start_as_admin If start_as_admin is TRUE, the user will be 'admin'.
 #'
@@ -23,18 +23,23 @@ user_is_admin = function(pool_config, start_as_admin = FALSE) {
   }
 
 
-  server_db_settings_tbl_id = "server_db_settings_tbl"
-  db_settgins_data = tryCatch(RMariaDB::dbReadTable(pool_config, server_db_settings_tbl_id), error = function(x) NULL)
+  # Get database settings data
+  db_settgins_data = RMariaDB::dbReadTable(pool_config, "server_db_settings_tbl")
 
-  if(is.null(db_settgins_data)){
-    return(FALSE)
-  }
 
   # Check if user is admin
-  user_group = Sys.getenv(db_settgins_data$env_user_group)
+  env_user_group = db_settgins_data$env_user_group
+  user_group = Sys.getenv(env_user_group)
   admin_group = db_settgins_data$group_admin
 
   is_admin = user_group == admin_group
+
+  if (length(is_admin) == 0) {
+    return(FALSE)
+  }
+  if( admin_group == "" ) {
+    return(FALSE)
+  }
 
   return(is_admin)
 
