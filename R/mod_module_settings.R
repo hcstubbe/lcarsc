@@ -99,6 +99,21 @@ mod_module_settings_server <- function(id, rv){
     )
 
 
+    # Check if settings data table exits and populate if not
+    if(!RMariaDB::dbExistsTable(pool_config, server_settings_tbl_id)){
+      dbfields = c(rep("BOOLEAN", length(form_input_bool_ids)),
+                   rep("TEXT", length(form_input_ids)))
+      names(dbfields) = c(form_input_bool_ids, form_input_ids)
+      RMariaDB::dbCreateTable(pool_config, name = server_settings_tbl_id, fields = dbfields)
+
+      dbstdvals = c(as.list(rep(FALSE, length(form_input_bool_ids))),
+                    as.list(rep("", length(form_input_ids))))
+      names(dbstdvals) = c(form_input_bool_ids, form_input_ids)
+      dbstdvals = data.frame(dbstdvals)
+      RMariaDB::dbAppendTable(pool_config, name = server_settings_tbl_id, value = dbstdvals)
+    }
+
+
     # Save submission
     observeEvent(rv$save_settings_button,{
       input_data = sapply(c(form_input_ids, form_input_bool_ids),
