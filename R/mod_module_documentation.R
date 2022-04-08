@@ -18,7 +18,8 @@ mod_module_documentation_ui  <- function(id) {
                  br(),
                  br(),
                  br(),
-                 DT::dataTableOutput(ns("responses_user")))
+                 DT::dataTableOutput(ns("responses_user"))),
+             mod_module_documentation_summary_ui(ns("module_documentation_summary_1"))
       ),
       column(7,
              uiOutput(ns("visit_submission_panel"))
@@ -123,11 +124,14 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     }
 
 
-
-    rv_downstream_diag = reactiveValues()
-    rv_downstream_diag$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+    rv_downstream_summary = reactiveValues()
+    rv_downstream_summary$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+    mod_module_documentation_summary_server(id = "module_documentation_summary_1",
+                                            rv_in = rv_downstream_summary)
 
     # Diagnoses field
+    rv_downstream_diag = reactiveValues()
+    rv_downstream_diag$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
     if(settgins_data$add_diagnoses_panel == TRUE){
       mod_module_edit_tab_server(id = "mod_module_edit_tab_diag",
                                  widget_tab_selection = "diagnosis",
@@ -247,6 +251,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
         return(NULL)
       }
     })
+
   })
 }
 
