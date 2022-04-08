@@ -67,7 +67,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
                   )
                 )
             ),
-            easyClose = TRUE, footer = NULL
+            easyClose = FALSE, footer = NULL
           )
         )
       }else if(length(sel_inputIds) == 0){
@@ -82,7 +82,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
                   )
                 )
             ),
-            easyClose = TRUE, footer = NULL
+            easyClose = TRUE
           )
         )
       }else{
@@ -97,7 +97,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
                   )
                 )
             ),
-            easyClose = TRUE, footer = NULL
+            easyClose = TRUE
           )
         )
       }
