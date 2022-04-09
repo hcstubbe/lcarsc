@@ -18,6 +18,7 @@ mod_module_settings_ui <- function(id){
                             checkboxInput(inputId = ns("add_diagnoses_panel"), label = "Add diagnoses panel"),
                             checkboxInput(inputId = ns("add_medication_panel"), label = "Add medication panel"),
                             checkboxInput(inputId = ns("add_samples_panel"), label = "Add samples panel"),
+                            checkboxInput(inputId = ns("add_mobile_app"), label = "Add mobile app"),
                             textInput(ns("pid_prefix"), label = "PID prefix")),
         shinydashboard::box(width = 12, status = "primary",title = "Study information", solidHeader = TRUE,
                             textInput(ns("study_title"), label = "Title"),
@@ -71,7 +72,8 @@ mod_module_settings_server <- function(id, rv){
     form_input_bool_ids = c(
                    "add_diagnoses_panel",
                    "add_medication_panel",
-                   "add_samples_panel"
+                   "add_samples_panel",
+                   "add_mobile_app"
     )
     form_input_ids = c(
                    "pid_prefix",

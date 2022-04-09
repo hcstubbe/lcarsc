@@ -15,6 +15,13 @@ mod_module_launcher_edit_ui <- function(id){
 
   ns = NS(id)
 
+
+  if(RMariaDB::dbExistsTable(get_golem_options("pool_config"), "server_settings_tbl")){
+    add_mobile_app = (RMariaDB::dbReadTable(get_golem_options("pool_config"), "server_settings_tbl"))[,"add_mobile_app"]
+  }else{
+    add_mobile_app = FALSE
+  }
+
   # Create drop down menu items
   dropdown_menu_list = list(notificationItem("General settings", icon = icon("tools", verify_fa = FALSE), status = "primary"),
             notificationItem("Database setup", icon = icon("database", verify_fa = FALSE), status = "primary"),
@@ -39,7 +46,7 @@ mod_module_launcher_edit_ui <- function(id){
             menuItem("Editor", tabName = "editor"),
             menuItem("Preview", tabName = "preview")
             ,
-            if("lcarsM" %in% rownames(installed.packages()) & golem::get_golem_options("preview_mobile") == TRUE){
+            if("lcarsM" %in% rownames(installed.packages()) & add_mobile_app == TRUE){
               menuItem("Preview mobile", tabName = "preview_mobile")
             }else{
                 NULL
@@ -85,7 +92,7 @@ mod_module_launcher_edit_ui <- function(id){
             ,
             #
             #
-            if("lcarsM" %in% rownames(installed.packages()) & golem::get_golem_options("preview_mobile") == TRUE){
+            if("lcarsM" %in% rownames(installed.packages()) & add_mobile_app == TRUE){
               tabItem("preview_mobile",
                       mod_module_preview_mobile_ui(ns("module_preview_mobile_1")))
             }else{
@@ -129,8 +136,16 @@ mod_module_launcher_edit_server <- function(id){
   	# Module preview
 	  mod_module_preview_server(id = "module_preview_1")
 
+	  # Fill settings data with dummy data if it does not exist
+	  if(RMariaDB::dbExistsTable(get_golem_options("pool_config"), "server_settings_tbl")){
+	    add_mobile_app = (RMariaDB::dbReadTable(get_golem_options("pool_config"), "server_settings_tbl"))[,"add_mobile_app"]
+	  }else{
+	    add_mobile_app = FALSE
+	  }
+
+
   	# Module preview mobile
-	  if("lcarsM" %in% rownames(installed.packages()) & golem::get_golem_options("preview_mobile") == TRUE){
+	  if("lcarsM" %in% rownames(installed.packages()) & add_mobile_app == TRUE){
 	    mod_module_preview_mobile_server(id = "module_preview_mobile_1")
 	  }
 

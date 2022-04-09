@@ -12,7 +12,6 @@
 #' @param config_dbpassword  Password of the config database.
 #' @param config_dbhost Hostname of the config database.
 #' @param config_dbname Name of the config database.
-#' @param preview_mobile TRUE if mobile app preview should be shown (this requires lcarsM)
 #' @param confirm_write_db TRUE if user input should be requested before writing local database files.
 #' @param start_as_admin If TRUE, the user will have admin privileges without checking the user group. If FALSE, the user will never have admin privileges regardless of user group. If null, the software checks against the database, if the user is an admin.
 #' @param ... arguments to pass to golem_opts.
@@ -42,7 +41,6 @@ run_app <- function(
   config_dbpassword,
   config_dbhost,
   config_dbname,
-  preview_mobile = FALSE,
   confirm_write_db = TRUE,
   start_as_admin = NULL,
   ...
@@ -63,7 +61,6 @@ run_app <- function(
       uiPattern = uiPattern
     ),
     golem_opts = list(production_mode = production_mode,
-                      preview_mobile = preview_mobile,
                       user_is_admin = user_is_admin(pool_config = pool::dbPool(drv = config_database_driver,
                                                                                user = config_dbuser,
                                                                                password = config_dbpassword,
