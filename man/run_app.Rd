@@ -20,7 +20,6 @@ run_app(
   config_dbpassword,
   config_dbhost,
   config_dbname,
-  preview_mobile = FALSE,
   confirm_write_db = TRUE,
   start_as_admin = NULL,
   ...
@@ -64,8 +63,6 @@ expression in order for the match to be considered successful.}
 \item{config_dbhost}{Hostname of the config database.}
 
 \item{config_dbname}{Name of the config database.}
-
-\item{preview_mobile}{TRUE if mobile app preview should be shown (this requires lcarsM)}
 
 \item{confirm_write_db}{TRUE if user input should be requested before writing local database files.}
 
