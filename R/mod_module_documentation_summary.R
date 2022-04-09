@@ -27,11 +27,11 @@ mod_module_documentation_summary_server <- function(id,
     all_visits = widget_data_input$all_visits
     visits_list = all_visits$visit_id[!all_visits$inclusion_other_visit]
 
-    output$summary = renderUI({
+    render_summary = function() {
       if(length(rv_in$pid()) == 1){
-        box(title = "Summary", width = 12, status = "info",
+        box(title = paste0("Summary: ", rv_in$pid()), width = 12, status = "info",
+            actionButton(ns("update_summary"), "Update summary", icon = icon("sync", verify_fa = FALSE)), br(), br(),
             lapply(visits_list, function(x) {
-
               visit_tab_id = paste('visit_table', x, sep = '_')
               visit_data = RMariaDB::dbReadTable(golem::get_golem_options("pool"), visit_tab_id)
               visit_data_unsubmitted = filter(visit_data, pid == rv_in$pid() & deleted_row == FALSE & submitted_row == FALSE)
@@ -74,9 +74,14 @@ mod_module_documentation_summary_server <- function(id,
                 )
               )
             })
-            )
+        )
       }
+    }
 
+    output$summary = renderUI({render_summary()})
+
+    observeEvent(input$update_summary, {
+      output$summary = renderUI({render_summary()})
     })
 
   })
