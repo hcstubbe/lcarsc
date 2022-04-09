@@ -226,14 +226,14 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
           ),
           if(settgins_data$add_diagnoses_panel == TRUE){
             shinydashboard::box(
-              title = (internal_app_data$lang_sel$module_documentation_diagnoses_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+              title = (internal_app_data$lang_sel$module_documentation_diagnoses_info), width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
               #strong(internal_app_data$lang_sel$module_documentation_diagnoses_info),
               mod_module_edit_tab_ui(ns("mod_module_edit_tab_diag"))
             )
           },
           if(settgins_data$add_medication_panel == TRUE){
             box(
-              title = (internal_app_data$lang_sel$module_documentation_medication_info),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+              title = (internal_app_data$lang_sel$module_documentation_medication_info), width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
               #strong(internal_app_data$lang_sel$module_documentation_medication_info),
               mod_module_edit_tab_ui(ns("mod_module_edit_tab_med"))
             )
