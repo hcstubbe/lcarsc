@@ -9,6 +9,7 @@ visit_id,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,N
 deleted_row,all,BOOLEAN,logical,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
 submitted_row,all,BOOLEAN,logical,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
 documented_case,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+app_entry_id,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
 diag_start,diagnosis,TEXT,character,Start,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,TRUE,FALSE,FALSE
 diag_end,diagnosis,TEXT,character,End,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA,FALSE,FALSE,TRUE,FALSE,FALSE
 diag_name,diagnosis,TEXT,character,Diagnosis,,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,TRUE,FALSE,NA,FALSE,FALSE,TRUE,FALSE,FALSE
