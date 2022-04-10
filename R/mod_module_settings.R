@@ -19,6 +19,7 @@ mod_module_settings_ui <- function(id){
                             checkboxInput(inputId = ns("add_medication_panel"), label = "Add medication panel"),
                             checkboxInput(inputId = ns("add_samples_panel"), label = "Add samples panel"),
                             checkboxInput(inputId = ns("add_mobile_app"), label = "Add mobile app"),
+                            checkboxInput(inputId = ns("add_mobile_use_translation"), label = "Display translation in mobile app"),
                             textInput(ns("pid_prefix"), label = "PID prefix")),
         shinydashboard::box(width = 12, status = "primary",title = "Study information", solidHeader = TRUE,
                             textInput(ns("study_title"), label = "Title"),
@@ -73,7 +74,8 @@ mod_module_settings_server <- function(id, rv){
                    "add_diagnoses_panel",
                    "add_medication_panel",
                    "add_samples_panel",
-                   "add_mobile_app"
+                   "add_mobile_app",
+                   "add_mobile_use_translation"
     )
     form_input_ids = c(
                    "pid_prefix",
