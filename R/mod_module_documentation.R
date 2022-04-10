@@ -124,7 +124,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     rv_downstream_summary = reactiveValues()
     rv_downstream_summary$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
     mod_module_documentation_summary_server(id = "module_documentation_summary_1",
-                                            rv_in = rv_downstream_summary)
+                                            rv_in = rv_downstream_summary,
+                                            preview = preview)
 
     # Diagnoses field
     rv_downstream_diag = reactiveValues()

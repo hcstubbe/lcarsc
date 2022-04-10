@@ -13,6 +13,7 @@ golem::document_and_reload()
 
 # Run the application using a local SQL database
 # devtools::install_local("dependencies/lcarsM.tar.gz", force = T)
+# devtools::install_local("~/lcarsM", force = T)
 run_app(ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB(), # RSQLite::SQLite(),
         ecrf_dbhost = "dbdev",
         ecrf_dbname = "db_ecrf_data.sqlite3",
