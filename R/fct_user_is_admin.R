@@ -31,10 +31,10 @@ user_is_admin = function(pool_config, start_as_admin = FALSE) {
 
     # Check if user is admin
     env_user_group = db_settgins_data$env_user_group
-    user_group = Sys.getenv(env_user_group)
+    user_group = unlist(strsplit(Sys.getenv(env_user_group), ","))
     admin_group = db_settgins_data$group_admin
 
-    is_admin = user_group == admin_group
+    is_admin = admin_group %in% user_group
 
     if (length(is_admin) == 0) {
       return(FALSE)
