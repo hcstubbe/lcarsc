@@ -52,21 +52,21 @@ run_app(#ecrf_database_driver = RMariaDB::MariaDB(),
 #          ecrf_dbname = "mydb",
 #          options = list(host = '0.0.0.0', port = 3838))
 
-
-ecrf_database_driver = RSQLite::SQLite() # RMariaDB::MariaDB()
-ecrf_dbuser = "default_user"
-ecrf_dbpassword = "default_password"
-ecrf_dbhost = "db_ecrf_data"
-ecrf_dbname = "db_ecrf_data.sqlite3"
-pool = pool::dbPool(drv = ecrf_database_driver,
-                    user = ecrf_dbuser,
-                    password = ecrf_dbpassword,
-                    host = ecrf_dbhost,
-                    db = ecrf_dbname)
-x = list()
-for (i in RMariaDB::dbListTables(conn = pool)){
-  xi = RMariaDB::dbReadTable(conn = pool, name = i)
-  x = c(x , list(xi))
-}
-names(x) = RMariaDB::dbListTables(conn = pool)
-x
+#
+# ecrf_database_driver = RSQLite::SQLite() # RMariaDB::MariaDB()
+# ecrf_dbuser = "default_user"
+# ecrf_dbpassword = "default_password"
+# ecrf_dbhost = "db_ecrf_data"
+# ecrf_dbname = "db_ecrf_data.sqlite3"
+# pool = pool::dbPool(drv = ecrf_database_driver,
+#                     user = ecrf_dbuser,
+#                     password = ecrf_dbpassword,
+#                     host = ecrf_dbhost,
+#                     db = ecrf_dbname)
+# x = list()
+# for (i in RMariaDB::dbListTables(conn = pool)){
+#   xi = RMariaDB::dbReadTable(conn = pool, name = i)
+#   x = c(x , list(xi))
+# }
+# names(x) = RMariaDB::dbListTables(conn = pool)
+# x
