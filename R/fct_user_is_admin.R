@@ -4,7 +4,7 @@
 #'
 #' @return Returns TRUE if the user is member of the admin group. The user must be member of the admin group ONLY.
 #'
-#' @param start_as_admin If start_as_admin is TRUE, the user will be 'admin'.
+#' @param start_as_admin If start_as_admin is TRUE, the user will be 'admin', if FALSE, the user will NOT be admin, if NULL, the status is determined according to the user group
 #'
 #' @importFrom golem get_golem_options
 #' @importFrom RMariaDB dbReadTable
@@ -23,23 +23,30 @@ user_is_admin = function(pool_config, start_as_admin = FALSE) {
   }
 
 
-  # Get database settings data
-  db_settgins_data = RMariaDB::dbReadTable(pool_config, "server_db_settings_tbl")
+
+  if(RMariaDB::dbExistsTable(pool_config, "server_db_settings_tbl")){
+    # Get database settings data
+    db_settgins_data = RMariaDB::dbReadTable(pool_config, "server_db_settings_tbl")
 
 
-  # Check if user is admin
-  env_user_group = db_settgins_data$env_user_group
-  user_group = Sys.getenv(env_user_group)
-  admin_group = db_settgins_data$group_admin
+    # Check if user is admin
+    env_user_group = db_settgins_data$env_user_group
+    user_group = Sys.getenv(env_user_group)
+    admin_group = db_settgins_data$group_admin
 
-  is_admin = user_group == admin_group
+    is_admin = user_group == admin_group
 
-  if (length(is_admin) == 0) {
+    if (length(is_admin) == 0) {
+      return(FALSE)
+    }
+    if( admin_group == "" ) {
+      return(FALSE)
+    }
+
+  }else{
     return(FALSE)
   }
-  if( admin_group == "" ) {
-    return(FALSE)
-  }
+
 
   return(is_admin)
 
