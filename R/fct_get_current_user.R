@@ -9,10 +9,17 @@
 #'
 #' @noRd
 
-get_current_user = function() {
+get_current_user = function(return_user = TRUE) {
   db_settgins_data = RMariaDB::dbReadTable(get_golem_options("pool_config"), "server_db_settings_tbl")
-  env_user_name = db_settgins_data$env_user_name
-  user_name = Sys.getenv(env_user_name)
-  return(user_name)
+
+  if(return_user){
+    env_user_name = db_settgins_data$env_user_name
+    user_name = Sys.getenv(env_user_name)
+    return(user_name)
+  }else{
+    env_user_group = db_settgins_data$env_user_group
+    user_group = Sys.getenv(env_user_group)
+    return(user_group)
+  }
 
 }

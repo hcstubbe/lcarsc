@@ -17,7 +17,19 @@ mod_module_db_settings_ui <- function(id){
       shinydashboard::box(width = 12, status = "primary",title = "User groups", solidHeader = TRUE,
                           textInput(ns("group_admin"), label = "Admin group", value = "admin"),
                           textInput(ns("group_reviewer"), label = "Reviewer group", value = "reviewer"),
-                          textInput(ns("group_user"), label = "User group", value = "user"))
+                          textInput(ns("group_user"), label = "User group", value = "user")),
+      shinydashboard::box(width = 12, status = "primary",title = "Current variables", solidHeader = TRUE,
+                          "This updates only after the app/container is restarted (refreshing the webpage ist not enough).",
+                          br(),
+                          br(),
+                          paste0("User name: ", get_current_user()),
+                          br(),
+                          br(),
+                          paste0("User group: ", get_current_user(FALSE)),
+                          br(),
+                          br(),
+                          paste0("User is admin: ", get_golem_options("user_is_admin"))
+                          )
     )
 
   )
