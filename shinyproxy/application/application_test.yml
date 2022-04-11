@@ -4,7 +4,7 @@ proxy:
   template-path: /templates/test
  
   authentication: simple
-  admin-groups: urgengi_admin
+  admin-groups: test_admin
   users:
   - name: test_user
     password: test_user
@@ -21,7 +21,7 @@ proxy:
     display-name: LCARSC
     description: This is the LCRAS-C App
     container-image: hstubbe/lcarsc:latest
-    container-cmd: ["R", "-e", "lcarsc::run_app(ecrf_dbuser = 'user', ecrf_dbpassword = 'user', ecrf_dbhost = 'dbeditor', ecrf_dbname = 'mydbeditor', config_dbuser = 'user', config_dbpassword = 'user', config_dbhost = 'dbeditor', config_dbname = 'mydbeditor', confirm_write_db = FALSE, options = list(host = '0.0.0.0', port = 3838))"]
+    container-cmd: ["R", "-e", "lcarsc::run_app(ecrf_dbuser = 'userurg', ecrf_dbpassword = 'userurg', ecrf_dbhost = 'dburg', ecrf_dbname = 'mydburg', config_dbuser = 'userurg', config_dbpassword = 'userurg', config_dbhost = 'dburg', config_dbname = 'mydburg', confirm_write_db = FALSE, options = list(host = '0.0.0.0', port = 3838))"]
     container-network: sp-net
     access-groups: test_admin
 
