@@ -5,7 +5,7 @@ services:
                               
   shinyproxy:
 #    image: openanalytics/shinyproxy:latest
-    image: hstubbe/shp:latest
+    image: openanalytics/shinyproxy:2.6.1
     ports:
       - 8080:8080
     networks:
@@ -24,14 +24,14 @@ services:
     user: ":${DOCKERID}"
     
     
-  dbeditor:
+  dburg:
     image: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: coucou
-      MYSQL_DATABASE: mydbeditor
-      MYSQL_USER: user
-      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: coucouurg
+      MYSQL_DATABASE: mydburg
+      MYSQL_USER: userurg
+      MYSQL_PASSWORD: userurg
     networks:
         - sp-net
 
