@@ -12,6 +12,12 @@
 #'
 mod_module_settings_ui <- function(id){
   ns <- NS(id)
+
+  # Visits to choose from
+  visits_table = dbReadTable(get_golem_options("pool"), "editor_table_visit")[,c("visit_id_visits", "visit_title")]
+  visit_choices = visits_table$visit_id_visits
+  names(visit_choices) = visits_table$visit_title
+
   tagList(
     fluidPage(
         shinydashboard::box(width = 12, status = "primary",title = "General settings", solidHeader = TRUE,
@@ -19,6 +25,7 @@ mod_module_settings_ui <- function(id){
                             checkboxInput(inputId = ns("add_medication_panel"), label = "Add medication panel"),
                             checkboxInput(inputId = ns("add_samples_panel"), label = "Add samples panel"),
                             checkboxInput(inputId = ns("add_mobile_app"), label = "Add mobile app"),
+                            selectInput(ns("visit_id_mobile"), label = "Select visit for mobile app", choices = visit_choices),
                             checkboxInput(inputId = ns("add_mobile_use_translation"), label = "Display translation in mobile app"),
                             textInput(ns("pid_prefix"), label = "PID prefix")),
         shinydashboard::box(width = 12, status = "primary",title = "Study information", solidHeader = TRUE,
@@ -78,6 +85,7 @@ mod_module_settings_server <- function(id, rv){
                    "add_mobile_use_translation"
     )
     form_input_ids = c(
+                   "visit_id_mobile",
                    "pid_prefix",
                    "study_title",
                    "study_title_short",
