@@ -25,6 +25,7 @@ mod_module_settings_ui <- function(id){
                             checkboxInput(inputId = ns("add_medication_panel"), label = "Add medication panel"),
                             checkboxInput(inputId = ns("add_samples_panel"), label = "Add samples panel"),
                             checkboxInput(inputId = ns("add_mobile_app"), label = "Add mobile app"),
+                            checkboxInput(inputId = ns("enter_pid_manually"), label = "Enter PID manually before recording data with app"),
                             selectInput(ns("visit_id_mobile"), label = "Select visit for mobile app", choices = visit_choices),
                             checkboxInput(inputId = ns("add_mobile_use_translation"), label = "Display translation in mobile app"),
                             textInput(ns("pid_prefix"), label = "PID prefix")),
@@ -82,7 +83,8 @@ mod_module_settings_server <- function(id, rv){
                    "add_medication_panel",
                    "add_samples_panel",
                    "add_mobile_app",
-                   "add_mobile_use_translation"
+                   "add_mobile_use_translation",
+                   "enter_pid_manually"
     )
     form_input_ids = c(
                    "visit_id_mobile",
