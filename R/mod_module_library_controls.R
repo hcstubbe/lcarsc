@@ -46,7 +46,8 @@ mod_module_library_controls_server <- function(id, selected_row) {
       vars_table_sql <- dbReadTable(pool, "library_table_vars")
       sel_inputIds = vars_table_sql[vars_table_sql$row_id %in% selected_row(), "inputId"]
 
-      visits_table <- dbReadTable(pool, "editor_table_visit")[,c("visit_id_visits", "visit_title")]
+      visits_table = dbReadTable(pool, "editor_table_visit")[,c("visit_id_visits", "visit_title", "deleted_row")]
+      visits_table = visits_table[visits_table$deleted_row == FALSE, ]
       visit_choices = visits_table$visit_id_visits
       names(visit_choices) = visits_table$visit_title
       if(length(visit_choices) > 0 & length(sel_inputIds) > 0){
