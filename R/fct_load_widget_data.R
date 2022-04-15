@@ -1,8 +1,8 @@
 #' load_widget_data
 #'
-#' @description This function creates widget data
+#' @description This function creates widget data reading the tables from the database or internal data.
 #'
-#' @return The return value, if any, from executing the function.
+#' @return Returns the tables required for rendering the input widgets
 #'
 #' @noRd
 #'
@@ -14,6 +14,8 @@ load_widget_data = function(pool_config, production_mode){
 
 
 
+  # Reads and formats data widget tables. If in editor mode (not in production),
+  # reads widget tables from internal data if not yet available in database.
   db_read_app_data = function(x_table, conn, prod_mod){
 
     if ( RMariaDB::dbExistsTable(conn = conn, name = x_table) ){
@@ -31,6 +33,8 @@ load_widget_data = function(pool_config, production_mode){
   }
 
 
+
+  # Get production mode, read raw data and format into widget_data, which can be used for further processing.
   prod_mod = get_production_mode(production_mode = production_mode,
                                  pool_config = pool_config)
 
@@ -45,5 +49,5 @@ load_widget_data = function(pool_config, production_mode){
                      all_visits_editor = db_read_app_data(conn = pool_config, x_table = "visits_editor", prod_mod = prod_mod),
                      widgets_template = db_read_app_data(conn = pool_config, x_table = "widgets_template", prod_mod = prod_mod))
 
-  widget_data
+  return(widget_data)
 }
