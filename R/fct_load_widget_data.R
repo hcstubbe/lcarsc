@@ -24,7 +24,7 @@ load_widget_data = function(pool_config, production_mode){
       stop(paste0(x_table, " could not be found!"))
     }
 
-    bool_cols = sapply(x_table, function(x){"TRUE" %in% x | "FALSE" %in% x & !any(x != "TRUE" & x != "FALSE" & !is.na(x))})
+    bool_cols = sapply(x_table, function(x){("TRUE" %in% x | "FALSE" %in% x) & !any(x != "TRUE" & x != "FALSE" & !is.na(x))})
     x_table = x_table %>% dplyr::mutate(across(which(bool_cols), ~ as.logical(.x)))
 
     return(x_table)

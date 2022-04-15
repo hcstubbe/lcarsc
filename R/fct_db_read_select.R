@@ -1,8 +1,8 @@
 #' db_read_select
 #'
-#' @description A fct function
+#' @description This function reads, orders and filters widget data.
 #'
-#' @return The return value, if any, from executing the function.
+#' @return Returns a filtered and ordered table from the database.
 #'
 #' @noRd
 #' @importFrom RMariaDB dbReadTable
