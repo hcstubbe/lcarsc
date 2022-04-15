@@ -106,7 +106,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
     observeEvent(input$addvars_confirm, {
 
       # Add data
-      SQL_df <- dbReadTable(pool, "library_table_vars")
+      SQL_df <- db_read_select(pool = pool, tbl_id = "library_table_vars", pid_x = NULL, use.pid = FALSE, order.by = "order_of_var")
       SQL_df = SQL_df[SQL_df$row_id %in% selected_row() & SQL_df$deleted_row == FALSE, ]
 
       start_order = max(dbReadTable(pool, "editor_table_vars")$order_of_var)
