@@ -76,8 +76,15 @@ run_app(ecrf_database_driver = RSQLite::SQLite(), # RMariaDB::MariaDB(), # RSQLi
 # ecrf_dbpassword = "default_password"
 # ecrf_dbhost = "db_ecrf_cfg"
 # ecrf_dbname = "db_ecrf_cfg.sqlite3"
-# pool_config = pool::dbPool(drv = ecrf_database_driver,
+# pool = pool::dbPool(drv = ecrf_database_driver,
 #                            user = ecrf_dbuser,
 #                            password = ecrf_dbpassword,
 #                            host = ecrf_dbhost,
 #                            db = ecrf_dbname)
+# x = list()
+# for (i in RMariaDB::dbListTables(conn = pool)){
+#   xi = RMariaDB::dbReadTable(conn = pool, name = i)
+#   x = c(x , list(xi))
+# }
+# names(x) = RMariaDB::dbListTables(conn = pool)
+# x
