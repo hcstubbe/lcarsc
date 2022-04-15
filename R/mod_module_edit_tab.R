@@ -552,7 +552,7 @@ mod_module_edit_tab_server<- function(id,
     required_fields = widgets_table[widgets_table$widget == TRUE &
                                     widgets_table$mandatory == TRUE &
                                     widgets_table$type == "checkboxInput",]$inputId
-    sapply(required_fields, function(x) iv$add_rule(x, sv_equal(TRUE, message_fmt = "This is required")))
+    sapply(required_fields, function(x) iv$add_rule(x, sv_equal(TRUE, message_fmt = "Required")))
 
 
     numeric_fields = widgets_table[widgets_table$widget == TRUE &

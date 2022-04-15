@@ -20,7 +20,7 @@ mod_module_editor_controls_ui <- function(id) {
                         actionButton(ns("update_widgets_button"), "Build", icon("hammer", verify_fa = FALSE)),
                         downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE)),
                         actionButton(ns("uploadData"), "Upload", icon = icon("upload", verify_fa = FALSE)),
-                        actionButton(ns("delete_widgets_button"), "Delete", icon("trash", verify_fa = FALSE))
+                        actionButton(ns("delete_widgets_button"), "Delete data table(s)", icon("trash", verify_fa = FALSE))
     )
   )
 }
