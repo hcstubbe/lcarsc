@@ -50,6 +50,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
       visits_table = visits_table[visits_table$deleted_row == FALSE, ]
       visit_choices = visits_table$visit_id_visits
       names(visit_choices) = visits_table$visit_title
+
       if(length(visit_choices) > 0 & length(sel_inputIds) > 0){
         showModal(
           modalDialog(

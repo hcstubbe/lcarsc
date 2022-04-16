@@ -14,7 +14,9 @@ mod_module_settings_ui <- function(id){
   ns <- NS(id)
 
   # Visits to choose from
-  visits_table = dbReadTable(get_golem_options("pool"), "editor_table_visit")[,c("visit_id_visits", "visit_title")]
+
+  visits_table = dbReadTable(get_golem_options("pool"), "editor_table_visit")[,c("visit_id_visits", "visit_title", "deleted_row")]
+  visits_table = visits_table[visits_table$deleted_row == FALSE, ]
   visit_choices = visits_table$visit_id_visits
   names(visit_choices) = visits_table$visit_title
 
