@@ -213,6 +213,7 @@ mod_module_editor_controls_server <- function(id) {
     observe({
       if (is.null(input$visits_upload)) return()
       input_csv_visits = read.csv(input$visits_upload$datapath)
+      input_csv_visits$row_id = uuid::UUIDgenerate(use.time = FALSE, n = nrow(input_csv_visits))
       tryCatch(dbAppendTable(pool,
                              "editor_table_visit",
                              input_csv_visits),
@@ -222,6 +223,7 @@ mod_module_editor_controls_server <- function(id) {
     observe({
       if (is.null(input$vars_upload)) return()
       input_csv_vars = read.csv(input$vars_upload$datapath)
+      input_csv_vars$row_id = uuid::UUIDgenerate(use.time = FALSE, n = nrow(input_csv_vars))
       tryCatch(dbAppendTable(pool,
                              "editor_table_vars",
                              input_csv_vars),

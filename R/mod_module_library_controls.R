@@ -19,7 +19,7 @@ mod_module_library_controls_ui <- function(id) {
     div(actionButton(ns("addvars"), "Add selected variables", icon("plus", verify_fa = FALSE)),
         downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE)),
         actionButton(ns("uploadData"), "Upload", icon = icon("upload", verify_fa = FALSE)),
-        actionButton(ns("delete_widgets_button"), "Delete", icon("trash", verify_fa = FALSE))
+        actionButton(ns("delete_widgets_button"), "Delete table(s)", icon("trash", verify_fa = FALSE))
     )
   )
 }
@@ -173,6 +173,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
       }
 
       input_csv_vars = input_csv_vars[input_csv_vars$deleted_row == FALSE,]
+      input_csv_vars$row_id = uuid::UUIDgenerate(use.time = FALSE, n = nrow(input_csv_vars))
 
 
       upload_success = tryCatch(
