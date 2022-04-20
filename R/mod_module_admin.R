@@ -71,15 +71,14 @@ mod_module_admin_server <- function(id){
     ns <- session$ns
     pool = get_golem_options("pool")
 
-    pool_config = get_golem_options("pool_config")
     observeEvent(input$delete_pid_dialog, {
     # Go back from production mode (for experimental version!)
     observeEvent(input$reverse_deploy, {
-      RMariaDB::dbRemoveTable(conn = pool_config, name = "start_config")
-      RMariaDB::dbCreateTable(conn = pool_config,
+      RMariaDB::dbRemoveTable(conn = get_golem_options("pool_config"), name = "start_config")
+      RMariaDB::dbCreateTable(conn = get_golem_options("pool_config"),
                                   name = "start_config",
                                   fields = data.frame(production_mode = "editor"))
-      RMariaDB::dbAppendTable(conn = pool_config,
+      RMariaDB::dbAppendTable(conn = get_golem_options("pool_config"),
                                   name = "start_config",
                                   value = data.frame(production_mode = "editor"))
     
