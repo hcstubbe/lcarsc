@@ -49,7 +49,11 @@ mod_module_admin_ui <- function(id){
                               br(),
                               br(),
                               textInput(ns("pid_to_delete"), label = "PID to remove from database"),
-                              actionButton(ns("delete_pid_dialog"), label = "Delete record")
+                              actionButton(ns("delete_pid_dialog"), label = "Delete record"),
+                              br(),
+                              br(),
+                              "This reverses the server to editor mode!",
+                              actionButton(ns("reverse_deploy"), label = "Reverse to editor mode!")
 
           )
         )
@@ -68,6 +72,19 @@ mod_module_admin_server <- function(id){
     pool = get_golem_options("pool")
 
 
+    # Go back from production mode (for experimental version!)
+    observeEvent(input$reverse_deploy, {
+      RMariaDB::dbRemoveTable(conn = pool_config, name = "start_config")
+      RMariaDB::dbCreateTable(conn = pool_config,
+                                  name = "start_config",
+                                  fields = data.frame(production_mode = "editor"))
+      RMariaDB::dbAppendTable(conn = pool_config,
+                                  name = "start_config",
+                                  value = data.frame(production_mode = "editor"))
+    
+    })
+    
+    
     # Download data
     output$downloadData <- downloadHandler(
       filename = function(){
