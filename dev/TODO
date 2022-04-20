@@ -4,5 +4,5 @@
 - Add variables
 - Move to new server
 - Deploy Mobile APP using lcarsM
-- Check RandomID Generator existing IDs
+- remove reverse_deploy from admin module?
 - Publish as R package
