@@ -4,6 +4,9 @@
 #'
 #' @return The return value, if any, from executing the function.
 #'
+#' @importFrom dplyr filter
+#' @importFrom jsonlite fromJSON
+#'
 #' @noRd
 #'
 #'
@@ -34,7 +37,33 @@ json_parser = function(json_file){
                             }
                             return(label)
                             }
-                     )
+                     ),
+
+      unit = sapply(y$concept,
+                    function(x) {
+                      unit = x$valueDomain[[1]]$property[[1]][[1]]
+                      if(is.null(unit)){
+                        unit = NA
+                      }else if(is.na(unit)){
+                        unit = NA
+                      }
+                      return(unit)
+                    }
+      ),
+
+      status_code = sapply(y$concept,
+                         function(x) {
+                           status_code = x$statusCode[1]
+                           if(is.null(status_code)){
+                             status_code = NA
+                           }else if(is.na(status_code)){
+                             status_code = NA
+                           }
+                           return(status_code)
+                         }
+      )
+
+
     )
 
     choices = t(sapply(y$concept,
@@ -57,6 +86,8 @@ json_parser = function(json_file){
   })
 
   fhir_widgets = dplyr::bind_rows(fhir_widgets, .id = "panel")
+
+  fhir_widgets = dplyr::filter(fhir_widgets, status_code == "final")
 
 
 
