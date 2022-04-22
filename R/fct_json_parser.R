@@ -100,7 +100,7 @@ json_parser = function(json_file){
                          }
 
                          x2 = c(x1, rep(NA, 12-length(x1)), x1, rep(NA, 12-length(x1)))
-                         names(x2) = c(paste0("choice", 1:12), paste0("choice", 1:12, "translation"))
+                         names(x2) = c(paste0("choice", 1:12), paste0("choice", 1:12, "_translation"))
                          x2
                         },simplify = T))
 
@@ -146,12 +146,12 @@ json_parser = function(json_file){
   fhir_widgets$r_class = "TEXT"
   fhir_widgets$origin_of_var = json_file
   fhir_widgets$order_of_var = NA
-  fhir_widgets$include_translation = FALSE
-  fhir_widgets$mandatory = FALSE
+  fhir_widgets$include_translation = 0
+  fhir_widgets$mandatory = 0
   fhir_widgets$panel_new = NA
   fhir_widgets$subgroup = "None"
   fhir_widgets$selected = NA
-  fhir_widgets$conditional = FALSE
+  fhir_widgets$conditional = 0
   fhir_widgets$appear_if = NA
 
 
@@ -170,7 +170,7 @@ json_parser = function(json_file){
       #     fhir_widget_new = rbind(fhir_widget_new, fhir_widgets_j)
       #   }
       #   fhir_widget_new = fhir_widget_new[-1,]
-      #   fhir_widget_new$inputId = make.names(fhir_widget_new$inputId, unique = TRUE)
+      #   fhir_widget_new$inputId = make.names(fhir_widget_new$inputId, unique = 1)
       # }
       #
 
@@ -203,9 +203,9 @@ json_parser = function(json_file){
           }
         }
         fhir_widget_new = fhir_widget_new[-1,]
-        fhir_widget_new$conditional = TRUE
+        fhir_widget_new$conditional = 1
         fhir_widget_new$appear_if = paste0("input.", "xxx_dummyvisit_xxx_", fhir_widgets[i, "inputId"])
-        fhir_widget_new$inputId = make.names(fhir_widget_new$inputId, unique = TRUE)
+        fhir_widget_new$inputId = make.names(fhir_widget_new$inputId, unique = 1)
 
         fhir_widget_list = c(fhir_widget_list, list(fhir_widget_new))
 
@@ -228,3 +228,9 @@ json_parser = function(json_file){
   fhir_widgets = fhir_widgets %>% select(!status_code & !data_class)
   fhir_widgets
 }
+
+
+# # Testing
+# json_file = "gecco.json"
+# x = json_parser(json_file)
+# readr::write_csv(x, "json_parse.csv")
