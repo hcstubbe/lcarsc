@@ -63,7 +63,7 @@ mod_module_deploy_server <- function(id){
                                   name = "start_config",
                                   value = data.frame(production_mode = "production"))
         }else{
-          warning("The prodcution mode has been activated (by other user?)! Latest changes mgith not have been saved!")
+          warning("The prodcution mode has been activated (by other user?)! Latest changes might not have been saved!")
         }
 
         close()
