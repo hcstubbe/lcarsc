@@ -4,7 +4,7 @@
 #'
 #' @return The return value, if any, from executing the function.
 #'
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter add_row
 #' @importFrom jsonlite fromJSON
 #'
 #' @noRd
@@ -28,6 +28,18 @@ json_parser = function(json_file){
                           function(x) {x$valueDomain[[1]]$type}),
 
       label = sapply(y$concept,
+                     function(x) {
+                       label = x$name[[1]]$`#text`
+                       if(is.null(label)){
+                         label = x$shortName
+                       }else if(is.na(label)){
+                         label = x$shortName
+                       }
+                       return(label)
+                     }
+      ),
+
+      label_translation = sapply(y$concept,
                      function(x) {
                        label = x$name[[1]]$`#text`
                        if(is.null(label)){
@@ -112,7 +124,7 @@ json_parser = function(json_file){
       choices = data.frame(choices)
     }
 
-    dat_i = cbind(dat_i, choices)
+    dat_i = cbind(choices, dat_i)
 
     return(dat_i)
   })
@@ -122,6 +134,72 @@ json_parser = function(json_file){
   fhir_widgets = dplyr::filter(fhir_widgets, status_code == "final")
 
 
+
+      # fhir_widget_new = fhir_widgets[1,]
+      # choice_cols = 2:13
+      # choices = fhir_widgets[i,choice_cols]
+      # if(any(!is.na(choices))){
+      #   for ( j in choices[!is.na(choices)] ) {
+      #     new_inputId = paste0(fhir_widgets[i, "inputId"], "_", j)
+      #     new_label = paste0(fhir_widgets[i, "label"], ": ", j)
+      #     new_translation = paste0(fhir_widgets[i, "label_translation"], ": ", j)
+      #     fhir_widgets_j = fhir_widgets[i,]
+      #     fhir_widgets_j$inputId = new_inputId
+      #     fhir_widgets_j$label = new_label
+      #     fhir_widget_new = rbind(fhir_widget_new, fhir_widgets_j)
+      #   }
+      #   fhir_widget_new = fhir_widget_new[-1,]
+      #   fhir_widget_new$inputId = make.names(fhir_widget_new$inputId, unique = TRUE)
+      # }
+      #
+
+
+
+  fhir_widgets_codes_booleans = fhir_widgets[1,]
+  fhir_widget_list = list()
+  fhir_widget_list_positions = c()
+  for (i in 1:nrow(fhir_widgets) ) {
+
+    if( fhir_widgets$data_class[i] == "code" ) {
+
+      fhir_widget_new = fhir_widgets[1,]
+      choice_cols = 2:13
+      choices = fhir_widgets[i,choice_cols]
+      choices_translation = fhir_widgets[i, choice_cols + 12 ]
+
+      if(any(!is.na(choices))){
+
+        for ( j in 1:ncol(choices) ) {
+          if(!is.na(choices[,j])){
+            new_inputId = paste0(fhir_widgets[i, "inputId"], "_", choices[,j])
+            new_label = paste0(fhir_widgets[i, "label"], ": ", choices[,j])
+            new_label_translation = paste0(fhir_widgets[i, "label_translation"], ": ", choices_translation[,j])
+            fhir_widgets_j = fhir_widgets[i,]
+            fhir_widgets_j$inputId = new_inputId
+            fhir_widgets_j$label = new_label
+            fhir_widgets_j$label_translation = new_label_translation
+            fhir_widget_new = rbind(fhir_widget_new, fhir_widgets_j)
+          }
+        }
+        fhir_widget_new = fhir_widget_new[-1,]
+        fhir_widget_new$inputId = make.names(fhir_widget_new$inputId, unique = TRUE)
+
+        fhir_widget_list = c(fhir_widget_list, list(fhir_widget_new))
+
+        fhir_widget_list_positions = c(fhir_widget_list_positions, i)
+
+      }
+
+      names(fhir_widget_list) = fhir_widget_list_positions
+
+    }
+  }
+
+  if(length(fhir_widget_list) > 0){
+    for (i in rev(names(fhir_widget_list))) {
+      fhir_widgets = fhir_widgets %>% dplyr::add_row(fhir_widget_list[[i]], .before = as.numeric(i)+1)
+    }
+  }
 
   fhir_widgets
 }
