@@ -152,6 +152,9 @@ json_parser = function(json_file){
   fhir_widgets$conditional = 0
   fhir_widgets$appear_if = NA
   fhir_widgets$deleted_row = 0
+  fhir_widgets$pid = "vars"
+  fhir_widgets$submitted_row = 0
+
 
 
 
@@ -229,8 +232,9 @@ json_parser = function(json_file){
   fhir_widgets
 }
 
-
+#
 # # Testing
+# library(dplyr)
 # json_file = "gecco.json"
 # x = json_parser(json_file)
 # readr::write_csv(x, "json_parse.csv")
