@@ -4,7 +4,7 @@
 #'
 #' @return The return value, if any, from executing the function.
 #'
-#' @importFrom dplyr filter add_row
+#' @importFrom dplyr filter add_row %>%
 #' @importFrom jsonlite fromJSON
 #'
 #' @noRd
@@ -132,6 +132,27 @@ json_parser = function(json_file){
   fhir_widgets = dplyr::bind_rows(fhir_widgets, .id = "panel")
 
   fhir_widgets = dplyr::filter(fhir_widgets, status_code == "final")
+  fhir_widgets$type = "textInput"
+  if(any(fhir_widgets$data_class == "quantity")){
+    fhir_widgets$type[fhir_widgets$data_class == "quantity"] = "numericInput"
+  }
+  if(any(fhir_widgets$data_class == "code")){
+    fhir_widgets$type[fhir_widgets$data_class == "code"] = "checkboxInput"
+  }
+  if(any(fhir_widgets$data_class == "date")){
+    fhir_widgets$type[fhir_widgets$data_class == "date"] = "dateInput"
+  }
+  fhir_widgets$data_type = "TEXT"
+  fhir_widgets$r_class = "TEXT"
+  fhir_widgets$origin_of_var = json_file
+  fhir_widgets$order_of_var = NA
+  fhir_widgets$include_translation = FALSE
+  fhir_widgets$mandatory = FALSE
+  fhir_widgets$panel_new = NA
+  fhir_widgets$subgroup = "None"
+  fhir_widgets$selected = NA
+  fhir_widgets$conditional = FALSE
+  fhir_widgets$appear_if = NA
 
 
 
@@ -182,6 +203,8 @@ json_parser = function(json_file){
           }
         }
         fhir_widget_new = fhir_widget_new[-1,]
+        fhir_widget_new$conditional = TRUE
+        fhir_widget_new$appear_if = paste0("input.", "xxx_dummyvisit_xxx_", fhir_widgets[i, "inputId"])
         fhir_widget_new$inputId = make.names(fhir_widget_new$inputId, unique = TRUE)
 
         fhir_widget_list = c(fhir_widget_list, list(fhir_widget_new))
@@ -201,5 +224,7 @@ json_parser = function(json_file){
     }
   }
 
+  fhir_widgets$order_of_var = 1:nrow(fhir_widgets)
+  fhir_widgets = fhir_widgets %>% select(!status_code & !data_class)
   fhir_widgets
 }
