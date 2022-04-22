@@ -16,13 +16,25 @@ json_parser = function(json_file){
 
 
 
-  dat_x = lapply(fhir_data, function(y) {
+  fhir_widgets = lapply(fhir_data, function(y) {
 
     dat_i = data.frame(
       inputId = sapply(y$concept,
                        function(x) {x$shortName}),
       data_class = sapply(y$concept,
-                          function(x) {x$valueDomain[[1]]$type})
+                          function(x) {x$valueDomain[[1]]$type}),
+
+      label = sapply(y$concept,
+                          function(x) {
+                            label = x$desc[[1]]$`#text`
+                            if(is.null(label)){
+                              label = x$shortName
+                            }else if(is.na(label)){
+                              label = x$shortName
+                            }
+                            return(label)
+                            }
+                     )
     )
 
     choices = t(sapply(y$concept,
@@ -44,21 +56,9 @@ json_parser = function(json_file){
     return(dat_i)
   })
 
-  dat_x = dplyr::bind_rows(dat_x, .id = "panel")
+  fhir_widgets = dplyr::bind_rows(fhir_widgets, .id = "panel")
 
 
-  fhir_data$anamnese__risikofaktoren$concept[[1]]$valueDomain[[1]]$type
-  sapply(fhir_data$anamnese__risikofaktoren$concept[[1]]$valueDomain[[1]]$conceptList[[1]]$concept,
-         function(x) {x$name[[1]] $`#text`})
-
-  inputIds = sapply(fhir_data, function(x) {c(x$shortName, x$valueDomain[[1]]$type)})
-
-  fhir_widgets = sapply(1:length(inputIds), function(x){
-    y = data.frame(inputId = inputIds[[x]])
-    y$panel = names(inputIds)[x]
-    y
-  }, simplify = F
-  )
 
   fhir_widgets
 }
