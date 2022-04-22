@@ -28,6 +28,18 @@ json_parser = function(json_file){
                           function(x) {x$valueDomain[[1]]$type}),
 
       label = sapply(y$concept,
+                     function(x) {
+                       label = x$name[[1]]$`#text`
+                       if(is.null(label)){
+                         label = x$shortName
+                       }else if(is.na(label)){
+                         label = x$shortName
+                       }
+                       return(label)
+                     }
+      ),
+
+      description = sapply(y$concept,
                           function(x) {
                             label = x$desc[[1]]$`#text`
                             if(is.null(label)){
@@ -67,18 +79,38 @@ json_parser = function(json_file){
     )
 
     choices = t(sapply(y$concept,
-                       function(x) {x1 = sapply(x$valueDomain[[1]]$conceptList[[1]]$concept,function(x) {x$name[[1]] $`#text`})
-                       x1 = unlist(x1)
+                       function(x) {
+                         x1 = sapply(x$valueDomain[[1]]$conceptList[[1]]$concept,function(x) {x$name[[1]] $`#text`})
+                         x1 = unlist(x1)
 
-                       if(length(x1) > 12){ # currently only 12 choices are supported!
-                         x1 = x1[1:12]
-                       }
+                         if(length(x1) > 12){ # currently only 12 choices are supported!
+                           x1 = x1[1:12]
+                         }
 
-                       x2 = c(x1, rep(NA, 12-length(x1)), x1, rep(NA, 12-length(x1)))
-                       names(x2) = c(paste0("choice", 1:12), paste0("choice", 1:12, "translation"))
-                       x2
-                       },simplify = T))
+                         x2 = c(x1, rep(NA, 12-length(x1)), x1, rep(NA, 12-length(x1)))
+                         names(x2) = c(paste0("choice", 1:12), paste0("choice", 1:12, "translation"))
+                         x2
+                        },simplify = T))
+
     choices = data.frame(choices)
+
+    if(all(is.na(choices))){
+      choices = t(sapply(y$concept,
+                          function(x) {
+                            x1 = sapply(x$valueSet[[1]]$conceptList[[1]]$concept,function(x) {x$name[[1]]$`#text`})
+                            x1 = unlist(x1)
+
+                            if(length(x1) > 12){ # currently only 12 choices are supported!
+                              x1 = x1[1:12]
+                            }
+
+                            x2 = c(x1, rep(NA, 12-length(x1)), x1, rep(NA, 12-length(x1)))
+                            names(x2) = c(paste0("choice", 1:12), paste0("choice", 1:12, "translation"))
+                            x2
+                          },simplify = T))
+
+      choices = data.frame(choices)
+    }
 
     dat_i = cbind(dat_i, choices)
 
