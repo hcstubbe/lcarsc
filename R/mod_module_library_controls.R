@@ -176,16 +176,12 @@ mod_module_library_controls_server <- function(id, selected_row) {
       input_csv_vars$row_id = uuid::UUIDgenerate(use.time = FALSE, n = nrow(input_csv_vars))
 
 
-      dbAppendTable(pool,
-                    "library_table_vars",
-                    input_csv_vars)
-
-      # upload_success = tryCatch(
-      #   dbAppendTable(pool,
-      #                 "library_table_vars",
-      #                 input_csv_vars)
-      #   ,
-      #   error = function(e) NULL)
+      upload_success = tryCatch(
+        dbAppendTable(pool,
+                      "library_table_vars",
+                      input_csv_vars)
+        ,
+        error = function(e) NULL)
 
 
       if(!is.null(upload_success)){

@@ -117,7 +117,7 @@ json_parser = function(json_file){
                             }
 
                             x2 = c(x1, rep(NA, 12-length(x1)), x1, rep(NA, 12-length(x1)))
-                            names(x2) = c(paste0("choice", 1:12), paste0("choice", 1:12, "translation"))
+                            names(x2) = c(paste0("choice", 1:12), paste0("choice", 1:12, "_translation"))
                             x2
                           },simplify = T))
 
@@ -142,8 +142,6 @@ json_parser = function(json_file){
   if(any(fhir_widgets$data_class == "date")){
     fhir_widgets$type[fhir_widgets$data_class == "date"] = "dateInput"
   }
-  fhir_widgets$data_type = "TEXT"
-  fhir_widgets$r_class = "TEXT"
   fhir_widgets$origin_of_var = json_file
   fhir_widgets$order_of_var = NA
   fhir_widgets$include_translation = 0
@@ -153,6 +151,8 @@ json_parser = function(json_file){
   fhir_widgets$selected = NA
   fhir_widgets$conditional = 0
   fhir_widgets$appear_if = NA
+  fhir_widgets$deleted_row = 0
+
 
 
 
