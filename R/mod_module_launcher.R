@@ -113,28 +113,28 @@ mod_module_launcher_server <- function(id){
     # Launch module servers ----
 
     # Module in Tab 1
-    start_success_1 = tryCatch(
+    tryCatch(
       mod_module_new_pat_server(id = "mod_module_new_pat",
                                 visit_id = "vi",
                                 data_table = "inclusion_dataset")
       ,
-      error = function(e) NULL
+      error = function(e) {
+        showNotification(paste0("Starting inclusion submodule failed: ", e), duration = 10, type = "error")
+        return(NULL)
+      }
     )
-    if(is.null(start_success_1)){
-      showNotification("Starting inclusion submodule failed!", duration = 10, type = "error")
-    }
 
     # Module in Tab 2
-    start_success_2 = tryCatch(
+    tryCatch(
       mod_module_documentation_server(id = "mod_module_documentation",
                                       data_table1 = "inclusion_dataset",
                                       data_table2 = "scientific_dataset")
       ,
-      error = function(e) NULL
+      error = function(e) {
+        showNotification(paste0("Starting documentation submodule failed: ", e), duration = 300, type = "error")
+        return(NULL)
+        }
     )
-    if(is.null(start_success_2)){
-      showNotification("Starting documentation submodule failed!", duration = 10, type = "error")
-    }
 
     if(get_golem_options("user_is_admin")){
       mod_module_admin_server("module_admin_1")
