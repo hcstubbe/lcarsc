@@ -158,27 +158,7 @@ json_parser = function(json_file){
 
 
 
-
-      # fhir_widget_new = fhir_widgets[1,]
-      # choice_cols = 2:13
-      # choices = fhir_widgets[i,choice_cols]
-      # if(any(!is.na(choices))){
-      #   for ( j in choices[!is.na(choices)] ) {
-      #     new_inputId = paste0(fhir_widgets[i, "inputId"], "_", j)
-      #     new_label = paste0(fhir_widgets[i, "label"], ": ", j)
-      #     new_translation = paste0(fhir_widgets[i, "label_translation"], ": ", j)
-      #     fhir_widgets_j = fhir_widgets[i,]
-      #     fhir_widgets_j$inputId = new_inputId
-      #     fhir_widgets_j$label = new_label
-      #     fhir_widget_new = rbind(fhir_widget_new, fhir_widgets_j)
-      #   }
-      #   fhir_widget_new = fhir_widget_new[-1,]
-      #   fhir_widget_new$inputId = make.names(fhir_widget_new$inputId, unique = 1)
-      # }
-      #
-
-
-
+  # Convert to multiple boolean variables to allow for multiple choice
   fhir_widgets_codes_booleans = fhir_widgets[1,]
   fhir_widget_list = list()
   fhir_widget_list_positions = c()
@@ -196,8 +176,8 @@ json_parser = function(json_file){
         for ( j in 1:ncol(choices) ) {
           if(!is.na(choices[,j])){
             new_inputId = paste0(fhir_widgets[i, "inputId"], "_", choices[,j])
-            new_label = paste0(fhir_widgets[i, "label"], ": ", choices[,j])
-            new_label_translation = paste0(fhir_widgets[i, "label_translation"], ": ", choices_translation[,j])
+            new_label = paste0("- ", fhir_widgets[i, "label"], ": ", choices[,j])
+            new_label_translation = paste0("- ", fhir_widgets[i, "label_translation"], ": ", choices_translation[,j])
             fhir_widgets_j = fhir_widgets[i,]
             fhir_widgets_j$inputId = new_inputId
             fhir_widgets_j$label = new_label
@@ -208,7 +188,6 @@ json_parser = function(json_file){
         fhir_widget_new = fhir_widget_new[-1,]
         fhir_widget_new$conditional = 1
         fhir_widget_new$appear_if = paste0("input.", "xxx_dummyvisit_xxx_", fhir_widgets[i, "inputId"])
-        fhir_widget_new$inputId = make.names(fhir_widget_new$inputId, unique = 1)
 
         fhir_widget_list = c(fhir_widget_list, list(fhir_widget_new))
 
@@ -229,6 +208,8 @@ json_parser = function(json_file){
 
   fhir_widgets$order_of_var = 1:nrow(fhir_widgets)
   fhir_widgets = fhir_widgets %>% select(!status_code & !data_class)
+  fhir_widgets$inputId = strtrim(fhir_widgets$inputId, 48)
+  fhir_widgets$inputId = make.names(fhir_widgets$inputId, unique = 1)
   fhir_widgets
 }
 
