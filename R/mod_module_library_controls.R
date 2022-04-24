@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList fluidRow fluidRow div modalDialog showModal icon textInput actionButton modalButton observeEvent removeModal showNotification column moduleServer checkboxGroupInput
 #' @importFrom shinydashboard box
 #' @importFrom utils zip
-#' @importFrom readr write_csv
+#' @importFrom readr write_csv read_csv
 #' @importFrom RMariaDB dbReadTable dbListTables dbRemoveTable
 #' @importFrom golem get_golem_options
 mod_module_library_controls_ui <- function(id) {
@@ -64,6 +64,10 @@ mod_module_library_controls_server <- function(id, selected_row) {
                     br(),
                     br(),
                     selectInput(ns("visit_for_var"), label = "Select visit for varsiables", choices = visit_choices),
+                    br(),
+                    br(),
+                    h4("Replace appear_if visit id?"),
+                    checkboxInput(ns("replace_visit_id"), label = "Replace appear_if visit_id with selected visit_id"),
                     actionButton(ns("addvars_confirm"), "Add", icon("plus", verify_fa = FALSE)),
                     modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
                   )
@@ -117,6 +121,9 @@ mod_module_library_controls_server <- function(id, selected_row) {
         }
       SQL_df$visit_for_var = input$visit_for_var
       SQL_df$order_of_var = start_order + 1:nrow(SQL_df)
+      if(input$replace_visit_id == TRUE){
+        SQL_df$appear_if = gsub("xxx_dummyvisit_xxx", input$visit_for_var, SQL_df$appear_if)
+      }
 
       tryCatch(dbAppendTable(pool,
                              "editor_table_vars",
@@ -137,9 +144,9 @@ mod_module_library_controls_server <- function(id, selected_row) {
                 fluidRow(
                   h4("Upload variables"),
                   textInput(ns("origin_of_var"), "Origin of variables"),
-                  fileInput(ns("vars_upload"), "Upload data file (CSV)",
+                  fileInput(ns("vars_upload"), "Upload data file (CSV or JSON)",
                             multiple = FALSE,
-                            accept = c(".csv")),
+                            accept = c(".csv", ".json")),
                   actionButton(ns("confirm_upload"), "Save upload", icon = icon("save", verify_fa = FALSE)),
                   modalButton("Done", icon = icon("check", verify_fa = FALSE))
                 )
@@ -150,6 +157,8 @@ mod_module_library_controls_server <- function(id, selected_row) {
       )
     })
 
+
+
     # Handle uploads ----
 
     observeEvent(input$confirm_upload, {
@@ -159,7 +168,15 @@ mod_module_library_controls_server <- function(id, selected_row) {
         removeModal()
       }
 
-      input_csv_vars = read.csv(input$vars_upload$datapath)
+
+      if(rev(strsplit(input$vars_upload$datapath, split = ".", fixed = TRUE)[[1]])[[1]] == "json"){
+        input_csv_vars = json_parser(input$vars_upload$datapath)
+      }else if(rev(strsplit(input$vars_upload$datapath, split = ".", fixed = TRUE)[[1]])[[1]] == "csv"){
+        input_csv_vars = readr::read_csv(input$vars_upload$datapath)
+      }else{
+        input_csv_vars = data.frame()
+      }
+
       visit_for_var_col = which(colnames(input_csv_vars) == "visit_for_var")
 
       if ( length(visit_for_var_col) > 0 ) {

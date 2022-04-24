@@ -1,6 +1,6 @@
 #' json_parser
 #'
-#' @description A function for importing fhir widgets
+#' @description A function for importing fhir widgets. This is EXPERIMENTAL and does not work for all formats yet!
 #'
 #' @return The return value, if any, from executing the function.
 #'
