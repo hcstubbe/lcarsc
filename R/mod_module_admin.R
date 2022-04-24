@@ -11,6 +11,7 @@
 #' @importFrom RMariaDB dbReadTable
 #' @importFrom shinyvalidate sv_equal sv_required InputValidator
 #' @importFrom utils zip
+#' @importFrom readr write_csv
 #'
 #'
 mod_module_admin_ui <- function(id){
@@ -80,10 +81,10 @@ mod_module_admin_server <- function(id){
       RMariaDB::dbAppendTable(conn = get_golem_options("pool_config"),
                                   name = "start_config",
                                   value = data.frame(production_mode = "editor"))
-    
+
     })
-    
-    
+
+
     # Download data
     output$downloadData <- downloadHandler(
       filename = function(){
@@ -104,7 +105,7 @@ mod_module_admin_server <- function(id){
 
         for (i in 1:length(all_tables)){
           fileName = paste0(names(all_tables)[[i]],".csv")
-          write.csv(all_tables[[i]],fileName)
+          readr::write_csv(all_tables[[i]],fileName)
           files = c(fileName,files)
         }
         # create zip file
