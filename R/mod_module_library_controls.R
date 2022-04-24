@@ -170,11 +170,17 @@ mod_module_library_controls_server <- function(id, selected_row) {
 
 
       if(rev(strsplit(input$vars_upload$datapath, split = ".", fixed = TRUE)[[1]])[[1]] == "json"){
-        input_csv_vars = json_parser(input$vars_upload$datapath)
+
+        input_csv_vars = tryCatch(json_parser(input$vars_upload$datapath),
+                                  error = function(e) {
+                                    showNotification("JSON file could not be converted: check format!", type = "error")
+                                    return(data.frame(1:1))
+                                  })
+
       }else if(rev(strsplit(input$vars_upload$datapath, split = ".", fixed = TRUE)[[1]])[[1]] == "csv"){
         input_csv_vars = readr::read_csv(input$vars_upload$datapath)
       }else{
-        input_csv_vars = data.frame()
+        input_csv_vars = data.frame(1:1)
       }
 
       visit_for_var_col = which(colnames(input_csv_vars) == "visit_for_var")
