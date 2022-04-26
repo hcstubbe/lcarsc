@@ -79,7 +79,8 @@ mod_module_editor_launcher_server <- function(id) {
                            all_visits = all_visits_editor,
                            visit_id = "editor",
                            add.copy.btn = TRUE,
-                           order.by = "order")
+                           order.by = "order",
+                           search_field = TRUE)
 
 
 
@@ -99,7 +100,8 @@ mod_module_editor_launcher_server <- function(id) {
                            visit_id = "editor",
                            add.copy.btn = TRUE,
                            num_entries = 200,
-                           order.by = "order_of_var")
+                           order.by = "order_of_var",
+                           search_field = TRUE)
 
 
   })
