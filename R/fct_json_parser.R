@@ -187,8 +187,7 @@ json_parser = function(json_file){
         }
         fhir_widget_new = fhir_widget_new[-1,]
         fhir_widget_new$conditional = 1
-        fhir_widget_new$appear_if = paste0("input.", "xxx_dummyvisit_xxx_", fhir_widgets[i, "inputId"])
-
+        fhir_widget_new$appear_if = paste0("input.", "xxx_dummyvisit_xxx_", strtrim(fhir_widgets[i, "inputId"], 48))
         fhir_widget_list = c(fhir_widget_list, list(fhir_widget_new))
 
         fhir_widget_list_positions = c(fhir_widget_list_positions, i)
