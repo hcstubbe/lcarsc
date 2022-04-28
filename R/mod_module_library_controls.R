@@ -12,6 +12,8 @@
 #' @importFrom readr write_csv read_csv
 #' @importFrom RMariaDB dbReadTable dbListTables dbRemoveTable
 #' @importFrom golem get_golem_options
+#' @importFrom uuid UUIDgenerate
+
 mod_module_library_controls_ui <- function(id) {
   ns = NS(id)
 
@@ -124,6 +126,7 @@ mod_module_library_controls_server <- function(id, selected_row) {
       if(input$replace_visit_id == TRUE){
         SQL_df$appear_if = gsub("xxx_dummyvisit_xxx", input$visit_for_var, SQL_df$appear_if)
       }
+      SQL_df$row_id = uuid::UUIDgenerate(use.time = FALSE, n = nrow(SQL_df))
 
       tryCatch(dbAppendTable(pool,
                              "editor_table_vars",
