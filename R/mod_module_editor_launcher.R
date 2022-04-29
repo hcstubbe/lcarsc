@@ -62,7 +62,7 @@ mod_module_editor_launcher_server <- function(id) {
 
     # Run when starting module ----
 
-    ## Start sub-module servers
+    ## Start sub-module server
 
     mod_module_editor_controls_server("mod_module_editor_controls")
 
@@ -84,7 +84,7 @@ mod_module_editor_launcher_server <- function(id) {
 
 
 
-    ## Start sub-module servers
+    ## Start sub-module server
     rv_downstream_vars = reactiveValues()
     rv_downstream_vars$visit_id = reactive({"editor"})
     rv_downstream_vars$pid = reactive({"vars"})
@@ -101,7 +101,8 @@ mod_module_editor_launcher_server <- function(id) {
                            add.copy.btn = TRUE,
                            num_entries = 200,
                            order.by = "order_of_var",
-                           search_field = TRUE)
+                           search_field = TRUE,
+                           filter_visit_id = TRUE)
 
 
   })

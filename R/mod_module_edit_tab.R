@@ -58,7 +58,8 @@ mod_module_edit_tab_server<- function(id,
                                       length_change = FALSE,
                                       create_sample_id = FALSE,
                                       sample_id_name = NULL,
-                                      noletters_smp_id = TRUE) {
+                                      noletters_smp_id = TRUE,
+                                      filter_visit_id = FALSE) {
 
 
 
@@ -89,6 +90,14 @@ mod_module_edit_tab_server<- function(id,
         selector = paste("#", ns("submit_button"), sep = ""),
         where = "afterEnd",
         ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
+      )
+    }
+
+    if(filter_visit_id == TRUE){
+      insertUI(
+        selector = paste("#", ns("add_button"), sep = ""),
+        where = "beforeBegin",
+        ui = wellPanel(selectInput(ns("selected_visit_id"), label = "Select visit_id", choices = c("A")))
       )
     }
 
