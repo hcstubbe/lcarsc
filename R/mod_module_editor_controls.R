@@ -217,7 +217,7 @@ mod_module_editor_controls_server <- function(id) {
       tryCatch(dbAppendTable(pool,
                              "editor_table_visit",
                              input_csv_visits),
-               error = function(e) showNotification("Data not saved: check format!", type = "error"))
+               error = function(e) showNotification(paste0("Data not saved: check format! Original error message: ", e), type = "error", duration = NULL))
     })
 
     observe({
@@ -227,7 +227,7 @@ mod_module_editor_controls_server <- function(id) {
       tryCatch(dbAppendTable(pool,
                              "editor_table_vars",
                              input_csv_vars),
-               error = function(e) showNotification("Data not saved: check format!", type = "error"))
+               error = function(e) showNotification(paste0("Data not saved: check format! Original error message: ", e), type = "error", duration = NULL))
     })
 
   })

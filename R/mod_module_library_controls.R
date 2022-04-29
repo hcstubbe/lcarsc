@@ -131,7 +131,8 @@ mod_module_library_controls_server <- function(id, selected_row) {
       tryCatch(dbAppendTable(pool,
                              "editor_table_vars",
                              SQL_df),
-               error = function(e) showNotification("Data not saved: check format!", type = "error"))
+               error = function(e) showNotification(paste0("Data not saved: check format! Original error message: ", e), type = "error", duration = NULL))
+
       removeModal()
       showNotification("Widgets updated", type = "message")
     })
@@ -174,9 +175,9 @@ mod_module_library_controls_server <- function(id, selected_row) {
 
       if(rev(strsplit(input$vars_upload$datapath, split = ".", fixed = TRUE)[[1]])[[1]] == "json"){
 
-        input_csv_vars = tryCatch(json_parser(input$vars_upload$datapath),
+         input_csv_vars = tryCatch(json_parser(input$vars_upload$datapath),
                                   error = function(e) {
-                                    showNotification("JSON file could not be converted: check format!", type = "error")
+                                    showNotification(paste0("JSON file could not be converted: check format! Original error message: ", e), type = "error", duration = NULL)
                                     return(data.frame(1:1))
                                   })
 
