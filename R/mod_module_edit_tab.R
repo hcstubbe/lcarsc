@@ -28,7 +28,8 @@ mod_module_edit_tab_ui <- function(id) {
       fluidRow(width="100%",
                DT::dataTableOutput(ns("responses_table"), width = "100%")
       )
-    )
+    ),
+    uiOutput(ns("testing1"))
   )
 }
 
@@ -135,6 +136,7 @@ mod_module_edit_tab_server<- function(id,
     }else{
       selection_tab = c("multiple")
     }
+
     make_response_table = function(selected_visit_id = NULL){
       table = db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
 
@@ -161,6 +163,7 @@ mod_module_edit_tab_server<- function(id,
 
     rv_table = reactiveValues()
     rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+
     output$responses_table <- DT::renderDataTable({
       render_response_table(rv_table$rv_rtab())
     })
@@ -169,6 +172,12 @@ mod_module_edit_tab_server<- function(id,
       selected_row = rv_table$rv_rtab()[input$responses_table_rows_selected, "row_id"]
       selected_row
     })
+
+    output$testing1 = renderUI({
+      div(rv_table$rv_selection(),br(), br(),
+          paste(rv_table$rv_rtab()$row_id, collapse = ", "))
+    })
+
 
 
 
@@ -282,6 +291,8 @@ mod_module_edit_tab_server<- function(id,
         close()
         showNotification("Data saved", type = "message")
         shinyjs::reset("entry_form")
+
+
         # Update response table
         rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
         output$responses_table <- DT::renderDataTable({
@@ -434,8 +445,8 @@ mod_module_edit_tab_server<- function(id,
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
-      row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
-      SQL_df_selected = SQL_df[input$responses_table_rows_selected, ]
+      row_submitted <- rv_table$rv_rtab()[input$responses_table_rows_selected, "submitted_row"]
+      SQL_df_selected = rv_table$rv_rtab()[input$responses_table_rows_selected,]
       row_selection = rv_table$rv_selection()
 
 
@@ -461,7 +472,7 @@ mod_module_edit_tab_server<- function(id,
         }
       )
 
-      locked_row = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
+      locked_row = check_lock(rv_table$rv_rtab()[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
 
 
       if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & locked_row == FALSE){
