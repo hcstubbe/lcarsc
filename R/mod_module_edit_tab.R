@@ -111,7 +111,6 @@ mod_module_edit_tab_server<- function(id,
       filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
       filter_visit_data = filter_visit_data[filter_visit_data$deleted_row == FALSE,]
       filter_visit_choices = c("all_visits", filter_visit_data$visit_id_visits)
-      names(filter_visit_choices) = c("All visits", filter_visit_data$visit_title)
 
       insertUI(
         selector = paste("#", ns("add_button"), sep = ""),
@@ -266,6 +265,12 @@ mod_module_edit_tab_server<- function(id,
 
       entry_form(ns("submit"), visit_id)
       iv$enable()
+
+      if(!is.null(input$selected_visit_id)){
+        if(input$selected_visit_id != "all_visits"){
+          shiny::updateSelectInput(inputId = "visit_for_var", session = session, selected = input$selected_visit_id)
+        }
+      }
 
     })
 
