@@ -86,6 +86,7 @@ mod_module_edit_tab_server<- function(id,
     rv_uuid = reactiveValues()
 
 
+    ## Add inputs ----
     if(add.copy.btn == TRUE){
       insertUI(
         selector = paste("#", ns("submit_button"), sep = ""),
