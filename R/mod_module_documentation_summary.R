@@ -6,7 +6,12 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @importFrom shiny NS tagList moduleServer uiOutput tagList renderUI
+#' @importFrom shinydashboard box infoBox
+#' @importFrom golem get_golem_options
+#' @importFrom pool dbPool
+#'
+#'
 mod_module_documentation_summary_ui <- function(id){
   ns <- NS(id)
   tagList(

@@ -2,7 +2,6 @@
 #'
 #' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
-#' @import shiny shinydashboard DT
 #' @importFrom golem get_golem_options
 #' @noRd
 app_server <- function( input, output, session ) {

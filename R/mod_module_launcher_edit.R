@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #' @importFrom shiny NS tagList div
-#' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar dropdownMenu menuItem dashboardBody tabItems tabItem
+#' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar dropdownMenu menuItem dashboardBody tabItems tabItem notificationItem sidebarMenu
 #' @importFrom shinyWidgets sendSweetAlert show_toast
 #' @importFrom golem get_golem_options
 #' @import dplyr

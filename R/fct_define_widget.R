@@ -5,8 +5,11 @@
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-#' @import shiny
+#' @importFrom shiny numericInput NS radioButtons selectInput checkboxInput textInput
 #' @importFrom shinyWidgets airDatepickerInput
+#' @importFrom golem get_golem_options
+#'
+#'
 
 
 # Function definfing each widget

@@ -6,8 +6,12 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @importFrom shiny NS tagList fluidPage fluidRow navbarPage tabPanel moduleServer reactiveValues
+#' @importFrom shinydashboard box
+#' @importFrom golem get_golem_options
+#' @importFrom DT datatable
 #' @import dplyr
+#'
 mod_module_editor_launcher_ui <- function(id) {
   ns = NS(id)
   tagList(
@@ -44,19 +48,6 @@ mod_module_editor_launcher_server <- function(id) {
   	all_visits_editor = widget_data_input$all_visits_editor
   	widgets_table_global_widgets = widget_data_input$widgets_table_global_widgets
   	widgets_table_global_widgets = widgets_table_global_widgets[widgets_table_global_widgets$inputId != "origin_of_variable",]
-
-    rv_downstream = reactiveValues()
-
-    # Auxiliary functions ----
-
-    # Functions for loading data for rendering data table
-    computeFT = function(){
-      y = loadData("input_vars")[,c("date_modified")]
-      y
-    }
-    load_dt_for_render = function(){
-      DT::datatable(computeFT(),
-                    options = list(pageLength = 5), selection = c("single"))}
 
 
 

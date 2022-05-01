@@ -6,7 +6,8 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList
+#' @importFrom shiny NS tagList fluidPage br moduleServer
+#' @importFrom shinydashboard box
 mod_module_db_settings_ui <- function(id){
   ns <- NS(id)
   tagList(
