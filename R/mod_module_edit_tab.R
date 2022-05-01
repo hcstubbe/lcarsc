@@ -110,8 +110,8 @@ mod_module_edit_tab_server<- function(id,
     if(editor_filter_visit_id == TRUE){
       filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
       filter_visit_data = filter_visit_data[filter_visit_data$deleted_row == FALSE,]
-      filter_visit_choices = c(NA, filter_visit_data$visit_id_visits)
-      names(filter_visit_choices) = c("All", filter_visit_data$visit_title)
+      filter_visit_choices = c("all_visits", filter_visit_data$visit_id_visits)
+      names(filter_visit_choices) = c("All visits", filter_visit_data$visit_title)
 
       insertUI(
         selector = paste("#", ns("add_button"), sep = ""),
@@ -136,9 +136,16 @@ mod_module_edit_tab_server<- function(id,
     }else{
       selection_tab = c("multiple")
     }
-    make_response_table = function(){
+    make_response_table = function(selected_visit_id = NULL){
       table = db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-            table
+
+      if(!is.null(selected_visit_id)){
+        if(selected_visit_id != "all_visits"){
+          table = table[table$visit_for_var == selected_visit_id,]
+        }
+      }
+
+      return(table)
     }
 
     render_response_table = function(table){
@@ -154,7 +161,7 @@ mod_module_edit_tab_server<- function(id,
 
 
     rv_table = reactiveValues()
-    rv_table$rv_rtab = reactive({make_response_table()})
+    rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
     output$responses_table <- DT::renderDataTable({
       render_response_table(rv_table$rv_rtab())
     })
@@ -271,7 +278,7 @@ mod_module_edit_tab_server<- function(id,
         showNotification("Data saved", type = "message")
         shinyjs::reset("entry_form")
         # Update response table
-        rv_table$rv_rtab = reactive({make_response_table()})
+        rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
         output$responses_table <- DT::renderDataTable({
           render_response_table(rv_table$rv_rtab())
         })
@@ -290,7 +297,7 @@ mod_module_edit_tab_server<- function(id,
       shinyjs::reset("entry_form")
 
       # Update response table
-      rv_table$rv_rtab = reactive({make_response_table()})
+      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
       output$responses_table <- DT::renderDataTable({
         render_response_table(rv_table$rv_rtab())
       })
@@ -308,7 +315,7 @@ mod_module_edit_tab_server<- function(id,
       shinyjs::reset("entry_form")
 
       # Update response table
-      rv_table$rv_rtab = reactive({make_response_table()})
+      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
       output$responses_table <- DT::renderDataTable({
         render_response_table(rv_table$rv_rtab())
       })
@@ -360,7 +367,7 @@ mod_module_edit_tab_server<- function(id,
         dbExecute(pool, db_cmd)
 
         # Update response table
-        rv_table$rv_rtab = reactive({make_response_table()})
+        rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
         output$responses_table <- DT::renderDataTable({
           render_response_table(rv_table$rv_rtab())
         })
@@ -399,7 +406,7 @@ mod_module_edit_tab_server<- function(id,
         copyData()
 
         # Update response table
-        rv_table$rv_rtab = reactive({make_response_table()})
+        rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
         output$responses_table <- DT::renderDataTable({
           render_response_table(rv_table$rv_rtab())
         })
@@ -496,7 +503,7 @@ mod_module_edit_tab_server<- function(id,
         shinyjs::reset("entry_form")
 
         # Update response table
-        rv_table$rv_rtab = reactive({make_response_table()})
+        rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
         output$responses_table <- DT::renderDataTable({
           render_response_table(rv_table$rv_rtab())
         })
@@ -571,7 +578,7 @@ mod_module_edit_tab_server<- function(id,
       close()
 
       # Update response table
-      rv_table$rv_rtab = reactive({make_response_table()})
+      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
       output$responses_table <- DT::renderDataTable({
         render_response_table(rv_table$rv_rtab())
       })
