@@ -13,6 +13,7 @@
 #' @importFrom shinyvalidate InputValidator sv_required sv_between sv_optional
 #' @importFrom DT dataTableOutput renderDataTable
 #' @importFrom uuid UUIDgenerate
+#'
 mod_module_edit_tab_ui <- function(id) {
   ns = NS(id)
   tagList(
@@ -118,7 +119,6 @@ mod_module_edit_tab_server<- function(id,
     }
 
 
-
     # Render entry table --------
     if(select_multiple == FALSE){
       selection_tab = c("single")
@@ -127,19 +127,33 @@ mod_module_edit_tab_server<- function(id,
     }
     make_response_table = function(){
       table = db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
+            table
+    }
+
+    render_response_table = function(table){
       table = table[,show_vals]
       names(table) = names(show_vals)
       table <- datatable(table,
                          rownames = FALSE,
                          options = list(searching = search_field, lengthChange = length_change, pageLength = num_entries),
                          selection = selection_tab
-                         )
+      )
       table
-      }
+    }
 
+
+    rv_table = reactiveValues()
+    rv_table$rv_rtab = reactive({make_response_table()})
     output$responses_table <- DT::renderDataTable({
-      make_response_table()
+      render_response_table(rv_table$rv_rtab())
     })
+
+    rv_table$rv_selection = reactive({
+      selected_row = rv_table$rv_rtab()[input$responses_table_rows_selected, "row_id"]
+      selected_row
+    })
+
+
 
     # Form for data entry ----
     entry_form <- function(button_id, visit_id, submit = FALSE, edit_entry = FALSE){
@@ -246,8 +260,9 @@ mod_module_edit_tab_server<- function(id,
         showNotification("Data saved", type = "message")
         shinyjs::reset("entry_form")
         # Update response table
+        rv_table$rv_rtab = reactive({make_response_table()})
         output$responses_table <- DT::renderDataTable({
-          make_response_table()
+          render_response_table(rv_table$rv_rtab())
         })
       }
 
@@ -264,8 +279,9 @@ mod_module_edit_tab_server<- function(id,
       shinyjs::reset("entry_form")
 
       # Update response table
+      rv_table$rv_rtab = reactive({make_response_table()})
       output$responses_table <- DT::renderDataTable({
-        make_response_table()
+        render_response_table(rv_table$rv_rtab())
       })
     })
 
@@ -273,7 +289,7 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$edit_cancel, priority = 20,{
       rv_uuid$uuid = UUIDgenerate()
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
+      row_selection = rv_table$rv_selection()
       db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
       dbExecute(pool, db_cmd)
       close()
@@ -281,8 +297,9 @@ mod_module_edit_tab_server<- function(id,
       shinyjs::reset("entry_form")
 
       # Update response table
+      rv_table$rv_rtab = reactive({make_response_table()})
       output$responses_table <- DT::renderDataTable({
-        make_response_table()
+        render_response_table(rv_table$rv_rtab())
       })
     })
 
@@ -295,8 +312,7 @@ mod_module_edit_tab_server<- function(id,
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
       row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
       SQL_df_selected = SQL_df[input$responses_table_rows_selected, ]
-      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
-
+      row_selection = rv_table$rv_selection()
 
       if(length(row_submitted) < 1){
         row_submitted = FALSE
@@ -333,8 +349,9 @@ mod_module_edit_tab_server<- function(id,
         dbExecute(pool, db_cmd)
 
         # Update response table
+        rv_table$rv_rtab = reactive({make_response_table()})
         output$responses_table <- DT::renderDataTable({
-          make_response_table()
+          render_response_table(rv_table$rv_rtab())
         })
       }
 
@@ -352,7 +369,7 @@ mod_module_edit_tab_server<- function(id,
     copyData <- reactive({
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
+      row_selection = rv_table$rv_selection()
       SQL_df <- SQL_df %>% filter(row_id %in% row_selection)
       SQL_df$row_id <- unique_id(SQL_df)
       SQL_df$date_modified = as.character(date())
@@ -371,8 +388,9 @@ mod_module_edit_tab_server<- function(id,
         copyData()
 
         # Update response table
+        rv_table$rv_rtab = reactive({make_response_table()})
         output$responses_table <- DT::renderDataTable({
-          make_response_table()
+          render_response_table(rv_table$rv_rtab())
         })
       }
 
@@ -395,7 +413,7 @@ mod_module_edit_tab_server<- function(id,
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
       row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
       SQL_df_selected = SQL_df[input$responses_table_rows_selected, ]
-      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
+      row_selection = rv_table$rv_selection()
 
 
       if(length(row_submitted) < 1){
@@ -449,7 +467,7 @@ mod_module_edit_tab_server<- function(id,
       if (iv$is_valid()) {
 
         SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-        row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
+        row_selection = rv_table$rv_selection()
 
         # Add new row
         rv_uuid$uuid = UUIDgenerate()
@@ -467,8 +485,9 @@ mod_module_edit_tab_server<- function(id,
         shinyjs::reset("entry_form")
 
         # Update response table
+        rv_table$rv_rtab = reactive({make_response_table()})
         output$responses_table <- DT::renderDataTable({
-          make_response_table()
+          render_response_table(rv_table$rv_rtab())
         })
       }
 
@@ -479,7 +498,7 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$force_unlock, priority = 20,{
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
+      row_selection = rv_table$rv_selection()
 
       db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
       dbExecute(pool, db_cmd)
@@ -528,7 +547,7 @@ mod_module_edit_tab_server<- function(id,
 
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
+      row_selection = rv_table$rv_selection()
 
       if(length(input$responses_table_rows_selected) == 1 ){
 
@@ -541,8 +560,9 @@ mod_module_edit_tab_server<- function(id,
       close()
 
       # Update response table
+      rv_table$rv_rtab = reactive({make_response_table()})
       output$responses_table <- DT::renderDataTable({
-        make_response_table()
+        render_response_table(rv_table$rv_rtab())
       })
 
     })
@@ -582,7 +602,7 @@ mod_module_edit_tab_server<- function(id,
 
     selected_row_id = reactive({
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection <- SQL_df[input$responses_table_rows_selected, "row_id"]
+      row_selection = rv_table$rv_selection()
     })
 
 
