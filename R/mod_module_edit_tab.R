@@ -17,7 +17,6 @@
 mod_module_edit_tab_ui <- function(id) {
   ns = NS(id)
   tagList(
-
     fluidPage(
       fluidRow(
         actionButton(ns("add_button"), "New", icon("plus", verify_fa = FALSE)),
@@ -60,7 +59,7 @@ mod_module_edit_tab_server<- function(id,
                                       create_sample_id = FALSE,
                                       sample_id_name = NULL,
                                       noletters_smp_id = TRUE,
-                                      filter_visit_id = FALSE) {
+                                      editor_filter_visit_id = FALSE) {
 
 
 
@@ -86,24 +85,7 @@ mod_module_edit_tab_server<- function(id,
     rv_uuid = reactiveValues()
 
 
-    ## Add inputs ----
-    if(add.copy.btn == TRUE){
-      insertUI(
-        selector = paste("#", ns("submit_button"), sep = ""),
-        where = "afterEnd",
-        ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
-      )
-    }
-
-    if(filter_visit_id == TRUE){
-      insertUI(
-        selector = paste("#", ns("add_button"), sep = ""),
-        where = "beforeBegin",
-        ui = wellPanel(selectInput(ns("selected_visit_id"), label = "Select visit_id", choices = c("A")))
-      )
-    }
-
-    ## Add widgets ----
+    ## Add widget data ----
 
     # Get required fields
     widgets_table = subset(widgets_table_global, (widget_tab == widget_tab_selection | widget_tab == "all"))
@@ -113,6 +95,34 @@ mod_module_edit_tab_server<- function(id,
     names(sql_tbl_vars) = widgets_table$inputId
     visit_choices = all_visits$visit_id[!(all_visits$inclusion_other_visit == TRUE)]
     names(visit_choices) = all_visits$visit_title[!(all_visits$inclusion_other_visit == TRUE)]
+
+
+
+    ## Add inputs ----
+    if(add.copy.btn == TRUE){
+      insertUI(
+        selector = paste("#", ns("submit_button"), sep = ""),
+        where = "afterEnd",
+        ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
+      )
+    }
+
+    if(editor_filter_visit_id == TRUE){
+      filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
+      filter_visit_data = filter_visit_data[filter_visit_data$deleted_row == FALSE,]
+      filter_visit_choices = c(NA, filter_visit_data$visit_id_visits)
+      names(filter_visit_choices) = c("All", filter_visit_data$visit_title)
+
+      insertUI(
+        selector = paste("#", ns("add_button"), sep = ""),
+        where = "beforeBegin",
+        ui = wellPanel(selectInput(ns("selected_visit_id"), label = "Select visit_id", choices = filter_visit_choices))
+      )
+    }
+
+
+
+    ## Add widgets ----
 
     # Check if database exists and create if required
     if(!is.element(tbl_id, dbListTables(pool))){

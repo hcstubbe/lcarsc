@@ -93,7 +93,7 @@ mod_module_editor_launcher_server <- function(id) {
                            num_entries = 200,
                            order.by = "order_of_var",
                            search_field = TRUE,
-                           filter_visit_id = TRUE)
+                           editor_filter_visit_id = TRUE)
 
 
   })
