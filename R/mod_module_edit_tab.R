@@ -156,14 +156,19 @@ mod_module_edit_tab_server<- function(id,
 
     # This function renders the entries
     render_response_table = function(table){
-      table = table[,show_vals]
-      names(table) = names(show_vals)
-      table <- datatable(table,
-                         rownames = FALSE,
-                         options = list(searching = search_field, lengthChange = length_change, pageLength = num_entries),
-                         selection = selection_tab
-      )
-      table
+      if(!is.null(table)){
+        table = table[,show_vals]
+        names(table) = names(show_vals)
+        table <- datatable(table,
+                           rownames = FALSE,
+                           options = list(searching = search_field, lengthChange = length_change, pageLength = num_entries),
+                           selection = selection_tab
+        )
+        return(table)
+      }else{
+        table = datatable(NULL, rownames = FALSE)
+        return(table)
+      }
     }
 
 
