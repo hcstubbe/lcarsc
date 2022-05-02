@@ -90,11 +90,6 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-
-    ## Create user interface with inputs ----
-    # The following creates the user interface from the widget data tables
-
-
     #### Get required fields/data ----
     widgets_table = subset(widgets_table_global, (widget_tab == widget_tab_selection | widget_tab == "all"))
     fieldsAll = widgets_table$label
@@ -104,27 +99,6 @@ mod_module_edit_tab_server<- function(id,
     visit_choices = all_visits$visit_id[!(all_visits$inclusion_other_visit == TRUE)]
     names(visit_choices) = all_visits$visit_title[!(all_visits$inclusion_other_visit == TRUE)]
 
-
-    ## Add optional inputs ----
-    if(add.copy.btn == TRUE){
-      insertUI(
-        selector = paste("#", ns("submit_button"), sep = ""),
-        where = "afterEnd",
-        ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
-      )
-    }
-
-    if(editor_filter_visit_id == TRUE){
-      filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
-      filter_visit_data = filter_visit_data[filter_visit_data$deleted_row == FALSE,]
-      filter_visit_choices = c("all_visits", filter_visit_data$visit_id_visits)
-
-      insertUI(
-        selector = paste("#", ns("add_button"), sep = ""),
-        where = "beforeBegin",
-        ui = wellPanel(selectInput(ns("selected_visit_id"), label = "Select visit_id", choices = filter_visit_choices))
-      )
-    }
 
 
     ## Create and render data table ----
@@ -141,6 +115,7 @@ mod_module_edit_tab_server<- function(id,
       selection_tab = c("multiple")
     }
 
+
     # This function creates the tables from database entries
     make_response_table = function(selected_visit_id = NULL){
       table = db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
@@ -152,6 +127,7 @@ mod_module_edit_tab_server<- function(id,
       }
       return(table)
     }
+
 
     # This function renders the entries
     render_response_table = function(table){
@@ -196,7 +172,38 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    ## Entry form for data input----
+
+    ## Add optional inputs ----
+    if(add.copy.btn == TRUE){
+      insertUI(
+        selector = paste("#", ns("submit_button"), sep = ""),
+        where = "afterEnd",
+        ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
+      )
+    }
+
+    if(editor_filter_visit_id == TRUE){
+      filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
+      filter_visit_data = filter_visit_data[filter_visit_data$deleted_row == FALSE,]
+      filter_visit_choices = c("all_visits", filter_visit_data$visit_id_visits)
+
+      insertUI(
+        selector = paste("#", ns("add_button"), sep = ""),
+        where = "beforeBegin",
+        ui = wellPanel(selectInput(ns("selected_visit_id"), label = "Select visit_id", choices = filter_visit_choices))
+      )
+    }
+
+
+
+
+
+    ## Create input form ----
+    # The following creates the user interface from the widget data tables
+
+
+
+    #### Entry form for data input ----
     entry_form <- function(button_id, visit_id, submit = FALSE, edit_entry = FALSE){
 
       ## Compile widget list
@@ -240,25 +247,21 @@ mod_module_edit_tab_server<- function(id,
       }else{
         showModal(
           modalDialog(title = "Confirm submission",
-            div(id=(ns("entry_form")),
-                tags$head(tags$style(".modal-dialog{ width:400px}")),
-                tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
-                fluidPage(
-                  fluidRow(
-                    actionButton(button_id, "Submit"),
-                    actionButton(ns("submit_cancel"), "Cancel")
-                  )
-                )
-            ),
-            easyClose = FALSE, footer = NULL
+                      div(id=(ns("entry_form")),
+                          tags$head(tags$style(".modal-dialog{ width:400px}")),
+                          tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+                          fluidPage(
+                            fluidRow(
+                              actionButton(button_id, "Submit"),
+                              actionButton(ns("submit_cancel"), "Cancel")
+                            )
+                          )
+                      ),
+                      easyClose = FALSE, footer = NULL
           )
         )
       }
     }
-
-    widgets_only = widgets_table[widgets_table$widget == TRUE,]
-    widgets_ids = sapply(1:nrow(widgets_only), function(i) widgets_only$inputId[i])
-
 
 
 
@@ -284,7 +287,7 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    # Add row(s) ----
+    # Add row ----
     observeEvent(input$add_button, priority = 20,{
 
       entry_form(ns("submit"), visit_id)
@@ -530,7 +533,7 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    # Submit row ----
+    # Submit row(s) ----
     observeEvent(input$submit_button, priority = 20,{
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
@@ -634,18 +637,16 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
+    # Function for closing modal and disabling iv
     close <- function() {
       removeModal()
       iv$disable()
     }
 
-    selected_row_id = reactive({
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection = rv_table$rv_selection()
-    })
 
-
-    rv_out = selected_row_id
+    # Return selected row ----
+    rv_out = reactive({rv_table$rv_selection()})
+    rv_out
 
   })
 
