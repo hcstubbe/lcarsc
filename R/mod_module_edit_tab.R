@@ -106,8 +106,29 @@ mod_module_edit_tab_server<- function(id,
     names(visit_choices) = all_visits$visit_title[!(all_visits$inclusion_other_visit == TRUE)]
 
 
+    ## Add inputs ----
+    if(add.copy.btn == TRUE){
+      insertUI(
+        selector = paste("#", ns("submit_button"), sep = ""),
+        where = "afterEnd",
+        ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
+      )
+    }
 
-    #### Compute current table ----
+    if(editor_filter_visit_id == TRUE){
+      filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
+      filter_visit_data = filter_visit_data[filter_visit_data$deleted_row == FALSE,]
+      filter_visit_choices = c("all_visits", filter_visit_data$visit_id_visits)
+
+      insertUI(
+        selector = paste("#", ns("add_button"), sep = ""),
+        where = "beforeBegin",
+        ui = wellPanel(selectInput(ns("selected_visit_id"), label = "Select visit_id", choices = filter_visit_choices))
+      )
+    }
+
+
+    #### Compute current entry table ----
 
     # Check if database exists and create if required
     if(!is.element(tbl_id, dbListTables(pool))){
@@ -161,12 +182,14 @@ mod_module_edit_tab_server<- function(id,
       render_response_table(rv_table$rv_rtab())
     })
 
+
+    # Show row_id for testing
     output$testing1 = renderUI({
-      div(rv_table$rv_selection(),br(), br(),
+      div(paste(rv_table$rv_selection(), collapse = ", "),
+          br(),
+          br(),
           paste(rv_table$rv_rtab()$row_id, collapse = ", "))
     })
-
-
 
 
     ## Form for data entry ----
