@@ -54,11 +54,11 @@ run_app(#ecrf_database_driver = RMariaDB::MariaDB(),
 #          options = list(host = '0.0.0.0', port = 3838))
 
 #
-# ecrf_database_driver = RSQLite::SQLite() # RMariaDB::MariaDB()
-# ecrf_dbuser = "default_user"
-# ecrf_dbpassword = "default_password"
-# ecrf_dbhost = "db_ecrf_data"
-# ecrf_dbname = "db_ecrf_data.sqlite3"
+# ecrf_database_driver = RMariaDB::MariaDB()
+# ecrf_dbuser = 'user'
+# ecrf_dbpassword = 'user'
+# ecrf_dbhost = 'dbdev'
+# ecrf_dbname = 'mydbdev'
 # pool = pool::dbPool(drv = ecrf_database_driver,
 #                     user = ecrf_dbuser,
 #                     password = ecrf_dbpassword,
