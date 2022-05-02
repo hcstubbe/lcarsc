@@ -20,8 +20,8 @@
 ##
 golem::fill_desc(
   pkg_name = "lcarsc", # The Name of the package containing the App
-  pkg_title = "Light weight clinical assessment and recording software for clinical studies", # The Title of the package containing the App
-  pkg_description = "LCARS-C is designed to conduct simple clinical assessments and record data for research use.", # The Description of the package containing the App
+  pkg_title = "Light Weight Clinical Assessment and Recording Software for Clinical Studies", # The Title of the package containing the App
+  pkg_description = "LCARS-C is designed to conduct simple clinical assessments and record data in the setting of clinical studies (for research use only).", # The Description of the package containing the App
   author_first_name = "Hans Christian", # Your First Name
   author_last_name = "Stubbe", # Your Last Name
   author_email = "hstubbe@med.lmu.de", # Your Email

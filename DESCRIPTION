@@ -1,8 +1,8 @@
 Package: lcarsc
-Title: Light weight clinical assessment and recording software for clinical studies
-Version: 0.0.0.9000
+Title: Light Weight Clinical Assessment and Recording Software for Clinical Studies
+Version: 0.2
 Authors@R: person('Hans Christian', 'Stubbe', email = 'hstubbe@med.lmu.de', role = c('cre', 'aut'))
-Description: LCARS-C is designed to conduct simple clinical assessments and record data for research use.
+Description: LCARS-C is designed to conduct simple clinical assessments and record data in the setting of clinical studies (for research use only).
 License: MIT + file LICENSE
 Imports: 
     attempt,
@@ -11,6 +11,7 @@ Imports:
     glue,
     golem (>= 0.3.1),
     htmltools,
+    jsonlite,
     shiny (>= 1.7.1),
     dplyr,
     pool,
