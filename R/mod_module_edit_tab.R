@@ -29,8 +29,8 @@ mod_module_edit_tab_ui <- function(id) {
                DT::dataTableOutput(ns("responses_table"), width = "100%")
       )
     )
-    # ,
-    # uiOutput(ns("testing1"))
+    ,
+    uiOutput(ns("testing1"))
   )
 }
 
@@ -164,13 +164,15 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    # # Show row_id for testing
-    # output$testing1 = renderUI({
-    #   div(paste(rv_table$rv_selection(), collapse = ", "),
-    #       br(),
-    #       br(),
-    #       paste(rv_table$rv_rtab()$row_id, collapse = ", "))
-    # })
+    # Show row_id for testing
+    output$testing1 = renderUI({
+      div(paste(rv_table$rv_selection(), collapse = ", ")
+          # ,
+          # br(),
+          # br(),
+          # paste(rv_table$rv_rtab()$row_id, collapse = ", ")
+          )
+    })
 
 
 
@@ -185,6 +187,7 @@ mod_module_edit_tab_server<- function(id,
 
     if(editor_filter_visit_id == TRUE){
       filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
+      filter_visit_data = dplyr::arrange(filter_visit_data, order)
       filter_visit_data = filter_visit_data[filter_visit_data$deleted_row == FALSE,]
       filter_visit_choices = c("all_visits", filter_visit_data$visit_id_visits)
 
