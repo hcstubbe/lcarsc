@@ -69,7 +69,6 @@ mod_module_edit_tab_server<- function(id,
     ## Prepare variables and database connection ----
     # These are required to run the module
 
-
     ns = session$ns
 
     # Get the data base connection
@@ -88,7 +87,6 @@ mod_module_edit_tab_server<- function(id,
       )
     }
 
-    rv_uuid = reactiveValues()
 
 
 
@@ -106,7 +104,7 @@ mod_module_edit_tab_server<- function(id,
     names(visit_choices) = all_visits$visit_title[!(all_visits$inclusion_other_visit == TRUE)]
 
 
-    ## Add inputs ----
+    ## Add optional inputs ----
     if(add.copy.btn == TRUE){
       insertUI(
         selector = paste("#", ns("submit_button"), sep = ""),
@@ -128,7 +126,7 @@ mod_module_edit_tab_server<- function(id,
     }
 
 
-    #### Compute current entry table ----
+    ## Create and render data table ----
 
     # Check if database exists and create if required
     if(!is.element(tbl_id, dbListTables(pool))){
@@ -271,7 +269,7 @@ mod_module_edit_tab_server<- function(id,
                     USE.NAMES = TRUE)
       input_data = format_input_for_database(input_data = input_data,
                                        pid = rv_in$pid(),
-                                       input_uuid = rv_uuid$uuid,
+                                       input_uuid = uuid::UUIDgenerate(use.time = FALSE),
                                        visit_id = visit_id,
                                        widgets_table = widgets_table,
                                        all_visits = all_visits,
@@ -285,7 +283,7 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    # Add data ----
+    # Add row(s) ----
     observeEvent(input$add_button, priority = 20,{
 
       entry_form(ns("submit"), visit_id)
@@ -300,7 +298,6 @@ mod_module_edit_tab_server<- function(id,
     })
 
     observeEvent(input$submit, priority = 20,{
-      rv_uuid$uuid = UUIDgenerate()
 
       if (iv$is_valid()) {
         dbAppendTable(pool, tbl_id, formData())
@@ -337,7 +334,6 @@ mod_module_edit_tab_server<- function(id,
 
     ## Cancel edit button
     observeEvent(input$edit_cancel, priority = 20,{
-      rv_uuid$uuid = UUIDgenerate()
       row_selection = rv_table$rv_selection()
       db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
       dbExecute(pool, db_cmd)
@@ -354,7 +350,7 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    # Delete data ----
+    # Delete row(s) ----
 
     ## Open edit dialogue
     observeEvent(input$delete_button, priority = 20,{
@@ -393,7 +389,6 @@ mod_module_edit_tab_server<- function(id,
       if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & locked_row == FALSE){
 
         # Set old row as 'deleted_row = TRUE'
-        rv_uuid$uuid = UUIDgenerate()
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
         dbExecute(pool, db_cmd)
 
@@ -408,7 +403,7 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    # Copy data ----
+    # Copy row(s) ----
     copyData <- reactive({
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
@@ -449,7 +444,7 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    # Edit data ----
+    # Edit row ----
 
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
@@ -504,16 +499,14 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    #### Update row ----
+    #### Submit edited row ----
     observeEvent(input$submit_edit, priority = 20, {
+
+      row_selection = rv_table$rv_selection()
 
       if (iv$is_valid()) {
 
-        SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-        row_selection = rv_table$rv_selection()
-
         # Add new row
-        rv_uuid$uuid = UUIDgenerate()
         dbAppendTable(pool, tbl_id, formData())
 
         # Set old row as 'deleted_row = TRUE' and 'locked_row = FALSE'
@@ -537,7 +530,8 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    # Force unlock data ----
+
+    # Force unlock row ----
     observeEvent(input$force_unlock, priority = 20,{
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
@@ -553,7 +547,8 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    # Submit data ----
+
+    # Submit row ----
     observeEvent(input$submit_button, priority = 20,{
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
