@@ -70,6 +70,7 @@ mod_module_edit_tab_server<- function(id,
     # These are required to run the module
 
     ns = session$ns
+    rv_uiid = reactiveValues()
 
     # Get the data base connection
     pool = get_golem_options("pool")
@@ -195,7 +196,7 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    ## Form for data entry ----
+    ## Entry form for data input----
     entry_form <- function(button_id, visit_id, submit = FALSE, edit_entry = FALSE){
 
       ## Compile widget list
@@ -269,7 +270,7 @@ mod_module_edit_tab_server<- function(id,
                     USE.NAMES = TRUE)
       input_data = format_input_for_database(input_data = input_data,
                                        pid = rv_in$pid(),
-                                       input_uuid = uuid::UUIDgenerate(use.time = FALSE),
+                                       input_uuid = rv_uiid$new_uiid,
                                        visit_id = visit_id,
                                        widgets_table = widgets_table,
                                        all_visits = all_visits,
@@ -300,6 +301,7 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$submit, priority = 20,{
 
       if (iv$is_valid()) {
+        rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
         dbAppendTable(pool, tbl_id, formData())
         close()
         showNotification("Data saved", type = "message")
@@ -405,7 +407,6 @@ mod_module_edit_tab_server<- function(id,
 
     # Copy row(s) ----
     copyData <- reactive({
-
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
       row_selection = rv_table$rv_selection()
       SQL_df <- SQL_df %>% filter(row_id %in% row_selection)
@@ -448,7 +449,6 @@ mod_module_edit_tab_server<- function(id,
 
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
-
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
       row_submitted <- SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "submitted_row"]
       SQL_df_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), ]
@@ -501,12 +501,12 @@ mod_module_edit_tab_server<- function(id,
 
     #### Submit edited row ----
     observeEvent(input$submit_edit, priority = 20, {
-
       row_selection = rv_table$rv_selection()
 
       if (iv$is_valid()) {
 
         # Add new row
+        rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
         dbAppendTable(pool, tbl_id, formData())
 
         # Set old row as 'deleted_row = TRUE' and 'locked_row = FALSE'
@@ -528,24 +528,6 @@ mod_module_edit_tab_server<- function(id,
       }
 
     })
-
-
-
-    # Force unlock row ----
-    observeEvent(input$force_unlock, priority = 20,{
-
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
-      row_selection = rv_table$rv_selection()
-
-      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
-      dbExecute(pool, db_cmd)
-
-      close()
-
-      showNotification("Entry unlocked!", type = "error")
-      shinyjs::reset("entry_form")
-    })
-
 
 
     # Submit row ----
@@ -605,6 +587,24 @@ mod_module_edit_tab_server<- function(id,
       })
 
     })
+
+
+
+    # Force unlock row ----
+    observeEvent(input$force_unlock, priority = 20,{
+
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
+      row_selection = rv_table$rv_selection()
+
+      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
+      dbExecute(pool, db_cmd)
+
+      close()
+
+      showNotification("Entry unlocked!", type = "error")
+      shinyjs::reset("entry_form")
+    })
+
 
 
     ## Observe mandatory fields ----
