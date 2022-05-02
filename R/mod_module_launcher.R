@@ -34,6 +34,7 @@ mod_module_launcher_ui <- function(id){
             menuItem(internal_app_data$lang_sel$button_newpat, tabName = "new_pat"),
             menuItem(internal_app_data$lang_sel$main_menu_visit, tabName = "pat_list"),
             menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact"),
+            menuItem("Data", tabName = "data"),
             if(get_golem_options("user_is_admin")){
               menuItem("Admin", tabName = "admin")
             }else{
@@ -60,6 +61,8 @@ mod_module_launcher_ui <- function(id){
 
 
             ),
+            tabItem("data",
+                    mod_module_data_center_ui(ns("module_data_center_1"))),
 
 
             # Dashboard item providing Contact data
@@ -90,6 +93,12 @@ mod_module_launcher_ui <- function(id){
                                         )
                     )
             ),
+            if(get_golem_options("user_is_admin")){
+              tabItem("data",
+                      mod_module_data_center_ui(ns("module_data_center_1")))
+            }else{
+              tabItem("data")
+            },
             if(get_golem_options("user_is_admin")){
               tabItem("admin",
                       mod_module_admin_ui(ns("module_admin_1")))
@@ -137,7 +146,12 @@ mod_module_launcher_server <- function(id){
     )
 
     if(get_golem_options("user_is_admin")){
+
+      # Admin module
       mod_module_admin_server("module_admin_1")
+
+      # Module for basic data analysis
+      mod_module_data_center_server("module_data_center_1")
     }
 
   })
