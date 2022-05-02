@@ -65,6 +65,11 @@ mod_module_edit_tab_server<- function(id,
 
 
   moduleServer(id, function(input, output, session) {
+
+    ## Prepare variables and database connection ----
+    # These are required to run the module
+
+
     ns = session$ns
 
     # Get the data base connection
@@ -86,9 +91,12 @@ mod_module_edit_tab_server<- function(id,
     rv_uuid = reactiveValues()
 
 
-    ## Add widget data ----
 
-    # Get required fields
+    ## Create user interface with inputs ----
+    # The following creates the user interface from the widget data tables
+
+
+    #### Get required fields/data ----
     widgets_table = subset(widgets_table_global, (widget_tab == widget_tab_selection | widget_tab == "all"))
     fieldsAll = widgets_table$label
     names(fieldsAll) = widgets_table$inputId
@@ -99,44 +107,21 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    ## Add inputs ----
-    if(add.copy.btn == TRUE){
-      insertUI(
-        selector = paste("#", ns("submit_button"), sep = ""),
-        where = "afterEnd",
-        ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
-      )
-    }
-
-    if(editor_filter_visit_id == TRUE){
-      filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
-      filter_visit_data = filter_visit_data[filter_visit_data$deleted_row == FALSE,]
-      filter_visit_choices = c("all_visits", filter_visit_data$visit_id_visits)
-
-      insertUI(
-        selector = paste("#", ns("add_button"), sep = ""),
-        where = "beforeBegin",
-        ui = wellPanel(selectInput(ns("selected_visit_id"), label = "Select visit_id", choices = filter_visit_choices))
-      )
-    }
-
-
-
-    ## Add widgets ----
+    #### Compute current table ----
 
     # Check if database exists and create if required
     if(!is.element(tbl_id, dbListTables(pool))){
       dbCreateTable(pool, tbl_id, fields = sql_tbl_vars)
     }
 
-
-    # Render entry table --------
+    # Check whether one or several rows can be selected at once
     if(select_multiple == FALSE){
       selection_tab = c("single")
     }else{
       selection_tab = c("multiple")
     }
 
+    # This function creates the tables from database entries
     make_response_table = function(selected_visit_id = NULL){
       table = db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
 
@@ -145,10 +130,10 @@ mod_module_edit_tab_server<- function(id,
           table = table[table$visit_for_var == selected_visit_id,]
         }
       }
-
       return(table)
     }
 
+    # This function renders the entries
     render_response_table = function(table){
       table = table[,show_vals]
       names(table) = names(show_vals)
@@ -161,16 +146,19 @@ mod_module_edit_tab_server<- function(id,
     }
 
 
+    #### Render table and access entries from table ----
+    # Get currently displayed table and currently selected row_id(s)
     rv_table = reactiveValues()
     rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-
-    output$responses_table <- DT::renderDataTable({
-      render_response_table(rv_table$rv_rtab())
-    })
 
     rv_table$rv_selection = reactive({
       selected_row = rv_table$rv_rtab()[input$responses_table_rows_selected, "row_id"]
       selected_row
+    })
+
+
+    output$responses_table <- DT::renderDataTable({
+      render_response_table(rv_table$rv_rtab())
     })
 
     output$testing1 = renderUI({
@@ -181,10 +169,10 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    # Form for data entry ----
+    ## Form for data entry ----
     entry_form <- function(button_id, visit_id, submit = FALSE, edit_entry = FALSE){
-      ## Compile widget list
 
+      ## Compile widget list
       if(submit == FALSE){
         if(simple == TRUE){
           widget_list = makeWidgetList_simple(widget_data = widgets_table[widgets_table$widget == TRUE,],
@@ -322,7 +310,6 @@ mod_module_edit_tab_server<- function(id,
     ## Cancel edit button
     observeEvent(input$edit_cancel, priority = 20,{
       rv_uuid$uuid = UUIDgenerate()
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
       row_selection = rv_table$rv_selection()
       db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
       dbExecute(pool, db_cmd)
@@ -344,9 +331,9 @@ mod_module_edit_tab_server<- function(id,
     ## Open edit dialogue
     observeEvent(input$delete_button, priority = 20,{
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
-      row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
-      SQL_df_selected = SQL_df[input$responses_table_rows_selected, ]
       row_selection = rv_table$rv_selection()
+      SQL_df_selected = SQL_df[SQL_df$row_id %in% row_selection, ]
+      row_submitted <- SQL_df_selected$submitted_row
 
       if(length(row_submitted) < 1){
         row_submitted = FALSE
@@ -373,7 +360,7 @@ mod_module_edit_tab_server<- function(id,
           }
         })
 
-      locked_row = check_lock(SQL_df[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
+      locked_row = check_lock(SQL_df_selected[, c("editing_user", "locked_row")], session)
 
       if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & locked_row == FALSE){
 
@@ -393,19 +380,13 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-
-
     # Copy data ----
-    unique_id <- function(data){
-      replicate(nrow(data), UUIDgenerate())
-    }
-
     copyData <- reactive({
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
       row_selection = rv_table$rv_selection()
       SQL_df <- SQL_df %>% filter(row_id %in% row_selection)
-      SQL_df$row_id <- unique_id(SQL_df)
+      SQL_df$row_id <- uuid::UUIDgenerate(use.time = FALSE, n = nrow(SQL_df))
       SQL_df$date_modified = as.character(date())
       SQL_df$submitted_row = FALSE
       SQL_df$locked_row = FALSE
@@ -444,11 +425,11 @@ mod_module_edit_tab_server<- function(id,
 
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
-      row_submitted <- rv_table$rv_rtab()[input$responses_table_rows_selected, "submitted_row"]
-      SQL_df_selected = rv_table$rv_rtab()[input$responses_table_rows_selected,]
-      row_selection = rv_table$rv_selection()
 
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, filter_origin = filter_origin())
+      row_submitted <- SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "submitted_row"]
+      SQL_df_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), ]
+      row_selection = rv_table$rv_selection()
 
       if(length(row_submitted) < 1){
         row_submitted = FALSE
@@ -472,7 +453,7 @@ mod_module_edit_tab_server<- function(id,
         }
       )
 
-      locked_row = check_lock(rv_table$rv_rtab()[input$responses_table_rows_selected, c("editing_user", "locked_row")], session)
+      locked_row = check_lock(SQL_df_selected[, c("editing_user", "locked_row")], session)
 
 
       if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & locked_row == FALSE){
@@ -528,7 +509,7 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    # Force unlock data
+    # Force unlock data ----
     observeEvent(input$force_unlock, priority = 20,{
 
       SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, filter_origin = filter_origin())
@@ -542,6 +523,7 @@ mod_module_edit_tab_server<- function(id,
       showNotification("Entry unlocked!", type = "error")
       shinyjs::reset("entry_form")
     })
+
 
     # Submit data ----
     observeEvent(input$submit_button, priority = 20,{
@@ -602,7 +584,7 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    ####-------- Observe mandatory fields --------####
+    ## Observe mandatory fields ----
 
     iv <- InputValidator$new()
 
