@@ -28,8 +28,9 @@ mod_module_edit_tab_ui <- function(id) {
       fluidRow(width="100%",
                DT::dataTableOutput(ns("responses_table"), width = "100%")
       )
-    ),
-    uiOutput(ns("testing1"))
+    )
+    # ,
+    # uiOutput(ns("testing1"))
   )
 }
 
@@ -163,13 +164,13 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
-    # Show row_id for testing
-    output$testing1 = renderUI({
-      div(paste(rv_table$rv_selection(), collapse = ", "),
-          br(),
-          br(),
-          paste(rv_table$rv_rtab()$row_id, collapse = ", "))
-    })
+    # # Show row_id for testing
+    # output$testing1 = renderUI({
+    #   div(paste(rv_table$rv_selection(), collapse = ", "),
+    #       br(),
+    #       br(),
+    #       paste(rv_table$rv_rtab()$row_id, collapse = ", "))
+    # })
 
 
 
@@ -653,7 +654,7 @@ mod_module_edit_tab_server<- function(id,
 }
 
 ## To be copied in the UI
-# mod_module_edit_tab_ui("module_edit_tab_1")
+# mod_module_edit_tab_ui(ns("module_edit_tab_1"))
 
 ## To be copied in the server
 # mod_module_edit_tab_server("module_edit_tab_1")
