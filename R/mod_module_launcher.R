@@ -61,8 +61,6 @@ mod_module_launcher_ui <- function(id){
 
 
             ),
-            tabItem("data",
-                    mod_module_data_center_ui(ns("module_data_center_1"))),
 
 
             # Dashboard item providing Contact data
