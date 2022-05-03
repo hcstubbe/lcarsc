@@ -28,7 +28,9 @@ mod_module_data_center_ui <- function(id){
                                             collapsed = FALSE,
                                             width = 12,
                                             solidHeader = TRUE,
-                                            "Here are some comparisons")
+                                            downloadButton(ns("downloadData"),
+                                                           "Download",
+                                                           icon = shiny::icon("download", verify_fa = FALSE)))
                 )
     )
   )
@@ -45,16 +47,14 @@ mod_module_data_center_server <- function(id){
 
 
 
-    # Function for rendering summary data
+    # Render summary data ----
     render_summary = function() {
 
       #### Get data ----
       widget_data_input = load_widget_data(pool_config = golem::get_golem_options("pool_config"),
                                            production_mode = golem::get_golem_options("production_mode"))
       all_visits = widget_data_input$all_visits
-
       visits_list = all_visits$visit_id[!all_visits$inclusion_other_visit]
-
       total_inclusions = nrow(filter(RMariaDB::dbReadTable(pool, "inclusion_dataset"),
                                      deleted_row == FALSE & submitted_row == TRUE))
 
@@ -127,15 +127,45 @@ mod_module_data_center_server <- function(id){
           )
         )
       )
-
       }
-
 
     output$summary = renderUI({render_summary()})
 
     observeEvent(input$update_summary, {
       output$summary = renderUI({render_summary()})
     })
+
+
+    # Download scientific dataset ----
+
+    # Download data
+    output$downloadData <- downloadHandler(
+      filename = function(){
+        paste0("database_export",".zip")
+
+      },
+      content = function(file){
+        # use temp dir to avoid permission issues
+        owd <- setwd(tempdir())
+        on.exit(setwd(owd))
+        files <- NULL;
+
+        # loop through tables
+        all_tables = sapply(RMariaDB::dbListTables(pool),
+                            function(x) RMariaDB::dbReadTable(pool, x),
+                            USE.NAMES = TRUE,
+                            simplify = FALSE)
+
+        for (i in 1:length(all_tables)){
+          fileName = paste0(names(all_tables)[[i]],".csv")
+          readr::write_csv(all_tables[[i]],fileName)
+          files = c(fileName,files)
+        }
+        # create zip file
+        zip(file,files)
+      }
+    )
+
 
 
   })
