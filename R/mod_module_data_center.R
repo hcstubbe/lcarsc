@@ -21,8 +21,8 @@ mod_module_data_center_ui <- function(id){
                          br(),
                          uiOutput(ns("summary"))
                 ),
-                tabPanel("Comparisons", br(),
-                         shinydashboard::box(title = "Comparisons",
+                tabPanel("Scientific dataset", br(),
+                         shinydashboard::box(title = "Scientific dataset",
                                             status = "primary",
                                             collapsible = FALSE,
                                             collapsed = FALSE,
@@ -83,8 +83,11 @@ mod_module_data_center_server <- function(id){
                 visit_data_submitted = filter(visit_data, deleted_row == FALSE & submitted_row == TRUE)
                 visit_data_submitted = filter(visit_data_submitted, !duplicated(pid))
                 pid_entries_submitted = nrow(visit_data_submitted)
+                visit_data_all_recorded = filter(visit_data, deleted_row == FALSE)
+                visit_data_all_recorded = filter(visit_data_all_recorded, !duplicated(pid))
+                pid_data_all_recorded = nrow(visit_data_all_recorded)
 
-                missing_entries = total_inclusions - pid_entries_submitted - pid_entries_unsubmitted
+                missing_entries = total_inclusions - pid_data_all_recorded
 
                 return(
                   fluidRow(
@@ -103,7 +106,7 @@ mod_module_data_center_server <- function(id){
                         width = 4,
                         title = all_visits[all_visits$visit_id == x, "visit_title"],
                         value = pid_entries_unsubmitted,
-                        subtitle = "Recorded",
+                        subtitle = "Recorded, not submitted",
                         icon = icon("list", lib = "glyphicon"),
                         color = "yellow",
                         fill=TRUE)
@@ -113,7 +116,7 @@ mod_module_data_center_server <- function(id){
                         width = 4,
                         title = all_visits[all_visits$visit_id == x, "visit_title"],
                         value = missing_entries,
-                        subtitle = "Missing entries",
+                        subtitle = "Participants without entries",
                         icon = icon("question", lib = "font-awesome"),
                         color = "red",
                         fill=TRUE)
