@@ -15,6 +15,7 @@ mod_module_documentation_ui  <- function(id) {
       column(5,
              box(title = (internal_app_data$lang_sel$module_documentation_pt_list_title), width = 12, status = "primary", solidHeader = TRUE,
                  actionButton(ns("update_pull_user"), label = internal_app_data$lang_sel$update_pull, icon("sync", verify_fa = FALSE)),
+                 checkboxInput(inputId = ns("show_preliminary"), label = "Show preliminary"),
                  br(),
                  br(),
                  br(),
@@ -85,15 +86,20 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     # Auxiliary functions ----
 
     # Functions for loading data for rendering data table
-    computeFT = function(){
-      y = loadData(pool, data_table1) %>%
-        filter(deleted_row == FALSE & submitted_row == TRUE) %>%
+    computeFT = function(show_preliminary = FALSE){
+      y = loadData(pool, data_table1)
+      if(show_preliminary == TRUE){
+        y = y %>% filter(deleted_row == FALSE & submitted_row == -1)
+      }else{
+        y = y %>% filter(deleted_row == FALSE & submitted_row == TRUE)
+      }
+      y = y %>%
         select(c("pid", "date_modified", "user_modified")) %>%
         arrange(desc(date_modified))
       y
     }
     load_dt_for_render = function(){
-      DT::datatable(computeFT(),
+      DT::datatable(computeFT(input$show_preliminary),
                     options = list(pageLength = 5), selection = c("single"))}
 
 
@@ -104,7 +110,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
     ## Start sub-module servers
     rv_downstream_visit = reactiveValues()
-    rv_downstream_visit$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+    rv_downstream_visit$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
 
     for(i in ordered_visits$visit_id){
       cmd_4_eval = paste("mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
@@ -125,14 +131,14 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
     rv_downstream_summary = reactiveValues()
-    rv_downstream_summary$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+    rv_downstream_summary$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
     mod_module_documentation_summary_server(id = "module_documentation_summary_1",
                                             rv_in = rv_downstream_summary,
                                             preview = preview)
 
     # Diagnoses field
     rv_downstream_diag = reactiveValues()
-    rv_downstream_diag$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+    rv_downstream_diag$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
     if(settgins_data$add_diagnoses_panel == TRUE){
       mod_module_edit_tab_server(id = "mod_module_edit_tab_diag",
                                  widget_tab_selection = "diagnosis",
@@ -150,7 +156,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     # Medication field
     if(settgins_data$add_medication_panel == TRUE){
       rv_downstream_med = reactiveValues()
-      rv_downstream_med$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+      rv_downstream_med$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
       mod_module_edit_tab_server(id = "mod_module_edit_tab_med",
                                  widget_tab_selection = "medication",
                                  tbl_id = "medication_table",
@@ -168,7 +174,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     if(settgins_data$add_samples_panel == TRUE){
 
       rv_downstream_smp = reactiveValues()
-      rv_downstream_smp$pid = reactive({computeFT()$pid[input$responses_user_rows_selected]})
+      rv_downstream_smp$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
       mod_module_edit_tab_server(id = "mod_module_edit_tab_smp",
                                  widget_tab_selection = "samples",
                                  tbl_id = "samples_table",
