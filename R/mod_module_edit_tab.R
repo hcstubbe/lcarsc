@@ -514,9 +514,14 @@ mod_module_edit_tab_server<- function(id,
 
       if (iv$is_valid()) {
 
+        SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+        pid_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "pid"]
+
         # Add new row
         rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
-        dbAppendTable(pool, tbl_id, formData())
+        edited_data = formData()
+        edited_data$pid = pid_selected
+        dbAppendTable(pool, tbl_id, edited_data)
 
         # Set old row as 'deleted_row = TRUE' and 'locked_row = FALSE'
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
