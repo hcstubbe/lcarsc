@@ -86,7 +86,10 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
     # Functions for loading data for rendering data table
     computeFT = function(){
-      y = loadData(pool, data_table1) %>% filter(deleted_row == FALSE & submitted_row == TRUE) %>% select(c("pid", "date_modified"))
+      y = loadData(pool, data_table1) %>%
+        filter(deleted_row == FALSE & submitted_row == TRUE) %>%
+        select(c("pid", "date_modified", "user_modified")) %>%
+        arrange(desc(date_modified))
       y
     }
     load_dt_for_render = function(){
