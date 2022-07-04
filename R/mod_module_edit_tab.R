@@ -311,8 +311,22 @@ mod_module_edit_tab_server<- function(id,
 
       if (iv$is_valid()) {
         rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
-        dbAppendTable(pool, tbl_id, formData())
+        new_data = formData()
+        dbAppendTable(pool, tbl_id, new_data)
         close()
+
+        if(create_new_pid == TRUE){
+          showModal(modalDialog(title = "New PID",
+                                div(id=(ns("show_new_pid")),
+                                    tags$head(tags$style(".modal-dialog{ width:400px}")),
+                                    tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+                                    h3(paste0("New PID: ", new_data$pid))
+                                ),
+                                easyClose = FALSE,
+                                footer = modalButton("Close")
+          ))
+        }
+
         showNotification("Data saved", type = "message")
         shinyjs::reset("entry_form")
 
