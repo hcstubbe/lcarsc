@@ -31,6 +31,18 @@ mod_module_data_center_ui <- function(id){
                                             downloadButton(ns("downloadData"),
                                                            "Download",
                                                            icon = shiny::icon("download", verify_fa = FALSE)))
+                ),
+                tabPanel("Summary report", br(),
+                         shinydashboard::box(title = "Summary report",
+                                             status = "primary",
+                                             collapsible = FALSE,
+                                             collapsed = FALSE,
+                                             width = 12,
+                                             solidHeader = TRUE,
+                                             div(
+                                               create_summary()
+                                             )
+                                             )
                 )
     )
   )
