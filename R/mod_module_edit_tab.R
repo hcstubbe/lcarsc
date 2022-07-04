@@ -169,7 +169,8 @@ mod_module_edit_tab_server<- function(id,
 
     # Show row_id for testing
     output$testing1 = renderUI({
-      div(paste(rv_table$rv_selection(), collapse = ", ")
+      div(paste(rv_table$rv_selection(), collapse = ", "),
+          paste0("PID: ", rv_in$pid())
           # ,
           # br(),
           # br(),
@@ -211,7 +212,12 @@ mod_module_edit_tab_server<- function(id,
 
 
     #### Entry form for data input ----
-    entry_form <- function(button_id, visit_id, submit = FALSE, edit_entry = FALSE, show_preliminary = FALSE){
+    entry_form <- function(button_id,
+                           visit_id,
+                           submit = FALSE,
+                           edit_entry = FALSE,
+                           show_preliminary = FALSE,
+                           show_pid = FALSE){
 
       ## Compile widget list
       if(submit == FALSE){
