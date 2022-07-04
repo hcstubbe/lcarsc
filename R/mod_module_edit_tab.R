@@ -63,7 +63,8 @@ mod_module_edit_tab_server<- function(id,
                                       sample_id_name = NULL,
                                       noletters_smp_id = TRUE,
                                       editor_filter_visit_id = FALSE,
-                                      sort_date_desc = FALSE) {
+                                      sort_date_desc = FALSE,
+                                      show_preliminary = FALSE) {
 
 
 
@@ -210,7 +211,7 @@ mod_module_edit_tab_server<- function(id,
 
 
     #### Entry form for data input ----
-    entry_form <- function(button_id, visit_id, submit = FALSE, edit_entry = FALSE){
+    entry_form <- function(button_id, visit_id, submit = FALSE, edit_entry = FALSE, show_preliminary = FALSE){
 
       ## Compile widget list
       if(submit == FALSE){
@@ -238,6 +239,9 @@ mod_module_edit_tab_server<- function(id,
                   fluidRow(
                     widget_list,
                     actionButton(button_id, "Save"),
+                    if(show_preliminary == TRUE){
+                      actionButton(paste0(button_id, "_preliminary"), "Save preliminary")
+                    },
                     if(edit_entry == TRUE){
                       actionButton(ns("edit_cancel"), "Cancel")
                     }else{
@@ -296,7 +300,7 @@ mod_module_edit_tab_server<- function(id,
     # Add row ----
     observeEvent(input$add_button, priority = 20,{
 
-      entry_form(ns("submit"), visit_id)
+      entry_form(ns("submit"), visit_id, show_preliminary = show_preliminary)
       iv$enable()
 
       if(!is.null(input$selected_visit_id)){
@@ -307,6 +311,8 @@ mod_module_edit_tab_server<- function(id,
 
     })
 
+
+    #### Submit new row ----
     observeEvent(input$submit, priority = 20,{
 
       if (iv$is_valid()) {
@@ -337,6 +343,41 @@ mod_module_edit_tab_server<- function(id,
           render_response_table(rv_table$rv_rtab())
         })
       }
+
+
+    })
+
+
+    #### Submit new preliminary row ----
+    observeEvent(input$submit_preliminary, priority = 20,{
+
+      rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
+      new_data = formData()
+      new_data$submitted_row = -1
+      dbAppendTable(pool, tbl_id, new_data)
+      close()
+
+      if(create_new_pid == TRUE){
+        showModal(modalDialog(title = "New PID",
+                              div(id=(ns("show_new_pid")),
+                                  tags$head(tags$style(".modal-dialog{ width:400px}")),
+                                  tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+                                  h3(paste0("New PID: ", new_data$pid))
+                              ),
+                              easyClose = FALSE,
+                              footer = modalButton("Close")
+        ))
+      }
+
+      showNotification("Data saved", type = "message")
+      shinyjs::reset("entry_form")
+
+
+      # Update response table
+      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+      output$responses_table <- DT::renderDataTable({
+        render_response_table(rv_table$rv_rtab())
+      })
 
 
     })
@@ -411,7 +452,7 @@ mod_module_edit_tab_server<- function(id,
 
       locked_row = check_lock(SQL_df_selected[, c("editing_user", "locked_row")], session)
 
-      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & locked_row == FALSE){
+      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted <= 0) & locked_row == FALSE){
 
         # Set old row as 'deleted_row = TRUE'
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
@@ -502,7 +543,7 @@ mod_module_edit_tab_server<- function(id,
       locked_row = check_lock(SQL_df_selected[, c("editing_user", "locked_row")], session)
 
 
-      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted == FALSE) & locked_row == FALSE){
+      if(length(input$responses_table_rows_selected) == 1 & all(row_submitted <= 0) & locked_row == FALSE){
 
 
         # Set current row as 'editing = current_user_name'
@@ -511,7 +552,7 @@ mod_module_edit_tab_server<- function(id,
         db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = TRUE WHERE row_id = '%s'"), row_selection)
         dbExecute(pool, db_cmd)
 
-        entry_form(ns("submit_edit"), visit_id, edit_entry = TRUE)
+        entry_form(ns("submit_edit"), visit_id, edit_entry = TRUE, show_preliminary = show_preliminary)
 
         update_all_fields(session = session,
                           db_data = SQL_df_selected,
@@ -558,6 +599,40 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
+    #### Submit edited preliminary row ----
+    observeEvent(input$submit_edit_preliminary, priority = 20, {
+      row_selection = rv_table$rv_selection()
+
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+      pid_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "pid"]
+
+      # Add new row
+      rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
+      edited_data = formData()
+      edited_data$pid = pid_selected
+      edited_data$submitted_row = -1
+      dbAppendTable(pool, tbl_id, edited_data)
+
+      # Set old row as 'deleted_row = TRUE' and 'locked_row = FALSE'
+      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET deleted_row = TRUE WHERE row_id = '%s'"), row_selection)
+      dbExecute(pool, db_cmd)
+      db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
+      dbExecute(pool, db_cmd)
+
+      # Close modal
+      close()
+      showNotification("Data added", type = "message")
+      shinyjs::reset("entry_form")
+
+      # Update response table
+      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+      output$responses_table <- DT::renderDataTable({
+        render_response_table(rv_table$rv_rtab())
+      })
+
+    })
+
+
     # Submit row(s) ----
     observeEvent(input$submit_button, priority = 20,{
 
@@ -582,6 +657,10 @@ mod_module_edit_tab_server<- function(id,
             title = "Warning",
             paste("The seclected row(s) are submitted!"),easyClose = TRUE
           )
+        }else if(length(input$responses_table_rows_selected) == 1 & any(row_submitted == -1)){
+          modalDialog(
+            title = "Warning",
+            paste("Preliminary submitted rows cannot be submitted (please finalize edit)." ),easyClose = TRUE)
         }
       )
 

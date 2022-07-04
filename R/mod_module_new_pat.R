@@ -83,7 +83,8 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
                            create_new_pid = TRUE,
                            order.by = "date_modified",
                            order_desc = TRUE,
-                           preview = preview)
+                           preview = preview,
+                           show_preliminary = TRUE)
 
   })
 
