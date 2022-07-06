@@ -8,18 +8,24 @@
 #' @importFrom RMariaDB dbReadTable
 
 # Read table and filter
-db_read_select = function(pool, tbl_id, pid_x, filter_deleted_rows = TRUE, use.pid = TRUE, filter_sumitted_rows = FALSE, order.by = NULL, filter_origin = NULL, order_desc = FALSE){
+db_read_select = function(pool,
+                          tbl_id,
+                          pid_x,
+                          filter_deleted_rows = TRUE,
+                          use.pid = TRUE,
+                          filter_sumitted_rows = FALSE,
+                          order.by = NULL,
+                          filter_origin = NULL,
+                          order_desc = FALSE){
 
 
   tab_i = dbReadTable(pool, tbl_id)
 
 
-  if(!is.null(order.by) & order_desc == FALSE){
-    tab_i = tab_i[order(tab_i[,order.by]),]
-  }
-
-  if(!is.null(order.by) & order_desc == TRUE){
-    tab_i = tab_i[order(tab_i[,order.by], decreasing = TRUE),]
+  if(!is.null(order.by)){
+    new_order = as.POSIXct(tab_i[,order.by], format = "%a %b %d %H:%M:%S %Y")
+    new_order = order(new_order, decreasing = order_desc)
+    tab_i = tab_i[new_order,]
   }
 
 

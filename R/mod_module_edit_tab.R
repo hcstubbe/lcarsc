@@ -63,7 +63,6 @@ mod_module_edit_tab_server<- function(id,
                                       sample_id_name = NULL,
                                       noletters_smp_id = TRUE,
                                       editor_filter_visit_id = FALSE,
-                                      sort_date_desc = FALSE,
                                       show_preliminary = FALSE) {
 
 
