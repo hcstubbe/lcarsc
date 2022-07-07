@@ -16,14 +16,15 @@ db_read_select = function(pool,
                           filter_sumitted_rows = FALSE,
                           order.by = NULL,
                           filter_origin = NULL,
-                          order_desc = FALSE){
+                          order_desc = FALSE,
+                          oder_by_date = FALSE){
 
 
   tab_i = dbReadTable(pool, tbl_id)
 
 
   if(!is.null(order.by)){
-    new_order = as.POSIXct(tab_i[,order.by], format = "%a %b %d %H:%M:%S %Y")
+    new_order = as.POSIXct(as.character(tab_i[,order.by]), format = "%a %b %d %H:%M:%S %Y")
     new_order = order(new_order, decreasing = order_desc)
     tab_i = tab_i[new_order,]
   }

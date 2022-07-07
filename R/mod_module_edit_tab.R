@@ -54,6 +54,7 @@ mod_module_edit_tab_server<- function(id,
                                       num_entries = 5,
                                       order.by,
                                       order_desc = FALSE,
+                                      oder_by_date = FALSE,
                                       preview = FALSE,
                                       select_multiple = FALSE,
                                       filter_origin = reactive({NULL}),
@@ -121,7 +122,7 @@ mod_module_edit_tab_server<- function(id,
 
     # This function creates the tables from database entries
     make_response_table = function(selected_visit_id = NULL){
-      table = db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+      table = db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
 
       if(!is.null(selected_visit_id)){
         if(selected_visit_id != "all_visits"){
@@ -425,7 +426,7 @@ mod_module_edit_tab_server<- function(id,
 
     ## Open edit dialogue
     observeEvent(input$delete_button, priority = 20,{
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
       row_selection = rv_table$rv_selection()
       SQL_df_selected = SQL_df[SQL_df$row_id %in% row_selection, ]
       row_submitted <- SQL_df_selected$submitted_row
@@ -476,7 +477,7 @@ mod_module_edit_tab_server<- function(id,
 
     # Copy row(s) ----
     copyData <- reactive({
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
       row_selection = rv_table$rv_selection()
       SQL_df <- SQL_df %>% filter(row_id %in% row_selection)
       SQL_df$row_id <- uuid::UUIDgenerate(use.time = FALSE, n = nrow(SQL_df))
@@ -518,7 +519,7 @@ mod_module_edit_tab_server<- function(id,
 
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
       row_submitted <- SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "submitted_row"]
       SQL_df_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), ]
       row_selection = rv_table$rv_selection()
@@ -574,7 +575,7 @@ mod_module_edit_tab_server<- function(id,
 
       if (iv$is_valid()) {
 
-        SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+        SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
         pid_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "pid"]
 
         # Add new row
@@ -608,7 +609,7 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$submit_edit_preliminary, priority = 20, {
       row_selection = rv_table$rv_selection()
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
       pid_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "pid"]
 
       # Add new row
@@ -641,7 +642,7 @@ mod_module_edit_tab_server<- function(id,
     # Submit row(s) ----
     observeEvent(input$submit_button, priority = 20,{
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
       row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
       if(length(row_submitted) < 1){
         row_submitted = FALSE
@@ -679,7 +680,7 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$submit_data_confirm, priority = 20,{
 
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
       row_selection = rv_table$rv_selection()
 
       if(length(input$responses_table_rows_selected) == 1 ){
@@ -705,7 +706,7 @@ mod_module_edit_tab_server<- function(id,
     # Force unlock row ----
     observeEvent(input$force_unlock, priority = 20,{
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, filter_origin = filter_origin())
+      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
       row_selection = rv_table$rv_selection()
 
       db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)

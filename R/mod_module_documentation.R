@@ -95,7 +95,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
       }
       y = y %>%
         select(c("pid", "date_modified", "user_modified")) %>%
-        arrange(desc(date_modified))
+        arrange(desc(as.POSIXct(as.character(date_modified), format = "%a %b %d %H:%M:%S %Y")))
       y
     }
     load_dt_for_render = function(){
