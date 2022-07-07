@@ -76,7 +76,8 @@ run_app <- function(
                                                user = config_dbuser,
                                                password = config_dbpassword,
                                                host = config_dbhost,
-                                               db = config_dbname)
+                                               db = config_dbname),
+                      version = "1.0.17"
     )
   )
 }
