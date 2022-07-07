@@ -41,18 +41,18 @@ mod_module_launcher_edit_ui <- function(id){
                         ),
         dashboardSidebar(
           sidebarMenu(
-            menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),
-            menuItem("Library", tabName = "library"),
-            menuItem("Editor", tabName = "editor"),
-            menuItem("Preview", tabName = "preview")
+            menuItem(internal_app_data$lang_sel$tab_start, tabName = "start", icon = icon("info", verify_fa = FALSE)),
+            menuItem("Library", tabName = "library", icon = icon("book", verify_fa = FALSE)),
+            menuItem("Editor", tabName = "editor", icon = icon("keyboard-o", verify_fa = FALSE)),
+            menuItem("Preview", tabName = "preview", icon = icon("video-camera", verify_fa = FALSE))
             ,
             if("lcarsM" %in% rownames(installed.packages()) & add_mobile_app == TRUE){
-              menuItem("Preview mobile", tabName = "preview_mobile")
+              menuItem("Preview mobile", tabName = "preview_mobile", icon = icon("mobile", verify_fa = FALSE))
             }else{
                 NULL
             },
             if(get_golem_options("user_is_admin")){
-              menuItem("Admin", tabName = "admin")
+              menuItem("Admin", tabName = "admin", icon = icon("unlock", verify_fa = FALSE))
             }else{
               NULL
             }

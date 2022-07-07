@@ -30,13 +30,13 @@ mod_module_launcher_ui <- function(id){
                         )),
         dashboardSidebar(
           sidebarMenu(
-            menuItem(internal_app_data$lang_sel$tab_start, tabName = "start"),
-            menuItem(internal_app_data$lang_sel$button_newpat, tabName = "new_pat"),
-            menuItem(internal_app_data$lang_sel$main_menu_visit, tabName = "pat_list"),
-            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact"),
-            menuItem("Data", tabName = "data"),
+            menuItem(internal_app_data$lang_sel$tab_start, tabName = "start", icon = icon("info", verify_fa = FALSE)),
+            menuItem(internal_app_data$lang_sel$button_newpat, tabName = "new_pat", icon = icon("user-plus", verify_fa = FALSE)),
+            menuItem(internal_app_data$lang_sel$main_menu_visit, tabName = "pat_list", icon = icon("pencil-square-o", verify_fa = FALSE)),
+            menuItem(internal_app_data$lang_sel$module_launcher_menu_contact, tabName = "contact", icon = icon("address-card", verify_fa = FALSE)),
+            menuItem("Data", tabName = "data", icon = icon("bar-chart", verify_fa = FALSE)),
             if(get_golem_options("user_is_admin")){
-              menuItem("Admin", tabName = "admin")
+              menuItem("Admin", tabName = "admin", icon = icon("unlock", verify_fa = FALSE))
             }else{
               NULL
             }
