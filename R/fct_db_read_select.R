@@ -26,6 +26,8 @@ db_read_select = function(pool,
   if(!is.null(order.by)){
     if(oder_by_date == TRUE){
       new_order = as.POSIXct(as.character(tab_i[,order.by]), format = "%a %b %d %H:%M:%S %Y")
+    }else{
+      new_order = tab_i[,order.by]
     }
     new_order = order(new_order, decreasing = order_desc)
     tab_i = tab_i[new_order,]
