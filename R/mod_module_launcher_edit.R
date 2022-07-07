@@ -56,7 +56,7 @@ mod_module_launcher_edit_ui <- function(id){
             }else{
               NULL
             },
-            tags$footer(paste0("Version ", get_golem_options("version")), align = "right", style = "
+            tags$footer(paste0("LCARS-C Version ", get_golem_options("version")), align = "right", style = "
                          text-align: center;
                          position:absolute;
                          bottom:0;
