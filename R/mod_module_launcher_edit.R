@@ -55,7 +55,19 @@ mod_module_launcher_edit_ui <- function(id){
               menuItem("Admin", tabName = "admin", icon = icon("unlock", verify_fa = FALSE))
             }else{
               NULL
-            }
+            },
+            tags$footer("Version 0.5.16", align = "right", style = "
+                         text-align: center;
+                         position:absolute;
+                         bottom:0;
+                         width:100%;
+                         height:30px; /* Height of the footer */
+                         color: grey;
+                         padding: 5px;
+                         background-color: black;
+                         z-index: 1000;"
+
+            )
             # ,
             # menuItem("Data", tabName = "Data")
 
