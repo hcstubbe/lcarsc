@@ -160,9 +160,6 @@ mod_module_edit_tab_server<- function(id,
     # Get currently displayed table and currently selected row_id(s)
     rv_table = reactiveValues()
     rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-
-
-
     rv_table$rv_selection = reactive({
       selected_row = rv_table$rv_rtab()[input$responses_table_rows_selected, "row_id"]
       selected_row
@@ -170,7 +167,7 @@ mod_module_edit_tab_server<- function(id,
 
 
     output$responses_table <- DT::renderDataTable({
-      isolate(select_vars(show_vals, rv_table$rv_rtab()))
+      isolate(DT::datatable(select_vars(show_vals, rv_table$rv_rtab()), colnames = names(show_vals)))
     })
 
     proxy <- DT::dataTableProxy('responses_table')
