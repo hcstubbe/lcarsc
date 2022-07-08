@@ -134,17 +134,13 @@ mod_module_edit_tab_server<- function(id,
 
 
     # This function creates the tables from database entries
-    make_response_table = function(selected_visit_id = NULL, selected_pid = NULL){
+    make_response_table = function(selected_visit_id = NULL){
       table = db_read_select_params()
 
       if(!is.null(selected_visit_id)){
         if(selected_visit_id != "all_visits"){
           table = table[table$visit_for_var == selected_visit_id,]
         }
-      }
-
-      if(!is.null(selected_pid)){
-        table = table[table$pid == selected_pid,]
       }
 
       return(table)
@@ -167,6 +163,11 @@ mod_module_edit_tab_server<- function(id,
     })
 
     proxy <- DT::dataTableProxy('responses_table')
+
+    observe({
+      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+      DT::replaceData(proxy, rv_table$rv_rtab(), resetPaging = FALSE)
+    })
 
 
     # Function for updating the rendered data table
