@@ -172,7 +172,8 @@ mod_module_edit_tab_server<- function(id,
                             colnames = names(show_vals),
                             selection = selection_tab,
                             options = list(pageLength = num_entries,
-                                           search_field = search_field))
+                                           search_field = search_field),
+                            rownames = FALSE)
               )
     })
     proxy <- DT::dataTableProxy('responses_table')
@@ -181,17 +182,17 @@ mod_module_edit_tab_server<- function(id,
     # Observe changes in filter operations
     observeEvent(rv_in$pid(), {
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE)
+      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE, rownames = FALSE)
     })
 
     observeEvent(filter_origin(), {
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE)
+      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE, rownames = FALSE)
     })
 
     observeEvent(input$selected_visit_id, {
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE)
+      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE, rownames = FALSE)
     })
 
 
@@ -199,7 +200,7 @@ mod_module_edit_tab_server<- function(id,
     # Function for updating the rendered data table
     update_dt = function(pid = NULL){
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE)
+      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE, rownames = FALSE)
     }
 
 
