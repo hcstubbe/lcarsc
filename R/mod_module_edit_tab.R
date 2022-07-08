@@ -120,9 +120,22 @@ mod_module_edit_tab_server<- function(id,
     }
 
 
+    # Define parameters for table
+    db_read_select_params = function(){
+      db_read_select(pool,
+                     tbl_id,
+                     pid = rv_in$pid(),
+                     use.pid = !create_new_pid,
+                     order.by = order.by,
+                     order_desc = order_desc,
+                     oder_by_date = oder_by_date,
+                     filter_origin = filter_origin())}
+
+
+
     # This function creates the tables from database entries
     make_response_table = function(selected_visit_id = NULL){
-      table = db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
+      table = db_read_select_params()
 
       if(!is.null(selected_visit_id)){
         if(selected_visit_id != "all_visits"){
@@ -477,7 +490,7 @@ mod_module_edit_tab_server<- function(id,
 
     # Copy row(s) ----
     copyData <- reactive({
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
+      SQL_df <- db_read_select_params()
       row_selection = rv_table$rv_selection()
       SQL_df <- SQL_df %>% filter(row_id %in% row_selection)
       SQL_df$row_id <- uuid::UUIDgenerate(use.time = FALSE, n = nrow(SQL_df))
@@ -642,7 +655,7 @@ mod_module_edit_tab_server<- function(id,
     # Submit row(s) ----
     observeEvent(input$submit_button, priority = 20,{
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
+      SQL_df <- db_read_select_params()
       row_submitted <- SQL_df[input$responses_table_rows_selected, "submitted_row"]
       if(length(row_submitted) < 1){
         row_submitted = FALSE
@@ -680,7 +693,7 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$submit_data_confirm, priority = 20,{
 
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
+      SQL_df <- db_read_select_params()
       row_selection = rv_table$rv_selection()
 
       if(length(input$responses_table_rows_selected) == 1 ){
@@ -706,7 +719,7 @@ mod_module_edit_tab_server<- function(id,
     # Force unlock row ----
     observeEvent(input$force_unlock, priority = 20,{
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = !create_new_pid, order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
+      SQL_df <- db_read_select_params()
       row_selection = rv_table$rv_selection()
 
       db_cmd = sprintf(paste("UPDATE", tbl_id, "SET locked_row = FALSE WHERE row_id = '%s'"), row_selection)
