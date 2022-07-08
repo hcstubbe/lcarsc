@@ -146,11 +146,22 @@ mod_module_edit_tab_server<- function(id,
       return(table)
     }
 
+    # Show selected vars only
+    select_vars = function(show_vals, table_x){
+      # This function selects columns
+      if(!is.null(show_vals) & !is.null(table_x)){
+        table_x = tryCatch(table_x[,show_vals],  error = function(e) table_x)
+      }
+
+    }
+
 
     #### Render table and access entries from table ----
     # Get currently displayed table and currently selected row_id(s)
     rv_table = reactiveValues()
     rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+
+
 
     rv_table$rv_selection = reactive({
       selected_row = rv_table$rv_rtab()[input$responses_table_rows_selected, "row_id"]
@@ -159,21 +170,28 @@ mod_module_edit_tab_server<- function(id,
 
 
     output$responses_table <- DT::renderDataTable({
-      isolate(rv_table$rv_rtab())
+      isolate(select_vars(show_vals, rv_table$rv_rtab()))
     })
 
     proxy <- DT::dataTableProxy('responses_table')
 
-    observe({
+
+    # Observe changes in filter operations
+    observeEvent(rv_in$pid(), {
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      DT::replaceData(proxy, rv_table$rv_rtab(), resetPaging = FALSE)
+      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE)
+    })
+
+    observeEvent(filter_origin(), {
+      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE)
     })
 
 
     # Function for updating the rendered data table
     update_dt = function(pid = NULL){
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      DT::replaceData(proxy, rv_table$rv_rtab())
+      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()))
     }
 
     # Show row_id for testing
