@@ -51,7 +51,7 @@ mod_module_edit_tab_server<- function(id,
                                       visit_id,
                                       create_new_pid = FALSE,
                                       add.copy.btn = FALSE,
-                                      num_entries = 5,
+                                      num_entries = 10,
                                       order.by,
                                       order_desc = FALSE,
                                       oder_by_date = FALSE,
@@ -152,11 +152,11 @@ mod_module_edit_tab_server<- function(id,
       if(!is.null(show_vals) & !is.null(table_x)){
         table_x = tryCatch(table_x[,show_vals],  error = function(e) table_x)
       }
-
     }
 
 
     #### Render table and access entries from table ----
+
     # Get currently displayed table and currently selected row_id(s)
     rv_table = reactiveValues()
     rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
@@ -166,10 +166,15 @@ mod_module_edit_tab_server<- function(id,
     })
 
 
+    # Create table and proxy when loading module
     output$responses_table <- DT::renderDataTable({
-      isolate(DT::datatable(select_vars(show_vals, rv_table$rv_rtab()), colnames = names(show_vals)))
+      isolate(DT::datatable(select_vars(show_vals, rv_table$rv_rtab()),
+                            colnames = names(show_vals),
+                            selection = selection_tab,
+                            options = list(pageLength = num_entries,
+                                           search_field = search_field))
+              )
     })
-
     proxy <- DT::dataTableProxy('responses_table')
 
 
@@ -194,8 +199,10 @@ mod_module_edit_tab_server<- function(id,
     # Function for updating the rendered data table
     update_dt = function(pid = NULL){
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()))
+      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE)
     }
+
+
 
     # Show row_id for testing
     output$testing1 = renderUI({
@@ -210,7 +217,7 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    ## Add optional inputs ----
+    # Add optional inputs ----
     if(add.copy.btn == TRUE){
       insertUI(
         selector = paste("#", ns("submit_button"), sep = ""),
