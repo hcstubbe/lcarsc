@@ -100,7 +100,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     }
     load_dt_for_render = function(){
       DT::datatable(computeFT(input$show_preliminary),
-                    options = list(pageLength = 10, dom = 'ft'),
+                    options = list(pageLength = 10,
+                                   search_field = TRUE),
                     selection = c("single"),
                     rownames = FALSE)}
 
