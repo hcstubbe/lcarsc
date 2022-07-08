@@ -134,7 +134,7 @@ mod_module_edit_tab_server<- function(id,
 
 
     # This function creates the tables from database entries
-    make_response_table = function(selected_visit_id = NULL){
+    make_response_table = function(selected_visit_id = NULL, selected_pid = NULL){
       table = db_read_select_params()
 
       if(!is.null(selected_visit_id)){
@@ -142,32 +142,19 @@ mod_module_edit_tab_server<- function(id,
           table = table[table$visit_for_var == selected_visit_id,]
         }
       }
-      return(table)
-    }
 
-
-    # This function renders the entries
-    render_response_table = function(table){
-      if(!is.null(table)){
-        table = table[,show_vals]
-        names(table) = names(show_vals)
-        table <- datatable(table,
-                           rownames = FALSE,
-                           options = list(searching = search_field, lengthChange = length_change, pageLength = num_entries),
-                           selection = selection_tab
-        )
-        return(table)
-      }else{
-        table = datatable(NULL, rownames = FALSE)
-        return(table)
+      if(!is.null(selected_pid)){
+        table = table[table$pid == selected_pid,]
       }
+
+      return(table)
     }
 
 
     #### Render table and access entries from table ----
     # Get currently displayed table and currently selected row_id(s)
     rv_table = reactiveValues()
-    rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+    rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id, rv_in$pid())})
 
     rv_table$rv_selection = reactive({
       selected_row = rv_table$rv_rtab()[input$responses_table_rows_selected, "row_id"]
@@ -176,9 +163,17 @@ mod_module_edit_tab_server<- function(id,
 
 
     output$responses_table <- DT::renderDataTable({
-      render_response_table(rv_table$rv_rtab())
+      isolate(make_response_table(input$selected_visit_id))
     })
 
+    proxy <- DT::dataTableProxy('responses_table')
+
+
+    # Function for updating the rendered data table
+    update_dt = function(pid = NULL){
+      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+      DT::replaceData(proxy, rv_table$rv_rtab())
+    }
 
     # Show row_id for testing
     output$testing1 = renderUI({
@@ -357,10 +352,7 @@ mod_module_edit_tab_server<- function(id,
 
 
         # Update response table
-        rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-        output$responses_table <- DT::renderDataTable({
-          render_response_table(rv_table$rv_rtab())
-        })
+        update_dt()
       }
 
 
@@ -393,12 +385,7 @@ mod_module_edit_tab_server<- function(id,
 
 
       # Update response table
-      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      output$responses_table <- DT::renderDataTable({
-        render_response_table(rv_table$rv_rtab())
-      })
-
-
+      update_dt()
     })
 
 
@@ -411,10 +398,7 @@ mod_module_edit_tab_server<- function(id,
       shinyjs::reset("entry_form")
 
       # Update response table
-      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      output$responses_table <- DT::renderDataTable({
-        render_response_table(rv_table$rv_rtab())
-      })
+      update_dt()
     })
 
     ## Cancel edit button
@@ -427,10 +411,7 @@ mod_module_edit_tab_server<- function(id,
       shinyjs::reset("entry_form")
 
       # Update response table
-      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      output$responses_table <- DT::renderDataTable({
-        render_response_table(rv_table$rv_rtab())
-      })
+      update_dt()
     })
 
 
@@ -478,10 +459,7 @@ mod_module_edit_tab_server<- function(id,
         dbExecute(pool, db_cmd)
 
         # Update response table
-        rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-        output$responses_table <- DT::renderDataTable({
-          render_response_table(rv_table$rv_rtab())
-        })
+        update_dt()
       }
 
     })
@@ -510,10 +488,7 @@ mod_module_edit_tab_server<- function(id,
         copyData()
 
         # Update response table
-        rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-        output$responses_table <- DT::renderDataTable({
-          render_response_table(rv_table$rv_rtab())
-        })
+        update_dt()
       }
 
       showModal(
@@ -609,10 +584,7 @@ mod_module_edit_tab_server<- function(id,
         shinyjs::reset("entry_form")
 
         # Update response table
-        rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-        output$responses_table <- DT::renderDataTable({
-          render_response_table(rv_table$rv_rtab())
-        })
+        update_dt()
       }
 
     })
@@ -644,10 +616,7 @@ mod_module_edit_tab_server<- function(id,
       shinyjs::reset("entry_form")
 
       # Update response table
-      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      output$responses_table <- DT::renderDataTable({
-        render_response_table(rv_table$rv_rtab())
-      })
+      update_dt()
 
     })
 
@@ -707,10 +676,7 @@ mod_module_edit_tab_server<- function(id,
       close()
 
       # Update response table
-      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
-      output$responses_table <- DT::renderDataTable({
-        render_response_table(rv_table$rv_rtab())
-      })
+      update_dt()
 
     })
 
