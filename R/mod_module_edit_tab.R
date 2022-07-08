@@ -184,6 +184,12 @@ mod_module_edit_tab_server<- function(id,
       DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE)
     })
 
+    observeEvent(input$selected_visit_id, {
+      rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+      DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE)
+    })
+
+
 
     # Function for updating the rendered data table
     update_dt = function(pid = NULL){
