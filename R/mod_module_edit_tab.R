@@ -129,8 +129,8 @@ mod_module_edit_tab_server<- function(id,
                      order.by = order.by,
                      order_desc = order_desc,
                      oder_by_date = oder_by_date,
-                     filter_origin = filter_origin())}
-
+                     filter_origin = filter_origin())
+      }
 
 
     # This function creates the tables from database entries
@@ -439,7 +439,7 @@ mod_module_edit_tab_server<- function(id,
 
     ## Open edit dialogue
     observeEvent(input$delete_button, priority = 20,{
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
+      SQL_df <- db_read_select_params()
       row_selection = rv_table$rv_selection()
       SQL_df_selected = SQL_df[SQL_df$row_id %in% row_selection, ]
       row_submitted <- SQL_df_selected$submitted_row
@@ -532,7 +532,7 @@ mod_module_edit_tab_server<- function(id,
 
     ## Open edit dialogue
     observeEvent(input$edit_button, priority = 20,{
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
+      SQL_df <- db_read_select_params()
       row_submitted <- SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "submitted_row"]
       SQL_df_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), ]
       row_selection = rv_table$rv_selection()
@@ -588,7 +588,7 @@ mod_module_edit_tab_server<- function(id,
 
       if (iv$is_valid()) {
 
-        SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
+        SQL_df <- db_read_select_params()
         pid_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "pid"]
 
         # Add new row
@@ -622,7 +622,7 @@ mod_module_edit_tab_server<- function(id,
     observeEvent(input$submit_edit_preliminary, priority = 20, {
       row_selection = rv_table$rv_selection()
 
-      SQL_df <- db_read_select(pool, tbl_id, pid = rv_in$pid(), use.pid = (create_new_pid == FALSE), order.by = order.by, order_desc = order_desc, oder_by_date = oder_by_date, filter_origin = filter_origin())
+      SQL_df <- db_read_select_params()
       pid_selected = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "pid"]
 
       # Add new row
