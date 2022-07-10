@@ -95,7 +95,7 @@ mod_module_editor_launcher_server <- function(id) {
                            all_visits = all_visits_editor,
                            visit_id = "editor",
                            add.copy.btn = TRUE,
-                           num_entries = 200,
+                           num_entries = 20,
                            order.by = "order_of_var",
                            search_field = TRUE,
                            editor_filter_visit_id = TRUE)
