@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList moduleServer uiOutput tagList renderUI
+#' @importFrom shiny NS tagList moduleServer uiOutput tagList renderUI actionButton
 #' @importFrom shinydashboard box infoBox
 #' @importFrom golem get_golem_options
 #' @importFrom pool dbPool
@@ -15,7 +15,7 @@
 mod_module_documentation_summary_ui <- function(id){
   ns <- NS(id)
   tagList(
-    uiOutput(ns("summary"))
+    shiny::uiOutput(ns("summary"))
   )
 }
 
@@ -48,9 +48,17 @@ mod_module_documentation_summary_server <- function(id,
     all_visits = widget_data_input$all_visits
     visits_list = all_visits$visit_id[!all_visits$inclusion_other_visit]
 
-    render_summary = function() {
+    render_summary = function(start = TRUE) {
+
+      if(start == TRUE){
+        a_btn = shinydashboard::box(title = paste0("Summary: ", rv_in$pid()), width = 12, status = "info",
+                                    shiny::actionButton(inputId = ns("update_summary"),
+                                                        label = "Get summary"))
+        return(a_btn)
+      }
+
       if(length(rv_in$pid()) == 1){
-        box(title = paste0("Summary: ", rv_in$pid()), width = 12, status = "info",
+        summary_box = shinydashboard::box(title = paste0("Summary: ", rv_in$pid()), width = 12, status = "info",
             actionButton(ns("update_summary"), "Update summary", icon = icon("sync", verify_fa = FALSE)), br(), br(),
             lapply(visits_list, function(x) {
               visit_tab_id = paste('visit_table', x, sep = '_')
@@ -96,13 +104,21 @@ mod_module_documentation_summary_server <- function(id,
               )
             })
         )
+        return(summary_box)
       }
+
+      return(NULL)
+
     }
 
-    output$summary = renderUI({render_summary()})
+    output$summary = renderUI({render_summary(start = TRUE)})
 
     observeEvent(input$update_summary, {
-      output$summary = renderUI({render_summary()})
+      output$summary = renderUI({render_summary(start = FALSE)})
+    })
+
+    observeEvent(rv_in$pid(), {
+      output$summary = renderUI({render_summary(start = TRUE)})
     })
 
   })
