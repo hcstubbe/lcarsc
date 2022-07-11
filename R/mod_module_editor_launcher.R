@@ -63,7 +63,7 @@ mod_module_editor_launcher_server <- function(id) {
                            widget_tab_selection = "visits",
                            tbl_id = "editor_table_visit",
                            rv_in = rv_downstream_visit,
-                           show_vals = c('Visit title' = "visit_title", 'visit_id' = "visit_id_visits", "Order" = "order"),
+                           show_vals = c('Visit title' = "visit_title", 'Visit ID' = "visit_id_visits", "Order" = "order"),
                            simple = TRUE,
                            modal_width = ".modal-dialog{ width:400px}",
                            widgets_table_global = widgets_table_global_widgets,
@@ -71,7 +71,8 @@ mod_module_editor_launcher_server <- function(id) {
                            visit_id = "editor",
                            add.copy.btn = TRUE,
                            order.by = "order",
-                           search_field = TRUE)
+                           search_field = TRUE,
+                           use_move_order = FALSE)
 
 
 
@@ -98,7 +99,8 @@ mod_module_editor_launcher_server <- function(id) {
                            num_entries = 20,
                            order.by = "order_of_var",
                            search_field = TRUE,
-                           editor_filter_visit_id = TRUE)
+                           editor_filter_visit_id = TRUE,
+                           use_move_order = TRUE)
 
 
   })

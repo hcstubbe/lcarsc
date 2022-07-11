@@ -64,7 +64,8 @@ mod_module_edit_tab_server<- function(id,
                                       sample_id_name = NULL,
                                       noletters_smp_id = TRUE,
                                       editor_filter_visit_id = FALSE,
-                                      show_preliminary = FALSE) {
+                                      show_preliminary = FALSE,
+                                      use_move_order = FALSE) {
 
 
 
@@ -219,20 +220,13 @@ mod_module_edit_tab_server<- function(id,
 
 
     # Add optional inputs ----
-    if(add.copy.btn == TRUE){
-      insertUI(
-        selector = paste("#", ns("submit_button"), sep = ""),
-        where = "afterEnd",
-        ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
-      )
-    }
 
+    # Add visit selector
     if(editor_filter_visit_id == TRUE){
       filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
       filter_visit_data = dplyr::arrange(filter_visit_data, order)
       filter_visit_data = filter_visit_data[filter_visit_data$deleted_row == FALSE,]
       filter_visit_choices = c("all_visits", filter_visit_data$visit_id_visits)
-
       insertUI(
         selector = paste("#", ns("add_button"), sep = ""),
         where = "beforeBegin",
@@ -240,6 +234,28 @@ mod_module_edit_tab_server<- function(id,
       )
     }
 
+    # Add order mover
+    if(use_move_order == TRUE){
+      insertUI(
+        selector = paste("#", ns("submit_button"), sep = ""),
+        where = "afterEnd",
+        ui = actionButton(ns("move_down"), "Down", icon("arrow-down", verify_fa = FALSE))
+      )
+      insertUI(
+        selector = paste("#", ns("submit_button"), sep = ""),
+        where = "afterEnd",
+        ui = actionButton(ns("move_up"), "Up", icon("arrow-up", verify_fa = FALSE))
+      )
+    }
+
+    # Add copy button
+    if(add.copy.btn == TRUE){
+      insertUI(
+        selector = paste("#", ns("submit_button"), sep = ""),
+        where = "afterEnd",
+        ui = actionButton(ns("copy_button"), "Copy", icon("copy", verify_fa = FALSE))
+      )
+    }
 
 
 
@@ -709,6 +725,80 @@ mod_module_edit_tab_server<- function(id,
       update_dt()
 
     })
+
+
+
+    # Move rows (editor) ----
+    if(use_move_order == TRUE){
+
+      moveRow <- function(up = TRUE){
+        row_selection = rv_table$rv_selection()
+
+        db_cmd = sprintf(paste0("SELECT row_id, visit_for_var , order_of_var FROM ", tbl_id, " WHERE row_id = '", row_selection, "'"))
+        query_res_oldpos = RMariaDB::dbGetQuery(pool, db_cmd)
+
+        if(sum((input$selected_visit_id != "all_visits")) > 0){
+          db_cmd = sprintf(paste0("SELECT row_id, order_of_var, visit_for_var FROM ", tbl_id, " WHERE deleted_row = 0 AND visit_for_var = '", query_res_oldpos$visit_for_var, "'"))
+          query_res = RMariaDB::dbGetQuery(pool, db_cmd)
+        }else{
+          db_cmd = sprintf(paste0("SELECT row_id, order_of_var, visit_for_var FROM ", tbl_id, " WHERE deleted_row = 0"))
+          query_res = RMariaDB::dbGetQuery(pool, db_cmd)
+        }
+
+        if(up == TRUE){
+          query_res = query_res[query_res$order_of_var < query_res_oldpos$order_of_var,]
+          query_res_newpos = query_res[which(query_res$order_of_var == max(query_res$order_of_var)),]
+        }else{
+          query_res = query_res[query_res$order_of_var > query_res_oldpos$order_of_var,]
+          query_res_newpos = query_res[which(query_res$order_of_var == min(query_res$order_of_var)),]
+        }
+
+        if(nrow(query_res_newpos) != 1){
+          return()
+        }
+
+        db_cmd = sprintf(paste0("UPDATE ", tbl_id, " SET order_of_var = ", query_res_newpos$order_of_var," WHERE row_id = '", query_res_oldpos$row_id, "'"))
+        dbExecute(pool, db_cmd)
+
+        db_cmd = sprintf(paste0("UPDATE ", tbl_id, " SET order_of_var = ", query_res_oldpos$order_of_var," WHERE row_id = '", query_res_newpos$row_id, "'"))
+        dbExecute(pool, db_cmd)
+      }
+
+
+      observeEvent(input$move_up, priority = 20,{
+        if(length(input$responses_table_rows_selected)>=1 ){
+          moveRow(TRUE)
+          # Update response table
+          update_dt()
+        }
+
+        showModal(
+          if(length(input$responses_table_rows_selected) != 1 ){
+            modalDialog(
+              title = "Warning",
+              paste("Please select one row." ),easyClose = TRUE
+            )
+          })
+      })
+
+
+      observeEvent(input$move_down, priority = 20,{
+        if(length(input$responses_table_rows_selected)>=1 ){
+          moveRow(FALSE)
+          # Update response table
+          update_dt()
+        }
+
+        showModal(
+          if(length(input$responses_table_rows_selected) != 1 ){
+            modalDialog(
+              title = "Warning",
+              paste("Please select one row." ),easyClose = TRUE
+            )
+          })
+      })
+
+    }
 
 
 
