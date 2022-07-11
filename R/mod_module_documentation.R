@@ -19,11 +19,13 @@ mod_module_documentation_ui  <- function(id) {
                  br(),
                  br(),
                  br(),
-                 DT::dataTableOutput(ns("responses_user"))),
-             mod_module_documentation_summary_ui(ns("module_documentation_summary_1"))
+                 DT::dataTableOutput(ns("responses_user")))
       ),
       column(7,
-             uiOutput(ns("visit_submission_panel"))
+             uiOutput(ns("visit_submission_panel")),
+             br(),
+             br(),
+             mod_module_documentation_summary_ui(ns("module_documentation_summary_1"))
       )
     )
   )
