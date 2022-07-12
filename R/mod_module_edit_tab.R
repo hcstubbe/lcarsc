@@ -536,6 +536,23 @@ mod_module_edit_tab_server<- function(id,
       }
       dbAppendTable(pool,tbl_id, SQL_df)
 
+      num_copies = nrow(SQL_df)
+
+      db_cmd = paste0("SELECT row_id, visit_for_var , order_of_var FROM ", tbl_id, " WHERE row_id = '", row_selection, "'")
+      query_res_newpos = RMariaDB::dbGetQuery(pool, db_cmd)
+
+
+      if(nrow(query_res_newpos) != 1){
+        showNotification("Warning: duplicate order numbers detected; using last entry.", type = "warning")
+        query_res_newpos = query_res_newpos[max(nrow(query_res_newpos)),]
+      }
+
+      db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var=order_of_var+1 WHERE order_of_var > ", (query_res_newpos$order_of_var))
+      dbExecute(pool, db_cmd)
+
+      db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var = ", (query_res_newpos$order_of_var + num_copies)," WHERE row_id = '", row_selection, "'")
+      dbExecute(pool, db_cmd)
+
     })
 
     observeEvent(input$copy_button, priority = 20,{
