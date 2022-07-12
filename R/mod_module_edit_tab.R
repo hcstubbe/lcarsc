@@ -784,10 +784,11 @@ mod_module_edit_tab_server<- function(id,
 
 
         if(nrow(query_res_newpos) != 1){
-          return()
+          showNotification("Warning: duplicate order numbers detected; using first entry.", type = "warning")
+          query_res_newpos = query_res_newpos[1,]
         }
 
-        db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var=order_of_var+1 WHERE order_of_var > ", (query_res_newpos$order_of_var + 1))
+        db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var=order_of_var+1 WHERE order_of_var > ", (query_res_newpos$order_of_var))
         dbExecute(pool, db_cmd)
 
         db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var = ", (query_res_newpos$order_of_var + 1)," WHERE row_id = '", paste_row_id, "'")
@@ -806,7 +807,8 @@ mod_module_edit_tab_server<- function(id,
           showModal(
             modalDialog(
               title = "Warning",
-              paste("Please select one row." ),easyClose = TRUE
+              "Please select one row.",
+              easyClose = TRUE
             )
           )
         }
@@ -823,7 +825,8 @@ mod_module_edit_tab_server<- function(id,
           showModal(
             modalDialog(
               title = "Warning",
-              paste("Please select one row." ),easyClose = TRUE
+              "Please select one row.",
+              easyClose = TRUE
             )
           )
         }
@@ -844,7 +847,8 @@ mod_module_edit_tab_server<- function(id,
           showModal(
             modalDialog(
               title = "Warning",
-              paste("Please select one row." ),easyClose = TRUE
+              "Please select one row.",
+              easyClose = TRUE
             )
           )
         }
@@ -854,17 +858,28 @@ mod_module_edit_tab_server<- function(id,
 
       # Paste
       observeEvent(input$move_paste, priority = 20,{
-        if(length(input$responses_table_rows_selected) == 1 ){
-          pasteRow(rv_move$row_cut)
-          update_dt()
-        }else{
-          rv_move$row_cut = reactive(NULL)
+        if(is.null(rv_move$row_cut)){
           showModal(
             modalDialog(
               title = "Warning",
-              paste("Please select one row." ),easyClose = TRUE
+              "Select row and press Cut before pasting!",
+              easyClose = TRUE
             )
           )
+        }else{
+          if(length(input$responses_table_rows_selected) == 1 ){
+            pasteRow(rv_move$row_cut)
+            update_dt()
+          }else{
+            rv_move$row_cut = reactive(NULL)
+            showModal(
+              modalDialog(
+                title = "Warning",
+                "Please select one row.",
+                easyClose = TRUE
+              )
+            )
+          }
         }
       })
 
