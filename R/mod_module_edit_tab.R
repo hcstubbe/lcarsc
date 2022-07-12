@@ -239,6 +239,16 @@ mod_module_edit_tab_server<- function(id,
       insertUI(
         selector = paste("#", ns("submit_button"), sep = ""),
         where = "afterEnd",
+        ui = actionButton(ns("move_paste"), "Paste", icon("arrow-up", verify_fa = FALSE))
+      )
+      insertUI(
+        selector = paste("#", ns("submit_button"), sep = ""),
+        where = "afterEnd",
+        ui = actionButton(ns("move_cut"), "Cut", icon("arrow-up", verify_fa = FALSE))
+      )
+      insertUI(
+        selector = paste("#", ns("submit_button"), sep = ""),
+        where = "afterEnd",
         ui = actionButton(ns("move_down"), "Down", icon("arrow-down", verify_fa = FALSE))
       )
       insertUI(
@@ -731,17 +741,18 @@ mod_module_edit_tab_server<- function(id,
     # Move rows (editor) ----
     if(use_move_order == TRUE){
 
+      # Function for moving rows
       moveRow <- function(up = TRUE){
         row_selection = rv_table$rv_selection()
 
-        db_cmd = sprintf(paste0("SELECT row_id, visit_for_var , order_of_var FROM ", tbl_id, " WHERE row_id = '", row_selection, "'"))
+        db_cmd = paste0("SELECT row_id, visit_for_var , order_of_var FROM ", tbl_id, " WHERE row_id = '", row_selection, "'")
         query_res_oldpos = RMariaDB::dbGetQuery(pool, db_cmd)
 
         if(sum((input$selected_visit_id != "all_visits")) > 0){
-          db_cmd = sprintf(paste0("SELECT row_id, order_of_var, visit_for_var FROM ", tbl_id, " WHERE deleted_row = 0 AND visit_for_var = '", query_res_oldpos$visit_for_var, "'"))
+          db_cmd = paste0("SELECT row_id, order_of_var, visit_for_var FROM ", tbl_id, " WHERE deleted_row = 0 AND visit_for_var = '", query_res_oldpos$visit_for_var, "'")
           query_res = RMariaDB::dbGetQuery(pool, db_cmd)
         }else{
-          db_cmd = sprintf(paste0("SELECT row_id, order_of_var, visit_for_var FROM ", tbl_id, " WHERE deleted_row = 0"))
+          db_cmd = paste0("SELECT row_id, order_of_var, visit_for_var FROM ", tbl_id, " WHERE deleted_row = 0")
           query_res = RMariaDB::dbGetQuery(pool, db_cmd)
         }
 
@@ -757,46 +768,106 @@ mod_module_edit_tab_server<- function(id,
           return()
         }
 
-        db_cmd = sprintf(paste0("UPDATE ", tbl_id, " SET order_of_var = ", query_res_newpos$order_of_var," WHERE row_id = '", query_res_oldpos$row_id, "'"))
+        db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var = ", query_res_newpos$order_of_var," WHERE row_id = '", query_res_oldpos$row_id, "'")
         dbExecute(pool, db_cmd)
 
-        db_cmd = sprintf(paste0("UPDATE ", tbl_id, " SET order_of_var = ", query_res_oldpos$order_of_var," WHERE row_id = '", query_res_newpos$row_id, "'"))
+        db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var = ", query_res_oldpos$order_of_var," WHERE row_id = '", query_res_newpos$row_id, "'")
         dbExecute(pool, db_cmd)
       }
 
+      # Function for pasting rows
+      pasteRow <- function(paste_row_id){
+        row_selection = rv_table$rv_selection()
 
+        db_cmd = paste0("SELECT row_id, visit_for_var , order_of_var FROM ", tbl_id, " WHERE row_id = '", row_selection, "'")
+        query_res_newpos = RMariaDB::dbGetQuery(pool, db_cmd)
+
+
+        if(nrow(query_res_newpos) != 1){
+          return()
+        }
+
+        db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var=order_of_var+1 WHERE order_of_var > ", (query_res_newpos$order_of_var + 1))
+        dbExecute(pool, db_cmd)
+
+        db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var = ", (query_res_newpos$order_of_var + 1)," WHERE row_id = '", paste_row_id, "'")
+        dbExecute(pool, db_cmd)
+
+      }
+
+
+
+      # Move up
       observeEvent(input$move_up, priority = 20,{
-        if(length(input$responses_table_rows_selected)>=1 ){
+        if(length(input$responses_table_rows_selected) == 1 ){
           moveRow(TRUE)
-          # Update response table
           update_dt()
-        }
-
-        showModal(
-          if(length(input$responses_table_rows_selected) != 1 ){
+        }else{
+          showModal(
             modalDialog(
               title = "Warning",
               paste("Please select one row." ),easyClose = TRUE
             )
-          })
+          )
+        }
       })
 
 
+
+      # Move down
       observeEvent(input$move_down, priority = 20,{
-        if(length(input$responses_table_rows_selected)>=1 ){
+        if(length(input$responses_table_rows_selected) == 1 ){
           moveRow(FALSE)
-          # Update response table
           update_dt()
-        }
-
-        showModal(
-          if(length(input$responses_table_rows_selected) != 1 ){
+        }else{
+          showModal(
             modalDialog(
               title = "Warning",
               paste("Please select one row." ),easyClose = TRUE
             )
-          })
+          )
+        }
       })
+
+
+
+      # Cut
+      rv_move = reactiveValues()
+      rv_move$row_cut = reactive(NULL)
+
+      observeEvent(input$move_cut, priority = 20,{
+        if(length(input$responses_table_rows_selected) == 1 ){
+          rv_move$row_cut = rv_table$rv_selection()
+          shiny::showNotification("Row cut!")
+        }else{
+          rv_move$row_cut = reactive(NULL)
+          showModal(
+            modalDialog(
+              title = "Warning",
+              paste("Please select one row." ),easyClose = TRUE
+            )
+          )
+        }
+      })
+
+
+
+      # Paste
+      observeEvent(input$move_paste, priority = 20,{
+        if(length(input$responses_table_rows_selected) == 1 ){
+          pasteRow(rv_move$row_cut)
+          update_dt()
+        }else{
+          rv_move$row_cut = reactive(NULL)
+          showModal(
+            modalDialog(
+              title = "Warning",
+              paste("Please select one row." ),easyClose = TRUE
+            )
+          )
+        }
+      })
+
 
     }
 
