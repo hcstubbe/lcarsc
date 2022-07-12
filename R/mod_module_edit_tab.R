@@ -775,6 +775,8 @@ mod_module_edit_tab_server<- function(id,
         dbExecute(pool, db_cmd)
       }
 
+
+
       # Function for pasting rows
       pasteRow <- function(paste_row_id){
         row_selection = rv_table$rv_selection()
