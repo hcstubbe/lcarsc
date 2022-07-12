@@ -53,8 +53,22 @@ mod_module_admin_ui <- function(id){
                               actionButton(ns("delete_pid_dialog"), label = "Delete record"),
                               br(),
                               br(),
-                              "This reverses the server to editor mode!",
-                              actionButton(ns("reverse_deploy"), label = "Reverse to editor mode!")
+                              wellPanel(
+                                "This reverses the server to editor mode!",
+                                actionButton(ns("reverse_deploy"), label = "Reverse to editor mode!")
+                              ),
+
+                              # REMOVE BEFOR PUBLISHING ---
+                              br(),
+                              br(),
+                              wellPanel(
+                                "This adds a column to exisitng table!",
+                                shiny::textInput(ns("sel_tab"), "Select table"),
+                                shiny::textInput(ns("new_col"), "Column name"),
+                                shiny::selectInput(ns("new_col_type"), "Data type", choices = list("TEXT", "DOUBLE", "INTEGER")),
+                                actionButton(ns("add_column"), label = "Add column!")
+                              )
+                              ##############################
 
           )
         )
@@ -72,6 +86,7 @@ mod_module_admin_server <- function(id){
     ns <- session$ns
     pool = get_golem_options("pool")
 
+    # REMOVE BEFOR PUBLISHING ---
     # Go back from production mode (for experimental version!)
     observeEvent(input$reverse_deploy, {
       RMariaDB::dbRemoveTable(conn = get_golem_options("pool_config"), name = "start_config")
@@ -83,6 +98,12 @@ mod_module_admin_server <- function(id){
                                   value = data.frame(production_mode = "editor"))
 
     })
+
+    observeEvent(input$add_column, {
+      RMariaDB::dbGetQuery(pool, paste("ALTER TABLE", input$sel_tab, "ADD COLUMN", input$new_col, input$new_col_type))
+      shiny::showNotification("Column added!")
+    })
+    ##############################
 
 
     # Download data
@@ -212,6 +233,8 @@ mod_module_admin_server <- function(id){
 
     }
   })
+
+
 }
 
 ## To be copied in the UI
