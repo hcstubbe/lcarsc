@@ -50,7 +50,7 @@ mod_module_documentation_summary_server <- function(id,
 
     render_summary = function(start = TRUE) {
 
-      if(start == TRUE){
+      if(start == TRUE & length(rv_in$pid()) == 1){
         a_btn = shinydashboard::box(title = paste0("Summary: ", rv_in$pid()), width = 12, status = "info",
                                     shiny::actionButton(inputId = ns("update_summary"),
                                                         label = "Get summary"))
