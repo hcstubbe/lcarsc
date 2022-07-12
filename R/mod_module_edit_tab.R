@@ -239,12 +239,12 @@ mod_module_edit_tab_server<- function(id,
       insertUI(
         selector = paste("#", ns("submit_button"), sep = ""),
         where = "afterEnd",
-        ui = actionButton(ns("move_paste"), "Paste", icon("arrow-up", verify_fa = FALSE))
+        ui = actionButton(ns("move_paste"), "Paste", icon("clipboard", verify_fa = FALSE))
       )
       insertUI(
         selector = paste("#", ns("submit_button"), sep = ""),
         where = "afterEnd",
-        ui = actionButton(ns("move_cut"), "Cut", icon("arrow-up", verify_fa = FALSE))
+        ui = actionButton(ns("move_cut"), "Cut", icon("scissors", verify_fa = FALSE))
       )
       insertUI(
         selector = paste("#", ns("submit_button"), sep = ""),
@@ -836,14 +836,13 @@ mod_module_edit_tab_server<- function(id,
 
       # Cut
       rv_move = reactiveValues()
-      rv_move$row_cut = reactive(NULL)
-
+      rv_move$row_cut = NULL
       observeEvent(input$move_cut, priority = 20,{
         if(length(input$responses_table_rows_selected) == 1 ){
           rv_move$row_cut = rv_table$rv_selection()
           shiny::showNotification("Row cut!")
         }else{
-          rv_move$row_cut = reactive(NULL)
+          rv_move$row_cut = NULL
           showModal(
             modalDialog(
               title = "Warning",
@@ -871,7 +870,7 @@ mod_module_edit_tab_server<- function(id,
             pasteRow(rv_move$row_cut)
             update_dt()
           }else{
-            rv_move$row_cut = reactive(NULL)
+            rv_move$row_cut = NULL
             showModal(
               modalDialog(
                 title = "Warning",
