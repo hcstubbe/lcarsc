@@ -72,7 +72,8 @@ mod_module_editor_launcher_server <- function(id) {
                            add.copy.btn = TRUE,
                            order.by = "order",
                            search_field = TRUE,
-                           use_move_order = FALSE)
+                           use_move_order = FALSE,
+                           keep_copy_order = TRUE)
 
 
 
@@ -100,7 +101,8 @@ mod_module_editor_launcher_server <- function(id) {
                            order.by = "order_of_var",
                            search_field = TRUE,
                            editor_filter_visit_id = TRUE,
-                           use_move_order = TRUE)
+                           use_move_order = TRUE,
+                           keep_copy_order = FALSE)
 
 
   })

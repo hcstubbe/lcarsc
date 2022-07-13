@@ -65,7 +65,8 @@ mod_module_edit_tab_server<- function(id,
                                       noletters_smp_id = TRUE,
                                       editor_filter_visit_id = FALSE,
                                       show_preliminary = FALSE,
-                                      use_move_order = FALSE) {
+                                      use_move_order = FALSE,
+                                      keep_copy_order = TRUE) {
 
 
 
@@ -523,56 +524,61 @@ mod_module_edit_tab_server<- function(id,
 
 
     # Copy row(s) ----
-    copyData <- reactive({
-      SQL_df <- db_read_select_params()
-      row_selection = rv_table$rv_selection()
-      SQL_df <- SQL_df %>% filter(row_id %in% row_selection)
-      SQL_df$row_id <- uuid::UUIDgenerate(use.time = FALSE, n = nrow(SQL_df))
-      SQL_df$date_modified = as.character(date())
-      SQL_df$submitted_row = FALSE
-      SQL_df$locked_row = FALSE
-      if(create_new_pid){
-        SQL_df$pid = randomIdGenerator(exisiting_IDs = loadData(pool, "inclusion_dataset")$pid)
-      }
-      dbAppendTable(pool,tbl_id, SQL_df)
+    if(add.copy.btn == TRUE){
 
-      num_copies = nrow(SQL_df)
+      copyData <- reactive({
+        SQL_df <- db_read_select_params()
+        row_selection = rv_table$rv_selection()
+        SQL_df <- SQL_df %>% filter(row_id %in% row_selection)
+        SQL_df$row_id <- uuid::UUIDgenerate(use.time = FALSE, n = nrow(SQL_df))
+        SQL_df$date_modified = as.character(date())
+        SQL_df$submitted_row = FALSE
+        SQL_df$locked_row = FALSE
+        if(create_new_pid){
+          SQL_df$pid = randomIdGenerator(exisiting_IDs = loadData(pool, "inclusion_dataset")$pid)
+        }
+        dbAppendTable(pool,tbl_id, SQL_df)
 
-      db_cmd = paste0("SELECT row_id, visit_for_var , order_of_var FROM ", tbl_id, " WHERE row_id = '", row_selection, "'")
-      query_res_newpos = RMariaDB::dbGetQuery(pool, db_cmd)
+        if(!is.null(order.by) & keep_copy_order == FALSE){
+          num_copies = nrow(SQL_df)
+          db_cmd = paste0("SELECT `", order.by, "` FROM ", tbl_id, " WHERE row_id = '", row_selection, "'")
+          query_res_newpos = RMariaDB::dbGetQuery(pool, db_cmd)
 
+          if(nrow(query_res_newpos) != 1){
+            showNotification("Warning: duplicate order numbers detected; using last entry.", type = "warning")
+            query_res_newpos = query_res_newpos[max(nrow(query_res_newpos)),]
+          }
 
-      if(nrow(query_res_newpos) != 1){
-        showNotification("Warning: duplicate order numbers detected; using last entry.", type = "warning")
-        query_res_newpos = query_res_newpos[max(nrow(query_res_newpos)),]
-      }
+          db_cmd = paste0("UPDATE ", tbl_id, " SET `", order.by, "`=`", order.by, "`+1 WHERE `", order.by, "` > ", (query_res_newpos[, order.by] ))
+          dbExecute(pool, db_cmd)
 
-      db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var=order_of_var+1 WHERE order_of_var > ", (query_res_newpos$order_of_var))
-      dbExecute(pool, db_cmd)
+          db_cmd = paste0("UPDATE ", tbl_id, " SET `", order.by, "`=", (query_res_newpos[, order.by] + num_copies)," WHERE row_id = '", row_selection, "'")
+          dbExecute(pool, db_cmd)
+        }
 
-      db_cmd = paste0("UPDATE ", tbl_id, " SET order_of_var = ", (query_res_newpos$order_of_var + num_copies)," WHERE row_id = '", row_selection, "'")
-      dbExecute(pool, db_cmd)
+      })
 
-    })
+      observeEvent(input$copy_button, priority = 20,{
 
-    observeEvent(input$copy_button, priority = 20,{
+        if(length(input$responses_table_rows_selected)>=1 ){
+          copyData()
 
-      if(length(input$responses_table_rows_selected)>=1 ){
-        copyData()
+          # Update response table
+          update_dt()
+        }
 
-        # Update response table
-        update_dt()
-      }
+        showModal(
+          if(length(input$responses_table_rows_selected) < 1 ){
+            modalDialog(
+              title = "Warning",
+              paste("Please select row(s)." ),easyClose = TRUE
+            )
+          })
 
-      showModal(
-        if(length(input$responses_table_rows_selected) < 1 ){
-          modalDialog(
-            title = "Warning",
-            paste("Please select row(s)." ),easyClose = TRUE
-          )
-        })
+      })
 
-    })
+    }
+
 
 
 
