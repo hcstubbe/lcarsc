@@ -87,33 +87,13 @@ make_widget_tables = function(pool,
                                 vars[(vars$panel %in% panel_tabs_temp$tab_id[i]),"subgroup"], sep = "_"))
     panels_i = make.unique(make.names(panels_i[!duplicated(panels_i)]))
 
-    mtx = t(matrix(c(panels_i, rep("", 4-length(panels_i) %% 4)), nrow = 4))
+    mtx = t(matrix(c(panels_i, rep("", (4-length(panels_i)) %% 4)), nrow = 4))
     mtx = cbind(panel_tabs_temp$tab_title[i], mtx)
     mtx = cbind(panel_tabs_temp$tab_id[i], mtx)
-    if(length(panels_i) > 4){
-      mtx[,1] = paste(mtx[,1], 1:nrow(mtx), sep = "_")
-
-      xi = c()
-      for ( i in 1:nrow(mtx) ) {
-        xi = cbind(xi, visits[,mtx[1,2]])
-      }
-      colnames(xi) = mtx[,1]
-
-      pos_insert = which(colnames(visits) == mtx[1,2])
-      if (ncol(visits) == pos_insert) {
-        new_vists = cbind(visits[,1:pos_insert], xi)
-        new_vists = new_vists[,-pos_insert]
-      } else if (ncol(visits) > 1){
-        new_vists = cbind(visits[,1:pos_insert], xi)
-        new_vists = cbind(new_vists, visits[,(pos_insert+1):ncol(visits)])
-        new_vists = new_vists[,-pos_insert]
-      } else {
-        stop("Only one visit detected!")
-      }
-      visits = new_vists
-
-
+    if(nrow(mtx) > 1){
+      mtx[,2] = paste(mtx[,2], 1:nrow(mtx))
     }
+
     mtx = cbind("", mtx)
 
     colnames(mtx) = c("position", "tab_id", "tab_title", "panel1up", "panel2up", "panel1down", "panel2down")

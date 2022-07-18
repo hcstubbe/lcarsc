@@ -169,7 +169,7 @@ mod_module_edit_tab_server<- function(id,
 
 
     # Create table and proxy when loading module
-    output$responses_table <- DT::renderDataTable({
+    output$responses_table <- DT::renderDT({
       isolate(DT::datatable(select_vars(show_vals, rv_table$rv_rtab()),
                             colnames = names(show_vals),
                             selection = selection_tab,
