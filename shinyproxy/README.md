@@ -15,3 +15,7 @@ mkdir -p ./mariadb/data
 export DOCKERID=$(getent group docker | cut -d: -f3)
 docker-compose -f ./shinyproxy/shinyproxy_local.yml up
 ```
+
+## Open link to access shiny proxy
+
+[http://localhost:7070/login](http://localhost:7070/login)

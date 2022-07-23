@@ -4,8 +4,7 @@ version: '3.5'
 services:
                               
   shinyproxy:
-#    image: openanalytics/shinyproxy:latest
-    image: openanalytics/shinyproxy:2.6.1
+    image: openanalytics/shinyproxy:latest
     ports:
       - 7070:7070
     networks:
