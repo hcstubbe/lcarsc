@@ -32,6 +32,9 @@ services:
       MYSQL_DATABASE: mydbtest
       MYSQL_USER: usertest
       MYSQL_PASSWORD: usertest
+    volumes:
+      - ./mariadb/data/:/var/lib/mysql
+      - ./mariadb/logs/:/var/log/mysql
     networks:
         - sp-net
 
