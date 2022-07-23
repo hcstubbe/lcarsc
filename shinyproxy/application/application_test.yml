@@ -20,7 +20,7 @@ proxy:
   - id: lcarsc
     display-name: LCARSC
     description: This is the LCRAS-C App
-    container-image: hstubbe/lcarsc:test
+    container-image: hstubbe/lcarsc:latest
     container-cmd: ["R", "-e", "lcarsc::run_app(ecrf_dbuser = 'usertest', ecrf_dbpassword = 'usertest', ecrf_dbhost = 'dbtest', ecrf_dbname = 'mydbtest', config_dbuser = 'usertest', config_dbpassword = 'usertest', config_dbhost = 'dbtest', config_dbname = 'mydbtest', confirm_write_db = FALSE, options = list(host = '0.0.0.0', port = 3838))"]
     container-network: sp-net
     access-groups: test_admin
