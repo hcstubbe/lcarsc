@@ -2,7 +2,7 @@
 
 ## Installation
 
-Clone this repository and install lcarsc from the repository's base folder including the lcarsM dependency:
+Clone this repository, open R Studio and install lcarsc from the repository's base folder including the lcarsM dependency:
 
 ``` r
 devtools::install_local("dependencies/lcarsM.tar.gz")
