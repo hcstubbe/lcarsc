@@ -60,13 +60,13 @@ docker exec CONTAINERID /usr/bin/mysqldump -u root --password=coucoutest mydbtes
 cat backup.sql | docker exec -i CONTAINERID /usr/bin/mysql -u root --password=coucoutest mydbtest 
 ```
 
-## B: Web deployment with docker swarm
+## B: Web deployment with Docker swarm
 
-This deployment strategy is based on [this tutorial](https://www.databentobox.com/2020/05/31/shinyproxy-with-docker-swarm/).
+This deployment strategy is based on [this tutorial](https://www.databentobox.com/2020/05/31/shinyproxy-with-Docker-swarm/).
 
 ### Setup server
 
-* Install docker and join user into docker group
+* Install Docker and join user into Docker group
 
 ``` bash
 sudo apt install docker.io
@@ -75,7 +75,7 @@ sudo usermod -aG docker [USER NAME]
 ```
 
 * Re-login
-* Pull docker images
+* Pull Docker images
 
 ``` bash
 docker pull hstubbe/lcarsc:latest
@@ -85,7 +85,7 @@ docker pull openanalytics/shinyproxy
 docker pull quay.io/keycloak/keycloak
 ```
 
-* Setup docker swarm
+* Setup Docker swarm
 
 ``` bash
 docker swarm init
@@ -98,7 +98,7 @@ docker swarm join-token worker
 docker swarm join-token manager
 ```
 
-* Create docker networks
+* Create Docker networks
 
 ```{Bash}
 docker network create --driver=overlay sp-net
