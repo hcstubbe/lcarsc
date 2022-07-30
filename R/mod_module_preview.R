@@ -75,16 +75,32 @@ mod_module_preview_server <- function(id){
 
     # Launch module servers ----
     # Module in Tab 1
-    mod_module_new_pat_server(id = "mod_module_new_pat_test",
-                              visit_id = "vi",
-                              data_table = "inclusion_dataset",
-                              preview = TRUE)
+    tryCatch(
+      mod_module_new_pat_server(id = "mod_module_new_pat_test",
+                                visit_id = "vi",
+                                data_table = "inclusion_dataset",
+                                preview = TRUE)
+      ,
+      error = function(e) {
+        showNotification(paste0("Starting submodule failed: ", e), duration = 300, type = "error")
+        return(NULL)
+      }
+    )
+
 
     # Module in Tab 2
-    mod_module_documentation_server(id = "mod_module_documentation_test",
-                                    data_table1 = "inclusion_dataset",
-                                    data_table2 = "scientific_dataset",
-                                    preview = TRUE)
+    tryCatch(
+      mod_module_documentation_server(id = "mod_module_documentation_test",
+                                      data_table1 = "inclusion_dataset",
+                                      data_table2 = "scientific_dataset",
+                                      preview = TRUE)
+      ,
+      error = function(e) {
+        showNotification(paste0("Starting submodule failed: ", e), duration = 300, type = "error")
+        return(NULL)
+      }
+    )
+
 
   })
 }

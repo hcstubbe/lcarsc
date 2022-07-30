@@ -162,10 +162,26 @@ mod_module_launcher_server <- function(id){
     if(get_golem_options("user_is_admin")){
 
       # Admin module
-      mod_module_admin_server("module_admin_1")
+      tryCatch(
+        mod_module_admin_server("module_admin_1")
+        ,
+        error = function(e) {
+          showNotification(paste0("Starting submodule Admin failed: ", e), duration = 300, type = "error")
+          return(NULL)
+        }
+      )
+
 
       # Module for basic data analysis
-      mod_module_data_center_server("module_data_center_1")
+      tryCatch(
+        mod_module_data_center_server("module_data_center_1")
+        ,
+        error = function(e) {
+          showNotification(paste0("Starting submodule data center failed: ", e), duration = 300, type = "error")
+          return(NULL)
+        }
+      )
+
     }
 
   })
