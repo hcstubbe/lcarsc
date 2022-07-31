@@ -10,18 +10,41 @@
 #' @import dplyr
 mod_module_documentation_ui  <- function(id) {
   ns = NS(id)
+  widget_data_input = load_widget_data(pool_config = golem::get_golem_options("pool_config"),
+                                       production_mode = golem::get_golem_options("production_mode"))
+  visit_choices = widget_data_input$visit_choices
   tagList(
     fluidRow(
       column(5,
-             box(title = (internal_app_data$lang_sel$module_documentation_pt_list_title), width = 12, status = "primary", solidHeader = TRUE,
-                 actionButton(ns("update_pull_user"), label = internal_app_data$lang_sel$update_pull, icon("sync", verify_fa = FALSE)),
-                 checkboxInput(inputId = ns("show_preliminary"), label = "Show preliminary"),
+             box(title = (internal_app_data$lang_sel$module_documentation_pt_list_title),
+                 width = 12,
+                 status = "primary",
+                 solidHeader = TRUE,
+                 actionButton(ns("update_pull_user"),
+                              label = internal_app_data$lang_sel$update_pull,
+                              icon("sync",
+                                   verify_fa = FALSE)),
+                 checkboxInput(inputId = ns("show_preliminary"),
+                               label = "Show preliminary"),
                  br(),
                  br(),
                  br(),
                  DT::dataTableOutput(ns("responses_user")))
       ),
       column(7,
+             shinydashboard::box(
+               title = (internal_app_data$lang_sel$module_documentation_visit_menu_choices),
+               width = 12,
+               status = "primary",
+               solidHeader = TRUE,
+               collapsible = TRUE,
+               collapsed = FALSE,
+               selectInput(
+                 inputId = ns("visit_selector"),
+                 label = internal_app_data$lang_sel$module_documentation_visit_selector,
+                 choices = c(visit_choices)
+               )
+             ),
              uiOutput(ns("visit_submission_panel")),
              br(),
              br(),
@@ -141,38 +164,38 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                                             rv_in = rv_downstream_summary,
                                             preview = preview)
 
-    # Diagnoses field
-    rv_downstream_diag = reactiveValues()
-    rv_downstream_diag$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
-    if(settgins_data$add_diagnoses_panel == TRUE){
-      mod_module_edit_tab_server(id = "mod_module_edit_tab_diag",
-                                 widget_tab_selection = "diagnosis",
-                                 tbl_id = "diagnoses_table",
-                                 rv_in = rv_downstream_diag,
-                                 show_vals = c(Diagnosis = "diag_name", Start = "diag_start", End = "diag_end", Submitted = "submitted_row"),
-                                 widgets_table_global = widgets_table_global,
-                                 all_visits = all_visits,
-                                 visit_id = "diagnosis",
-                                 order.by = NULL,
-                                 preview = preview
-      )
-    }
-
-    # Medication field
-    if(settgins_data$add_medication_panel == TRUE){
-      rv_downstream_med = reactiveValues()
-      rv_downstream_med$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
-      mod_module_edit_tab_server(id = "mod_module_edit_tab_med",
-                                 widget_tab_selection = "medication",
-                                 tbl_id = "medication_table",
-                                 rv_in = rv_downstream_med,
-                                 show_vals = c(Substance = "med_substance", Dosis = "med_dosing", 'Application route' = "med_route", Start = "med_start", End = "med_end", Submitted = "submitted_row"),
-                                 widgets_table_global = widgets_table_global,
-                                 all_visits = all_visits,
-                                 visit_id = "medication",
-                                 order.by = NULL,
-                                 preview = preview)
-    }
+    # # Diagnoses field
+    # rv_downstream_diag = reactiveValues()
+    # rv_downstream_diag$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
+    # if(settgins_data$add_diagnoses_panel == TRUE){
+    #   mod_module_edit_tab_server(id = "mod_module_edit_tab_diag",
+    #                              widget_tab_selection = "diagnosis",
+    #                              tbl_id = "diagnoses_table",
+    #                              rv_in = rv_downstream_diag,
+    #                              show_vals = c(Diagnosis = "diag_name", Start = "diag_start", End = "diag_end", Submitted = "submitted_row"),
+    #                              widgets_table_global = widgets_table_global,
+    #                              all_visits = all_visits,
+    #                              visit_id = "diagnosis",
+    #                              order.by = NULL,
+    #                              preview = preview
+    #   )
+    # }
+    #
+    # # Medication field
+    # if(settgins_data$add_medication_panel == TRUE){
+    #   rv_downstream_med = reactiveValues()
+    #   rv_downstream_med$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
+    #   mod_module_edit_tab_server(id = "mod_module_edit_tab_med",
+    #                              widget_tab_selection = "medication",
+    #                              tbl_id = "medication_table",
+    #                              rv_in = rv_downstream_med,
+    #                              show_vals = c(Substance = "med_substance", Dosis = "med_dosing", 'Application route' = "med_route", Start = "med_start", End = "med_end", Submitted = "submitted_row"),
+    #                              widgets_table_global = widgets_table_global,
+    #                              all_visits = all_visits,
+    #                              visit_id = "medication",
+    #                              order.by = NULL,
+    #                              preview = preview)
+    # }
 
 
     # Samples field
@@ -227,32 +250,30 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
         div(
           shinydashboard::box(
             title = (internal_app_data$lang_sel$module_documentation_visit_menu),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE,
-            wellPanel(
-              selectInput(
-                inputId = ns("visit_selector"),
-                label = internal_app_data$lang_sel$module_documentation_visit_selector,
-                choices = c(visit_choices)
-              )
-            ),
             uiOutput(ns("docu_tab_ui"))
           ),
-          if(settgins_data$add_diagnoses_panel == TRUE){
-            shinydashboard::box(
-              title = (internal_app_data$lang_sel$module_documentation_diagnoses_info), width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
-              #strong(internal_app_data$lang_sel$module_documentation_diagnoses_info),
-              mod_module_edit_tab_ui(ns("mod_module_edit_tab_diag"))
-            )
-          },
-          if(settgins_data$add_medication_panel == TRUE){
-            box(
-              title = (internal_app_data$lang_sel$module_documentation_medication_info), width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
-              #strong(internal_app_data$lang_sel$module_documentation_medication_info),
-              mod_module_edit_tab_ui(ns("mod_module_edit_tab_med"))
-            )
-          },
+          # if(settgins_data$add_diagnoses_panel == TRUE){
+          #   shinydashboard::box(
+          #     title = (internal_app_data$lang_sel$module_documentation_diagnoses_info), width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+          #     #strong(internal_app_data$lang_sel$module_documentation_diagnoses_info),
+          #     mod_module_edit_tab_ui(ns("mod_module_edit_tab_diag"))
+          #   )
+          # },
+          # if(settgins_data$add_medication_panel == TRUE){
+          #   box(
+          #     title = (internal_app_data$lang_sel$module_documentation_medication_info), width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+          #     #strong(internal_app_data$lang_sel$module_documentation_medication_info),
+          #     mod_module_edit_tab_ui(ns("mod_module_edit_tab_med"))
+          #   )
+          # },
           if(settgins_data$add_samples_panel == TRUE){
-            box(
-              title = ("Samples"),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
+            shinydashboard::box(
+              title = ("Samples"),
+              width = 12,
+              status = "warning",
+              solidHeader = TRUE,
+              collapsible = TRUE,
+              collapsed = TRUE,
               #strong(internal_app_data$lang_sel$module_documentation_medication_info),
               mod_module_edit_tab_ui(ns("mod_module_edit_tab_smp"))
             )
