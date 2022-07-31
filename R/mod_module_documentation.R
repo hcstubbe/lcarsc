@@ -12,7 +12,9 @@ mod_module_documentation_ui  <- function(id) {
   ns = NS(id)
   widget_data_input = load_widget_data(pool_config = golem::get_golem_options("pool_config"),
                                        production_mode = golem::get_golem_options("production_mode"))
-  visit_choices = widget_data_input$visit_choices
+  all_visits = widget_data_input$all_visits
+  visit_choices = all_visits$visit_id[!all_visits$inclusion_other_visit]
+  names(visit_choices) = all_visits$visit_title[!all_visits$inclusion_other_visit]
   tagList(
     fluidRow(
       column(5,
@@ -243,13 +245,16 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     })
 
     # Render menu when participant is selected
-    names(visit_choices) = all_visits$visit_title[!all_visits$inclusion_other_visit]
     output$visit_submission_panel = renderUI({
 
       if(length(input$responses_user_rows_selected) == 1){
         div(
           shinydashboard::box(
-            title = (internal_app_data$lang_sel$module_documentation_visit_menu),width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = FALSE,
+            title = (paste(internal_app_data$lang_sel$module_documentation_visit_menu, sep = " ")),
+            width = 12, status = "warning",
+            solidHeader = TRUE,
+            collapsible = TRUE,
+            collapsed = FALSE,
             uiOutput(ns("docu_tab_ui"))
           ),
           # if(settgins_data$add_diagnoses_panel == TRUE){
@@ -270,7 +275,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
             shinydashboard::box(
               title = ("Samples"),
               width = 12,
-              status = "warning",
+              status = "primary",
               solidHeader = TRUE,
               collapsible = TRUE,
               collapsed = TRUE,
