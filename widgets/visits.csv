@@ -1,6 +1,6 @@
-order,visit_id,visit_title,General,Signs...Symptoms,choicesFromVar,inclusion_other_visit,inclusion_criteria
-0,vi,Inclusion,FALSE,FALSE,NA,TRUE,TRUE
-100,v_mobile,Mobile visit,TRUE,TRUE,NA,FALSE,FALSE
-NA,diagnosis,Diagnosis,FALSE,FALSE,NA,TRUE,FALSE
-NA,medication,Medication,FALSE,FALSE,NA,TRUE,FALSE
-NA,samples,Samples,FALSE,FALSE,NA,TRUE,FALSE
+order,visit_id,visit_title,General,Signs...Symptoms,choicesFromVar,inclusion_other_visit,inclusion_criteria,is_child,parent_ids
+0,vi,Inclusion,FALSE,FALSE,NA,TRUE,TRUE,FALSE,
+100,v_mobile,Mobile visit,TRUE,TRUE,NA,FALSE,FALSE,FALSE,
+NA,diagnosis,Diagnosis,FALSE,FALSE,NA,TRUE,FALSE,FALSE,
+NA,medication,Medication,FALSE,FALSE,NA,TRUE,FALSE,FALSE,
+NA,samples,Samples,FALSE,FALSE,NA,TRUE,FALSE,FALSE,
