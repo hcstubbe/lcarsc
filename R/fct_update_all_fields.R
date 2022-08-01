@@ -51,7 +51,7 @@ update_all_fields = function(session, db_data, widget_data){
     }
 
 
-    # This updates the checkbox input for the entry_ids
+    # This updates the checkboxGroupInputFromDatabase input for the entry_ids
     if(widget_type == "checkboxGroupInput" | widget_type == "checkboxGroupInputFromDatabase"){
       selected = db_data[,x]
       if(sum(!is.na(selected)) == 0){
