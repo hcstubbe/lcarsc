@@ -134,7 +134,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
     # Select non-inclusion visits
-    ordered_visits = ordered_visits %>% filter(visit_id != "vi")
+    ordered_visits = ordered_visits %>% filter(visit_id != "vi" & is_child == FALSE)
 
 
 

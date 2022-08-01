@@ -17,15 +17,18 @@ make_widget_tables = function(pool,
   # Read input widget data
   visits = dbReadTable(pool, "editor_table_visit") %>%
     filter(deleted_row == FALSE) %>%
-    select(order, visit_id_visits , visit_title) %>%
-    rbind(list(order = NA, visit_id_visits = "diagnosis", visit_title = "Diagnosis")) %>%
-    rbind(list(order = NA, visit_id_visits = "medication", visit_title = "Medication")) %>%
-    rbind(list(order = NA, visit_id_visits = "samples", visit_title = "Samples")) %>%
+    select(order, visit_id_visits , visit_title, is_child, parent_ids) %>%
+    rbind(list(order = NA, visit_id_visits = "samples", visit_title = "Samples", is_child = FALSE, parent_ids = NA)) %>%
     arrange(order)
 
   # Force inclusion visit
   if(!any(visits$visit_id_visits == "vi")){
-    visits = rbind(list(order = 0, visit_id_visits = "vi", visit_title = "Inclusion"), visits)
+    visits = rbind(list(order = 0, visit_id_visits = "vi", visit_title = "Inclusion", is_child = FALSE, parent_ids = NA), visits)
+  }
+
+  # Set NA values from is_child to FALSE
+  if(any(is.na(visits$is_child))){
+    visits$is_child[is.na(visits$is_child)] = FALSE
   }
 
 
