@@ -117,6 +117,8 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
       )
     }
 
+
+    # This is to manage the checkboxGroupInputFromDatabase of the editor
     if(widget_data$type[i] == "checkboxGroupInputFromDatabase" & widget_data$conditional[i] == FALSE){
       if(is.na(widget_data$tbl_id[[i]]) | widget_data$tbl_id[[i]] == ""){
         pool = get_golem_options("pool")
@@ -142,6 +144,9 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
                   widget_data$choice12[[i]],
                   choices)
       choices = choices[!grepl(";;;;;", choices)] # Remove double entries from database
+      if(length(!choices == widget_data$visit_id[i]) > 0 ){
+        choices = choices[!choices == widget_data$visit_id[i]] # remove choices ideitcal with inputId
+      }
       choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
       names(choices) = choices
       wlist_i = list(checkboxGroupInput(inputId = ns(widget_data$inputId[i]),
