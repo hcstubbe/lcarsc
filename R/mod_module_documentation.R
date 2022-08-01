@@ -12,9 +12,10 @@ mod_module_documentation_ui  <- function(id) {
   ns = NS(id)
   widget_data_input = load_widget_data(pool_config = golem::get_golem_options("pool_config"),
                                        production_mode = golem::get_golem_options("production_mode"))
-  all_visits = widget_data_input$all_visits
-  visit_choices = all_visits$visit_id[!all_visits$inclusion_other_visit]
-  names(visit_choices) = all_visits$visit_title[!all_visits$inclusion_other_visit]
+  ordered_visits = widget_data_input$ordered_visits
+  ordered_visits = ordered_visits %>% filter(visit_id != "vi" & is_child == FALSE & !is.na(is_child))
+  visit_choices = ordered_visits$visit_id
+  names(visit_choices) = ordered_visits$visit_title
   tagList(
     fluidRow(
       column(5,
@@ -105,7 +106,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 	widgets_table_global = widget_data_input$widgets_table_global
 	all_visits = widget_data_input$all_visits
 	all_tabs = widget_data_input$all_tabs
-    ordered_visits = widget_data_input$ordered_visits
+  ordered_visits = widget_data_input$ordered_visits
 	visit_choices = widget_data_input$visit_choices
 
 	rv_downstream = reactiveValues()
@@ -134,7 +135,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
     # Select non-inclusion visits
-    ordered_visits = ordered_visits %>% filter(visit_id != "vi" & is_child == FALSE)
+    ordered_visits = ordered_visits %>% filter(visit_id != "vi" & is_child == FALSE & !is.na(is_child))
 
 
 
