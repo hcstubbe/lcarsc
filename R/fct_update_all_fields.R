@@ -9,7 +9,7 @@
 #' @importFrom shiny updateTextInput updateNumericInput updateSelectInput updateRadioButtons
 #' @importFrom shinyWidgets updateAirDateInput
 #'
-update_all_fields = function(session, db_data, widget_data){
+update_all_fields = function(session, db_data, widget_data, tbl_id = NULL){
 
   widget_ids = widget_data$inputId
 
@@ -52,15 +52,18 @@ update_all_fields = function(session, db_data, widget_data){
 
 
     # This updates the checkboxGroupInputFromDatabase input for the entry_ids
-    if(widget_type == "checkboxGroupInput" | widget_type == "checkboxGroupInputFromDatabase"){
+    if(widget_type == "checkboxGroupInputFromDatabase" & x == "parent_ids"){
       selected = db_data[,x]
-      if(sum(!is.na(selected)) == 0){
-        return()
-      }else{
-        selected = unlist(strsplit(x = selected, split = ";;;;;"))
-        shiny::updateCheckboxGroupInput(inputId = x, session = session, selected = selected)
-      }
-
+      selected_choicesFromVar = (widget_data %>% filter(inputId == x))$choicesFromVar
+      pool = get_golem_options("pool")
+      sql_df = loadData(pool, tbl_id) %>% filter(deleted_row == FALSE)
+      all_values = sql_df[order(sql_df$order),selected_choicesFromVar]
+      selected_value = db_data[,selected_choicesFromVar]
+      choices = all_values[!all_values %in% selected_value]
+      choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
+      names(choices) = choices
+      selected = unlist(strsplit(x = selected, split = ";;;;;"))
+      shiny::updateCheckboxGroupInput(inputId = x, session = session, selected = selected, choices = choices)
     }
 
     if(widget_type == "radioButtons"){
