@@ -135,7 +135,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
     # Select non-inclusion visits
-    ordered_visits = ordered_visits %>% filter(visit_id != "vi" & is_child == FALSE & !is.na(is_child))
+    ordered_visits_parent = ordered_visits %>% filter(visit_id != "vi" & (is_child == FALSE | is.na(is_child)))
 
 
 
@@ -143,7 +143,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     rv_downstream_visit = reactiveValues()
     rv_downstream_visit$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
 
-    for(i in ordered_visits$visit_id){
+    for(i in ordered_visits_parent$visit_id){
       cmd_4_eval = paste("mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
                              widget_tab_selection = 'visit',
                              tbl_id = paste('visit_table', '", i, "', sep = '_'),
@@ -167,38 +167,29 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                                             rv_in = rv_downstream_summary,
                                             preview = preview)
 
-    # # Diagnoses field
-    # rv_downstream_diag = reactiveValues()
-    # rv_downstream_diag$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
-    # if(settgins_data$add_diagnoses_panel == TRUE){
-    #   mod_module_edit_tab_server(id = "mod_module_edit_tab_diag",
-    #                              widget_tab_selection = "diagnosis",
-    #                              tbl_id = "diagnoses_table",
-    #                              rv_in = rv_downstream_diag,
-    #                              show_vals = c(Diagnosis = "diag_name", Start = "diag_start", End = "diag_end", Submitted = "submitted_row"),
-    #                              widgets_table_global = widgets_table_global,
-    #                              all_visits = all_visits,
-    #                              visit_id = "diagnosis",
-    #                              order.by = NULL,
-    #                              preview = preview
-    #   )
-    # }
-    #
-    # # Medication field
-    # if(settgins_data$add_medication_panel == TRUE){
-    #   rv_downstream_med = reactiveValues()
-    #   rv_downstream_med$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
-    #   mod_module_edit_tab_server(id = "mod_module_edit_tab_med",
-    #                              widget_tab_selection = "medication",
-    #                              tbl_id = "medication_table",
-    #                              rv_in = rv_downstream_med,
-    #                              show_vals = c(Substance = "med_substance", Dosis = "med_dosing", 'Application route' = "med_route", Start = "med_start", End = "med_end", Submitted = "submitted_row"),
-    #                              widgets_table_global = widgets_table_global,
-    #                              all_visits = all_visits,
-    #                              visit_id = "medication",
-    #                              order.by = NULL,
-    #                              preview = preview)
-    # }
+
+
+
+
+    # Select non-inclusion child visits
+    ordered_visits_child = ordered_visits %>% filter(visit_id != "vi" & is_child == TRUE & !is.na(is_child))
+    for(i in ordered_visits_child$visit_id){
+      cmd_4_eval = paste("mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
+                             widget_tab_selection = 'visit',
+                             tbl_id = paste('visit_table', '", i, "', sep = '_'),
+                             rv_in = rv_downstream_visit,
+                             show_vals = c(PID = 'pid', Date = 'date_modified', Visit = 'visit_id', Submitted = 'submitted_row'),
+                             simple = FALSE,
+                             modal_width = '.modal-dialog{ width:95%}',
+                             widgets_table_global = widgets_table_global[widgets_table_global[,i],],
+                             all_tabs = all_tabs,
+                             order.by = NULL,
+                             preview = preview,
+                             all_visits = all_visits,
+                             visit_id = '", i, "')", sep = "")
+      eval(parse(text = cmd_4_eval))
+    }
+
 
 
     # Samples field
@@ -245,8 +236,23 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
       mod_module_edit_tab_ui(id = ns(paste("mod_module_edit_tab_visit", input$visit_selector, sep = "_")))
     })
 
+
     # Render menu when participant is selected
     output$visit_submission_panel = renderUI({
+
+      # Create child visit UIs
+      ui_list = list()
+      for ( i in 1:nrow(ordered_visits_child) ) {
+        ui_x = shinydashboard::box(
+          title = (paste(internal_app_data$lang_sel$module_documentation_visit_menu, sep = " ")),
+          width = 12, status = "warning",
+          solidHeader = TRUE,
+          collapsible = TRUE,
+          collapsed = FALSE,
+          mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',ordered_visits_child$visit_id[i], sep = '_'))))
+        ui_list = c(ui_list, ui_x)
+      }
+
 
       if(length(input$responses_user_rows_selected) == 1){
         div(
@@ -258,20 +264,10 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
             collapsed = FALSE,
             uiOutput(ns("docu_tab_ui"))
           ),
-          # if(settgins_data$add_diagnoses_panel == TRUE){
-          #   shinydashboard::box(
-          #     title = (internal_app_data$lang_sel$module_documentation_diagnoses_info), width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
-          #     #strong(internal_app_data$lang_sel$module_documentation_diagnoses_info),
-          #     mod_module_edit_tab_ui(ns("mod_module_edit_tab_diag"))
-          #   )
-          # },
-          # if(settgins_data$add_medication_panel == TRUE){
-          #   box(
-          #     title = (internal_app_data$lang_sel$module_documentation_medication_info), width = 12, status = "warning", solidHeader = TRUE, collapsible = TRUE, collapsed = TRUE,
-          #     #strong(internal_app_data$lang_sel$module_documentation_medication_info),
-          #     mod_module_edit_tab_ui(ns("mod_module_edit_tab_med"))
-          #   )
-          # },
+
+          ui_list,
+
+
           if(settgins_data$add_samples_panel == TRUE){
             shinydashboard::box(
               title = ("Samples"),
