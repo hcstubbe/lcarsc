@@ -41,7 +41,7 @@ format_input_for_database = function(input_data,
   choicesFromVar = names(choicesFromVar) %in% colnames(input_data) & choicesFromVar
   if(any(choicesFromVar)){
     for(i in which(choicesFromVar)){
-      if(input_data[,widgets_table$choicesFromVar[i]] != ""){
+      if(input_data[,widgets_table$choicesFromVar[i]] != "" & widgets_table$type[i] != "checkboxGroupInputFromDatabase"){
         input_data[,widgets_table$inputId[i]] = input_data[,widgets_table$choicesFromVar[i]]
       }
     }

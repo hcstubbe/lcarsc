@@ -50,6 +50,19 @@ update_all_fields = function(session, db_data, widget_data){
       shiny::updateSelectInput(inputId = x, session = session, selected = selected)
     }
 
+
+    # This updates the checkbox input for the entry_ids
+    if(widget_type == "checkboxGroupInput" | widget_type == "checkboxGroupInputFromDatabase"){
+      selected = db_data[,x]
+      if(sum(!is.na(selected)) == 0){
+        return()
+      }else{
+        selected = unlist(strsplit(x = selected, split = ";;;;;"))
+        shiny::updateCheckboxGroupInput(inputId = x, session = session, selected = selected)
+      }
+
+    }
+
     if(widget_type == "radioButtons"){
       selected = db_data[,x]
       if(is.null(selected)){

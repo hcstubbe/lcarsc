@@ -1,7 +1,7 @@
 ## code to prepare `lang_sel` dataset goes here
 
 lang_en = list(
-  app_title ="R-eCRF",
+  app_title ="LCARS-C",
   module_documentation_diagnoses = "Diagnoses",
   module_documentation_diagnoses_info = "Add/update diagnoses",
   module_documentation_medication = "Medication",

@@ -354,6 +354,16 @@ mod_module_edit_tab_server<- function(id,
                     function(x) input[[x]],
                     simplify = FALSE,
                     USE.NAMES = TRUE)
+      input_data = sapply(input_data,
+                          function(x) {
+                            if(length(x) > 1){
+                              paste(x, collapse = ";;;;;") # Collapse inputs with length > 1 (e.g. from checkboxGroupInput())
+                              }else{
+                                x
+                              }
+                            },
+                          simplify = FALSE,
+                          USE.NAMES = FALSE)
       input_data = format_input_for_database(input_data = input_data,
                                        pid = rv_in$pid(),
                                        input_uuid = rv_uiid$new_uiid,
