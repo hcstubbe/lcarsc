@@ -276,9 +276,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
     # Render child visit UIs
     output$ui_cild_visits = renderUI({
-      if(length(input$responses_user_rows_selected) == 1 & any(sapply(reactiveValuesToList(rv_out_row), function(x) length(x() > 0)))){
-        x = rv_out_row$row_selected_v_bl()
-        saveRDS(x, "zz_x.RDS")
+      if(length(input$responses_user_rows_selected) == 1 & length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)){
         ui_list = list()
         for ( i in 1:nrow(ordered_visits_child) ) {
           ui_x = ui_x = mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',ordered_visits_child$visit_id[i], sep = '_')))
