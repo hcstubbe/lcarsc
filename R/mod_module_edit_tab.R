@@ -27,10 +27,9 @@ mod_module_edit_tab_ui <- function(id) {
       br(),
       fluidRow(width="100%",
                DT::dataTableOutput(ns("responses_table"), width = "100%")
-      )
+      ),
+      fluidRow(uiOutput(ns("testing1")))
     )
-    ,
-    uiOutput(ns("testing1"))
   )
 }
 

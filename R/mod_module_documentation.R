@@ -18,7 +18,20 @@ mod_module_documentation_ui  <- function(id) {
   names(visit_choices) = ordered_visits$visit_title
   tagList(
     fluidRow(
-      column(5,
+      column(4,
+             shinydashboard::box(
+               title = (internal_app_data$lang_sel$module_documentation_visit_menu_choices),
+               width = 12,
+               status = "primary",
+               solidHeader = TRUE,
+               collapsible = TRUE,
+               collapsed = FALSE,
+               selectInput(
+                 inputId = ns("visit_selector"),
+                 label = internal_app_data$lang_sel$module_documentation_visit_selector,
+                 choices = c(visit_choices)
+               )
+             ),
              box(title = (internal_app_data$lang_sel$module_documentation_pt_list_title),
                  width = 12,
                  status = "primary",
@@ -34,20 +47,7 @@ mod_module_documentation_ui  <- function(id) {
                  br(),
                  DT::dataTableOutput(ns("responses_user")))
       ),
-      column(7,
-             shinydashboard::box(
-               title = (internal_app_data$lang_sel$module_documentation_visit_menu_choices),
-               width = 12,
-               status = "primary",
-               solidHeader = TRUE,
-               collapsible = TRUE,
-               collapsed = FALSE,
-               selectInput(
-                 inputId = ns("visit_selector"),
-                 label = internal_app_data$lang_sel$module_documentation_visit_selector,
-                 choices = c(visit_choices)
-               )
-             ),
+      column(5,
              uiOutput(ns("visit_submission_panel")),
              br(),
              br(),
@@ -237,23 +237,25 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     })
 
 
-    # Render menu when participant is selected
-    output$visit_submission_panel = renderUI({
-
-      # Create child visit UIs
+    # Create child visit UIs
+    output$ui_cild_visits = renderUI({
       ui_list = list()
       for ( i in 1:nrow(ordered_visits_child) ) {
-        ui_x = shinydashboard::box(
-          title = (paste(internal_app_data$lang_sel$module_documentation_visit_menu, sep = " ")),
-          width = 12, status = "warning",
-          solidHeader = TRUE,
-          collapsible = TRUE,
-          collapsed = FALSE,
-          mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',ordered_visits_child$visit_id[i], sep = '_'))))
+        ui_x = ui_x = mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',ordered_visits_child$visit_id[i], sep = '_')))
         ui_list = c(ui_list, ui_x)
       }
+      lapply(ui_list, function(x) div(shinydashboard::box(
+        title = (paste(internal_app_data$lang_sel$module_documentation_visit_menu, sep = " ")),
+        width = 12, status = "warning",
+        solidHeader = TRUE,
+        collapsible = TRUE,
+        collapsed = FALSE,
+        x
+      )))
+    })
 
-
+    # Render menu when participant is selected
+    output$visit_submission_panel = renderUI({
       if(length(input$responses_user_rows_selected) == 1){
         div(
           shinydashboard::box(
@@ -265,8 +267,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
             uiOutput(ns("docu_tab_ui"))
           ),
 
-          ui_list,
-
+          uiOutput(ns("ui_cild_visits")),
 
           if(settgins_data$add_samples_panel == TRUE){
             shinydashboard::box(
