@@ -145,8 +145,9 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     rv_downstream_visit = reactiveValues()
     rv_downstream_visit$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
 
+    rv_out_row = reactiveValues()
     for(i in ordered_visits_parent$visit_id){
-      cmd_4_eval = paste("mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
+      cmd_4_eval = paste("rv_out_row$row_selected_", i, " = mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
                              widget_tab_selection = 'visit',
                              tbl_id = paste('visit_table', '", i, "', sep = '_'),
                              rv_in = rv_downstream_visit,
@@ -275,7 +276,9 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
     # Render child visit UIs
     output$ui_cild_visits = renderUI({
-      if(length(input$responses_user_rows_selected) == 1){
+      if(length(input$responses_user_rows_selected) == 1 & any(sapply(reactiveValuesToList(rv_out_row), function(x) length(x() > 0)))){
+        x = rv_out_row$row_selected_v_bl()
+        saveRDS(x, "zz_x.RDS")
         ui_list = list()
         for ( i in 1:nrow(ordered_visits_child) ) {
           ui_x = ui_x = mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',ordered_visits_child$visit_id[i], sep = '_')))
