@@ -17,7 +17,8 @@ format_input_for_database = function(input_data,
                                      create_sample_id,
                                      sample_id_name,
                                      noletters_smp_id,
-                                     tbl_id){
+                                     tbl_id,
+                                     entry_id){
 
   input_data = lapply(input_data, function(x){ # convert NULL to NA
     y = length(x)
@@ -92,6 +93,7 @@ format_input_for_database = function(input_data,
   input_data$date_modified = as.character(date())
   input_data$deleted_row = FALSE
   input_data$submitted_row = FALSE
+  input_data$entry_id = entry_id
 
   if(!is.null(input_data$inputId)){
     input_data$inputId = make.names(input_data$inputId)

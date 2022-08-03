@@ -351,6 +351,13 @@ mod_module_edit_tab_server<- function(id,
 
     ## Gather input data ----
     formData <- reactive({
+      if(is_child_visit == FALSE){
+        entry_id = paste(rv_in$pid(), visit_id, uuid::UUIDgenerate(), sep = "_")
+      }else{
+        db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
+        entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
+      }
+
       input_data = sapply(names(fieldsAll),
                     function(x) input[[x]],
                     simplify = FALSE,
@@ -375,7 +382,9 @@ mod_module_edit_tab_server<- function(id,
                                        create_sample_id = create_sample_id,
                                        sample_id_name = sample_id_name,
                                        tbl_id = tbl_id,
-                                       noletters_smp_id = noletters_smp_id)
+                                       noletters_smp_id = noletters_smp_id,
+                                       entry_id = entry_id
+                                       )
       input_data
     })
 
