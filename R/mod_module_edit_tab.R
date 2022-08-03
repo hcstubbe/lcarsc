@@ -351,13 +351,6 @@ mod_module_edit_tab_server<- function(id,
 
     ## Gather input data ----
     formData <- reactive({
-      if(is_child_visit == FALSE){
-        entry_id = paste(rv_in$pid(), visit_id, uuid::UUIDgenerate(), sep = "_")
-      }else{
-        db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
-        entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
-      }
-
       input_data = sapply(names(fieldsAll),
                     function(x) input[[x]],
                     simplify = FALSE,
@@ -382,8 +375,7 @@ mod_module_edit_tab_server<- function(id,
                                        create_sample_id = create_sample_id,
                                        sample_id_name = sample_id_name,
                                        tbl_id = tbl_id,
-                                       noletters_smp_id = noletters_smp_id,
-                                       entry_id = entry_id
+                                       noletters_smp_id = noletters_smp_id
                                        )
       input_data
     })
@@ -411,6 +403,13 @@ mod_module_edit_tab_server<- function(id,
       if (iv$is_valid()) {
         rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
         new_data = formData()
+        if(is_child_visit == FALSE){
+          entry_id = paste(visit_id, rv_in$pid(), uuid::UUIDgenerate(), sep = "_")
+        }else{
+          db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
+          entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
+        }
+        new_data$entry_id = entry_id
         dbAppendTable(pool, tbl_id, new_data)
         close()
 
@@ -556,6 +555,13 @@ mod_module_edit_tab_server<- function(id,
         SQL_df$date_modified = as.character(date())
         SQL_df$submitted_row = FALSE
         SQL_df$locked_row = FALSE
+        if(is_child_visit == FALSE){
+          entry_id = paste(visit_id, rv_in$pid(), uuid::UUIDgenerate(), sep = "_")
+        }else{
+          db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
+          entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
+        }
+        SQL_df$entry_id = entry_id
         if(create_new_pid){
           SQL_df$pid = randomIdGenerator(exisiting_IDs = loadData(pool, "inclusion_dataset")$pid)
         }
@@ -672,6 +678,7 @@ mod_module_edit_tab_server<- function(id,
         rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
         edited_data = formData()
         edited_data$pid = pid_selected
+        edited_data$entry_id = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "entry_id"]
         dbAppendTable(pool, tbl_id, edited_data)
 
         # Set old row as 'deleted_row = TRUE' and 'locked_row = FALSE'
