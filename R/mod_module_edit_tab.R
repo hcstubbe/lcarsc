@@ -65,7 +65,8 @@ mod_module_edit_tab_server<- function(id,
                                       editor_filter_visit_id = FALSE,
                                       show_preliminary = FALSE,
                                       use_move_order = FALSE,
-                                      keep_copy_order = TRUE) {
+                                      keep_copy_order = TRUE,
+                                      is_child_visit = FALSE) {
 
 
 
@@ -209,7 +210,8 @@ mod_module_edit_tab_server<- function(id,
     # Show row_id for testing
     output$testing1 = renderUI({
       div(paste(rv_table$rv_selection(), collapse = ", "),
-          paste0("PID: ", rv_in$pid())
+          paste0("PID: ", rv_in$pid(), ifelse(is_child_visit == TRUE, paste0("; parent_row_id: ", rv_in$parent_row_id(), "; parent_visit_id: ", rv_in$parent_visit_id()), "")
+          )
           # ,
           # br(),
           # br(),

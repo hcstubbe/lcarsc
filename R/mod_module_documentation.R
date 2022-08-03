@@ -175,6 +175,10 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
     # Select non-inclusion child visits
+
+    rv_downstream_visit$parent_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()})
+    rv_downstream_visit$parent_visit_id = reactive({input$visit_selector})
+
     ordered_visits_child = ordered_visits %>% filter(visit_id != "vi" & is_child == TRUE & !is.na(is_child))
     for(i in ordered_visits_child$visit_id){
       cmd_4_eval = paste("mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
@@ -189,6 +193,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              order.by = NULL,
                              preview = preview,
                              all_visits = all_visits,
+                             is_child_visit = TRUE,
                              visit_id = '", i, "')", sep = "")
       eval(parse(text = cmd_4_eval))
     }
