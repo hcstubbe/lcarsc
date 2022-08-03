@@ -62,6 +62,10 @@ update_all_fields = function(session, db_data, widget_data, tbl_id = NULL){
       choices = all_values[!all_values %in% selected_value]
       choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
       names(choices) = choices
+      # Remove child visits
+      pool = get_golem_options("pool")
+      all_visits = loadData(pool, "editor_table_visit") %>% filter(deleted_row == FALSE & is_child == FALSE)
+      choices = choices[choices %in% all_visits$visit_id_visits]
       selected = unlist(strsplit(x = selected, split = ";;;;;"))
       shiny::updateCheckboxGroupInput(inputId = x, session = session, selected = selected, choices = choices)
     }
