@@ -28,7 +28,8 @@ mod_module_edit_tab_ui <- function(id) {
       fluidRow(width="100%",
                DT::dataTableOutput(ns("responses_table"), width = "100%")
       ),
-      fluidRow(uiOutput(ns("testing1")))
+      fluidRow(uiOutput(ns("testing1"))),
+      fluidRow(DT::dataTableOutput(ns("testtab")))
     )
   )
 }
@@ -158,6 +159,13 @@ mod_module_edit_tab_server<- function(id,
 
 
     #### Render table and access entries from table ----
+
+    output$testtab <-DT::renderDT({
+      db_cmd = paste0("SELECT entry_id, row_id FROM ", tbl_id, " WHERE entry_id = '", rv_in$entry_id(), "'")
+      #saveRDS(db_cmd, "db_cmd.RDS")
+      data_x = (RMariaDB::dbGetQuery(pool, db_cmd))
+      datatable(data_x)
+    })
 
     # Get currently displayed table and currently selected row_id(s)
     rv_table = reactiveValues()
