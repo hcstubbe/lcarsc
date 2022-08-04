@@ -179,6 +179,12 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     rv_downstream_visit$parent_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()})
     rv_downstream_visit$parent_visit_id = reactive({input$visit_selector})
 
+    # rv_downstream_visit$entry_id = reactive({
+    #   db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', input$visit_selector, sep = '_'), " WHERE row_id = '", ((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])(), "'")
+    #   entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
+    #   entry_id
+    # })
+
     ordered_visits_child = ordered_visits %>% filter(visit_id != "vi" & is_child == TRUE & !is.na(is_child))
     for(i in ordered_visits_child$visit_id){
       cmd_4_eval = paste("mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
