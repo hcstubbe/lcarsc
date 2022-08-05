@@ -136,12 +136,9 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                     rownames = FALSE)}
 
 
-    # Select non-inclusion visits
+
+    # Edit module servers ----
     ordered_visits_parent = ordered_visits %>% filter(visit_id != "vi" & (is_child == FALSE | is.na(is_child)))
-
-
-
-    ## Start sub-module servers
     rv_downstream_visit = reactiveValues()
     rv_downstream_visit$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
 
@@ -164,6 +161,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     }
 
 
+    # Summary server ----
     rv_downstream_summary = reactiveValues()
     rv_downstream_summary$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
     mod_module_documentation_summary_server(id = "module_documentation_summary_1",
@@ -174,7 +172,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
 
-    # Select non-inclusion child visits
+    # Child visit servers ----
 
     rv_downstream_visit$parent_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()})
     rv_downstream_visit$parent_visit_id = reactive({input$visit_selector})
@@ -206,7 +204,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
 
-    # Samples field
+    # Samples field server ----
     if(settgins_data$add_samples_panel == TRUE){
 
       rv_downstream_smp = reactiveValues()
@@ -237,13 +235,14 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
       })
     })
 
+
+
     # Render UI elements ----
 
     ## Load data from database for included patients
     output$responses_user <- DT::renderDataTable({
       load_dt_for_render()
     })
-
 
     ##
     output$docu_tab_ui = renderUI({
@@ -252,7 +251,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
 
-    # Render menu when participant is selected
+    ## Render participant menu ----
     output$visit_submission_panel = renderUI({
       if(length(input$responses_user_rows_selected) == 1){
         div(
@@ -285,7 +284,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     })
 
 
-    # Render child visit UIs
+    ## Render child visit UIs ----
     output$ui_cild_visits = renderUI({
       if(length(input$responses_user_rows_selected) == 1 & length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)){
         ui_list = list()
