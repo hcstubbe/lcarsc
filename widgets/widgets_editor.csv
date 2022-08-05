@@ -1,8 +1,9 @@
 inputId,widget_tab,data_type,r_class,label,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choicesFromVar,tbl_id,widget,form_required,vi,v0,v1,vi_required,v0_required,v1_required,conditional,appear_if
 row_id,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 entry_id,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-entry_id_parent_visit,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-visit_id_parent_visit,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+entry_id_parent,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+visit_id_parent,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+is_child_entry,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 user_modified,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 editing_user,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 locked_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,

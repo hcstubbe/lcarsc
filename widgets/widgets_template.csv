@@ -1,8 +1,9 @@
 inputId,widget_tab,data_type,r_class,label,label_translation,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,subgroup,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choice8,choice9,choice10,choice11,choice12,choice1_translation,choice2_translation,choice3_translation,choice4_translation,choice5_translation,choice6_translation,choice7_translation,choice8_translation,choice9_translation,choice10_translation,choice11_translation,choice12_translation,widget,form_required,conditional,appear_if
 row_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
 entry_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-entry_id_parent_visit,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-visit_id_parent_visit,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+entry_id_parent,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+visit_id_parent,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+is_child_entry,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
 user_modified,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
 editing_user,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
 locked_row,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
@@ -33,9 +34,9 @@ med_comment,medication,TEXT,character,Comment,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,
 smp_acqusition_date,samples,TEXT,character,Acquisition date,,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
 smp_id,samples,TEXT,character,Sample ID,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,TRUE,FALSE,NA
 smp_origin_blood,samples,BOOLEAN,character,Origin: blood,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_amount_blood,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_blood 
+smp_amount_blood,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_blood
 smp_origin_saliva,samples,BOOLEAN,character,Origin: saliva,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_amount_saliva,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_saliva 
+smp_amount_saliva,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_saliva
 smp_origin_urine,samples,BOOLEAN,character,Origin: urine,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
 smp_amount_urine,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_urine
 smp_origin_stool,samples,BOOLEAN,character,Origin: stool,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA

@@ -38,7 +38,7 @@ db_read_select = function(pool,
             use.pid = if(use.pid == TRUE){paste0("pid = '", pid_x, "'")}else{NULL},
             filter_deleted_rows = if(filter_deleted_rows == TRUE){"deleted_row = 0"}else{NULL},
             filter_sumitted_rows = if(filter_sumitted_rows == TRUE){"submitted_row = 1"}else{NULL},
-            filter_entry_id = if(filter_entry_id == TRUE){paste0("entry_id = '", entry_id, "'")}else{NULL},
+            filter_entry_id = if(filter_entry_id == TRUE){paste0("entry_id_parent = '", entry_id, "'")}else{NULL},
             filter_origin = if(!is.null(filter_origin)){paste0("origin_of_var = '", filter_origin, "'")}else{NULL}
           )
     )

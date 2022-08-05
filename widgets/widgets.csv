@@ -1,8 +1,9 @@
 inputId,widget_tab,data_type,r_class,label,label_translation,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,subgroup,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choice8,choice9,choice10,choice11,choice12,choice1_translation,choice2_translation,choice3_translation,choice4_translation,choice5_translation,choice6_translation,choice7_translation,choice8_translation,choice9_translation,choice10_translation,choice11_translation,choice12_translation,widget,form_required,conditional,appear_if,vi,v_mobile,diagnosis,medication,samples
 row_id,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
 entry_id,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
-entry_id_parent_visit,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
-visit_id_parent_visit,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+entry_id_parent,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+visit_id_parent,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
+is_child_entry,all,BOOLEAN,logical,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
 user_modified,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
 editing_user,all,TEXT,character,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE
 locked_row,all,BOOLEAN,logical,,,0,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA,TRUE,TRUE,TRUE,TRUE,TRUE

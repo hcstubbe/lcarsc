@@ -28,8 +28,7 @@ mod_module_edit_tab_ui <- function(id) {
       fluidRow(width="100%",
                DT::dataTableOutput(ns("responses_table"), width = "100%")
       ),
-      fluidRow(uiOutput(ns("testing1"))),
-      fluidRow(DT::dataTableOutput(ns("testtab")))
+      fluidRow(uiOutput(ns("testing1")))
     )
   )
 }
@@ -162,13 +161,6 @@ mod_module_edit_tab_server<- function(id,
 
 
     #### Render table and access entries from table ----
-
-    output$testtab <-DT::renderDT({
-      db_cmd = paste0("SELECT entry_id, row_id FROM ", tbl_id, " WHERE entry_id = '", rv_in$entry_id(), "'")
-      #saveRDS(db_cmd, "db_cmd.RDS")
-      data_x = (RMariaDB::dbGetQuery(pool, db_cmd))
-      datatable(data_x)
-    })
 
     # Get currently displayed table and currently selected row_id(s)
     rv_table = reactiveValues()
@@ -400,7 +392,7 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    # Add row ----
+    # Add new row ----
     observeEvent(input$add_button, priority = 20,{
 
       entry_form(ns("submit"), visit_id, show_preliminary = show_preliminary)
@@ -423,11 +415,21 @@ mod_module_edit_tab_server<- function(id,
         new_data = formData()
         if(is_child_visit == FALSE){
           entry_id = paste(visit_id, rv_in$pid(), uuid::UUIDgenerate(), sep = "_")
+          entry_id_parent = NA
+          visit_id_parent = NA
+          is_child_entry = FALSE
         }else{
-          db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
-          entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
+          db_cmd = paste0("SELECT entry_id, visit_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
+          parent_data = RMariaDB::dbGetQuery(pool, db_cmd)
+          entry_id = NA
+          entry_id_parent = parent_data$entry_id
+          visit_id_parent = parent_data$visit_id
+          is_child_entry = TRUE
         }
         new_data$entry_id = entry_id
+        new_data$entry_id_parent = entry_id_parent
+        new_data$visit_id_parent = visit_id_parent
+        new_data$is_child_entry = is_child_entry
         dbAppendTable(pool, tbl_id, new_data)
         close()
 

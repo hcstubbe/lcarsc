@@ -189,7 +189,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              widget_tab_selection = 'visit',
                              tbl_id = paste('visit_table', '", i, "', sep = '_'),
                              rv_in = rv_downstream_visit,
-                             show_vals = c(PID = 'pid', entry_id = 'entry_id', Visit = 'visit_id', Submitted = 'submitted_row'),
+                             show_vals = c(PID = 'pid', entry_id_parent = 'entry_id_parent', visit_id = 'visit_id', visit_id_parent = 'visit_id_parent', Submitted = 'submitted_row'),
                              simple = FALSE,
                              modal_width = '.modal-dialog{ width:95%}',
                              widgets_table_global = widgets_table_global[widgets_table_global[,i],],
