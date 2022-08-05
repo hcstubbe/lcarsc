@@ -198,6 +198,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              preview = preview,
                              all_visits = all_visits,
                              is_child_visit = TRUE,
+                             filter_entry_id = TRUE,
                              visit_id = '", i, "')", sep = "")
       eval(parse(text = cmd_4_eval))
     }

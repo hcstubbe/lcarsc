@@ -67,7 +67,8 @@ mod_module_edit_tab_server<- function(id,
                                       show_preliminary = FALSE,
                                       use_move_order = FALSE,
                                       keep_copy_order = TRUE,
-                                      is_child_visit = FALSE) {
+                                      is_child_visit = FALSE,
+                                      filter_entry_id = FALSE) {
 
 
 
@@ -128,10 +129,12 @@ mod_module_edit_tab_server<- function(id,
       db_read_select(pool,
                      tbl_id,
                      pid = rv_in$pid(),
+                     entry_id = rv_in$entry_id(),
                      use.pid = !create_new_pid,
                      order.by = order.by,
                      order_desc = order_desc,
                      oder_by_date = oder_by_date,
+                     filter_entry_id = filter_entry_id,
                      filter_origin = filter_origin())
       }
 
@@ -189,11 +192,18 @@ mod_module_edit_tab_server<- function(id,
     proxy <- DT::dataTableProxy('responses_table')
 
 
-    # Observe changes in filter operations
+    ## Observe changes in filter operations ----
     observeEvent(rv_in$pid(), {
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
       DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE, rownames = FALSE)
     })
+
+    if(filter_entry_id == TRUE & is_child_visit == TRUE){
+      observeEvent(rv_in$entry_id(), {
+        rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
+        DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE, rownames = FALSE)
+      })
+    }
 
     observeEvent(filter_origin(), {
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})

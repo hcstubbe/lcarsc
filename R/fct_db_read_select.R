@@ -17,10 +17,42 @@ db_read_select = function(pool,
                           order.by = NULL,
                           filter_origin = NULL,
                           order_desc = FALSE,
-                          oder_by_date = FALSE){
+                          oder_by_date = FALSE,
+                          entry_id = NULL,
+                          filter_entry_id = FALSE,
+                          row_id = NULL){
 
 
-  tab_i = dbReadTable(pool, tbl_id)
+  # if(filter_entry_id == TRUE & length(entry_id) == 0){
+  #   return(NULL)
+  # }
+  #
+  # if(use.pid == TRUE & length(pid_x) == 0){
+  #   return(NULL)
+  # }
+
+
+  sql_params = if(is.null(row_id)){
+    paste(collapse = " AND ",
+          c(
+            use.pid = if(use.pid == TRUE){paste0("pid = '", pid_x, "'")}else{NULL},
+            filter_deleted_rows = if(filter_deleted_rows == TRUE){"deleted_row = 0"}else{NULL},
+            filter_sumitted_rows = if(filter_sumitted_rows == TRUE){"submitted_row = 1"}else{NULL},
+            filter_entry_id = if(filter_entry_id == TRUE){paste0("entry_id = '", entry_id, "'")}else{NULL},
+            filter_origin = if(!is.null(filter_origin)){paste0("origin_of_var = '", filter_origin, "'")}else{NULL}
+          )
+    )
+  }else{
+    paste0("row_id = '", row_id, "'")
+  }
+
+  if(sql_params != ""){
+    db_cmd = paste(sep = " ", "SELECT * FROM", tbl_id, "WHERE", sql_params)
+  }else{
+    db_cmd = paste(sep = " ", "SELECT * FROM", tbl_id)
+  }
+
+  tab_i = (RMariaDB::dbGetQuery(pool, db_cmd))
 
 
   if(!is.null(order.by)){
@@ -32,37 +64,6 @@ db_read_select = function(pool,
     new_order = order(new_order, decreasing = order_desc)
     tab_i = tab_i[new_order,]
   }
-
-
-  if(filter_deleted_rows == TRUE){
-    tab_i = tab_i %>% filter(deleted_row == FALSE)
-  }
-
-
-  if(filter_sumitted_rows == TRUE){
-    tab_i = tab_i %>% filter(submitted_row == TRUE)
-  }
-
-
-  if(use.pid == FALSE & is.null(filter_origin)){
-    return(tab_i)
-  }
-
-
-  if(!is.null(filter_origin)){
-    if(length(filter_origin) > 0){
-      tab_i = tab_i %>% filter(origin_of_var == filter_origin & deleted_row == FALSE)
-    }else{
-      tab_i = data.frame(origin = character(0))
-    }
-    return(tab_i)
-  }
-
-
-  if(length(pid_x) == 0){
-    return(NULL)
-  }
-  tab_i = tab_i %>% filter(pid == pid_x)
 
 
   return(tab_i)
