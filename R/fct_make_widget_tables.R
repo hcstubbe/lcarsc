@@ -15,7 +15,7 @@ make_widget_tables = function(pool,
 
 
   # Read input widget data
-  visits = dbReadTable(pool, "editor_table_visit") %>%
+  visits = RMariaDB::dbReadTable(pool, "editor_table_visit") %>%
     filter(deleted_row == FALSE) %>%
     select(order, visit_id_visits , visit_title, is_child, parent_ids) %>%
     rbind(list(order = NA, visit_id_visits = "samples", visit_title = "Samples", is_child = FALSE, parent_ids = NA)) %>%
