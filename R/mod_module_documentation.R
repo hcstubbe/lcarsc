@@ -137,7 +137,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
 
-    # Edit module servers ----
+    # Edit-module servers ----
     ordered_visits_parent = ordered_visits %>% filter(visit_id != "vi" & (is_child == FALSE | is.na(is_child)))
     rv_downstream_visit = reactiveValues()
     rv_downstream_visit$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
