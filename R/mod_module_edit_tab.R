@@ -27,8 +27,9 @@ mod_module_edit_tab_ui <- function(id) {
       br(),
       fluidRow(width="100%",
                DT::dataTableOutput(ns("responses_table"), width = "100%")
-      ),
-      fluidRow(uiOutput(ns("testing1")))
+      )
+      # ,
+      # fluidRow(uiOutput(ns("testing1")))
     )
   )
 }
@@ -217,17 +218,17 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    # Show row_id for testing
-    output$testing1 = renderUI({
-      div(paste(rv_table$rv_selection(), collapse = ", "),
-          paste0("PID: ", rv_in$pid(), ifelse(is_child_visit == TRUE, paste0("; parent_row_id: ", rv_in$parent_row_id(), "; parent_visit_id: ", rv_in$parent_visit_id()), "")
-          )
-          # ,
-          # br(),
-          # br(),
-          # paste(rv_table$rv_rtab()$row_id, collapse = ", ")
-          )
-    })
+    # # Show row_id for testing
+    # output$testing1 = renderUI({
+    #   div(paste(rv_table$rv_selection(), collapse = ", "),
+    #       paste0("PID: ", rv_in$pid(), ifelse(is_child_visit == TRUE, paste0("; parent_row_id: ", rv_in$parent_row_id(), "; parent_visit_id: ", rv_in$parent_visit_id()), "")
+    #       )
+    #       # ,
+    #       # br(),
+    #       # br(),
+    #       # paste(rv_table$rv_rtab()$row_id, collapse = ", ")
+    #       )
+    # })
 
 
 
