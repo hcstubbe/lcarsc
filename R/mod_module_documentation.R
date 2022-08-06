@@ -16,6 +16,10 @@ mod_module_documentation_ui  <- function(id) {
   ordered_visits = ordered_visits %>% filter(visit_id != "vi" & is_child == FALSE & !is.na(is_child))
   visit_choices = ordered_visits$visit_id
   names(visit_choices) = ordered_visits$visit_title
+
+  # Get settings data (fill with dummy data if it does not exist)
+  settgins_data = golem::get_golem_options("settings_data")
+
   tagList(
     fluidRow(
       column(4,
@@ -47,14 +51,14 @@ mod_module_documentation_ui  <- function(id) {
                  br(),
                  DT::dataTableOutput(ns("responses_user")))
       ),
-      column(4,
+      column(if(settgins_data$add_child_visits == TRUE){4}else{8},
              uiOutput(ns("visit_submission_panel")),
              br(),
              br(),
              mod_module_documentation_summary_ui(ns("module_documentation_summary_1"))
       ),
-      column(4,
-             uiOutput(ns("ui_cild_visits")))
+      if(settgins_data$add_child_visits == TRUE){column(4,
+             uiOutput(ns("ui_cild_visits")))}else{NULL}
     )
   )
 }
@@ -74,22 +78,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     pool = get_golem_options("pool")
 
 
-    # Fill settings data with dummy data if it does not exist
-    if(RMariaDB::dbExistsTable(get_golem_options("pool_config"), "server_settings_tbl")){
-      settgins_data = RMariaDB::dbReadTable(get_golem_options("pool_config"), "server_settings_tbl")
-    }else{
-      settgins_data = data.frame(add_diagnoses_panel = FALSE,
-                                 add_medication_panel = FALSE,
-                                 add_samples_panel = FALSE)
-    }
-    for(i in c("add_diagnoses_panel",
-               "add_medication_panel",
-               "add_samples_panel")){
-      if(is.null(settgins_data[,i])){
-        settgins_data[,i] = FALSE
-      }
-    }
-
+    # Get settings data
+    settgins_data = golem::get_golem_options("settings_data")
 
 
     # If the form is used for the preview, use local database
@@ -173,19 +163,19 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
     # Child visit servers ----
+    if(settgins_data$add_child_visits == TRUE){
+      rv_downstream_visit$parent_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()})
+      rv_downstream_visit$parent_visit_id = reactive({input$visit_selector})
 
-    rv_downstream_visit$parent_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()})
-    rv_downstream_visit$parent_visit_id = reactive({input$visit_selector})
+      rv_downstream_visit$entry_id = reactive({
+        db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', input$visit_selector, sep = '_'), " WHERE row_id = '", ((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])(), "'")
+        entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
+        entry_id
+      })
 
-    rv_downstream_visit$entry_id = reactive({
-      db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', input$visit_selector, sep = '_'), " WHERE row_id = '", ((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])(), "'")
-      entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
-      entry_id
-    })
-
-    ordered_visits_child = ordered_visits %>% filter(visit_id != "vi" & is_child == TRUE & !is.na(is_child))
-    for(i in ordered_visits_child$visit_id){
-      cmd_4_eval = paste("mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
+      ordered_visits_child = ordered_visits %>% filter(visit_id != "vi" & is_child == TRUE & !is.na(is_child))
+      for(i in ordered_visits_child$visit_id){
+        cmd_4_eval = paste("mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
                              widget_tab_selection = 'visit',
                              tbl_id = paste('visit_table', '", i, "', sep = '_'),
                              rv_in = rv_downstream_visit,
@@ -200,9 +190,9 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              is_child_visit = TRUE,
                              filter_entry_id = TRUE,
                              visit_id = '", i, "')", sep = "")
-      eval(parse(text = cmd_4_eval))
+        eval(parse(text = cmd_4_eval))
+      }
     }
-
 
 
     # Samples field server ----
@@ -284,26 +274,28 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
       }
     })
 
-
     ## Render child visit UIs ----
-    output$ui_cild_visits = renderUI({
-      if(length(input$responses_user_rows_selected) == 1 & length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)){
-        ui_list = list()
-        for ( i in 1:nrow(ordered_visits_child) ) {
-          ui_x = ui_x = mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',ordered_visits_child$visit_id[i], sep = '_')))
-          ui_list = c(ui_list, ui_x)
+    if(settgins_data$add_child_visits == TRUE){
+      output$ui_cild_visits = renderUI({
+        if(length(input$responses_user_rows_selected) == 1 & length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)){
+          ui_list = list()
+          for ( i in 1:nrow(ordered_visits_child) ) {
+            ui_x = ui_x = mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',ordered_visits_child$visit_id[i], sep = '_')))
+            ui_list = c(ui_list, ui_x)
+          }
+          lapply(1:length(ui_list), function(x) div(shinydashboard::box(
+            title = ordered_visits_child$visit_title[x],
+            width = 12,
+            status = "success",
+            solidHeader = FALSE,
+            collapsible = TRUE,
+            collapsed = FALSE,
+            ui_list[[x]]
+          )))
         }
-        lapply(1:length(ui_list), function(x) div(shinydashboard::box(
-          title = ordered_visits_child$visit_title[x],
-          width = 12,
-          status = "success",
-          solidHeader = FALSE,
-          collapsible = TRUE,
-          collapsed = FALSE,
-          ui_list[[x]]
-        )))
-      }
-    })
+      })
+    }
+
 
   })
 }

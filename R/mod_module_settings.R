@@ -23,8 +23,7 @@ mod_module_settings_ui <- function(id){
   tagList(
     fluidPage(
         shinydashboard::box(width = 12, status = "primary",title = "General settings", solidHeader = TRUE,
-                            checkboxInput(inputId = ns("add_diagnoses_panel"), label = "Add diagnoses panel"),
-                            checkboxInput(inputId = ns("add_medication_panel"), label = "Add medication panel"),
+                            checkboxInput(inputId = ns("add_child_visits"), label = "Add dependent/sub visits"),
                             checkboxInput(inputId = ns("add_samples_panel"), label = "Add samples panel"),
                             checkboxInput(inputId = ns("add_mobile_app"), label = "Add mobile app"),
                             checkboxInput(inputId = ns("enter_pid_manually"), label = "Enter PID manually before recording data with app"),
@@ -81,8 +80,7 @@ mod_module_settings_server <- function(id, rv){
 
     ## Gather input data ----
     form_input_bool_ids = c(
-                   "add_diagnoses_panel",
-                   "add_medication_panel",
+                   "add_child_visits",
                    "add_samples_panel",
                    "add_mobile_app",
                    "add_mobile_use_translation",

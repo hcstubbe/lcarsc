@@ -16,14 +16,14 @@ make_widget_tables = function(pool,
 
   # Read input widget data
   visits = RMariaDB::dbReadTable(pool, "editor_table_visit") %>%
-    filter(deleted_row == FALSE) %>%
-    select(order, visit_id_visits , visit_title, is_child, parent_ids) %>%
-    rbind(list(order = NA, visit_id_visits = "samples", visit_title = "Samples", is_child = FALSE, parent_ids = NA)) %>%
-    arrange(order)
+    dplyr::filter(deleted_row == FALSE) %>%
+    dplyr::select(order, visit_id_visits , visit_title, is_child, parent_ids) %>%
+    base::rbind(list(order = NA, visit_id_visits = "samples", visit_title = "Samples", is_child = FALSE, parent_ids = NA)) %>%
+    dplyr::arrange(order)
 
   # Force inclusion visit
   if(!any(visits$visit_id_visits == "vi")){
-    visits = rbind(list(order = 0, visit_id_visits = "vi", visit_title = "Inclusion", is_child = FALSE, parent_ids = NA), visits)
+    visits = base::rbind(list(order = 0, visit_id_visits = "vi", visit_title = "Inclusion", is_child = FALSE, parent_ids = NA), visits)
   }
 
   # Set NA values from is_child to FALSE
@@ -31,10 +31,29 @@ make_widget_tables = function(pool,
     visits$is_child[is.na(visits$is_child)] = FALSE
   }
 
+  visits$parent_ids = sapply(visits$parent_ids, function(x){
+    if(is.na(x)){
+      return(NA)
+    }else{
+      y = unlist(strsplit(x, ";;;;;"))
+      has_parent = y %in% visits$visit_id_visits[visits$is_child == FALSE]
+      if(any(has_parent) == FALSE){
+        return(NA)
+      }else if(all(has_parent)){
+        return(x)
+      }else{
+        x = y[has_parent]
+        if(length(x) == 0){
+          return(NA)
+        }
+        x = paste(collapse = ";;;;;", x)
+        return(x)
+      }
+    }
+  })
 
-
-  vars = dbReadTable(pool, "editor_table_vars") %>% filter(deleted_row == FALSE)%>%
-    arrange(order_of_var)
+  vars = RMariaDB::dbReadTable(pool, "editor_table_vars") %>% filter(deleted_row == FALSE)%>%
+    dplyr::arrange(order_of_var)
 
   # Determine which tabs are displayed for each visit
   visit_tabs = levels(as.factor(vars$panel))

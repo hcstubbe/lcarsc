@@ -77,6 +77,11 @@ run_app <- function(
                                                password = config_dbpassword,
                                                host = config_dbhost,
                                                db = config_dbname),
+                      settings_data = get_settings_data(pool_config = pool::dbPool(drv = config_database_driver,
+                                                                                   user = config_dbuser,
+                                                                                   password = config_dbpassword,
+                                                                                   host = config_dbhost,
+                                                                                   db = config_dbname)),
                       version = "1.0.30"
     )
   )
