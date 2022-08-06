@@ -144,7 +144,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              modal_width = '.modal-dialog{ width:95%}',
                              widgets_table_global = widgets_table_global[widgets_table_global[,i],],
                              all_tabs = all_tabs,
-                             order.by = NULL,
+                             order.by = 'entry_number',
                              preview = preview,
                              all_visits = all_visits,
                              visit_id = '", i, "')", sep = "")
@@ -185,7 +185,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              modal_width = '.modal-dialog{ width:95%}',
                              widgets_table_global = widgets_table_global[widgets_table_global[,i],],
                              all_tabs = all_tabs,
-                             order.by = NULL,
+                             order.by = 'entry_number',
                              preview = preview,
                              all_visits = all_visits,
                              is_child_visit = TRUE,

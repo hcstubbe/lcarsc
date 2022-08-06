@@ -431,6 +431,9 @@ mod_module_edit_tab_server<- function(id,
         new_data$entry_id_parent = entry_id_parent
         new_data$visit_id_parent = visit_id_parent
         new_data$is_child_entry = is_child_entry
+        db_cmd = paste0("SELECT COUNT(*) FROM ", paste('visit_table', visit_id, sep = '_'))
+        row_count = RMariaDB::dbGetQuery(pool, db_cmd)
+        new_data$entry_number = as.integer(row_count[[1,1]])
         dbAppendTable(pool, tbl_id, new_data)
         close()
 
@@ -700,6 +703,11 @@ mod_module_edit_tab_server<- function(id,
         edited_data = formData()
         edited_data$pid = pid_selected
         edited_data$entry_id = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "entry_id"]
+        edited_data$entry_id_parent = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "entry_id_parent"]
+        edited_data$visit_id_parent = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "visit_id_parent"]
+        edited_data$is_child_entry = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "is_child_entry"]
+        edited_data$entry_number = SQL_df[SQL_df$row_id %in% rv_table$rv_selection(), "entry_number"]
+
         dbAppendTable(pool, tbl_id, edited_data)
 
         # Set old row as 'deleted_row = TRUE' and 'locked_row = FALSE'
