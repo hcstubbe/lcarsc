@@ -12,6 +12,8 @@ mod_module_db_settings_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidPage(
+      shinydashboard::box(width = 12, status = "warning",title = "Info", solidHeader = TRUE,
+                          shiny::strong("Some of these options require restarting the app to take effect (i.e. not reloading the page)!")),
       shinydashboard::box(width = 12, status = "primary",title = "Evnironmental variable names", solidHeader = TRUE,
                           textInput(ns("env_user_group"), label = "User group", value = "SHINYPROXY_USERGROUPS"),
                           textInput(ns("env_user_name"), label = "User name", value = "SHINYPROXY_USERNAME")),

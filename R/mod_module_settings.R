@@ -22,6 +22,8 @@ mod_module_settings_ui <- function(id){
 
   tagList(
     fluidPage(
+        shinydashboard::box(width = 12, status = "warning",title = "Info", solidHeader = TRUE,
+                            shiny::strong("Some of these options require restarting the app to take effect (i.e. not reloading the page)!")),
         shinydashboard::box(width = 12, status = "primary",title = "General settings", solidHeader = TRUE,
                             checkboxInput(inputId = ns("add_child_visits"), label = "Add dependent/sub visits"),
                             checkboxInput(inputId = ns("add_samples_panel"), label = "Add samples panel"),
