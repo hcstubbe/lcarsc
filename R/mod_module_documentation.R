@@ -279,12 +279,18 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
       output$ui_cild_visits = renderUI({
         if(length(input$responses_user_rows_selected) == 1 & length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)){
           ui_list = list()
-          for ( i in 1:nrow(ordered_visits_child) ) {
-            ui_x = ui_x = mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',ordered_visits_child$visit_id[i], sep = '_')))
+          selected_child_visits = sapply(strsplit(ordered_visits_child$parent_ids, ";;;;;"),
+                                    function(x){
+                                      any(x %in% input$visit_selector)
+                                      }
+                                    )
+          selected_child_visits = ordered_visits_child[selected_child_visits,]
+          for ( i in 1:nrow(selected_child_visits) ) {
+            ui_x = ui_x = mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',selected_child_visits$visit_id[i], sep = '_')))
             ui_list = c(ui_list, ui_x)
           }
           lapply(1:length(ui_list), function(x) div(shinydashboard::box(
-            title = ordered_visits_child$visit_title[x],
+            title = selected_child_visits$visit_title[x],
             width = 12,
             status = "success",
             solidHeader = FALSE,
