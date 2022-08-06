@@ -247,7 +247,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
       if(length(input$responses_user_rows_selected) == 1){
         div(
           shinydashboard::box(
-            title = (paste(internal_app_data$lang_sel$module_documentation_visit_menu, sep = " ")),
+            title = (paste(internal_app_data$lang_sel$module_documentation_visit_menu, ordered_visits$visit_title[ordered_visits$visit_id == input$visit_selector], sep = " ")),
             width = 12, status = "warning",
             solidHeader = TRUE,
             collapsible = TRUE,
