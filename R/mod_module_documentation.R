@@ -58,7 +58,7 @@ mod_module_documentation_ui  <- function(id) {
              mod_module_documentation_summary_ui(ns("module_documentation_summary_1"))
       ),
       if(settgins_data$add_child_visits == TRUE){column(4,
-             uiOutput(ns("ui_cild_visits")))}else{NULL}
+             uiOutput(ns("ui_child_visits")))}else{NULL}
     )
   )
 }
@@ -279,7 +279,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
     ## Render child visit UIs ----
     if(settgins_data$add_child_visits == TRUE){
-      output$ui_cild_visits = renderUI({
+      output$ui_child_visits = renderUI({
         if(length(input$responses_user_rows_selected) == 1 & length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)){
           ui_list = list()
           selected_child_visits = sapply(strsplit(ordered_visits_child$parent_ids, ";;;;;"),
@@ -288,19 +288,23 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                                       }
                                     )
           selected_child_visits = ordered_visits_child[selected_child_visits,]
-          for ( i in 1:nrow(selected_child_visits) ) {
-            ui_x = ui_x = mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',selected_child_visits$visit_id[i], sep = '_')))
-            ui_list = c(ui_list, ui_x)
+          if( nrow(selected_child_visits) > 0 ) {
+            for ( i in 1:nrow(selected_child_visits) ) {
+              ui_x = ui_x = mod_module_edit_tab_ui(id = ns(paste('mod_module_edit_tab_visit',selected_child_visits$visit_id[i], sep = '_')))
+              ui_list = c(ui_list, ui_x)
+            }
+            lapply(1:length(ui_list), function(x) div(shinydashboard::box(
+              title = selected_child_visits$visit_title[x],
+              width = 12,
+              status = "success",
+              solidHeader = FALSE,
+              collapsible = TRUE,
+              collapsed = FALSE,
+              ui_list[[x]]
+            )))
+          }else{
+            ui_list = NULL
           }
-          lapply(1:length(ui_list), function(x) div(shinydashboard::box(
-            title = selected_child_visits$visit_title[x],
-            width = 12,
-            status = "success",
-            solidHeader = FALSE,
-            collapsible = TRUE,
-            collapsed = FALSE,
-            ui_list[[x]]
-          )))
         }
       })
     }
