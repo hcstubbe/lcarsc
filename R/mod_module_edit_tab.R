@@ -998,7 +998,7 @@ mod_module_edit_tab_server<- function(id,
 
 
 
-    ## Observe mandatory fields ----
+    ## Input validation ----
 
     iv <- InputValidator$new()
 
@@ -1017,12 +1017,35 @@ mod_module_edit_tab_server<- function(id,
     numeric_fields = widgets_table[widgets_table$widget == TRUE &
                                    widgets_table$type == "numericInput",]$inputId
 
-
     sapply(numeric_fields, function(x) {
       iv$add_rule(x, sv_between(left = widgets_table[widgets_table$inputId == x,]$min,
                                  right = widgets_table[widgets_table$inputId == x,]$max,
                                  allow_na = TRUE))
     })
+
+
+    text_fields_max = widgets_table[widgets_table$widget == TRUE &
+                                        !is.na(as.numeric(widgets_table$max)) &
+                                        widgets_table$type == "textInput" ,]$inputId
+
+    if( length(text_fields_max) > 0 ) {
+      sapply(text_fields_max, function(x) {
+        iv$add_rule(x,
+                    ~ if(!is.null(.)){if (nchar(.) > widgets_table[widgets_table$inputId == x,]$max) paste("Maximum length exceeded by", nchar(.) - (widgets_table[widgets_table$inputId == x,]$max))})
+      })
+    }
+
+    text_fields_min = widgets_table[widgets_table$widget == TRUE &
+                                      !is.na(as.numeric(widgets_table$min)) &
+                                      widgets_table$type == "textInput" ,]$inputId
+
+    if( length(text_fields_min) > 0 ) {
+      sapply(text_fields_min, function(x) {
+        iv$add_rule(x,
+                    ~ if(!is.null(.)){if (nchar(.) < widgets_table[widgets_table$inputId == x,]$min) paste("Minimum length is", (widgets_table[widgets_table$inputId == x,]$min))})
+      })
+    }
+
 
 
     # Function for closing modal and disabling iv

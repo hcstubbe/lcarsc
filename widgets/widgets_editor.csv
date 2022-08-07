@@ -13,7 +13,7 @@ date_modified,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,F
 visit_id,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 deleted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 submitted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-inputId,vars,TEXT,character,Variable/Input ID,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+inputId,vars,TEXT,character,Variable/Input ID,TRUE,,,,,,,45,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 origin_of_var,vars,TEXT,character,Origin,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 order_of_var,vars,INTEGER,integer,Order of the variable,TRUE,,,,,,,,,,numericInputCouter,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 label,vars,TEXT,character,Lable,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
@@ -22,17 +22,17 @@ label_translation,vars,TEXT,character,Lable translation,FALSE,,,,,,,,,,textInput
 visit_for_var,vars,TEXT,character,Visit,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,,,,,,,,,visit_id_visits,editor_table_visit,TRUE,TRUE,,,,,,,FALSE,
 mandatory,vars,BOOLEAN,logical,Mandatory,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,No,Yes,No,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 panel,vars,TEXT,character,Panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,General,New panel,General,Signs & Symptoms,Management,Outcome,,,panel_new,,TRUE,TRUE,,,,,,,FALSE,
-panel_new,vars,TEXT,character,New panel,FALSE,,,,,,,,,,textInputForChoicesFromVar,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.panel == 'New panel'
+panel_new,vars,TEXT,character,New panel,FALSE,,,,,,,20,,,textInputForChoicesFromVar,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.panel == 'New panel'
 subgroup,vars,TEXT,character,Subgroup/Sub-panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,None,New subgroup,None,Symptoms,Signs,General approach,Specific treatment,,subgroup_new,,TRUE,TRUE,,,,,,,FALSE,
-subgroup_new,vars,TEXT,character,New subgroup/sub-panel,FALSE,,,,,,,,,,textInputForChoicesFromVar,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.subgroup == 'New subgroup'
+subgroup_new,vars,TEXT,character,New subgroup/sub-panel,FALSE,,,,,,,20,,,textInputForChoicesFromVar,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.subgroup == 'New subgroup'
 type,vars,TEXT,character,Input type,FALSE,,,,,,,,,,selectInput,widgets_editor,textInput,textInput,numericInput,radioButtons,selectInput,dateInput,selectInputFromDatabase,checkboxInput,,,TRUE,TRUE,,,,,,,FALSE,
 unit,vars,TEXT,character,Unit,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
 value_numeric,vars,DOUBLE,double,Value (numeric),FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
 value_char,vars,TEXT,character,Value (character),FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'textInput' | input.type == 'dateInput'
 lower,vars,DOUBLE,double,Lower normal range,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
 upper,vars,DOUBLE,double,Upper normal range,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
-min,vars,DOUBLE,double,Minimum value,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
-max,vars,DOUBLE,double,Maximum value,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
+min,vars,DOUBLE,double,"Minimum value (min. number if numeric, min. characters if text)",FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput' | input.type == 'textInput'
+max,vars,DOUBLE,double,"Maximum value (max. number if numeric, max. characters if text)",FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput' | input.type == 'textInput'
 step,vars,DOUBLE,double,Step,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
 width,vars,DOUBLE,double,Width,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
 selected,vars,TEXT,character,Selected,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
@@ -63,7 +63,7 @@ choice12_translation,vars,TEXT,character,Choice 12 translation,FALSE,,,,,,,,,,te
 description,vars,TEXT,character,Description,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 conditional,vars,BOOLEAN,logical,Conditional variable,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 appear_if,vars,TEXT,character,Condition (use JavaScript expressions; e.g.: input.[Visit ID]_[Input ID] == 'Yes'),FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.conditional
-visit_id_visits,visits,TEXT,character,Visit id,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+visit_id_visits,visits,TEXT,character,Visit id,TRUE,,,,,,,15,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 visit_title,visits,TEXT,character,Visit title,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 order,visits,INTEGER,integer,Order of visits,TRUE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 is_child,visits,BOOLEAN,logical,Is child visit,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
