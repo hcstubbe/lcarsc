@@ -85,7 +85,8 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
                            order_desc = TRUE,
                            oder_by_date = TRUE,
                            preview = preview,
-                           show_preliminary = TRUE)
+                           show_preliminary = TRUE,
+                           is_editor_or_vi = TRUE)
 
   })
 

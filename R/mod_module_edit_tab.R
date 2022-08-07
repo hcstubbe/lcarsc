@@ -69,7 +69,7 @@ mod_module_edit_tab_server<- function(id,
                                       keep_copy_order = TRUE,
                                       is_child_visit = FALSE,
                                       filter_entry_id = FALSE,
-                                      is_editor = FALSE) {
+                                      is_editor_or_vi) {
 
 
 
@@ -415,24 +415,29 @@ mod_module_edit_tab_server<- function(id,
       if (iv$is_valid()) {
         rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
         new_data = formData()
-        if(is_child_visit == FALSE){
+        if(is_child_visit == FALSE & is_editor_or_vi == FALSE){
           entry_id = paste(visit_id, rv_in$pid(), uuid::UUIDgenerate(), sep = "_")
           entry_id_parent = NA
           visit_id_parent = NA
           is_child_entry = FALSE
-        }else{
+        }else if(is_child_visit == TRUE & is_editor_or_vi == FALSE){
           db_cmd = paste0("SELECT entry_id, visit_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
           parent_data = RMariaDB::dbGetQuery(pool, db_cmd)
           entry_id = NA
           entry_id_parent = parent_data$entry_id
           visit_id_parent = parent_data$visit_id
           is_child_entry = TRUE
+        }else{
+          entry_id = NA
+          entry_id_parent = NA
+          visit_id_parent = NA
+          is_child_entry = FALSE
         }
         new_data$entry_id = entry_id
         new_data$entry_id_parent = entry_id_parent
         new_data$visit_id_parent = visit_id_parent
         new_data$is_child_entry = is_child_entry
-        if(is_editor == FALSE){
+        if(is_editor_or_vi == FALSE){
           db_cmd = paste0("SELECT COUNT(*) FROM ", paste('visit_table', visit_id, sep = '_'))
           row_count = RMariaDB::dbGetQuery(pool, db_cmd)
           new_data$entry_number = as.integer(row_count[[1,1]])
@@ -582,11 +587,13 @@ mod_module_edit_tab_server<- function(id,
         SQL_df$date_modified = as.character(date())
         SQL_df$submitted_row = FALSE
         SQL_df$locked_row = FALSE
-        if(is_child_visit == FALSE){
+        if(is_child_visit == FALSE & is_editor_or_vi == FALSE){
           entry_id = paste(visit_id, rv_in$pid(), uuid::UUIDgenerate(), sep = "_")
-        }else{
+        }else if(is_child_visit == TRUE & is_editor_or_vi == FALSE){
           db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
           entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
+        }else{
+          entry_id = NA
         }
         SQL_df$entry_id = entry_id
         if(create_new_pid){
