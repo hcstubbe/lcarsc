@@ -214,6 +214,12 @@ mod_module_editor_controls_server <- function(id) {
       if (is.null(input$visits_upload)) return()
       input_csv_visits = read.csv(input$visits_upload$datapath)
       input_csv_visits$row_id = uuid::UUIDgenerate(use.time = FALSE, n = nrow(input_csv_visits))
+      val_is_na = is.na(input_csv_visits$is_child)
+      if(!("is_child" %in% colnames(input_csv_visits))){
+        input_csv_visits$is_child = FALSE
+      }else if(any(val_is_na)){
+        input_csv_visits$is_child[val_is_na] = FALSE
+      }
       tryCatch(dbAppendTable(pool,
                              "editor_table_visit",
                              input_csv_visits),

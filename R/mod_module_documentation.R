@@ -217,7 +217,6 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                                  sample_id_name = "smp_id",
                                  noletters_smp_id = TRUE,
                                  is_editor_or_vi = FALSE)
-
     }
 
 
