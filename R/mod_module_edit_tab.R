@@ -68,7 +68,8 @@ mod_module_edit_tab_server<- function(id,
                                       use_move_order = FALSE,
                                       keep_copy_order = TRUE,
                                       is_child_visit = FALSE,
-                                      filter_entry_id = FALSE) {
+                                      filter_entry_id = FALSE,
+                                      is_editor = FALSE) {
 
 
 
@@ -431,9 +432,11 @@ mod_module_edit_tab_server<- function(id,
         new_data$entry_id_parent = entry_id_parent
         new_data$visit_id_parent = visit_id_parent
         new_data$is_child_entry = is_child_entry
-        db_cmd = paste0("SELECT COUNT(*) FROM ", paste('visit_table', visit_id, sep = '_'))
-        row_count = RMariaDB::dbGetQuery(pool, db_cmd)
-        new_data$entry_number = as.integer(row_count[[1,1]])
+        if(is_editor == FALSE){
+          db_cmd = paste0("SELECT COUNT(*) FROM ", paste('visit_table', visit_id, sep = '_'))
+          row_count = RMariaDB::dbGetQuery(pool, db_cmd)
+          new_data$entry_number = as.integer(row_count[[1,1]])
+        }
         dbAppendTable(pool, tbl_id, new_data)
         close()
 

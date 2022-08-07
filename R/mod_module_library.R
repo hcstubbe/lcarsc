@@ -107,7 +107,8 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
                                          select_multiple = TRUE,
                                          filter_origin = get_origin,
                                          search_field = TRUE,
-                                         length_change = FALSE)
+                                         length_change = FALSE,
+                                         is_editor = TRUE)
 
 
     mod_module_library_controls_server("mod_module_library_controls", selected_row = sel_row)

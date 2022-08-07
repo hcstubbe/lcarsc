@@ -76,7 +76,8 @@ mod_module_editor_launcher_server <- function(id) {
                            order.by = "order",
                            search_field = TRUE,
                            use_move_order = FALSE,
-                           keep_copy_order = TRUE)
+                           keep_copy_order = TRUE,
+                           is_editor = TRUE)
 
 
 
@@ -105,7 +106,8 @@ mod_module_editor_launcher_server <- function(id) {
                            search_field = TRUE,
                            editor_filter_visit_id = TRUE,
                            use_move_order = TRUE,
-                           keep_copy_order = FALSE)
+                           keep_copy_order = FALSE,
+                           is_editor = TRUE)
 
 
   })
