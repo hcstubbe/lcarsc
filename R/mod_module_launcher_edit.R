@@ -5,7 +5,7 @@
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
 #' @noRd
-#' @importFrom shiny NS tagList div
+#' @importFrom shiny NS tagList div a
 #' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar dropdownMenu menuItem dashboardBody tabItems tabItem notificationItem sidebarMenu
 #' @importFrom shinyWidgets sendSweetAlert show_toast
 #' @importFrom golem get_golem_options
@@ -27,7 +27,7 @@ mod_module_launcher_edit_ui <- function(id){
             notificationItem("Database setup", icon = icon("database", verify_fa = FALSE), status = "primary"),
             notificationItem("Deployment", status = "danger", icon = icon("warning", verify_fa = FALSE)))
   for(i in 1:length(dropdown_menu_list)){
-    dropdown_menu_list[[i]]$children[[1]] <- a(href="#","onclick"=paste0("clickFunction('",paste0("menuitem_", i),"'); return false;"),
+    dropdown_menu_list[[i]]$children[[1]] <- shiny::a(href="#","onclick"=paste0("clickFunction('",paste0("menuitem_", i),"'); return false;"),
                                dropdown_menu_list[[i]]$children[[1]]$children)
   }
 
