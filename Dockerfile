@@ -13,7 +13,7 @@ RUN Rscript -e 'remotes::install_version("shiny",upgrade="never", version = "1.7
 RUN Rscript -e 'remotes::install_version("config",upgrade="never", version = "0.3.1")'
 RUN Rscript -e 'remotes::install_version("attempt",upgrade="never", version = "0.3.1")'
 RUN Rscript -e 'remotes::install_version("testthat",upgrade="never", version = "3.1.4")'
-RUN Rscript -e 'remotes::install_version("spelling",upgrade="never", version = "NA")'
+RUN Rscript -e 'remotes::install_version("spelling",upgrade="never")'
 RUN Rscript -e 'remotes::install_version("rmarkdown",upgrade="never", version = "2.14")'
 RUN Rscript -e 'remotes::install_version("shinyWidgets",upgrade="never", version = "0.7.1")'
 RUN Rscript -e 'remotes::install_version("fmsb",upgrade="never", version = "0.7.3")'
