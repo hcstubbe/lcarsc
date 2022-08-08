@@ -13,7 +13,7 @@ date_modified,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,F
 visit_id,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 deleted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 submitted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-inputId,vars,TEXT,character,Variable/Input ID,TRUE,,,,,,,45,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+inputId,vars,TEXT,character,Variable/Input ID,TRUE,,,,,,,36,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 origin_of_var,vars,TEXT,character,Origin,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 order_of_var,vars,INTEGER,integer,Order of the variable,TRUE,,,,,,,,,,numericInputCouter,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 label,vars,TEXT,character,Lable,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
@@ -63,7 +63,7 @@ choice12_translation,vars,TEXT,character,Choice 12 translation,FALSE,,,,,,,,,,te
 description,vars,TEXT,character,Description,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 conditional,vars,BOOLEAN,logical,Conditional variable,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 appear_if,vars,TEXT,character,Condition (use JavaScript expressions; e.g.: input.[Visit ID]_[Input ID] == 'Yes'),FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.conditional
-visit_id_visits,visits,TEXT,character,Visit id,TRUE,,,,,,,15,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+visit_id_visits,visits,TEXT,character,Visit id,TRUE,,,,,,,16,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 visit_title,visits,TEXT,character,Visit title,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 order,visits,INTEGER,integer,Order of visits,TRUE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 is_child,visits,BOOLEAN,logical,Is child visit,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
