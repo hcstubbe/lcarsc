@@ -57,6 +57,24 @@ make_widget_tables = function(pool,
   vars = RMariaDB::dbReadTable(pool, "editor_table_vars") %>% filter(deleted_row == FALSE)%>%
     dplyr::arrange(order_of_var)
 
+  show_cols = t(sapply(visits$visit_id_visits, function(x){
+    input_ids_x = vars %>% filter(visit_for_var == x) %>% select(inputId)
+    input_ids_x = input_ids_x$inputId
+
+    show_cols = visits[visits$visit_id_visits == x, c("show_col_1", "show_col_2", "show_col_3")]
+    show_cols[!(show_cols %in% input_ids_x)] = NA
+    show_cols
+  }))
+  colnames(show_cols) = c("show_col_1", "show_col_2", "show_col_3")
+
+  show_cols = data.frame(show_cols)
+
+  visits$show_col_1 = unlist(show_cols$show_col_1)
+  visits$show_col_2 = unlist(show_cols$show_col_2)
+  visits$show_col_3 = unlist(show_cols$show_col_3)
+  visits = visits %>% dplyr::na_if("NA")
+
+
   # Determine which tabs are displayed for each visit
   visit_tabs = levels(as.factor(vars$panel))
   visit_tabs_logic = c()
