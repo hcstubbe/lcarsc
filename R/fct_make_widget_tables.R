@@ -76,11 +76,11 @@ make_widget_tables = function(pool,
 
 
   # Determine which tabs are displayed for each visit
-  visit_tabs = levels(as.factor(vars$panel))
+  visit_tabs = levels(as.factor(paste0(vars$visit_for_var, "_", vars$panel)))
   visit_tabs_logic = c()
   for(i in visits$visit_id_visits){
     vars_i = vars %>% filter(visit_for_var == i)
-    visit_tabs_i = levels(as.factor(vars_i$panel))
+    visit_tabs_i = levels(as.factor(paste0(vars_i$visit_for_var, "_", vars_i$panel)))
     visit_tabs_i = visit_tabs %in% visit_tabs_i
     names(visit_tabs_i) = make.unique(make.names(visit_tabs))
     visit_tabs_logic = rbind(visit_tabs_logic, visit_tabs_i)
@@ -88,7 +88,7 @@ make_widget_tables = function(pool,
   rownames(visit_tabs_logic) = visits$visit_id_visits
   visits = cbind(visits, visit_tabs_logic)
   visits = cbind(visits, choicesFromVar = NA)
-  visits$inclusion_other_visit = visits$visit_id_visits %in% c("diagnosis", "medication", "samples", "vi") # inclusion visits needs to have the id "vi"!
+  visits$inclusion_other_visit = visits$visit_id_visits %in% c("samples", "vi") # inclusion visits needs to have the id "vi"!
   visits$inclusion_criteria = FALSE
   visits$inclusion_criteria = visits$visit_id_visits == "vi"
 
@@ -104,8 +104,9 @@ make_widget_tables = function(pool,
                                     "panel1down" = character(0),
                                     "panel2down" = character(0)))
   # Populate tab dataframe
-  tab_names = vars$panel[!duplicated(vars$panel)]
-  vars$panel = factor(vars$panel)
+  var_panels = paste0(vars$visit_for_var, "_", vars$panel)
+  tab_names = vars$panel[!duplicated(var_panels)]
+  vars$panel = factor(var_panels)
   levels(vars$panel) = make.unique(make.names(levels(vars$panel)))
   vars$panel = as.character(vars$panel)
   tab_ids = vars$panel[!duplicated(vars$panel)]
@@ -268,10 +269,6 @@ make_widget_tables = function(pool,
     vars %>% filter(visit_for_var == i)
     var_table[i] = var_table[,"inputId"] %in% paste((vars %>% filter(visit_for_var == i))[,"visit_for_var"], (vars %>% filter(visit_for_var == i))[,"inputId"], sep = "_") | var_table$widget_tab == "all"
   }
-
-  var_table$diagnosis = var_table$widget_tab == "diagnosis" | var_table$widget_tab == "all"
-  var_table$medication = var_table$widget_tab == "medication" | var_table$widget_tab == "all"
-
 
   # Make variable names unique
   var_table$inputId = make.unique(var_table$inputId, sep = "_")
