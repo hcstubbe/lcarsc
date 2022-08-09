@@ -176,7 +176,7 @@ mod_module_edit_tab_server<- function(id,
         user_show_vals_names = user_show_vals
         user_show_vals = paste(visit_id, user_show_vals, sep = "_")
         names(user_show_vals) = user_show_vals_names
-        show_vals = c(user_show_vals, show_vals)
+        show_vals = c(user_show_vals, show_vals[1])
       }
     }
 
