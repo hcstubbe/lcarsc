@@ -46,7 +46,7 @@ mod_module_edit_tab_server<- function(id,
                                       all_tabs = NULL,
                                       rv_in = NULL,
                                       show_vals = NULL,
-                                      show_user_vals = FALSE,
+                                      show_user_vals = TRUE,
                                       simple = TRUE,
                                       modal_width = ".modal-dialog{ width:400px}",
                                       visit_id,
@@ -169,6 +169,18 @@ mod_module_edit_tab_server<- function(id,
     # }
 
 
+    if(show_user_vals == TRUE){
+      user_show_vals = all_visits[all_visits$visit_id == visit_id,c("show_col_1", "show_col_2", "show_col_3")]
+      user_show_vals = as.character(user_show_vals)
+      if(any(!is.na(user_show_vals))){
+        user_show_vals = user_show_vals[!is.na(user_show_vals)]
+        user_show_vals_names = user_show_vals
+        user_show_vals = paste(visit_id, user_show_vals, sep = "_")
+        names(user_show_vals) = user_show_vals_names
+        show_vals = c(user_show_vals, show_vals)
+      }
+    }
+
     # Show selected vars only
     select_vars = function(show_vals, table_x){
       # This function selects columns
@@ -176,7 +188,6 @@ mod_module_edit_tab_server<- function(id,
         table_x = tryCatch(table_x[,show_vals],  error = function(e) table_x)
       }
     }
-
 
     #### Render table and access entries from table ----
 

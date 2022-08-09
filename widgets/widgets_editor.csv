@@ -66,6 +66,10 @@ appear_if,vars,TEXT,character,Condition (use JavaScript expressions; e.g.: input
 visit_id_visits,visits,TEXT,character,Visit id,TRUE,,,,,,,16,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 visit_title,visits,TEXT,character,Visit title,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 order,visits,INTEGER,integer,Order of visits,TRUE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+select_show_cols,visits,BOOLEAN,logical,Select columns to display,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+show_col_1,visits,TEXT,character,Display column 1 (inputId of variable),FALSE,,,,,,,,,,textInput,widgets_editor,None,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.select_show_cols
+show_col_2,visits,TEXT,character,Display column 2 (inputId of variable),FALSE,,,,,,,,,,textInput,widgets_editor,None,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.select_show_cols
+show_col_3,visits,TEXT,character,Display column 3 (inputId of variable),FALSE,,,,,,,,,,textInput,widgets_editor,None,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.select_show_cols
 is_child,visits,BOOLEAN,logical,Is child visit,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
 parent_ids,visits,TEXT,character,Parent visits,FALSE,,,,,,,,,,checkboxGroupInputFromDatabase,widgets_editor,,,,,,,,,visit_id_visits,,TRUE,TRUE,,,,,,,TRUE,input.is_child
 tab_title,panels,TEXT,character,tab_title,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
