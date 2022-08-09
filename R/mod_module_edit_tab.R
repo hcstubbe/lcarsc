@@ -171,7 +171,6 @@ mod_module_edit_tab_server<- function(id,
 
     if(show_user_vals == TRUE){
       user_show_vals = all_visits[all_visits$visit_id == visit_id,c("show_col_1", "show_col_2", "show_col_3")]
-      user_show_vals = as.character(user_show_vals)
       if(any(!is.na(user_show_vals))){
         user_show_vals = user_show_vals[!is.na(user_show_vals)]
         user_show_vals_names = user_show_vals
