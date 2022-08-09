@@ -46,6 +46,7 @@ mod_module_edit_tab_server<- function(id,
                                       all_tabs = NULL,
                                       rv_in = NULL,
                                       show_vals = NULL,
+                                      show_user_vals = FALSE,
                                       simple = TRUE,
                                       modal_width = ".modal-dialog{ width:400px}",
                                       visit_id,
@@ -152,6 +153,21 @@ mod_module_edit_tab_server<- function(id,
 
       return(table)
     }
+
+
+    # # Show selected vars only and limit display length to maintain layout
+    # make_show_cols = function(table_x, show_vals){
+    #   table_x = data.frame(apply(table_x[,show_vals], 2, function(x){
+    #     x = base::as.character(x)
+    #     if(!is.na(length_limit_show)){
+    #       len_x = base::nchar(x)
+    #       x = base::substr(x, start = 1, stop = length_limit_show)
+    #       return(x)
+    #     }
+    #     return(x)
+    #   }))
+    # }
+
 
     # Show selected vars only
     select_vars = function(show_vals, table_x){

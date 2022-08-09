@@ -17,13 +17,15 @@ make_widget_tables = function(pool,
   # Read input widget data
   visits = RMariaDB::dbReadTable(pool, "editor_table_visit") %>%
     dplyr::filter(deleted_row == FALSE) %>%
-    dplyr::select(order, visit_id_visits , visit_title, is_child, parent_ids) %>%
-    base::rbind(list(order = NA, visit_id_visits = "samples", visit_title = "Samples", is_child = FALSE, parent_ids = NA)) %>%
-    dplyr::arrange(order)
+    dplyr::select(order, visit_id_visits , visit_title, is_child, parent_ids, show_col_1, show_col_2, show_col_3) %>%
+    base::rbind(list(order = NA, visit_id_visits = "samples", visit_title = "Samples", is_child = FALSE, parent_ids = NA, show_col_1 = NA, show_col_2 = NA, show_col_3 = NA)) %>%
+    dplyr::arrange(order) %>%
+    dplyr::na_if("") %>%
+    dplyr::na_if("NA")
 
   # Force inclusion visit
   if(!any(visits$visit_id_visits == "vi")){
-    visits = base::rbind(list(order = 0, visit_id_visits = "vi", visit_title = "Inclusion", is_child = FALSE, parent_ids = NA), visits)
+    visits = base::rbind(list(order = 0, visit_id_visits = "vi", visit_title = "Inclusion", is_child = FALSE, parent_ids = NA, show_col_1 = NA, show_col_2 = NA, show_col_3 = NA), visits)
   }
 
   # Set NA values from is_child to FALSE
