@@ -59,7 +59,7 @@ mod_module_edit_tab_server<- function(id,
                                       preview = FALSE,
                                       select_multiple = FALSE,
                                       filter_origin = reactive({NULL}),
-                                      search_field = FALSE,
+                                      dom = "lfrtip",
                                       length_change = FALSE,
                                       create_sample_id = FALSE,
                                       sample_id_name = NULL,
@@ -205,7 +205,7 @@ mod_module_edit_tab_server<- function(id,
                             colnames = names(show_vals),
                             selection = selection_tab,
                             options = list(pageLength = num_entries,
-                                           search_field = search_field),
+                                           dom = dom),
                             rownames = FALSE)
               )
     })

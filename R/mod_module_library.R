@@ -106,7 +106,7 @@ mod_module_library_server <- function(id, data_table1, data_table2, preview = FA
                                          order.by = "order_of_var",
                                          select_multiple = TRUE,
                                          filter_origin = get_origin,
-                                         search_field = TRUE,
+                                         dom = "lfrtip",
                                          length_change = FALSE,
                                          is_editor_or_vi = TRUE)
 

@@ -121,7 +121,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     load_dt_for_render = function(){
       DT::datatable(computeFT(input$show_preliminary),
                     options = list(pageLength = 10,
-                                   search_field = TRUE),
+                                   dom = "lftipr"),
                     selection = c("single"),
                     rownames = FALSE,
                     colnames = c("PID", "Date", "User"))}
@@ -147,6 +147,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              all_tabs = all_tabs,
                              order.by = 'entry_number',
                              preview = preview,
+                             dom = 'trp',
                              all_visits = all_visits,
                              is_editor_or_vi = FALSE,
                              visit_id = '", i, "')", sep = "")
@@ -190,6 +191,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              all_tabs = all_tabs,
                              order.by = 'entry_number',
                              preview = preview,
+                             dom = 'trp',
                              all_visits = all_visits,
                              is_child_visit = TRUE,
                              filter_entry_id = TRUE,

@@ -74,7 +74,7 @@ mod_module_editor_launcher_server <- function(id) {
                            visit_id = "editor",
                            add.copy.btn = TRUE,
                            order.by = "order",
-                           search_field = TRUE,
+                           dom = "lfrtip",
                            use_move_order = FALSE,
                            keep_copy_order = TRUE,
                            is_editor_or_vi = TRUE)
@@ -103,7 +103,7 @@ mod_module_editor_launcher_server <- function(id) {
                            add.copy.btn = TRUE,
                            num_entries = 20,
                            order.by = "order_of_var",
-                           search_field = TRUE,
+                           dom = "lfrtip",
                            editor_filter_visit_id = TRUE,
                            use_move_order = TRUE,
                            keep_copy_order = FALSE,
