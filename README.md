@@ -5,8 +5,7 @@
 
 <!-- badges: start -->
 
-The goal of lcarsc is to provide a lightweight clinical data
-acquisition and recording software for clinical research.
+LCARS-C aims to provide a lightweight clinical data acquisition and recording software for clinical research.
 
 ## Installation
 
