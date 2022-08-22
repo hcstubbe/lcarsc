@@ -116,6 +116,9 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
   	  show_vals = c("pid", "date_modified", "user_modified", user_show_vals)
   	  names(show_vals) = c("PID", "Date", "User", user_show_vals_names)
   	  show_vals = show_vals[!is.na(show_vals)]
+  	}else{
+  	  show_vals = c("pid", "date_modified", "user_modified")
+  	  names(show_vals) = c("PID", "Date", "User")
   	}
 
     computeFT = function(show_preliminary = FALSE){
