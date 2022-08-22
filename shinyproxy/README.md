@@ -24,7 +24,17 @@ lcarsc::run_app(ecrf_database_driver = RSQLite::SQLite(),
         options = list(host = '0.0.0.0', port = 3838))
 ```
 
-## A2: Local deployment using ShinyProxy and MariaDB with Docker
+## A2: Local deployment using LCARS-C and MariaDB with Docker
+This deployment starts a single app and makes the user interface available in the local network. Run the following in [this](https://github.com/hcstubbe/lcarsc) respository's base folder. The database data is saved in `/database/data`
+``` bash
+# Start
+docker-compose -f .\shinyproxy\app_and_db.yml up
+
+# Shut down
+docker-compose -f .\shinyproxy\app_and_db.yml down
+```
+
+## A3: Local deployment using ShinyProxy and MariaDB with Docker
 
 This can be used as a template for local deployments.
 
