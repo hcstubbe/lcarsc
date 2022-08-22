@@ -15,10 +15,6 @@ knitr::opts_chunk$set(
 
 # LCARS-C <img src="man/figures/logo.png" align="right" width=160 height=160 alt="" />
 
-  <!-- badges: start -->
-  [![Codecov test coverage](https://codecov.io/gh/hcstubbe/lcarsc/branch/master/graph/badge.svg)](https://app.codecov.io/gh/hcstubbe/lcarsc?branch=master)
-  <!-- badges: end -->
-
 LCARS-C is a lightweight clinical data acquisition and management software for clinical research and other data-focused research projects.
 
 ## Installation
@@ -26,12 +22,22 @@ LCARS-C is a lightweight clinical data acquisition and management software for c
 Install from github:
 
 ``` r
+install.packages("devtools")
 devtools::install_github("hcstubbe/lcarsc")
 ```
 
+Alternatively, clone this repository and install lcarsc from the repository's base folder including the lcarsM dependency:
+
+``` r
+install.packages("devtools")
+devtools::install_local("dependencies/lcarsM.tar.gz")
+devtools::install_local()
+```
+
+
 ## Example
 
-Using LCARS-C locally: In this example, the database is saved in the working directory as 'db_test_data.sqlite3.sqlite3' and 'db_test_cfg.sqlite3.sqlite3'. The preview data is saved as 'db_preview.sqlite3'. 'db_preview.sqlite3' is overwritten each time the software reboots or the page reloads.
+Using LCARS-C locally: In this example, the config and scientific databases are saved in the working directory as 'db_test_data.sqlite3.sqlite3' and 'db_test_cfg.sqlite3.sqlite3'. The preview data is saved as 'db_preview.sqlite3'. 'db_preview.sqlite3' is overwritten each time the software reboots or the page reloads.
 
 ```{r example, eval=FALSE, include=TRUE}
 library(lcarsc)
