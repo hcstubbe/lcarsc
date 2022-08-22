@@ -47,6 +47,7 @@ mod_module_edit_tab_server<- function(id,
                                       rv_in = NULL,
                                       show_vals = NULL,
                                       show_user_vals = FALSE,
+                                      n_show_vals = 4,
                                       simple = TRUE,
                                       modal_width = ".modal-dialog{ width:400px}",
                                       visit_id,
@@ -176,7 +177,8 @@ mod_module_edit_tab_server<- function(id,
         user_show_vals_names = user_show_vals
         user_show_vals = paste(visit_id, user_show_vals, sep = "_")
         names(user_show_vals) = user_show_vals_names
-        show_vals = c(user_show_vals, show_vals[1])
+        show_vals = c(user_show_vals, show_vals)[1:n_show_vals]
+        show_vals = show_vals[!is.na(show_vals)]
       }
     }
 

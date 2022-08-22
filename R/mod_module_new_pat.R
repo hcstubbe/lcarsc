@@ -74,6 +74,8 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
                            tbl_id = "inclusion_dataset",
                            rv_in = rv_downstream_visit,
                            show_vals = c(PID = 'pid', Date = 'date_modified', User = 'user_modified', Visit = 'visit_id', Submitted = 'submitted_row'),
+                           show_user_vals = TRUE,
+                           n_show_vals = 7,
                            simple = FALSE,
                            modal_width = '.modal-dialog{ width:95%}',
                            widgets_table_global = widgets_table_global[widgets_table_global[,"vi"],],
