@@ -44,7 +44,7 @@ export DOCKERID=$(getent group docker | cut -d: -f3)
 docker-compose -f ./shinyproxy/shinyproxy_local.yml up
 ```
 
-* Open link to access shiny proxy (use test_user as username and password; see application file): [http://localhost:7070/login](http://localhost:7070/login)
+* Open link to access shiny proxy (use test_user as username and password; see [application](https://github.com/hcstubbe/lcarsc/blob/master/shinyproxy/application/application_test.yml) file): [http://localhost:7070/login](http://localhost:7070/login)
 
 ### Backup and restore MariaDB database
 
