@@ -1,0 +1,82 @@
+proxy:
+  title: LCARS
+  port: 8090 # use Port 8080 for ShinyProxy
+  template-path: /templates/test
+  # bind-address: 127.0.0.1
+  container-wait-time: 30000 # how long should we wait for the container to spin up (30s as default as this is enough for our Shiny apps)
+  heartbeat-rate: 10000 # the user's browser will send a heartbeat call every heartbeat-rate milliseconds (10s as default)
+  heartbeat-timeout: 360000 # if the server does not receive a heartbeat for heartbeat-timeout milliseconds, the relevant proxy will be released (60s as default)
+
+  container-log-path: /logdata/container-logs
+  
+  authentication: keycloak
+  
+  admin-groups: adminecrf
+  
+  keycloak:
+    realm: master                                                     
+    auth-server-url: https://keycloak.your.url.com/auth
+    resource: shinyproxy                                                  
+    credentials-secret: xxx-xxx-xxx-xxx  # the Keycloak secret for your "client application"
+    
+    
+    
+  #### Set Up Usage Statistics Monitoring
+  # usage-stats-url: http://influxdb:8086/write?db=shinyproxy_usagestats # use InfluxDB to store usage statistics; can be in a different server
+  # usage-stats-username: xxxx # influxdb username if needed
+  # usage-stats-password: xxxx # influxdb password if needed
+
+  #### OpenID Connect Authentication ####
+  # authentication: openid # use openid auth framework
+  ## openid:
+   # roles-claim: defaultClientScopes # use the groups value passed by AWS cognito to identify user groups
+   ## auth-url: http://keycloak.study.sacov19.de/auth/realms/master/protocol/openid-connect/auth # http://keycloak.study.sacov19.de/auth/
+   # token-url: http://keycloak.study.sacov19.de/auth/realms/master/protocol/openid-connect/token # https://{cognito_domain_prefix}.auth.{region}.amazoncognito.com/oauth2/token
+   # jwks-url: http://keycloak.study.sa…col/openid-connect/certs # https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json
+   # logout-url: http://keycloak.study.sacov19.de/auth/realms/master/protocol/openid-connect/logout # https://{cognito_domain_prefix}.auth.{region}.amazoncognito.com/logout?client_id={client_id}&logout_uri={your_host_url}
+   # client-id: account # get this from AWS Cognito user pool management page
+   # client-secret: xxxxxxxxxxxxx # get this from AWS Cognito user pool management page
+  
+  #### Simple Authentication (for demo only, don't use in production) ####
+  #authentication: simple
+  #admin-groups: admins
+  #users:
+  #- name: admin
+  #  password: admin
+  #  groups: admins
+  #- name: user
+  #  password: user
+  
+  # Set the container backend: The container-backend can be one of docker (default), docker-swarm or kubernetes
+  container-backend: docker-swarm
+  
+  docker:
+      internal-networking: true
+  
+  # Below is a list of Shiny apps and their config
+  specs:
+  - id: app1
+    display-name: App 1
+    description: LCARS-C URGENT-GI Study
+    container-image: hstubbe/lcarsc:latest
+    container-cmd: ["R", "-e", "lcarsc::run_app(ecrf_dbuser = 'user', dbpassword = 'pwd', ecrf_dbhost = 'db', ecrf_dbname = 'mydb', config_dbuser = 'user', config_dbpassword = 'pwd', config_dbhost = 'db', config_dbname = 'mydb', confirm_write_db = FALSE, options = list(host = '0.0.0.0', port = 3838))"]
+    container-network: sp-net
+    access-groups: [user, admin]
+    
+  - id: lcarsm
+    display-name: LCARS-M
+    description: LCARS-M App
+    container-image: hstubbe/lcarsm:latest
+    container-cmd: ["R", "-e", "lcarsM::run_app(ecrf_dbuser = 'user', ecrf_dbpassword = 'pwd', ecrf_dbhost = 'db', ecrf_dbname = 'mydb', config_dbuser = 'user', config_dbpassword = 'pwd', config_dbhost = 'db', config_dbname = 'mydb', options = list(host = '0.0.0.0', port = 3838))"]
+    container-network: sp-net
+    access-groups: [pwauser, adminecrf]
+    
+logging:
+  file:
+    shinyproxy.log
+    
+
+server:
+  forward-headers-strategy:
+    native
+ 
