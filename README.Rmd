@@ -13,12 +13,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-# lcarsc <img src="man/figures/logo.png" align="right" width=160 height=160 alt="" />
-<!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-<!-- badges: end -->
+# LCARS-C <img src="man/figures/logo.png" align="right" width=160 height=160 alt="" />
 
-The goal of lcarsc is to provide a lightweight clinical data acquisition-research software.
+The goal of LCARS-C is to provide a lightweight clinical data acquisition-research software.
 
 ## Installation
 
@@ -30,15 +27,19 @@ devtools::install_github("hcstubbe/lcarsc")
 
 ## Example
 
-Using lcarsc locally
+Using LCARS-C locally: In this example, the database is saved in the working directory as 'db_test_data.sqlite3.sqlite3' and 'db_test_cfg.sqlite3.sqlite3'. The preview data is saved as 'db_preview.sqlite3'. 'db_preview.sqlite3' is overwritten each time the software reboots or the page reloads.
 
 ```{r example, eval=FALSE, include=TRUE}
 library(lcarsc)
 lcarsc::run_app(ecrf_database_driver = RSQLite::SQLite(),
         ecrf_dbhost = "dbtest",
         ecrf_dbname = "db_test_data.sqlite3",
+        ecrf_dbuser = "test_user",
+        ecrf_dbpassword = NULL,
         config_database_driver = RSQLite::SQLite(),
+        config_dbpassword = NULL,
         config_dbhost = "dbtest",
         config_dbname = "db_test_cfg.sqlite3",
+        config_dbuser = "test_user",
         options = list(host = '0.0.0.0', port = 3838))
 ```
