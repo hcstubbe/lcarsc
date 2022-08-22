@@ -5,6 +5,8 @@
 
 LCARS-C is a lightweight clinical data acquisition and management
 software for clinical research and other data-focused research projects.
+It is based on [R Shiny](https://github.com/rstudio/shiny) and the
+[golem](https://github.com/ThinkR-open/golem) framework.
 
 ## Installation
 
