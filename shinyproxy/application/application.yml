@@ -17,7 +17,7 @@ proxy:
     realm: master                                                     
     auth-server-url: https://keycloak.your.url.com/auth
     resource: shinyproxy                                                  
-    credentials-secret: 8279d82e-e415-4c40-b01b-8fc0f7075589  # the Keycloak secret for your "client application"
+    credentials-secret: xxx-xxx-xxx-xxx  # the Keycloak secret for your "client application"
     
     
     
