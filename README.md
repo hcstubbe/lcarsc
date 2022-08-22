@@ -6,7 +6,7 @@
 LCARS-C is a lightweight clinical data acquisition and management
 software for clinical research and other data-focused research projects.
 
-## Local installation
+## Installation
 
 Install from github:
 
