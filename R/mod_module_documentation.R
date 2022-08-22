@@ -106,6 +106,18 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     # Auxiliary functions ----
 
     # Functions for loading data for rendering data table
+
+  	user_show_vals = all_visits[all_visits$visit_id == "vi", c("show_col_1", "show_col_2", "show_col_3")]
+  	if(any(!is.na(user_show_vals))){
+  	  user_show_vals = user_show_vals[!is.na(user_show_vals)]
+  	  user_show_vals_names = user_show_vals
+  	  user_show_vals = paste("vi", user_show_vals, sep = "_")
+  	  names(user_show_vals) = user_show_vals_names
+  	  show_vals = c("pid", "date_modified", "user_modified", user_show_vals)
+  	  names(show_vals) = c("PID", "Date", "User", user_show_vals_names)
+  	  show_vals = show_vals[!is.na(show_vals)]
+  	}
+
     computeFT = function(show_preliminary = FALSE){
       y = loadData(pool, data_table1)
       if(show_preliminary == TRUE){
@@ -114,8 +126,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
         y = y %>% filter(deleted_row == FALSE & submitted_row == TRUE)
       }
       y = y %>%
-        select(c("pid", "date_modified", "user_modified")) %>%
         arrange(desc(as.POSIXct(as.character(date_modified), format = "%a %b %d %H:%M:%S %Y")))
+      y = y[,show_vals]
       y
     }
     load_dt_for_render = function(){
@@ -124,7 +136,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                                    dom = "lftipr"),
                     selection = c("single"),
                     rownames = FALSE,
-                    colnames = c("PID", "Date", "User"))}
+                    colnames = names(show_vals))}
 
 
 
