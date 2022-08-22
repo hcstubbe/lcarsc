@@ -44,7 +44,7 @@ export DOCKERID=$(getent group docker | cut -d: -f3)
 docker-compose -f ./shinyproxy/shinyproxy_local.yml up
 ```
 
-* Open link to access shiny proxy (use test_user as username and password; see [application](https://github.com/hcstubbe/lcarsc/blob/master/shinyproxy/application/application_test.yml) file): [http://localhost:7070/login](http://localhost:7070/login)
+* Open link to access shiny proxy (use test_user as username and password; see [application_test.yml](https://github.com/hcstubbe/lcarsc/blob/master/shinyproxy/application/application_test.yml) file): [http://localhost:7070/login](http://localhost:7070/login)
 
 ### Backup and restore MariaDB database
 
@@ -153,12 +153,12 @@ docker stack deploy -c shinyproxy/shinyproxy.yml shinyproxy
 
 After deploying keycloak, you need to configure keycloak as follows:
 * Add a new Real by clicking "Add Realm" and select a name
-* Go to "Clients" on the side bar and click "create" and select a name for the client [application](https://github.com/hcstubbe/lcarsc/blob/master/shinyproxy/application/application.yml) (i.e. the ShinyProxy server)
+* Go to "Clients" on the side bar and click "create" and select a name for the client [application.yml](https://github.com/hcstubbe/lcarsc/blob/master/shinyproxy/application/application.yml) (i.e. the ShinyProxy server)
 * On the main Settings page:
   * Turn "Authorization Enabled" on
   * Add https://your.domain.org/* to "Valid Redirect URIs"
   * Click "Save"
-* Click the "Credentials" tab in the top tab bar and copy the Secret. This secret need to be added to the ShinyProxy [application](https://github.com/hcstubbe/lcarsc/blob/master/shinyproxy/application/application.yml)
+* Click the "Credentials" tab in the top tab bar and copy the Secret. This secret need to be added to the ShinyProxy [application.yml](https://github.com/hcstubbe/lcarsc/blob/master/shinyproxy/application/application.yml)
 * Create users:
   * Click "Users" in the left sidebar. Create a user. Add a user name AND a last name. The lastname can be identical with the username. The lastname will be displayed in the LCARS-C/M user-interface and is required.
   * Click on your newly created user. Click the "Credentials" tab. Set a temporary password.
