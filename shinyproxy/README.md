@@ -151,6 +151,21 @@ export DOCKERID=$(getent group docker | cut -d: -f3)
 docker stack deploy -c shinyproxy/shinyproxy.yml shinyproxy
 ```
 
+After deplozing keycloak, you need to configure keykloac as follows:
+
+    *Add a new Real by clicking "Add Realm" and select a name
+    *Go to "Clients" on the side bar and click "create" and select a name for the client application (i.e. the ShinyProxy server)
+    *On the main Settings page:
+        -Turn "Authorization Enabled" on
+        -Add https://your.domain.org/* to "Valid Redirect URIs"
+        -Click "Save"
+    *Click the "Credentials" tab in the top tab bar and copy the Secret. This secret need to be added to the ShinyProxy application.yml
+    *Create users:
+        -Click "Users" in the left sidebar. Create a user. Add a user name AND a last name. THe lastname can be identical with the username. The lastname will be displayed in the LCARS-C/M user-interface and is required.
+        -Click on your newly created user. Click the "Credentials" tab. Set a temporary password.
+        -Create a role for the user. The role names need to be specified in the ShinyProxy application.yml, too. The roles control, which applicaiton each user can access. The admin role should only be awarded to the system admin.
+
+
 * Deploy ShinyProxy
 
 ```{Bash}
