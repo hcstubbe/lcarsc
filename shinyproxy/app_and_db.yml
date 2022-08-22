@@ -1,0 +1,20 @@
+# Use root/example as user/password credentials
+version: '3.5'
+
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: adminpw
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pwd
+
+  lcarsc:
+    image: hstubbe/lcarsc:latest
+    restart: always
+    command: ["R", "-e", "lcarsc::run_app(ecrf_dbuser = 'user', ecrf_dbpassword = 'pwd', ecrf_dbhost = 'db', ecrf_dbname = 'mydb', config_dbuser = 'user', config_dbpassword = 'pwd', config_dbhost = 'db', config_dbname = 'mydb', confirm_write_db = FALSE, options = list(host = '0.0.0.0', port = 3838))"]
+    ports:
+      - 3838:3838

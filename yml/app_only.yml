@@ -3,17 +3,17 @@ version: '3.5'
 
 services:
 
-  dbeditor:
+  db:
     image: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: coucou
+      MYSQL_ROOT_PASSWORD: adminpw
       MYSQL_DATABASE: mydbeditor
       MYSQL_USER: user
-      MYSQL_PASSWORD: user
+      MYSQL_PASSWORD: pwd
 
   lcarsc:
-    image: hstubbe/recrf:editor
+    image: hstubbe/lcarsc:latest
     restart: always
     ports:
       - 3838:3838
