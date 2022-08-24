@@ -1,8 +1,5 @@
 # TODO
 
 - Update lcarsM user interface
-- Add variables
-- Move to new server
-- Deploy Mobile APP using lcarsM
-- remove reverse_deploy from admin module?
 - Publish as R package
+- inhibit forbidden visit names (i.e. "samples")
