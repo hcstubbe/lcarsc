@@ -27,6 +27,7 @@ mod_module_settings_ui <- function(id){
         shinydashboard::box(width = 12, status = "primary",title = "General settings", solidHeader = TRUE,
                             checkboxInput(inputId = ns("add_child_visits"), label = "Add dependent/sub visits"),
                             checkboxInput(inputId = ns("add_samples_panel"), label = "Add samples panel"),
+                            checkboxInput(inputId = ns("allow_manual_pid"), label = "Allow to enter PIDs manually at inclusion"),
                             checkboxInput(inputId = ns("add_mobile_app"), label = "Add mobile app"),
                             checkboxInput(inputId = ns("enter_pid_manually"), label = "Enter PID manually before recording data with app"),
                             selectInput(ns("visit_id_mobile"), label = "Select visit for mobile app", choices = visit_choices),
@@ -84,6 +85,7 @@ mod_module_settings_server <- function(id, rv){
     form_input_bool_ids = c(
                    "add_child_visits",
                    "add_samples_panel",
+                   "allow_manual_pid",
                    "add_mobile_app",
                    "add_mobile_use_translation",
                    "enter_pid_manually"
