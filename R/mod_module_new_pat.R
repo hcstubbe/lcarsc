@@ -79,22 +79,19 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
   	all_visits = widget_data_input$all_visits
   	all_tabs = widget_data_input$all_tabs
 
-    ## Upload participant file ----
+    # # Upload participant file ----
     # observe({
     #   if (is.null(input$pat_upload)) return()
     #
     #   input_csv = read.csv(input$pat_upload$datapath)
     #
-    #   df_generic = list(row_id = sapply(1:nrow(input_csv), function(x) UUIDgenerate()),
-    #                     user_modified = "NA",
-    #                     pid = input_csv$Patnr,
+    #   df_generic = list(row_id = uuid::UUIDgenerate(n = nrow(input_csv)),
+    #                     user_modified = get_current_user(),
+    #                     pid = input_csv$pid,
     #                     date_modified = as.character(date()),
-    #                     visit_id = "vi",
+    #                     visit_id = all_visits$visit_title[all_visits$visit_id == "vi"],
     #                     deleted_row = "FALSE",
-    #                     submitted_row = "TRUE",
-    #                     Patnr = input_csv$Patnr,
-    #                     Fall = input_csv$Fall,
-    #                     documented_case = "FALSE") %>% data.frame
+    #                     submitted_row = "TRUE") %>% data.frame
     #   dbAppendTable(pool, data_table, df_generic)
     # })
 
@@ -102,6 +99,7 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
     ## Start sub-module server
     rv_downstream_visit = reactiveValues()
     rv_downstream_visit$pid = reactive({"init"})
+    rv_downstream_visit$update_msg = reactive({0})
     mod_module_edit_tab_server(id = "mod_module_edit_tab_inclusion",
                            widget_tab_selection = 'visit',
                            tbl_id = "inclusion_dataset",
@@ -141,7 +139,7 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
 
       id_prefix = settgins_data$pid_prefix
 
-      if(!is.null(id_prefix)){
+      if(!is.null(id_prefix) & id_prefix != ""){
         iv$add_rule(
           "new_pid_manual",
           shinyvalidate::sv_regex(paste0("^", id_prefix, "-"), "The PID prefix does not match!")
@@ -165,6 +163,13 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
               easyClose = TRUE,
               footer = div(actionButton(ns("confirm_submit_pid"), "Confirm!"), modalButton("Dismiss"))
             ))
+          }else{
+            showModal(modalDialog(
+              title = paste0("The PID: ", input$new_pid_manual, " exists!"),
+              "The PID ", shiny::strong(input$new_pid_manual), " exits! Please enter a new PID!",
+              easyClose = TRUE,
+              footer = modalButton("Dismiss")
+            ))
           }
         }
       })
@@ -175,13 +180,14 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
                           user_modified = get_current_user(),
                           pid = input$new_pid_manual,
                           date_modified = as.character(date()),
-                          visit_id = "vi",
+                          visit_id = all_visits$visit_title[all_visits$visit_id == "vi"],
                           deleted_row = 0,
                           submitted_row = 0) %>% data.frame
         dbAppendTable(pool, data_table, df_generic)
         shiny::removeModal()
         iv$disable()
         shiny::updateTextInput(inputId = "new_pid_manual", value="")
+        rv_downstream_visit$update_msg = reactive({1})
       })
     }
   })
