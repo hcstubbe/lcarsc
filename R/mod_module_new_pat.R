@@ -16,11 +16,6 @@ mod_module_new_pat_ui <- function(id) {
 
   settgins_data = golem::get_golem_options("settings_data")
 
-  allow_manual_pid = settgins_data$allow_manual_pid
-  if(is.null(allow_manual_pid)){
-    allow_manual_pid = FALSE
-  }
-
   tagList(
     fluidRow(
       column(10,
@@ -30,7 +25,7 @@ mod_module_new_pat_ui <- function(id) {
                  mod_module_edit_tab_ui(id = ns("mod_module_edit_tab_inclusion"))
                )
              ),
-             if(allow_manual_pid == TRUE){
+             if(settgins_data$allow_manual_pid == TRUE){
                box(title = ("Add new PID manually"), width = 12, status = "primary", solidHeader = TRUE,
                    textInput(ns("new_pid_manual"), "Enter new PID"),
                    actionButton(ns("add_pid"), "Save new PID!", icon = shiny::icon("save",
@@ -57,10 +52,6 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
     ns = session$ns
 
     settgins_data = golem::get_golem_options("settings_data")
-    allow_manual_pid = settgins_data$allow_manual_pid
-    if(is.null(allow_manual_pid)){
-      allow_manual_pid = FALSE
-    }
 
     # If the form is used for the preview, use local database
     prod_mod = get_production_mode(production_mode = get_golem_options("production_mode"),
@@ -134,7 +125,7 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
 
     ## Add manual PID ----------------
 
-    if(allow_manual_pid == TRUE){
+    if(settgins_data$allow_manual_pid == TRUE){
 
       iv <- shinyvalidate::InputValidator$new()
 
