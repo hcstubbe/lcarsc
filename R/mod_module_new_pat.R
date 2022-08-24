@@ -79,7 +79,7 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
   	all_visits = widget_data_input$all_visits
   	all_tabs = widget_data_input$all_tabs
 
-    # Upload participant file ----
+    ## Upload participant file ----
     # observe({
     #   if (is.null(input$pat_upload)) return()
     #
@@ -123,10 +123,13 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
                            show_preliminary = TRUE,
                            is_editor_or_vi = TRUE)
 
+
+
     ## Add manual PID ----------------
 
     if(settgins_data$allow_manual_pid == TRUE){
 
+      ### Add validation
       iv <- shinyvalidate::InputValidator$new()
 
       iv$add_rule("new_pid_manual", shinyvalidate::sv_required())
@@ -148,6 +151,8 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
         iv$add_rule("new_pid_manual", ~ if(!is.null(.)){if (nchar(.) <  3) {"Minimum length is 3!"}})
       }
 
+
+      ### Open modal dialogue for new PID
       observeEvent(input$add_pid, {
         iv$enable()
         if(iv$is_valid()) {
@@ -164,6 +169,7 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
         }
       })
 
+      ### Observe if new PID should be added
       observeEvent(input$confirm_submit_pid, {
         df_generic = list(row_id = uuid::UUIDgenerate(),
                           user_modified = get_current_user(),
@@ -177,17 +183,7 @@ mod_module_new_pat_server <- function(id, visit_id, data_table, preview = FALSE)
         iv$disable()
         shiny::updateTextInput(inputId = "new_pid_manual", value="")
       })
-
     }
-
-
-
-
-
-
-
-
-
   })
 
 }
