@@ -6,7 +6,6 @@
 #'
 #' @noRd
 #' @importFrom shiny numericInput NS radioButtons selectInput checkboxInput textInput
-#' @importFrom shinyWidgets airDatepickerInput
 #' @importFrom golem get_golem_options
 #'
 #'
@@ -125,7 +124,7 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
     }
 
     if(widget_data$type[i] == "dateInput" & widget_data$conditional[i] == FALSE){
-      wlist_i = list(shinyWidgets::airDatepickerInput(inputId = ns(widget_data$inputId[i]),
+      wlist_i = list(shiny::dateInput(inputId = ns(widget_data$inputId[i]),
                                label = widget_data$label[i])
       )
     }
@@ -205,7 +204,7 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
     if(widget_data$type[i] == "dateInput" & widget_data$conditional[i] == TRUE){
       wlist_i = list(
         conditionalPanel(condition = widget_data$appear_if[i],
-                         shinyWidgets::airDatepickerInput(inputId = ns(widget_data$inputId[i]),
+                         shiny::dateInput(inputId = ns(widget_data$inputId[i]),
                                                           label = widget_data$label[i]),
                          ns = ns)
       )
