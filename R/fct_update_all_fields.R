@@ -7,7 +7,6 @@
 #' @noRd
 #'
 #' @importFrom shiny updateTextInput updateNumericInput updateSelectInput updateRadioButtons
-#' @importFrom shinyWidgets updateAirDateInput
 #'
 update_all_fields = function(session, db_data, widget_data, tbl_id = NULL){
 
@@ -31,7 +30,7 @@ update_all_fields = function(session, db_data, widget_data, tbl_id = NULL){
       if(is.na(val_x)){
         val_x = NULL
       }
-      shinyWidgets::updateAirDateInput(session = session, inputId = x, value = val_x)
+      shiny::updateDateInput(session = session, inputId = x, value = val_x)
     }
 
     if(widget_type == "checkboxInput"){
