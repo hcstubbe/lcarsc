@@ -2,36 +2,22 @@
 version: '3.5'
 
 services:
-  dbeditor:
+  dbtest:
     image: mariadb
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: coucou
-      MYSQL_DATABASE: mydbeditor
-      MYSQL_USER: user
-      MYSQL_PASSWORD: user
+      MYSQL_DATABASE: mydbtest
+      MYSQL_USER: usertest
+      MYSQL_PASSWORD: usertest
       
   lcarsc:
-    image: hstubbe/recrf:editor
+    image: hstubbe/lcarsc:test
     restart: always
     ports:
       - 3838:3838
-      
-  rstudio:
-    image: rstudio4test
-    restart: always
-    environment:
-      PASSWORD: test123
-      ADD: shiny
-    ports:
-      - 8787:8787
-      
-  lcarsm:
-    image: hstubbe/lcarsm:latest
-    restart: always
-    ports:
-      - 3939:3838
-        
+    command: ["R", "-e", "lcarsc::run_app(ecrf_dbuser = 'usertest', ecrf_dbpassword = 'usertest', ecrf_dbhost = 'dbtest', ecrf_dbname = 'mydbtest', config_dbuser = 'usertest', config_dbpassword = 'usertest', config_dbhost = 'dbtest', config_dbname = 'mydbtest', confirm_write_db = FALSE, options = list(host = '0.0.0.0', port = 3838))"]
+              
 networks:
     backend:
         # use a custom driver, with no options
