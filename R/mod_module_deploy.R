@@ -15,14 +15,20 @@ mod_module_deploy_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-    strong("Caution:"), "moving from 'editor' to 'production' ", strong("cannot be reversed!"),
+    strong("Caution:"), "moving from 'editor' to 'production' ", strong("cannot be reversed completely!"),
     br(),
     br(),
-    "Please make sure, ", strong("you tested"), "the ecrf under 'Preview'!",
+    "Please make sure, ", strong("you tested"), "the eCRF under 'Preview'!",
     br(),
     br(),
-    "The deployment will ", strong("update the ecrf from the data base. "), "make sure, you tested using 'Preview' after updating!",
+    "The deployment will ", strong("update the eCRF from the data base."), " Make sure, you tested using 'Preview' after updating!",
     br(),
+    br(),
+    br(),
+    strong("Please acknowledge the following:"),
+    shiny::checkboxInput(inputId = ns("check_groups"), "User groups are checked (see database setup)."),
+    shiny::checkboxInput(inputId = ns("check_tested"), "The eCRF has been tested."),
+    shiny::checkboxInput(inputId = ns("check_limited_rollback"), "Changes cannot be rolled back completely."),
     br(),
     br(),
     textInput(ns("confirm_deployment"), label = "Type 'activate production'", placeholder = "Fill to confirm"),
@@ -80,6 +86,9 @@ mod_module_deploy_server <- function(id){
         "Type 'activate production' to confirm!"
       }
     })
+    iv$add_rule("check_groups", sv_equal(TRUE, message_fmt = "Required"))
+    iv$add_rule("check_tested", sv_equal(TRUE, message_fmt = "Required"))
+    iv$add_rule("check_limited_rollback", sv_equal(TRUE, message_fmt = "Required"))
 
 
     close <- function() {
