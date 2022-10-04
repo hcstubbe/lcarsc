@@ -1,8 +1,8 @@
 #' define_widget
 #'
-#' @description A fct function
+#' @description This function contains the widget definitions for rendering each widget from the widget information in the database.
 #'
-#' @return The return value, if any, from executing the function.
+#' @return The function returns a list of widgets.
 #'
 #' @noRd
 #' @importFrom shiny numericInput NS radioButtons selectInput checkboxInput textInput
