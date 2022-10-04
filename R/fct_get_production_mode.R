@@ -12,7 +12,7 @@
 get_production_mode = function(production_mode, pool_config){
 
 
-  if( !is.null(production_mode )){
+  if( !is.null(production_mode ) ){
     return(production_mode)
   }
 
@@ -25,20 +25,20 @@ get_production_mode = function(production_mode, pool_config){
     production_mode = "editor"
     RMariaDB::dbCreateTable(conn = pool_config,
                             name = "start_config",
-                            fields = data.frame(production_mode = production_mode))
+                            fields = data.frame(production_mode = production_mode, tested_ecrf = 'FALSE'))
     RMariaDB::dbAppendTable(conn = pool_config,
                             name = "start_config",
-                            value = data.frame(production_mode = production_mode))
-}
+                            value = data.frame(production_mode = production_mode, tested_ecrf = 'FALSE'))
+    }
     return(production_mode)
   }else{
     production_mode = "editor"
     RMariaDB::dbCreateTable(conn = pool_config,
                             name = "start_config",
-                            fields = data.frame(production_mode = production_mode))
+                            fields = data.frame(production_mode = production_mode, tested_ecrf = 'FALSE'))
     RMariaDB::dbAppendTable(conn = pool_config,
                             name = "start_config",
-                            value = data.frame(production_mode = production_mode))
+                            value = data.frame(production_mode = production_mode, tested_ecrf = 'FALSE'))
     return(production_mode)
 
   }

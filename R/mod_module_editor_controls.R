@@ -63,7 +63,8 @@ mod_module_editor_controls_server <- function(id) {
     # Update widgets in data
     observeEvent(input$update_widgets_button_confirm, {
       make_widget_tables(pool = pool,
-                         pool_config = pool_config)
+                         pool_config = pool_config,
+                         ecrf_test = TRUE)
       removeModal()
       showNotification("Widgets updated", type = "message")
       session$reload()
@@ -71,6 +72,7 @@ mod_module_editor_controls_server <- function(id) {
 
     # Upload data
     observeEvent(input$uploadData, {
+      dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='FALSE'")
       showModal(
         modalDialog(
           title = "Upload widget data",
@@ -171,7 +173,7 @@ mod_module_editor_controls_server <- function(id) {
 
     # Observe delete confirmation
     observeEvent(input$delete_widgets_button_confirm, {
-
+      dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='FALSE'")
       tab_to_del_pool = input$tab_to_del_pool
       if(!is.null(tab_to_del_pool)){
         for (i in tab_to_del_pool){

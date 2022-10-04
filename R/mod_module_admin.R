@@ -92,10 +92,10 @@ mod_module_admin_server <- function(id){
       RMariaDB::dbRemoveTable(conn = get_golem_options("pool_config"), name = "start_config")
       RMariaDB::dbCreateTable(conn = get_golem_options("pool_config"),
                                   name = "start_config",
-                                  fields = data.frame(production_mode = "editor"))
+                                  fields = data.frame(production_mode = "editor", tested_ecrf = 'FALSE'))
       RMariaDB::dbAppendTable(conn = get_golem_options("pool_config"),
                                   name = "start_config",
-                                  value = data.frame(production_mode = "editor"))
+                                  value = data.frame(production_mode = "editor", tested_ecrf = 'FALSE'))
 
     })
 

@@ -44,6 +44,9 @@ mod_module_library_controls_server <- function(id, selected_row) {
     # Add dialogue
     observeEvent(input$addvars, {
 
+      # Remove tested status
+      dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='FALSE'")
+
       # Get inputIds to add to editor
       vars_table_sql <- dbReadTable(pool, "library_table_vars")
       sel_inputIds = vars_table_sql[vars_table_sql$row_id %in% selected_row(), "inputId"]

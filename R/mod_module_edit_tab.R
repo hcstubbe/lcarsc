@@ -85,10 +85,11 @@ mod_module_edit_tab_server<- function(id,
 
     # Get the data base connection
     pool = get_golem_options("pool")
+    pool_config = get_golem_options("pool_config")
 
     # If the form is used for the preview, use local database
     prod_mod = get_production_mode(production_mode = get_golem_options("production_mode"),
-                                   pool_config = get_golem_options("pool_config"))
+                                   pool_config = pool_config)
     if(prod_mod == "editor" & preview == TRUE){
       pool = pool::dbPool(
         drv = RSQLite::SQLite(),
@@ -248,6 +249,10 @@ mod_module_edit_tab_server<- function(id,
     update_dt = function(pid = NULL){
       rv_table$rv_rtab = reactive({make_response_table(input$selected_visit_id)})
       DT::replaceData(proxy, select_vars(show_vals, rv_table$rv_rtab()), resetPaging = FALSE, rownames = FALSE)
+      # invalidate "ecrf_tested = TRUE" status if someting is chenged in the editor mode
+      if(visit_id == "editor"){
+        dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='FALSE'")
+      }
     }
 
 
@@ -267,10 +272,11 @@ mod_module_edit_tab_server<- function(id,
 
 
     # Add optional inputs ----
+    # Add additional buttons also to 'invalidate "ecrf_tested = TRUE" status if someting is chenged in the editor mode'!
 
     # Add visit selector
     if(editor_filter_visit_id == TRUE){
-      filter_visit_data = loadData(get_golem_options("pool_config"), "editor_table_visit")
+      filter_visit_data = loadData(pool_config, "editor_table_visit")
       if(!is.null(filter_visit_data$order)){
         filter_visit_data = dplyr::arrange(filter_visit_data, order)
       }

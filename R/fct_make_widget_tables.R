@@ -11,7 +11,8 @@
 #' @importFrom golem get_golem_options
 #'
 make_widget_tables = function(pool,
-                              pool_config) {
+                              pool_config,
+                              ecrf_test) {
 
 
   # Read input widget data
@@ -281,6 +282,10 @@ make_widget_tables = function(pool,
 
   # Update tables on database
   db_replace_tables(conn = pool_config, table_list = widget_tables) # replace configuration tables
+
+  if(ecrf_test == TRUE){
+    dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='TRUE'")
+  }
 
   widget_tables
 
