@@ -320,8 +320,8 @@ make_widget_tables = function(pool,
       }
     }
 
-    # Set existing alls values in variable database to "submitted"
-    dbExecute(pool_config, "UPDATE editor_table_vars SET `submitted_row`= TRUE")
+    # # Set existing all values in variable database to "submitted"
+    # dbExecute(pool_config, "UPDATE editor_table_vars SET `submitted_row`= TRUE")
   }
 
 
