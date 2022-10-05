@@ -20,8 +20,8 @@ mod_module_library_controls_ui <- function(id) {
   tagList(
     div(actionButton(ns("addvars"), "Add selected variables", icon("plus", verify_fa = FALSE)),
         downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE)),
-        actionButton(ns("uploadData"), "Upload", icon = icon("upload", verify_fa = FALSE)),
-        actionButton(ns("delete_widgets_button"), "Delete table(s)", icon("trash", verify_fa = FALSE))
+        actionButton(ns("uploadData"), "Upload", icon = icon("upload", verify_fa = FALSE)) #,
+        # actionButton(ns("delete_widgets_button"), "Delete table(s)", icon("trash", verify_fa = FALSE))
     )
   )
 }
@@ -254,24 +254,24 @@ mod_module_library_controls_server <- function(id, selected_row) {
 
 
 
-    # delete dialogue ----
-    observeEvent(input$delete_widgets_button, {
-      showModal(
-        modalDialog(
-          title = "Delete",
-          div(tags$head(tags$style(".modal-dialog{ width:400px}")),
-              tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
-              fluidPage(
-                fluidRow(
-                  actionButton(ns("delete_widgets_button_dialog"), "Select tables to delete", icon = icon("check-square-o",verify_fa = FALSE)),
-                  modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
-                )
-              )
-          ),
-          easyClose = FALSE, footer = NULL
-        )
-      )
-    })
+    # # delete dialogue ----
+    # observeEvent(input$delete_widgets_button, {
+    #   showModal(
+    #     modalDialog(
+    #       title = "Delete",
+    #       div(tags$head(tags$style(".modal-dialog{ width:400px}")),
+    #           tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+    #           fluidPage(
+    #             fluidRow(
+    #               actionButton(ns("delete_widgets_button_dialog"), "Select tables to delete", icon = icon("check-square-o",verify_fa = FALSE)),
+    #               modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
+    #             )
+    #           )
+    #       ),
+    #       easyClose = FALSE, footer = NULL
+    #     )
+    #   )
+    # })
 
     # delete dialogue ----
     observeEvent(input$delete_widgets_button_dialog, {
