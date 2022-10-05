@@ -51,11 +51,6 @@ mod_module_launcher_edit_ui <- function(id){
             }else{
                 NULL
             },
-            if(get_golem_options("user_is_admin")){
-              menuItem("Admin", tabName = "admin", icon = icon("unlock", verify_fa = FALSE))
-            }else{
-              NULL
-            },
             tags$footer(paste0("LCARS-C Version ", get_golem_options("version")), align = "right", style = "
                          text-align: center;
                          position:absolute;
@@ -113,14 +108,8 @@ mod_module_launcher_edit_ui <- function(id){
               tabItem("preview_mobile",
                       mod_module_preview_mobile_ui(ns("module_preview_mobile_1")))
             }else{
-              tabItem("Data",
+              tabItem("preview_mobile",
                       div())
-            },
-            if(get_golem_options("user_is_admin")){
-              tabItem("admin",
-                      mod_module_admin_ui(ns("module_admin_1")))
-            }else{
-              tabItem("admin")
             }
             # ,
             # if("app_tbl" %in% dbListTables(golem::get_golem_options("pool"))){
@@ -193,9 +182,6 @@ mod_module_launcher_edit_server <- function(id){
   	rv_db_settings$save_settings_button = reactive({0})
   	mod_module_db_settings_server("module_db_settings_1", rv = rv_db_settings)
 
-  	if(get_golem_options("user_is_admin")){
-  	  mod_module_admin_server("module_admin_1")
-  	}
 
 
     # Observe drop down menu ----

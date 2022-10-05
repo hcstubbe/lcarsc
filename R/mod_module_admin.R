@@ -6,7 +6,7 @@
 #'
 #' @noRd
 #'
-#' @importFrom shiny NS tagList h4 br
+#' @importFrom shiny NS tagList h4 br updateCheckboxInput updateTextInput
 #' @importFrom golem get_golem_options
 #' @importFrom RMariaDB dbReadTable
 #' @importFrom shinyvalidate sv_equal sv_required InputValidator
@@ -44,31 +44,39 @@ mod_module_admin_ui <- function(id){
                               collapsed = TRUE,
                               width = 4,
                               solidHeader = TRUE,
-                              "This removes a record ", strong("irreversibly"),
-                              " from all tables of this database. Once removed,  ",
-                              strong("this cannot be undone!"),
-                              br(),
-                              br(),
-                              textInput(ns("pid_to_delete"), label = "PID to remove from database"),
-                              actionButton(ns("delete_pid_dialog"), label = "Delete record"),
-                              br(),
-                              br(),
                               wellPanel(
-                                "This reverses the server to editor mode!",
-                                actionButton(ns("reverse_deploy"), label = "Reverse to editor mode!")
+                                h4("Remove record"),
+                                "This removes a record ", strong("irreversibly"),
+                                " from all tables of this database. Once removed,  ",
+                                strong("this cannot be undone!"),
+                                br(),
+                                br(),
+                                textInput(ns("pid_to_delete"), label = "PID to remove from database"),
+                                actionButton(ns("delete_pid_dialog"), label = "Delete record")
                               ),
-
-                              # REMOVE BEFOR PUBLISHING ---
-                              br(),
-                              br(),
                               wellPanel(
-                                "This adds a column to exisitng table!",
-                                shiny::textInput(ns("sel_tab"), "Select table"),
-                                shiny::textInput(ns("new_col"), "Column name"),
-                                shiny::selectInput(ns("new_col_type"), "Data type", choices = list("TEXT", "DOUBLE", "INTEGER")),
-                                actionButton(ns("add_column"), label = "Add column!")
+                                h4("Reverse to editor"),
+                                strong("Caution:"), "moving from 'production' to 'editor' ", strong("endandgers the database integrity and data quality!"),
+                                br(),
+                                br(),
+                                "Please be sure, ", strong("you want to continue"), "!",
+                                br(),
+                                br(),
+                                shiny::actionButton(inputId = ns("reverse_modal"), label = "Reverse")
                               )
-                              ##############################
+
+                              # ,
+                              # # REMOVE BEFOR PUBLISHING ---
+                              # br(),
+                              # br(),
+                              # wellPanel(
+                              #   "This adds a column to exisitng table!",
+                              #   shiny::textInput(ns("sel_tab"), "Select table"),
+                              #   shiny::textInput(ns("new_col"), "Column name"),
+                              #   shiny::selectInput(ns("new_col_type"), "Data type", choices = list("TEXT", "DOUBLE", "INTEGER")),
+                              #   actionButton(ns("add_column"), label = "Add column!")
+                              # )
+                              # ##############################
 
           )
         )
@@ -83,22 +91,69 @@ mod_module_admin_ui <- function(id){
 #' @noRd
 mod_module_admin_server <- function(id){
   moduleServer( id, function(input, output, session){
-    ns <- session$ns
-    pool = get_golem_options("pool")
+    ns = session$ns
+
+    pool = golem::get_golem_options("pool")
+    pool_config = golem::get_golem_options("pool_config")
+
+
 
     # REMOVE BEFOR PUBLISHING ---
-    # Go back from production mode (for experimental version!)
-    observeEvent(input$reverse_deploy, {
-      RMariaDB::dbRemoveTable(conn = get_golem_options("pool_config"), name = "start_config")
-      RMariaDB::dbCreateTable(conn = get_golem_options("pool_config"),
+    # Observe reversal commands ----
+
+    observeEvent(input$reverse_modal, {
+      showModal(
+        modalDialog(
+          strong("Please acknowledge the following:"),
+          shiny::checkboxInput(inputId = ns("check_integrity"), "Reversing to editor endangers the data integrity and quality."),
+          shiny::checkboxInput(inputId = ns("check_danger"), "Data might be lost irreversibly."),
+          shiny::checkboxInput(inputId = ns("check_reversal"), "Reversing to editor is not reccommended."),
+          br(),
+          br(),
+          textInput(ns("confirm_reversal"), label = "Type 'reverse to editor'", placeholder = "Fill to confirm"),
+          actionButton(inputId = ns("reverse"), label = "Reverse")
+        )
+      )
+    })
+
+    observeEvent(input$reverse,{
+      isadmin = user_is_admin(pool_config = pool_config,
+                              start_as_admin = get_golem_options("user_is_admin"))
+
+      iv2$enable()
+      if (iv2$is_valid()) {
+
+        start_config = RMariaDB::dbReadTable(pool_config, "start_config")
+        prod_mode = start_config$production_mode
+        tested_ecrf = start_config$tested_ecrf
+
+        if(isadmin == FALSE){
+          warning("The user must be admin to deploy!")
+          shiny::showNotification(ui = "The user must be admin to deploy!", duration = NULL, type = "error")
+        }else if(prod_mode == "production" & isadmin == TRUE){
+
+          RMariaDB::dbRemoveTable(conn = get_golem_options("pool_config"), name = "start_config")
+          RMariaDB::dbCreateTable(conn = get_golem_options("pool_config"),
                                   name = "start_config",
                                   fields = data.frame(production_mode = "editor", tested_ecrf = 'FALSE'))
-      RMariaDB::dbAppendTable(conn = get_golem_options("pool_config"),
+          RMariaDB::dbAppendTable(conn = get_golem_options("pool_config"),
                                   name = "start_config",
                                   value = data.frame(production_mode = "editor", tested_ecrf = 'FALSE'))
 
+          updateCheckboxInput(inputId = "check_integrity", value = FALSE)
+          updateCheckboxInput(inputId = "check_danger", value = FALSE)
+          updateCheckboxInput(inputId = "check_reversal", value = FALSE)
+          updateTextInput(inputId = "confirm_reversal", value = "")
+          session$reload()
+        }else{
+          warning("Unkown error occured in mod_module_admin!")
+          shiny::showNotification(ui = "Unkown error occured in mod_module_admin!", duration = NULL, type = "error")
+        }
+      }
     })
 
+
+    # Add new column to existing tables
     observeEvent(input$add_column, {
       RMariaDB::dbGetQuery(pool, paste("ALTER TABLE", input$sel_tab, "ADD COLUMN", input$new_col, input$new_col_type))
       shiny::showNotification("Column added!")
@@ -203,7 +258,7 @@ mod_module_admin_server <- function(id){
 
 
           if(all(success_all == FALSE)){
-            shiny::showNotification(strong("No enries have been removed!"),
+            shiny::showNotification(strong("No entries have been removed!"),
                                     type = "warning",
                                     duration = 10)
           }
@@ -220,6 +275,18 @@ mod_module_admin_server <- function(id){
       # Input valdiation
       iv <- InputValidator$new()
       iv$add_rule("pid_to_delete", sv_required())
+
+
+      iv2 <- InputValidator$new()
+      iv2$add_rule("confirm_reversal", sv_required())
+      iv2$add_rule("confirm_reversal", function(value) {
+        if (value != "reverse to editor") {
+          "Type 'reverse to editor' to confirm!"
+        }
+      })
+      iv2$add_rule("check_integrity", sv_equal(TRUE, message_fmt = "Required"))
+      iv2$add_rule("check_danger", sv_equal(TRUE, message_fmt = "Required"))
+      iv2$add_rule("check_reversal", sv_equal(TRUE, message_fmt = "Required"))
 
 
       close_modal = function() {
