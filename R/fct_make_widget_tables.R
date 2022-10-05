@@ -284,8 +284,47 @@ make_widget_tables = function(pool,
   db_replace_tables(conn = pool_config, table_list = widget_tables) # replace configuration tables
 
   if(ecrf_test == TRUE){
-    dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='TRUE'")
+    dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='TRUE'") # note TRUE is a character here
   }
+
+
+  # Add new columns to existing tables if applicable and set variables to submitted when deploying
+  if(ecrf_test == FALSE){
+
+    # Add new columns
+    table_names = RMariaDB::dbListTables(conn = pool)
+    query_visits = widget_tables$visits$visit_id
+    query_tables = paste0("visit_table_", query_visits)
+    query_visits  = query_visits[query_tables %in% table_names]
+
+    if(length(query_visits) > 0){
+      for (i in query_visits){
+        dbcmd = paste0("SELECT * FROM ", "visit_table_", i, " LIMIT 1")
+        tab_i = RMariaDB::dbGetQuery(pool, dbcmd)
+        colnames_tab_i = colnames(tab_i)
+        index_i = widget_tables$widgets[,i]
+        input_id_i = widget_tables$widgets[index_i == TRUE, "inputId"]
+        missing_cols_i = setdiff(input_id_i, colnames_tab_i)
+
+        if(length(missing_cols_i) > 0){
+          for (j in missing_cols_i){
+            dbcmd = paste0("ALTER TABLE ",
+                           "visit_table_",
+                           i,
+                           " ADD COLUMN ",
+                           j, " ",
+                           widget_tables$widgets[widget_tables$widgets$inputId == j, "data_type"])
+            RMariaDB::dbExecute(pool, dbcmd)
+          }
+        }
+      }
+    }
+
+    # Set existing alls values in variable database to "submitted"
+    dbExecute(pool_config, "UPDATE editor_table_vars SET `submitted_row`= TRUE")
+  }
+
+
 
   widget_tables
 
