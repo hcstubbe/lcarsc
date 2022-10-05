@@ -45,24 +45,33 @@ mod_module_deploy_server <- function(id){
 
     ns = session$ns
 
+    pool = golem::get_golem_options("pool")
+    pool_config = golem::get_golem_options("pool_config")
+
 
     # Observe deployment command ----
     observeEvent(input$deploy,{
+
+
+
+      isadmin = user_is_admin(pool_config = pool_config,
+                    start_as_admin = get_golem_options("user_is_admin"))
+
       iv$enable()
       if (iv$is_valid()) {
-
-        pool = golem::get_golem_options("pool")
-        pool_config = golem::get_golem_options("pool_config")
-
-        make_widget_tables(pool = pool,
-                           pool_config = pool_config,
-                           ecrf_test = FALSE)
 
         start_config = RMariaDB::dbReadTable(pool_config, "start_config")
         prod_mode = start_config$production_mode
         tested_ecrf = start_config$tested_ecrf
 
-        if(prod_mode != "production" & tested_ecrf == TRUE){
+        if(isadmin == FALSE){
+          warning("The user must be admin to deploy!")
+          shiny::showNotification(ui = "The user must be admin to deploy!", duration = NULL, type = "error")
+        }else if(prod_mode != "production" & tested_ecrf == TRUE & isadmin){
+          make_widget_tables(pool = pool,
+                             pool_config = pool_config,
+                             ecrf_test = FALSE)
+
           RMariaDB::dbRemoveTable(conn = pool_config, name = "start_config")
           RMariaDB::dbCreateTable(conn = pool_config,
                                   name = "start_config",
@@ -72,12 +81,15 @@ mod_module_deploy_server <- function(id){
                                   value = data.frame(production_mode = "production", tested_ecrf = 'FALSE'))
           close()
           session$reload()
-        }else if(prod_mode != "production" & tested_ecrf != TRUE){
+        }else if(prod_mode != "production" & tested_ecrf != TRUE & isadmin){
           warning("The eCRF has not been built and tested after latest changes!")
-          shiny::showNotification(ui = "The eCRF has not been built and tested after latest changes! Hit build in the editor and test!", duration = NULL, type = "warning")
-        }else{
+          shiny::showNotification(ui = "The eCRF has not been built and tested after latest changes! Hit build in the editor and test!", duration = NULL, type = "error")
+        }else if(isadmin){
           warning("The prodcution mode has been activated (by other user?)! Latest changes might not have been saved!")
-          shiny::showNotification(ui = "The prodcution mode has been activated (by other user?)! Latest changes might not have been saved!", duration = NULL, type = "warning")
+          shiny::showNotification(ui = "The prodcution mode has been activated (by other user?)! Latest changes might not have been saved!", duration = NULL, type = "error")
+        }else{
+          warning("Unkown error occured in mod_module_deploy!")
+          shiny::showNotification(ui = "Unkown error occured in mod_module_deploy!", duration = NULL, type = "error")
         }
       }
     })
