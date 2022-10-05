@@ -67,7 +67,7 @@ mod_module_deploy_server <- function(id){
         if(isadmin == FALSE){
           warning("The user must be admin to deploy!")
           shiny::showNotification(ui = "The user must be admin to deploy!", duration = NULL, type = "error")
-        }else if(prod_mode != "production" & tested_ecrf == TRUE & isadmin){
+        }else if(prod_mode != "production" & tested_ecrf == TRUE & isadmin == TRUE){
           make_widget_tables(pool = pool,
                              pool_config = pool_config,
                              ecrf_test = FALSE)
@@ -81,10 +81,10 @@ mod_module_deploy_server <- function(id){
                                   value = data.frame(production_mode = "production", tested_ecrf = 'FALSE'))
           close()
           session$reload()
-        }else if(prod_mode != "production" & tested_ecrf != TRUE & isadmin){
+        }else if(prod_mode != "production" & tested_ecrf != TRUE & isadmin == TRUE){
           warning("The eCRF has not been built and tested after latest changes!")
           shiny::showNotification(ui = "The eCRF has not been built and tested after latest changes! Hit build in the editor and test!", duration = NULL, type = "error")
-        }else if(isadmin){
+        }else if(isadmin == TRUE){
           warning("The prodcution mode has been activated (by other user?)! Latest changes might not have been saved!")
           shiny::showNotification(ui = "The prodcution mode has been activated (by other user?)! Latest changes might not have been saved!", duration = NULL, type = "error")
         }else{
