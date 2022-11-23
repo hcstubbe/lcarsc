@@ -20,13 +20,20 @@ mod_module_documentation_summary_graph_ui <- function(id){
   widget_choices = widget_choices[!(widget_choices %in% c("vi", "samples"))]
 
   shiny::tagList(
-    shiny::fluidRow(
-      shiny::column(shiny::plotOutput(ns("summary_graph")), width = 7),
-      shiny::column(shiny::checkboxGroupInput(inputId = ns("selected_visits"),
-                                              label = "Select visits",
-                                              choices = widget_choices),
-                    width = 5)
-    )
+    shinydashboard::box(title = "Development",
+                        status = "primary",
+                        collapsible = FALSE,
+                        collapsed = FALSE,
+                        width = 12,
+                        solidHeader = TRUE,
+                        shiny::fluidRow(
+                          shiny::column(shiny::plotOutput(ns("summary_graph")), width = 7),
+                          shiny::column(shiny::checkboxGroupInput(inputId = ns("selected_visits"),
+                                                                  label = "Select visits",
+                                                                  choices = widget_choices),
+                                        width = 5)
+                        ))
+
   )
 }
 
@@ -86,7 +93,7 @@ mod_module_documentation_summary_graph_server <- function(id){
             ggplot2::geom_line() +
             ggplot2::geom_point() +
             ggplot2::theme_minimal() +
-            ggplot2::labs(x = "Date", y = "Count [n]", color = "Visit ID") +
+            ggplot2::labs(x = "Date", y = "Count [n]", color = "Visit") +
             ggplot2::scale_color_manual(values = factor_colors)
         }else{
           NULL
