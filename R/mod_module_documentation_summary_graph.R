@@ -1,6 +1,6 @@
 #' module_documentation_summary_graph UI Function
 #'
-#' @description A shiny Module.
+#' @description A shiny module for summarizing and plotting visit data to create an overview of the study's progress.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
