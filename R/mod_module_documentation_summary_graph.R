@@ -97,7 +97,6 @@ mod_module_documentation_summary_graph_server <- function(id){
                                            group = visit_title,
                                            color = visit_title)) +
                 ggplot2::geom_line() +
-                ggplot2::geom_point() +
                 ggplot2::theme_minimal() +
                 ggplot2::labs(x = "Date", y = "Count [n]", color = "Visit") +
                 ggplot2::scale_color_manual(values = factor_colors)
