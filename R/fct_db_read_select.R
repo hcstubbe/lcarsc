@@ -20,7 +20,9 @@ db_read_select = function(pool,
                           oder_by_date = FALSE,
                           entry_id = NULL,
                           filter_entry_id = FALSE,
-                          row_id = NULL){
+                          row_id = NULL,
+                          select_cols = "*",
+                          count_rows = FALSE){
 
 
   # if(filter_entry_id == TRUE & length(entry_id) == 0){
@@ -30,6 +32,9 @@ db_read_select = function(pool,
   # if(use.pid == TRUE & length(pid_x) == 0){
   #   return(NULL)
   # }
+
+
+  select_cols = paste(select_cols, collapse = ", ")
 
 
   sql_params = if(is.null(row_id)){
@@ -46,10 +51,24 @@ db_read_select = function(pool,
     paste0("row_id = '", row_id, "'")
   }
 
+  # Get row count only
+  if(count_rows == TRUE){
+    if(sql_params != ""){
+      db_cmd = paste(sep = " ", "SELECT COUNT(*) FROM", tbl_id, "WHERE", sql_params)
+    }else{
+      db_cmd = paste(sep = " ", "SELECT COUNT(*) FROM", tbl_id)
+    }
+    row_count = (RMariaDB::dbGetQuery(pool, db_cmd))
+    row_count = as.numeric(row_count[[1]])
+    return(row_count)
+  }
+
+
+  # Get table content
   if(sql_params != ""){
-    db_cmd = paste(sep = " ", "SELECT * FROM", tbl_id, "WHERE", sql_params)
+    db_cmd = paste(sep = " ", "SELECT", select_cols, "FROM", tbl_id, "WHERE", sql_params)
   }else{
-    db_cmd = paste(sep = " ", "SELECT * FROM", tbl_id)
+    db_cmd = paste(sep = " ", "SELECT", select_cols, "FROM", tbl_id)
   }
 
   tab_i = (RMariaDB::dbGetQuery(pool, db_cmd))
