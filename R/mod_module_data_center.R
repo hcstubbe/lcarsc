@@ -67,8 +67,18 @@ mod_module_data_center_server <- function(id){
                                            production_mode = golem::get_golem_options("production_mode"))
       all_visits = widget_data_input$all_visits
       visits_list = all_visits$visit_id[!all_visits$inclusion_other_visit]
-      total_inclusions = nrow(filter(RMariaDB::dbReadTable(pool, "inclusion_dataset"),
-                                     deleted_row == FALSE & submitted_row == TRUE))
+
+      total_inclusions = db_read_select(pool,
+                                      tbl_id = "inclusion_dataset",
+                                      count_rows = TRUE,
+                                      pid_x = NULL,
+                                      use.pid = FALSE,
+                                      filter_deleted_rows = TRUE,
+                                      filter_sumitted_rows = FALSE,
+                                      select_cols = c("submitted_row", "date_modified"))
+
+      inclusion_series$date_modified = as.Date(inclusion_series$date_modified, format = "%a %b %d %H:%M:%S %Y")
+      total_inclusions = as.numeric(total_inclusions[[1]])
 
       #### Render summary ----
       fluidPage(
@@ -83,7 +93,7 @@ mod_module_data_center_server <- function(id){
         ),
         fluidRow(
           box(title = paste0("Summary per visit"), width = 12, status = "info",
-              "Here, visits are summaized. ", strong("Repetitive visits"), " for the same individual with the same status are ", strong("omitted"), ".",
+              "Here, numbers of participants with visits are summaized. ", strong("Repetitive visits"), " of the same type and individual are ", strong("omitted"), ".",
               br(),
               br(),
               lapply(visits_list, function(x) {
