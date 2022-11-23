@@ -69,7 +69,8 @@ mod_module_documentation_summary_graph_server <- function(id){
                                           use.pid = FALSE,
                                           filter_deleted_rows = TRUE,
                                           filter_sumitted_rows = FALSE,
-                                          select_cols = c("submitted_row", "date_modified"))
+                                          select_cols = c("submitted_row", "date_modified", "pid"))
+        inclusion_series_i = inclusion_series_i[!duplicated(inclusion_series_i$pid),]
         if(nrow(inclusion_series_i) >0){
           inclusion_series_i$visit_title = all_visits[all_visits$visit_id == gsub("visit_table_", "", i), "visit_title"]
           inclusion_series_i$cumulative_count = 1:nrow(inclusion_series_i)
@@ -107,7 +108,6 @@ mod_module_documentation_summary_graph_server <- function(id){
                                            group = visit_title,
                                            color = visit_title)) +
                 ggplot2::geom_line() +
-                ggplot2::geom_point() +
                 ggplot2::theme_minimal() +
                 ggplot2::labs(x = "Date", y = "Count [n]", color = "Visit") +
                 ggplot2::scale_color_manual(values = factor_colors)
