@@ -28,7 +28,10 @@ mod_module_documentation_summary_graph_ui <- function(id){
                         solidHeader = TRUE,
                         shiny::fluidRow(
                           shiny::column(shiny::plotOutput(ns("summary_graph")), width = 7),
-                          shiny::column(shiny::checkboxGroupInput(inputId = ns("selected_visits"),
+                          shiny::column(shiny::radioButtons(inputId = ns("selected_count"),
+                                                            label = "Select count",
+                                                            choices = c("Documented", "Submitted")),
+                                        shiny::checkboxGroupInput(inputId = ns("selected_visits"),
                                                                   label = "Select visits",
                                                                   choices = widget_choices),
                                         width = 5)
@@ -70,6 +73,7 @@ mod_module_documentation_summary_graph_server <- function(id){
         if(nrow(inclusion_series_i) >0){
           inclusion_series_i$visit_title = all_visits[all_visits$visit_id == gsub("visit_table_", "", i), "visit_title"]
           inclusion_series_i$cumulative_count = 1:nrow(inclusion_series_i)
+          inclusion_series_i$cumulative_submissions = cumsum(inclusion_series_i$submitted_row)
           inclusion_series = rbind(inclusion_series, inclusion_series_i)
           inclusion_series$visit_title = factor(inclusion_series$visit_title, levels = all_visits$visit_title)
         }
@@ -85,16 +89,29 @@ mod_module_documentation_summary_graph_server <- function(id){
     output$summary_graph = renderPlot({
         time_data = get_time_data(input$selected_visits)
         if(length(nrow(time_data)) != 0){
-            ggplot2::ggplot(data = time_data,
-                          ggplot2::aes(x=date_modified,
-                                       y=cumulative_count,
-                                       group = visit_title,
-                                       color = visit_title)) +
-            ggplot2::geom_line() +
-            ggplot2::geom_point() +
-            ggplot2::theme_minimal() +
-            ggplot2::labs(x = "Date", y = "Count [n]", color = "Visit") +
-            ggplot2::scale_color_manual(values = factor_colors)
+            if(input$selected_count == "Documented"){
+              ggplot2::ggplot(data = time_data,
+                              ggplot2::aes(x=date_modified,
+                                           y=cumulative_count,
+                                           group = visit_title,
+                                           color = visit_title)) +
+                ggplot2::geom_line() +
+                ggplot2::geom_point() +
+                ggplot2::theme_minimal() +
+                ggplot2::labs(x = "Date", y = "Count [n]", color = "Visit") +
+                ggplot2::scale_color_manual(values = factor_colors)
+            }else if(input$selected_count == "Submitted"){
+              ggplot2::ggplot(data = time_data,
+                              ggplot2::aes(x=date_modified,
+                                           y=cumulative_submissions,
+                                           group = visit_title,
+                                           color = visit_title)) +
+                ggplot2::geom_line() +
+                ggplot2::geom_point() +
+                ggplot2::theme_minimal() +
+                ggplot2::labs(x = "Date", y = "Count [n]", color = "Visit") +
+                ggplot2::scale_color_manual(values = factor_colors)
+            }
         }else{
           NULL
         }
