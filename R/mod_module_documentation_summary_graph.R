@@ -7,7 +7,8 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList div renderUI fluidRow column plotOutput checkboxGroupInput
-#' @importFrom ggplot2 ggplot geom_line geom_point theme_minimal labs aes
+#' @importFrom ggplot2 ggplot geom_line geom_point theme_minimal labs aes scale_color_manual
+#' @importFrom scales hue_pal
 mod_module_documentation_summary_graph_ui <- function(id){
   ns <- shiny::NS(id)
 
@@ -41,6 +42,7 @@ mod_module_documentation_summary_graph_server <- function(id){
     all_visits = widget_data$all_visits
     all_visits[all_visits$visit_id == "vi","visit_id"] = "inclusion_dataset"
 
+    # Define function for getting time data
     get_time_data = function(selected_visits){
       if(length(selected_visits > 0)){
         query_visits = c("inclusion_dataset",  paste0("visit_table_", selected_visits))
@@ -71,11 +73,9 @@ mod_module_documentation_summary_graph_server <- function(id){
 
     # Make colors
     factor_colors = scales::hue_pal()(length(all_visits$visit_title))
-    # names(factor_colors) = all_visits$visit_title
 
-
+    # Render plot
     output$summary_graph = renderPlot({
-
         time_data = get_time_data(input$selected_visits)
         if(length(nrow(time_data)) != 0){
             ggplot2::ggplot(data = time_data,
@@ -91,7 +91,6 @@ mod_module_documentation_summary_graph_server <- function(id){
         }else{
           NULL
         }
-
 
     })
 
