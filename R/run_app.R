@@ -83,7 +83,7 @@ run_app <- function(
                                                                                    password = config_dbpassword,
                                                                                    host = config_dbhost,
                                                                                    db = config_dbname)),
-                      version = "1.0.50"
+                      version = "1.0.51"
     )
   )
 }
