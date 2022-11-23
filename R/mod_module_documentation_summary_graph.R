@@ -60,6 +60,7 @@ mod_module_documentation_summary_graph_server <- function(id){
         query_visits = c("inclusion_dataset")
       }
 
+      # Loop through visits to collect current state
       inclusion_series = data.frame()
       for(i in query_visits){
         inclusion_series_i = db_read_select(pool,
@@ -83,7 +84,7 @@ mod_module_documentation_summary_graph_server <- function(id){
       return(inclusion_series)
     }
 
-    # Make colors
+    # Fix colors to visits
     factor_colors = scales::hue_pal()(length(all_visits$visit_title))
 
     # Render plot
