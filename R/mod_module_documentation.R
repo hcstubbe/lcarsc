@@ -56,6 +56,8 @@ mod_module_documentation_ui  <- function(id) {
       if(settgins_data$add_child_visits == TRUE){column(4, # if(settigns_data$add_visit_summary == TRUE){4}else{8},
              uiOutput(ns("visit_submission_panel")),
              uiOutput(ns("ui_child_visits")))}else{NULL},
+      if(TRUE){column(4, # if(settigns_data$add_visit_summary == TRUE){4}else{8},
+                      uiOutput(ns("ui_report")))}else{NULL}
 
 
     )
@@ -334,9 +336,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
             mod_module_reports_ui(ns("module_reports_1"))
           ))
 
-
-
-          }
+         }
       })
     }
 
