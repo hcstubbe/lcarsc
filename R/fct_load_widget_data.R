@@ -47,7 +47,8 @@ load_widget_data = function(pool_config, production_mode){
                      visit_choices = all_visits$visit_id[!(all_visits$inclusion_other_visit == TRUE)],
                      widgets_table_global_widgets = db_read_app_data(conn = pool_config, x_table = "widgets_editor", prod_mod = prod_mod),
                      all_visits_editor = db_read_app_data(conn = pool_config, x_table = "visits_editor", prod_mod = prod_mod),
-                     widgets_template = db_read_app_data(conn = pool_config, x_table = "widgets_template", prod_mod = prod_mod))
+                     widgets_template = db_read_app_data(conn = pool_config, x_table = "widgets_template", prod_mod = prod_mod),
+                     widgets_table_global_widgets_report = db_read_app_data(conn = pool_config, x_table = "widgets_report_editor", prod_mod = prod_mod))
 
   return(widget_data)
 }
