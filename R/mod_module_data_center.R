@@ -34,7 +34,7 @@ mod_module_data_center_ui <- function(id){
                                                            "Download",
                                                            icon = shiny::icon("download", verify_fa = FALSE)))
                 ),
-                tabPanel("Summary report", br(),
+                tabPanel("Report editor", br(),
                          shinydashboard::box(title = "Summary report",
                                              status = "primary",
                                              collapsible = FALSE,
@@ -42,7 +42,7 @@ mod_module_data_center_ui <- function(id){
                                              width = 12,
                                              solidHeader = TRUE,
                                              div(
-                                               create_summary()
+                                               mod_module_reports_editor_ui(ns("module_reports_editor_1"))
                                              )
                                              )
                 )
@@ -60,8 +60,13 @@ mod_module_data_center_server <- function(id){
     pool = golem::get_golem_options("pool")
 
 
-    # Start sub-module
+    # Start sub-modules ----
+
+    ## module_documentation_summary_graph_1
     mod_module_documentation_summary_graph_server("module_documentation_summary_graph_1")
+
+    ## module_reports_editor_1
+    mod_module_reports_editor_server("module_reports_editor_1")
 
     # Render summary data ----
     render_summary = function() {
