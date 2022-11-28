@@ -127,7 +127,6 @@ internal_app_data = list(visits = read.csv('widgets/visits.csv'),
                          widgets_editor = read.csv("widgets/widgets_editor.csv"),
                          visits_editor = read.csv('widgets/visits_editor.csv'),
                          widgets_report_editor = read.csv("widgets/widgets_report_editor.csv"),
-                         visits_report_editor = read.csv('widgets/visits_report_editor.csv'),
                          widgets_template = read.csv('widgets/widgets_template.csv'),
                          lang_sel = lang_sel)
 
