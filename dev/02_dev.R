@@ -48,6 +48,7 @@ golem::add_module(name = "module_library", with_test = TRUE) # Name of the modul
 golem::add_module(name = "module_library_controls", with_test = TRUE) # Name of the module
 golem::add_module(name = "module_documentation_summary", with_test = TRUE) # Name of the module
 golem::add_module(name = "module_documentation_summary_graph", with_test = TRUE) # Name of the module
+golem::add_module(name = "module_reports", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

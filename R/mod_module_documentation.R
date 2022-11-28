@@ -48,17 +48,16 @@ mod_module_documentation_ui  <- function(id) {
                                label = "Show preliminary"),
                  br(),
                  br(),
-                 br(),
-                 DT::dataTableOutput(ns("responses_user")))
+                 DT::dataTableOutput(ns("responses_user"))),
+             br(),
+             br(),
+             # mod_module_documentation_summary_ui(ns("module_documentation_summary_1"))
       ),
-      column(if(settgins_data$add_child_visits == TRUE){4}else{8},
+      if(settgins_data$add_child_visits == TRUE){column(4, # if(settigns_data$add_visit_summary == TRUE){4}else{8},
              uiOutput(ns("visit_submission_panel")),
-             br(),
-             br(),
-             mod_module_documentation_summary_ui(ns("module_documentation_summary_1"))
-      ),
-      if(settgins_data$add_child_visits == TRUE){column(4,
-             uiOutput(ns("ui_child_visits")))}else{NULL}
+             uiOutput(ns("ui_child_visits")))}else{NULL},
+
+
     )
   )
 }
@@ -170,14 +169,13 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     }
 
 
-    # Summary server ----
+    # Report server ----
     rv_downstream_summary = reactiveValues()
     rv_downstream_summary$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
-    mod_module_documentation_summary_server(id = "module_documentation_summary_1",
-                                            rv_in = rv_downstream_summary,
-                                            preview = preview)
-
-
+    # mod_module_documentation_summary_server(id = "module_documentation_summary_1",
+    #                                         rv_in = rv_downstream_summary,
+    #                                         preview = preview)
+    mod_module_reports_server("module_reports_1")
 
 
 
@@ -275,20 +273,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
             collapsible = TRUE,
             collapsed = FALSE,
             uiOutput(ns("docu_tab_ui"))
-          ),
-
-          if(settgins_data$add_samples_panel == TRUE){
-            shinydashboard::box(
-              title = ("Samples"),
-              width = 12,
-              status = "primary",
-              solidHeader = TRUE,
-              collapsible = TRUE,
-              collapsed = TRUE,
-              #strong(internal_app_data$lang_sel$module_documentation_medication_info),
-              mod_module_edit_tab_ui(ns("mod_module_edit_tab_smp"))
-            )
-          }
+          )
         )
 
       }else{
@@ -327,6 +312,34 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
         }
       })
     }
+
+
+
+
+
+
+    ## Render report UI ----
+       if(settgins_data$add_child_visits == TRUE){
+      output$ui_report = renderUI({
+        if(length(input$responses_user_rows_selected) == 1 &
+           length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)){
+
+          div(shinydashboard::box(
+            title = "REPORT",
+            width = 12,
+            status = "success",
+            solidHeader = FALSE,
+            collapsible = TRUE,
+            collapsed = FALSE,
+            mod_module_reports_ui(ns("module_reports_1"))
+          ))
+
+
+
+          }
+      })
+    }
+
 
 
   })
