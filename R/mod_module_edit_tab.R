@@ -442,6 +442,7 @@ mod_module_edit_tab_server<- function(id,
       if(!is.null(input$selected_visit_id)){
         if(input$selected_visit_id != "all_visits"){
           shiny::updateSelectInput(inputId = "visit_for_var", session = session, selected = input$selected_visit_id)
+          shiny::updateSelectInput(inputId = "visit_id_for_query", session = session, selected = input$selected_visit_id)
         }
       }
 
