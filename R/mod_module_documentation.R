@@ -291,6 +291,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     ## Render child visit UIs ----
     if(settgins_data$add_child_visits == TRUE){
       output$ui_child_visits = renderUI({
+        # Check if selected pid equals the pid returned from the child visit
+        # and check, that exactly one row is selected in the participant list.
         if((sum(rv_downstream_child_visit$pid() == (((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["pid"]])) == 1) &
            (length(input$responses_user_rows_selected) == 1)){
           ui_list = list()
