@@ -183,10 +183,12 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
     # Child visit servers ----
     if(settgins_data$add_child_visits == TRUE){
-      rv_downstream_visit$parent_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()})
-      rv_downstream_visit$parent_visit_id = reactive({input$visit_selector})
+      rv_downstream_child_visit = reactiveValues()
+      rv_downstream_child_visit$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
+      rv_downstream_child_visit$parent_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()})
+      rv_downstream_child_visit$parent_visit_id = reactive({input$visit_selector})
 
-      rv_downstream_visit$entry_id = reactive({
+      rv_downstream_child_visit$entry_id = reactive({
         db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', input$visit_selector, sep = '_'), " WHERE row_id = '", ((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])(), "'")
         entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
         entry_id
@@ -197,7 +199,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
         cmd_4_eval = paste("mod_module_edit_tab_server(id = paste('mod_module_edit_tab_visit','", i, "', sep = '_'),
                              widget_tab_selection = 'visit',
                              tbl_id = paste('visit_table', '", i, "', sep = '_'),
-                             rv_in = rv_downstream_visit,
+                             rv_in = rv_downstream_child_visit,
                              show_vals = c(PID = 'pid', Date = 'date_modified', 'User' = 'user_modified'),
                              show_user_vals = TRUE,
                              simple = FALSE,
@@ -286,7 +288,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     ## Render child visit UIs ----
     if(settgins_data$add_child_visits == TRUE){
       output$ui_child_visits = renderUI({
-        if(length(input$responses_user_rows_selected) == 1 & length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)){
+        if((length(input$responses_user_rows_selected) == 1 & length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)) &
+           sum(rv_downstream_child_visit$pid() == rv_downstream_visit$pid()) == 1){
           ui_list = list()
           selected_child_visits = sapply(strsplit(ordered_visits_child$parent_ids, ";;;;;"),
                                     function(x){
