@@ -71,7 +71,8 @@ mod_module_edit_tab_server<- function(id,
                                       keep_copy_order = TRUE,
                                       is_child_visit = FALSE,
                                       filter_entry_id = FALSE,
-                                      is_editor_or_vi) {
+                                      is_editor_or_vi,
+                                      return_list = FALSE) {
 
 
 
@@ -199,6 +200,10 @@ mod_module_edit_tab_server<- function(id,
     rv_table$rv_selection = reactive({
       selected_row = rv_table$rv_rtab()[input$responses_table_rows_selected, "row_id"]
       selected_row
+    })
+    rv_table$rv_selection_pid = reactive({
+      selected_pid = rv_table$rv_rtab()[input$responses_table_rows_selected, "pid"]
+      selected_pid
     })
 
 
@@ -1096,7 +1101,16 @@ mod_module_edit_tab_server<- function(id,
 
 
     # Return selected row ----
-    rv_out = reactive({rv_table$rv_selection()})
+    if(return_list == FALSE){
+      rv_out = reactive({rv_table$rv_selection()})
+      rv_out
+    }else{
+      rv_out = reactive({list(row = rv_table$rv_selection(),
+                              pid = rv_table$rv_selection_pid())})
+    }
+
+
+
     rv_out
 
   })

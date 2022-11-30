@@ -23,6 +23,7 @@ mod_module_documentation_ui  <- function(id) {
   tagList(
     fluidRow(
       column(4,
+             # uiOutput(ns("test_pid")),
              shinydashboard::box(
                title = (internal_app_data$lang_sel$module_documentation_visit_menu_choices),
                width = 12,
@@ -164,6 +165,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              order.by = 'entry_number',
                              preview = preview,
                              dom = 'trp',
+                             return_list = TRUE,
                              all_visits = all_visits,
                              is_editor_or_vi = FALSE,
                              visit_id = '", i, "')", sep = "")
@@ -185,11 +187,11 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     if(settgins_data$add_child_visits == TRUE){
       rv_downstream_child_visit = reactiveValues()
       rv_downstream_child_visit$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
-      rv_downstream_child_visit$parent_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()})
+      rv_downstream_child_visit$parent_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]]})
       rv_downstream_child_visit$parent_visit_id = reactive({input$visit_selector})
 
       rv_downstream_child_visit$entry_id = reactive({
-        db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', input$visit_selector, sep = '_'), " WHERE row_id = '", ((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])(), "'")
+        db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', input$visit_selector, sep = '_'), " WHERE row_id = '", ((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]], "'")
         entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
         entry_id
       })
@@ -212,6 +214,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                              all_visits = all_visits,
                              is_child_visit = TRUE,
                              filter_entry_id = TRUE,
+                             return_list = TRUE,
                              is_editor_or_vi = FALSE,
                              visit_id = '", i, "')", sep = "")
         eval(parse(text = cmd_4_eval))
@@ -288,8 +291,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     ## Render child visit UIs ----
     if(settgins_data$add_child_visits == TRUE){
       output$ui_child_visits = renderUI({
-        if((length(input$responses_user_rows_selected) == 1 & length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)) &
-           sum(rv_downstream_child_visit$pid() == rv_downstream_visit$pid()) == 1){
+        if((sum(rv_downstream_child_visit$pid() == (((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["pid"]])) == 1) &
+           (length(input$responses_user_rows_selected) == 1)){
           ui_list = list()
           selected_child_visits = sapply(strsplit(ordered_visits_child$parent_ids, ";;;;;"),
                                     function(x){
@@ -327,7 +330,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
        if(settgins_data$add_child_visits == TRUE){
       output$ui_report = renderUI({
         if(length(input$responses_user_rows_selected) == 1 &
-           length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])() > 0)){
+           length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]]) == 1){
 
           div(shinydashboard::box(
             title = "REPORT",
@@ -343,7 +346,12 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
       })
     }
 
-
+    # output$test_pid = renderUI({
+    #   div(h4(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["pid"]]),
+    #       br(),
+    #       h4(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]])
+    #       )
+    # })
 
   })
 }
