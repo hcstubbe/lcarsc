@@ -14,11 +14,16 @@ visit_id,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 deleted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 submitted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
 inputId,vars,TEXT,character,Segment ID,FALSE,,,,,,3,30,,,textInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-type,vars,TEXT,character,Field type,FALSE,,,,,,,,,,selectInput,widgets_report_editor,Database value,Database value,Text,Line break,Whitespace,Key/value,,,,,TRUE,TRUE,,,,,,,FALSE,
-format,vars,TEXT,character,Format,FALSE,,,,,,,,,,selectInput,widgets_report_editor,Standard,Standard,Bold,Italic,Bullet point,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Key/value"""
+type,vars,TEXT,character,Field type,FALSE,,,,,,,,,,radioButtons,widgets_report_editor,,Database value,Text,Line break,Whitespace,Key/value,,,,,TRUE,TRUE,,,,,,,FALSE,
+alignment,vars,TEXT,character,Format,FALSE,,,,,FALSE,,,,,radioButtons,widgets_report_editor,Align left,Align left,Center,Align right,Justify,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Key/value"""
+bold,vars,BOOLEAN,logical,Bold,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Key/value"""
+italic,vars,BOOLEAN,logical,Italic,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Key/value"""
+bullet_point,vars,BOOLEAN,logical,Bullet point,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Key/value"""
 visit_id_for_query,vars,TEXT,character,Visit ID for query,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_report_editor,,,,,,,,,visit_for_var,editor_table_vars,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Key/value"""
 inputId_for_query,vars,TEXT,character,Variable/Input ID,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_report_editor,,,,,,,,,inputId,editor_table_vars,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Key/value"""
 include_translation,vars,BOOLEAN,logical,Use translations from variables,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Key/value"""
+is_icd10,vars,BOOLEAN,logical,Add ICD10 text,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"""
+is_ichi,vars,BOOLEAN,logical,Add ICHI text,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"""
 display_text,vars,TEXT,character,Display text,FALSE,,,,,,,,,,textInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Text"""
 condition,vars,TEXT,character,Condition (exact value to be replaced),FALSE,,,,,,,,,,textInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Key/value"""
 replace_value,vars,TEXT,character,Replacement (only inserted if condition is met),FALSE,,,,,,,,,,textInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Key/value"""
