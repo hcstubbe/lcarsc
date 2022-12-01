@@ -38,7 +38,7 @@ format_input_for_database = function(input_data,
 
   # Replace "New choice" with actual value from new choice text input
   choicesFromVar = !sapply(widgets_table$choicesFromVar, function(x) is.null(x) | x == "" | is.na(x))
-  choicesFromVar = names(choicesFromVar) %in% colnames(input_data) & choicesFromVar
+  choicesFromVar = names(choicesFromVar) %in% colnames(input_data) & choicesFromVar & names(choicesFromVar) != "inputId"
   if(any(choicesFromVar)){
     for(i in which(choicesFromVar)){
       if(input_data[,widgets_table$choicesFromVar[i]] != "" & widgets_table$type[i] != "checkboxGroupInputFromDatabase"){
