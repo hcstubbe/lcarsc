@@ -22,6 +22,8 @@ mod_module_reports_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    pool = golem::get_golem_options("pool")
+
     output$report <- downloadHandler(
       # For PDF output, change this to "report.pdf"
       filename = "report.html",
@@ -29,11 +31,13 @@ mod_module_reports_server <- function(id){
         # Copy the report file to a temporary directory before processing it, in
         # case we don't have write permissions to the current working dir (which
         # can happen when deployed).
-        tempReport <- file.path(tempdir(), "www/report.Rmd")
-        file.copy("report.Rmd", tempReport, overwrite = TRUE)
+        tempReport <- file.path(tempdir(), "report.Rmd")
+        x = file.copy("inst/app/www/report.Rmd", tempReport, overwrite = TRUE)
+        if(x == FALSE){stop("Report template not found!")}
+
 
         # Set up parameters to pass to Rmd document
-        params <- list(n = input$slider)
+        params <- list(n = create_report(pool))
 
         # Knit the document, passing in the `params` list, and eval it in a
         # child of the global environment (this isolates the code in the document
@@ -44,6 +48,7 @@ mod_module_reports_server <- function(id){
         )
       }
     )
+
 
   })
 }

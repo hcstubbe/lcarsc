@@ -7,11 +7,12 @@ params:
 
 ```{r}
 # The `params` object is available in the document.
-params$n
+class(params$n)
+dim(params$n)
 ```
 
 A plot of `params$n` random points.
 
 ```{r}
-plot(rnorm(params$n), rnorm(params$n))
+knitr::kable(params$n[,1:5])
 ```
