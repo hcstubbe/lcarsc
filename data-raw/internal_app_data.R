@@ -137,6 +137,3 @@ internal_app_data = list(visits = read.csv('widgets/visits.csv'),
 usethis::use_data(internal_app_data,
                   overwrite = TRUE,
                   internal = TRUE)
-
-# Add rmd template
-golem::use_internal_file("markdown_templates/report.Rmd")

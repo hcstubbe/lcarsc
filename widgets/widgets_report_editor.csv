@@ -1,33 +1,32 @@
 inputId,widget_tab,data_type,r_class,label,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choicesFromVar,tbl_id,widget,form_required,vi,v0,v1,vi_required,v0_required,v1_required,conditional,appear_if
-row_id,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-entry_id,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-entry_number,all,INTEGER,integer,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-entry_id_parent,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-visit_id_parent,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-is_child_entry,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-user_modified,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-editing_user,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-locked_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-pid,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-date_modified,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-visit_id,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-deleted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-submitted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-inputId,vars,TEXT,character,Segment ID,FALSE,,,,,,3,30,,,textInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-type,vars,TEXT,character,Field type,FALSE,,,,,,,,,,radioButtons,widgets_report_editor,,Database value,Text,Line break,Whitespace,Key/value,,,,,TRUE,TRUE,,,,,,,FALSE,
-alignment,vars,TEXT,character,Format,FALSE,,,,,FALSE,,,,,radioButtons,widgets_report_editor,Align left,Align left,Center,Align right,Justify,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Key/value"""
-bold,vars,BOOLEAN,logical,Bold,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Key/value"""
-italic,vars,BOOLEAN,logical,Italic,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Key/value"""
-bullet_point,vars,BOOLEAN,logical,Bullet point,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Key/value"""
-visit_id_for_query,vars,TEXT,character,Visit ID for query,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_report_editor,,,,,,,,,visit_for_var,editor_table_vars,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Key/value"""
-inputId_for_query,vars,TEXT,character,Variable/Input ID,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_report_editor,,,,,,,,,inputId,editor_table_vars,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Key/value"""
-include_translation,vars,BOOLEAN,logical,Use translations from variables,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"" | input.type == ""Key/value"""
-is_icd10,vars,BOOLEAN,logical,Add ICD10 text,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"""
-is_ichi,vars,BOOLEAN,logical,Add ICHI text,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Database value"""
-display_text,vars,TEXT,character,Display text,FALSE,,,,,,,,,,textInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Text"""
-condition,vars,TEXT,character,Condition (exact value to be replaced),FALSE,,,,,,,,,,textInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Key/value"""
-replace_value,vars,TEXT,character,Replacement (only inserted if condition is met),FALSE,,,,,,,,,,textInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Key/value"""
-num_whitespace,vars,INTEGER,integer,Number of whitespaces,FALSE,,,,,,,,,,numericInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Whitespace"""
-num_line_breaks,vars,INTEGER,integer,Number of line breaks,FALSE,,,,,,,,,,numericInput,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,"input.type == ""Line break"""
-visit_for_var,vars,TEXT,character,Visit ID of report (where should the report be displayed?),TRUE,,,,,,,,,,selectInputFromDatabase,widgets_report_editor,,,,,,,,,visit_for_var,editor_table_vars,TRUE,TRUE,,,,,,,FALSE,
-order_of_var,vars,INTEGER,integer,Field order,TRUE,,,,,,,,,,numericInputCouter,widgets_report_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+row_id,all,TEXT,character,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+entry_id,all,TEXT,character,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+entry_number,all,INTEGER,integer,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+entry_id_parent,all,TEXT,character,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+visit_id_parent,all,TEXT,character,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+is_child_entry,all,BOOLEAN,logical,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+user_modified,all,TEXT,character,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+editing_user,all,TEXT,character,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+locked_row,all,BOOLEAN,logical,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+pid,all,TEXT,character,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+date_modified,all,TEXT,character,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+visit_id,all,TEXT,character,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+deleted_row,all,BOOLEAN,logical,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+submitted_row,all,BOOLEAN,logical,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,,,,,,,NA,NA,,,FALSE,FALSE,NA,NA,NA,NA,NA,NA,FALSE,
+inputId,vars,TEXT,character,Segment ID,TRUE,NA,NA,NA,NA,NA,3,30,NA,NA,textInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,FALSE,
+type,vars,TEXT,character,Field type,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,radioButtons,widgets_report_editor,,Database value,Text,Line break,Whitespace,Value/replacement,Title 1,Title 2,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,FALSE,
+alignment,vars,TEXT,character,Format,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,radioButtons,widgets_report_editor,Align left,Align left,Center,Align right,Justify,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Value/replacement"" | input.type == ""Title 1"" | input.type == ""Title 2"""
+bold,vars,BOOLEAN,logical,Bold,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Value/replacement"" | input.type == ""Title 1"" | input.type == ""Title 2"""
+italic,vars,BOOLEAN,logical,Italic,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Value/replacement"" | input.type == ""Title 1"" | input.type == ""Title 2"""
+bullet_point,vars,BOOLEAN,logical,Bullet point,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Database value"" | input.type == ""Text"" | input.type == ""Value/replacement"" | input.type == ""Title 1"" | input.type == ""Title 2"""
+visit_id_for_query,vars,TEXT,character,Visit ID for query,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInputFromDatabase,widgets_report_editor,,,,,,,NA,NA,visit_for_var,editor_table_vars,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Database value"" | input.type == ""Value/replacement"""
+inputId_for_query,vars,TEXT,character,Variable/Input ID,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInputFromDatabase,widgets_report_editor,,,,,,,NA,NA,inputId,editor_table_vars,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Database value"" | input.type == ""Value/replacement"""
+include_translation,vars,BOOLEAN,logical,Use translations from variables,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Database value"" | input.type == ""Value/replacement"""
+is_icd10,vars,BOOLEAN,logical,Add ICD10 text,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Database value"""
+is_ichi,vars,BOOLEAN,logical,Add ICHI text,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Database value"""
+value_replaced,vars,TEXT,character,Condition (exact value to be replaced with text),FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Value/replacement"""
+display_text,vars,TEXT,character,Text,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Text"" | input.type == ""Value/replacement"" | input.type == ""Title 1"" | input.type == ""Title 2"""
+num_whitespace,vars,INTEGER,integer,Number of whitespaces,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,numericInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Whitespace"""
+num_line_breaks,vars,INTEGER,integer,Number of line breaks,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,numericInput,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,TRUE,"input.type == ""Line break"""
+visit_for_var,vars,TEXT,character,Visit ID of report (where should the report be displayed?),TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInputFromDatabase,widgets_report_editor,,,,,,,NA,NA,visit_for_var,editor_table_vars,TRUE,TRUE,NA,NA,NA,NA,NA,NA,FALSE,
+order_of_var,vars,INTEGER,integer,Field order,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,numericInputCouter,widgets_report_editor,,,,,,,NA,NA,,,TRUE,TRUE,NA,NA,NA,NA,NA,NA,FALSE,
