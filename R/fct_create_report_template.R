@@ -1,23 +1,17 @@
-#' create_report
+#' create_report_template
 #'
-#' @description A fct function
+#' @description A fct function for creating the R markdown template.
 #'
 #' @return The return value, if any, from executing the function.
 #'
 #' @importFrom knitr spin
 #'
 #' @noRd
-create_report = function(pool){
+create_report_template = function(report_data, report_id){
 
 
-  # Get report
-  report_data = db_read_select(pool = pool,
-                               tbl_id = "report_editor_table_vars",
-                               pid_x = NULL,
-                               filter_deleted_rows = TRUE,
-                               use.pid = FALSE,
-                               order.by = "order_of_var")
-  report_data = report_data %>% dplyr::select(which(colnames(.) == "inputId"):ncol(.))
+  # Get report data
+  report_data = report_data %>% filter(visit_for_var == report_id) %>% dplyr::select(which(colnames(.) == "inputId"):ncol(.))
   non_na = !is.na(report_data$visit_id_for_query)
   report_data$inputId_for_query[non_na] = paste0(report_data$visit_id_for_query[non_na], "_", report_data$inputId_for_query[non_na])
 
@@ -45,7 +39,7 @@ create_report = function(pool){
 
     # Database value
     if(report_data[i, "type"] == "Database value"){
-      code_line_i = paste0("visit_table_",
+      code_line_i = paste0("params$paramslist$visit_table_",
                            report_data[i, "visit_id_for_query"],
                            "$",
                            report_data[i, "inputId_for_query"])
@@ -54,11 +48,11 @@ create_report = function(pool){
 
     # Key/value
     if(report_data[i, "type"] == "Key/value"){
-      var_i = paste0("visit_table_",
+      var_i = paste0("params$paramslist$visit_table_",
                            report_data[i, "visit_id_for_query"],
                            "$",
                            report_data[i, "inputId_for_query"])
-      code_line_i = paste0('`r ', 'if(', var_i, ' == "' , report_data[i, "condition"], '"){"', report_data[i, "replace_value"], '"}else{NULL}`')
+      code_line_i = paste0('`r ', 'if(sum(', var_i, ' == "' , report_data[i, "condition"], '") == 1 ){"', report_data[i, "replace_value"], '"}else{NULL}`')
     }
 
 
@@ -70,15 +64,20 @@ create_report = function(pool){
   code_lines = sapply(1:nrow(report_data), make_markdown_line, report_data = report_data)
 
 
+  # Correct line breaks
   code_lines = sapply(code_lines, paste, collapse = " ")
   code_lines = paste(code_lines, collapse = " ")
   code_lines = unlist(strsplit(code_lines, split = "<lbr>", perl = TRUE))
 
+
+  # Add header
   code_lines = c(
     '---',
     'title: "Untitled"',
     'output: html_document',
     'date: "2022-12-01"',
+    'params:',
+    '  paramlist: paramlist',
     '---',
     '',
     '```{r setup, include=FALSE}',
