@@ -23,6 +23,19 @@ create_report_template = function(report_data, report_id){
 
     code_line_i = NULL
 
+
+    # Title 1
+    if(report_data[i, "type"] == "Title 1"){
+      code_line_i = paste0("# ", report_data[i, "display_text"])
+      code_line_i = paste0("<lbr>", code_line_i, "<lbr> <br> <br>")
+    }
+
+    # Title 2
+    if(report_data[i, "type"] == "Title 2"){
+      code_line_i = paste0("## ", report_data[i, "display_text"])
+      code_line_i = paste0("<lbr>", code_line_i, "<lbr> <br> <br>")
+    }
+
     # Text
     if(report_data[i, "type"] == "Text"){
       code_line_i = report_data[i, "display_text"]
@@ -47,12 +60,12 @@ create_report_template = function(report_data, report_id){
     }
 
     # Key/value
-    if(report_data[i, "type"] == "Key/value"){
+    if(report_data[i, "type"] == "Value/replacement"){
       var_i = paste0("params$paramslist$visit_table_",
                            report_data[i, "visit_id_for_query"],
                            "$",
                            report_data[i, "inputId_for_query"])
-      code_line_i = paste0('`r ', 'if(sum(', var_i, ' == "' , report_data[i, "condition"], '") == 1 ){"', report_data[i, "replace_value"], '"}else{NULL}`')
+      code_line_i = paste0('`r ', 'if(sum(', var_i, ' == "' , report_data[i, "value_replaced"], '") == 1 ){"', report_data[i, "display_text"], '"}else{NULL}`')
     }
 
 
@@ -73,9 +86,9 @@ create_report_template = function(report_data, report_id){
   # Add header
   code_lines = c(
     '---',
-    'title: "Untitled"',
+    'title: "LCARS-C report"',
     'output: html_document',
-    'date: "2022-12-01"',
+    'date: "`r format(Sys.time())`"',
     'params:',
     '  paramlist: paramlist',
     '---',
@@ -84,6 +97,9 @@ create_report_template = function(report_data, report_id){
     'knitr::opts_chunk$set(echo = TRUE)',
     '```',
     '',
+    '<br>',
+    '<br>',
+    '<br>',
     code_lines
   )
 
