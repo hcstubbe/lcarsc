@@ -27,13 +27,13 @@ create_report_template = function(report_data, report_id){
     # Title 1
     if(report_data[i, "type"] == "Title 1"){
       code_line_i = paste0("# ", report_data[i, "display_text"])
-      code_line_i = paste0("<lbr>", code_line_i, "<lbr> <br> <br>")
+      code_line_i = paste0("<lbr> <lbr>", code_line_i, "<lbr> <lbr>")
     }
 
     # Title 2
     if(report_data[i, "type"] == "Title 2"){
       code_line_i = paste0("## ", report_data[i, "display_text"])
-      code_line_i = paste0("<lbr>", code_line_i, "<lbr> <br> <br>")
+      code_line_i = paste0("<lbr> <lbr>", code_line_i, "<lbr> <lbr>")
     }
 
     # Text
@@ -47,7 +47,7 @@ create_report_template = function(report_data, report_id){
       if(is.na(num_breaks)){num_breaks = 1}
       code_line_i = rep("<br>", num_breaks)
 
-      code_line_i = paste0("<lbr>", code_line_i, "<lbr>")
+      code_line_i = paste0("<lbr> <lbr>", code_line_i, "<lbr> <lbr>")
     }
 
     # Database value
