@@ -10,7 +10,7 @@
 # Read table and filter
 db_read_select = function(pool,
                           tbl_id,
-                          pid_x,
+                          pid_x = NULL,
                           filter_deleted_rows = TRUE,
                           use.pid = TRUE,
                           filter_sumitted_rows = FALSE,
@@ -22,17 +22,21 @@ db_read_select = function(pool,
                           filter_entry_id = FALSE,
                           row_id = NULL,
                           select_cols = "*",
-                          count_rows = FALSE){
+                          count_rows = FALSE
+                          ){
 
 
-  # if(filter_entry_id == TRUE & length(entry_id) == 0){
-  #   return(NULL)
-  # }
-  #
-  # if(use.pid == TRUE & length(pid_x) == 0){
-  #   return(NULL)
-  # }
+  if(filter_entry_id == TRUE & length(entry_id) == 0){
+    return(NULL)
+  }
 
+  if(use.pid == TRUE & length(pid_x) == 0){
+    return(NULL)
+  }
+
+  if(use.row_id == TRUE & length(row_id) == 0){
+    return(NULL)
+  }
 
   select_cols = paste(select_cols, collapse = ", ")
 
