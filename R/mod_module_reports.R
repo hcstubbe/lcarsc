@@ -38,7 +38,7 @@ mod_module_reports_server <- function(id, rv_in){
     report_ids = levels(as.factor(report_data$visit_for_var))
 
     filepath_list = sapply(report_ids, create_report_template,report_data = report_data)
-    # saveRDS(list(report_data = report_data, report_ids = report_ids, filepath_list = filepath_list), "tests/tl.RDS")
+
 
     output$report <- downloadHandler(
       # For PDF output, change this to "report.pdf"
@@ -51,6 +51,7 @@ mod_module_reports_server <- function(id, rv_in){
         # x = file.copy("inst/app/www/report.Rmd", tempReport, overwrite = TRUE)
         # if(x == FALSE){stop("Report template not found!")}
 
+        # Add currently selected visit and inclusion visit
         paramlist = list(db_read_select(pool = pool,
                                         tbl_id = "inclusion_dataset",
                                         pid_x = rv_in$pid()),
@@ -58,14 +59,27 @@ mod_module_reports_server <- function(id, rv_in){
                                         tbl_id = paste0("visit_table_", rv_in$selected_visit_id()),
                                         row_id = rv_in$selected_row_id())
                          )
-        names(paramlist) = c("visit_table_vi", paste0("visit_table_", rv_in$selected_visit_id()))
+        names(paramlist) = c("visit_table_vi", rv_in$selected_visit_id())
 
-        # paramlist = sapply(report_ids, function(x){
-        #
-        # })
-        #
-        # list("visit_table_v_bl" = )
+        # Add additional visits to paramlist
+        query_visits = report_data[report_data$visit_for_var %in% rv_in$selected_visit_id(),
+                                   "visit_id_for_query"]
+        query_visits = query_visits[!is.na(query_visits) & !duplicated(query_visits)]
+        query_visits = query_visits[!(query_visits %in% c("vi", rv_in$selected_visit_id()))]
 
+        if( length(query_visits) > 0 ){
+          names(query_visits) = query_visits
+          paramlist = c(paramlist,
+                        sapply(query_visits, function(x){
+                          db_read_select(pool = pool,
+                                         tbl_id = paste0("visit_table_", x),
+                                         pid_x = rv_in$pid())
+                        },
+                        USE.NAMES = TRUE,
+                        simplify = FALSE)
+          )
+        }
+        names(paramlist) = paste0("visit_table_", names(paramlist))
 
         # Set up parameters to pass to Rmd document
         params <- list(paramlist = paramlist)
@@ -73,10 +87,14 @@ mod_module_reports_server <- function(id, rv_in){
         # Knit the document, passing in the `params` list, and eval it in a
         # child of the global environment (this isolates the code in the document
         # from the code in this app).
-        rmarkdown::render(filepath_list["v_bl"], output_file = file,
-                          params = params,
-                          envir = new.env(parent = globalenv())
-        )
+        fpath = filepath_list[rv_in$selected_visit_id()]
+        if(length(fpath) > 0 & !is.na(fpath)){
+          rmarkdown::render(fpath, output_file = file,
+                            params = params,
+                            envir = new.env(parent = globalenv())
+          )
+        }
+
       }
     )
 

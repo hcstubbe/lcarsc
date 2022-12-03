@@ -68,8 +68,6 @@ create_report_template = function(report_data, report_id){
       code_line_i = paste0('`r ', 'if(sum(', var_i, ' == "' , report_data[i, "value_replaced"], '") == 1 ){"', report_data[i, "display_text"], '"}else{NULL}`')
     }
 
-
-
     return(code_line_i)
   }
 
