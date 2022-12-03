@@ -22,7 +22,7 @@ mod_module_reports_ui <- function(id){
 #' module_reports Server Functions
 #'
 #' @noRd
-mod_module_reports_server <- function(id){
+mod_module_reports_server <- function(id, rv_in){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
@@ -51,9 +51,24 @@ mod_module_reports_server <- function(id){
         # x = file.copy("inst/app/www/report.Rmd", tempReport, overwrite = TRUE)
         # if(x == FALSE){stop("Report template not found!")}
 
+        paramlist = list(db_read_select(pool = pool,
+                                        tbl_id = "inclusion_dataset",
+                                        pid_x = rv_in$pid()),
+                         db_read_select(pool = pool,
+                                        tbl_id = paste0("visit_table_", rv_in$selected_visit_id()),
+                                        row_id = rv_in$selected_row_id())
+                         )
+        names(paramlist) = c("visit_table_vi", paste0("visit_table_", rv_in$selected_visit_id()))
+
+        # paramlist = sapply(report_ids, function(x){
+        #
+        # })
+        #
+        # list("visit_table_v_bl" = )
+
 
         # Set up parameters to pass to Rmd document
-        params <- list(paramlist = list("visit_table_v_bl" = RMariaDB::dbReadTable(pool, "visit_table_v_bl")))
+        params <- list(paramlist = paramlist)
 
         # Knit the document, passing in the `params` list, and eval it in a
         # child of the global environment (this isolates the code in the document

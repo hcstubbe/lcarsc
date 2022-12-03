@@ -174,12 +174,17 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
 
 
     # Report server ----
-    rv_downstream_summary = reactiveValues()
-    rv_downstream_summary$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
-    # mod_module_documentation_summary_server(id = "module_documentation_summary_1",
-    #                                         rv_in = rv_downstream_summary,
-    #                                         preview = preview)
-    mod_module_reports_server("module_reports_1")
+    rv_downstream_report = reactiveValues()
+    rv_downstream_report$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
+    rv_downstream_report$selected_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]]})
+    rv_downstream_report$selected_visit_id = reactive({input$visit_selector})
+    rv_downstream_report$entry_id = reactive({
+      db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', input$visit_selector, sep = '_'), " WHERE row_id = '", ((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]], "'")
+      entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
+      entry_id
+    })
+    mod_module_reports_server(id = "module_reports_1",
+                              rv_in = rv_downstream_report)
 
 
 

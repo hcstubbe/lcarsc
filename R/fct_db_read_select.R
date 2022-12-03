@@ -26,17 +26,14 @@ db_read_select = function(pool,
                           ){
 
 
-  if(filter_entry_id == TRUE & length(entry_id) == 0){
-    return(NULL)
-  }
+  # if(filter_entry_id == TRUE & length(entry_id) == 0){
+  #   return(NULL)
+  # }
+  #
+  # if(use.pid == TRUE & length(pid_x) == 0){
+  #   return(NULL)
+  # }
 
-  if(use.pid == TRUE & length(pid_x) == 0){
-    return(NULL)
-  }
-
-  if(use.row_id == TRUE & length(row_id) == 0){
-    return(NULL)
-  }
 
   select_cols = paste(select_cols, collapse = ", ")
 

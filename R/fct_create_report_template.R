@@ -9,13 +9,13 @@
 #' @noRd
 create_report_template = function(report_data, report_id){
 
-
   # Get report data
-  report_data = report_data %>% filter(visit_for_var == report_id) %>% dplyr::select(which(colnames(.) == "inputId"):ncol(.))
+  report_data = report_data %>% filter(visit_for_var == report_id) %>%
+    dplyr::select(which(colnames(.) == "inputId"):ncol(.))
   non_na = !is.na(report_data$visit_id_for_query)
-  report_data$inputId_for_query[non_na] = paste0(report_data$visit_id_for_query[non_na], "_", report_data$inputId_for_query[non_na])
-
-
+  report_data$inputId_for_query[non_na] = paste0(report_data$visit_id_for_query[non_na],
+                                                 "_",
+                                                 report_data$inputId_for_query[non_na])
 
   # Function for making markdown line
 
@@ -52,7 +52,7 @@ create_report_template = function(report_data, report_id){
 
     # Database value
     if(report_data[i, "type"] == "Database value"){
-      code_line_i = paste0("params$paramslist$visit_table_",
+      code_line_i = paste0("params$paramlist$visit_table_",
                            report_data[i, "visit_id_for_query"],
                            "$",
                            report_data[i, "inputId_for_query"])
@@ -61,7 +61,7 @@ create_report_template = function(report_data, report_id){
 
     # Key/value
     if(report_data[i, "type"] == "Value/replacement"){
-      var_i = paste0("params$paramslist$visit_table_",
+      var_i = paste0("params$paramlist$visit_table_",
                            report_data[i, "visit_id_for_query"],
                            "$",
                            report_data[i, "inputId_for_query"])
@@ -97,6 +97,14 @@ create_report_template = function(report_data, report_id){
     'knitr::opts_chunk$set(echo = TRUE)',
     '```',
     '',
+    '```{r}',
+    'knitr::kable(params$paramlist$visit_table_v_bl[,1:3])',
+    '```',
+    '',
+    '```{r}',
+    'for (i in 1:length(params$paramlist)){saveRDS(params$paramlist[i], paste0("zz", i, ".RDS"))}',
+    '```',
+    '',
     '<br>',
     '<br>',
     '<br>',
@@ -104,7 +112,7 @@ create_report_template = function(report_data, report_id){
   )
 
   # Write report rmd into temp dir
-  tempReport <- file.path(tempdir(), "report.Rmd")
+  tempReport <- file.path(tempdir(), paste0(report_id, "_report.Rmd"))
   fileConn<-file(tempReport)
 
   writeLines(code_lines, fileConn)
