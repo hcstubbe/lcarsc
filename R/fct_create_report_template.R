@@ -156,7 +156,7 @@ create_report_template = function(report_data, report_id){
     'knitr::opts_chunk$set(echo = TRUE)',
     '```',
     '',
-    '```{r}',
+    '```{r include=FALSE}',
     '# Function for rendering lists',
     'makelist = function(x, italic, bold){',
     '    if(italic == TRUE & bold == FALSE){',
