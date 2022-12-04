@@ -18,30 +18,69 @@ create_report_template = function(report_data, report_id){
                                                  report_data$inputId_for_query[non_na])
 
   # Function for making markdown line
-
   make_markdown_line = function(i, report_data) {
 
     code_line_i = NULL
 
 
-    # Title 1
+    # Format function
+    bold_italic = function(code_line_i){
+      if(sum(report_data[i, "bold"] == TRUE) == 1){
+        code_line_i = paste0("*", code_line_i, "*")
+      }
+      if(sum(report_data[i, "italic"] == TRUE) == 1){
+        code_line_i = paste0("**", code_line_i, "**")
+      }
+      if(sum(report_data[i, "bullet_point"] == TRUE) == 1){
+        code_line_i = paste0("<lbr> * ", code_line_i, "<lbr>")
+      }
+      return(code_line_i)
+    }
+
+
+    # Format function for inline evaluated code
+    bold_italic_db = function(i){
+      x = list("", "")
+
+      if(sum(report_data[i, "bold"] == TRUE) == 1){
+        x = list("*", "*")
+      }
+      if(sum(report_data[i, "italic"] == TRUE) == 1){
+        x = list("**", "**")
+      }
+      if(sum(report_data[i, "italic"] == TRUE) == 1 &
+               sum(report_data[i, "bold"] == TRUE) == 1){
+        x = list("***", "***")
+      }
+
+      return(x)
+    }
+
+    # if(sum(report_data[i, "bullet_point"] == TRUE) == 1){
+    #   x = list(' paste0("<lbr> * ", ', ', "<lbr>"')
+    # }else
+
+    # Create markdown lines
+    ## Title 1
     if(report_data[i, "type"] == "Title 1"){
-      code_line_i = paste0("# ", report_data[i, "display_text"])
+      code_line_i = bold_italic(report_data[i, "display_text"])
+      code_line_i = paste0("# ", code_line_i)
       code_line_i = paste0("<lbr> <lbr>", code_line_i, "<lbr> <lbr>")
     }
 
-    # Title 2
+    ## Title 2
     if(report_data[i, "type"] == "Title 2"){
-      code_line_i = paste0("## ", report_data[i, "display_text"])
+      code_line_i = bold_italic(report_data[i, "display_text"])
+      code_line_i = paste0("## ", code_line_i)
       code_line_i = paste0("<lbr> <lbr>", code_line_i, "<lbr> <lbr>")
     }
 
-    # Text
+    ## Text
     if(report_data[i, "type"] == "Text"){
-      code_line_i = report_data[i, "display_text"]
+      code_line_i = bold_italic(report_data[i, "display_text"])
     }
 
-    # Line break
+    ## Line break
     if(report_data[i, "type"] == "Line break"){
       num_breaks = report_data[i, "num_line_breaks"]
       if(is.na(num_breaks)){num_breaks = 1}
@@ -50,23 +89,26 @@ create_report_template = function(report_data, report_id){
       code_line_i = paste0("<lbr> <lbr>", code_line_i, "<lbr> <lbr>")
     }
 
-    # Database value
+    ## Database value
     if(report_data[i, "type"] == "Database value"){
       code_line_i = paste0("params$paramlist$visit_table_",
                            report_data[i, "visit_id_for_query"],
                            "$",
                            report_data[i, "inputId_for_query"])
-      code_line_i = paste0('`r ', code_line_i, '`')
+      code_line_i = paste0('`r paste0("', bold_italic_db(i)[[1]],'", ', code_line_i,', "', bold_italic_db(i)[[2]],'"', ')`')
     }
 
-    # Key/value
+    ## Key/value
     if(report_data[i, "type"] == "Value/replacement"){
       var_i = paste0("params$paramlist$visit_table_",
                            report_data[i, "visit_id_for_query"],
                            "$",
                            report_data[i, "inputId_for_query"])
-      code_line_i = paste0('`r ', 'if(sum(', var_i, ' == "' , report_data[i, "value_replaced"], '") == 1 ){"', report_data[i, "display_text"], '"}else{NULL}`')
+      #code_line_i = paste0('`r ', 'if(sum(', var_i, ' == "', report_data[i, "value_replaced"], '") == 1 ){"', bold_italic_db(i)[[1]], report_data[i, "display_text"], bold_italic_db(i)[[2]], '"}else{NULL}`')
+      code_line_i = paste0('`r ', 'if(sum(', var_i, ' == "', report_data[i, "value_replaced"], '") == 1 ){paste0("', bold_italic_db(i)[[1]],'", "', report_data[i, "display_text"],'", "', bold_italic_db(i)[[2]], '"', ')}else{NULL}`')
+
     }
+
 
     return(code_line_i)
   }
@@ -75,10 +117,11 @@ create_report_template = function(report_data, report_id){
   code_lines = sapply(1:nrow(report_data), make_markdown_line, report_data = report_data)
 
 
-  # Correct line breaks
-  code_lines = sapply(code_lines, paste, collapse = " ")
-  code_lines = paste(code_lines, collapse = " ")
-  code_lines = unlist(strsplit(code_lines, split = "<lbr>", perl = TRUE))
+  # Corrections
+  code_lines = base::sapply(code_lines, paste, collapse = " ")
+  code_lines = base::paste(code_lines, collapse = " ")
+  code_lines = base::unlist(strsplit(code_lines, split = "<lbr>", perl = TRUE))
+  code_lines = base::trimws(x = code_lines, which = "left")
 
 
   # Add header
@@ -93,14 +136,6 @@ create_report_template = function(report_data, report_id){
     '',
     '```{r setup, include=FALSE}',
     'knitr::opts_chunk$set(echo = TRUE)',
-    '```',
-    '',
-    '```{r}',
-    'knitr::kable(params$paramlist$visit_table_v_bl[,1:3])',
-    '```',
-    '',
-    '```{r}',
-    'for (i in 1:length(params$paramlist)){saveRDS(params$paramlist[i], paste0("zz", i, ".RDS"))}',
     '```',
     '',
     '<br>',
