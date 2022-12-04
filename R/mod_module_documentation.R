@@ -339,15 +339,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
         if(length(input$responses_user_rows_selected) == 1 &
            length(((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]]) == 1){
 
-          div(shinydashboard::box(
-            title = "REPORT",
-            width = 12,
-            status = "success",
-            solidHeader = FALSE,
-            collapsible = TRUE,
-            collapsed = FALSE,
-            mod_module_reports_ui(ns("module_reports_1"))
-          ))
+          mod_module_reports_ui(ns("module_reports_1"))
 
          }
       })

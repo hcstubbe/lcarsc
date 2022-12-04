@@ -13,7 +13,7 @@
 #' @importFrom rmarkdown render
 mod_module_reports_ui <- function(id){
   ns <- NS(id)
-  uiOutput(ns("download_button"))
+  uiOutput(ns("report_ui"))
 }
 
 #' module_reports Server Functions
@@ -22,7 +22,6 @@ mod_module_reports_ui <- function(id){
 mod_module_reports_server <- function(id, rv_in){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
-uiOutput(ns("download_button"))
     pool = golem::get_golem_options("pool")
 
     # Create report templates and save in temp folder
@@ -96,12 +95,22 @@ uiOutput(ns("download_button"))
     )
 
 
-    output$download_button = renderUI({
+    output$report_ui = renderUI({
       if(rv_in$selected_visit_id() %in% report_ids){
-        fluidPage(
-          sliderInput(ns("slider"), "Slider", 1, 100, 50),
-          downloadButton(ns("report"), "Generate report")
-        )
+
+        div(shinydashboard::box(
+          title = "REPORT",
+          width = 12,
+          status = "success",
+          solidHeader = FALSE,
+          collapsible = TRUE,
+          collapsed = FALSE,
+          fluidPage(
+            sliderInput(ns("slider"), "Slider", 1, 100, 50),
+            downloadButton(ns("report"), "Generate report")
+          )
+        ))
+
       }else{
         NULL
       }
