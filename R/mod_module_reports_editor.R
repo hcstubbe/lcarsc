@@ -51,6 +51,7 @@ mod_module_reports_editor_server <- function(id) {
                                              'Text' = "display_text",
                                              'Value for replacement' = "value_replaced",
                                              'Query visit' = "visit_id_for_query",
+                                             'inputId for query' = "inputId_for_query",
                                              'Report visit' = "visit_for_var"),
                                simple = TRUE,
                                modal_width = ".modal-dialog{ width:400px}",

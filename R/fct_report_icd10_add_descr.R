@@ -1,8 +1,8 @@
 #' report_icd10_add_descr
 #'
-#' @description A fct function
+#' @description Finds and adds ICD10 descriptions
 #'
-#' @return The return value, if any, from executing the function.
+#' @return A character vector of ICD10 descriptions
 #'
 #' @noRd
 report_icd10_add_descr = function(codes, reference){
