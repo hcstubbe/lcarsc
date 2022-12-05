@@ -184,7 +184,8 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
       entry_id
     })
     mod_module_reports_server(id = "module_reports_1",
-                              rv_in = rv_downstream_report)
+                              rv_in = rv_downstream_report,
+                              widgets_table_global = widgets_table_global)
 
 
 

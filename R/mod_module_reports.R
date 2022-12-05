@@ -19,7 +19,7 @@ mod_module_reports_ui <- function(id){
 #' module_reports Server Functions
 #'
 #' @noRd
-mod_module_reports_server <- function(id, rv_in){
+mod_module_reports_server <- function(id, rv_in, widgets_table_global){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
     pool = golem::get_golem_options("pool")
@@ -78,7 +78,10 @@ mod_module_reports_server <- function(id, rv_in){
         names(paramlist) = paste0("visit_table_", names(paramlist))
 
         # Set up parameters to pass to Rmd document
-        params <- list(paramlist = paramlist)
+        params <- list(paramlist = paramlist,
+                       report_makelist = report_makelist,
+                       report_translate = report_translate,
+                       widgets_table_global = widgets_table_global)
 
         # Knit the document, passing in the `params` list, and eval it in a
         # child of the global environment (this isolates the code in the document

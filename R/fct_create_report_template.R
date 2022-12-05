@@ -93,8 +93,11 @@ create_report_template = function(report_data, report_id){
                            report_data[i, "visit_id_for_query"],
                            "$",
                            report_data[i, "inputId_for_query"])
+      if(report_data[i, "include_translation"] == TRUE){
+        code_line_i = paste0('params$report_translate(', code_line_i, ', "', report_data[i, "inputId_for_query"], '", ', 'params$widgets_table_global)')
+      }
       if(report_data[i, "bullet_point"] == TRUE){
-        code_line_i = paste0('`r makelist(', code_line_i, ', ', report_data[i, "italic"], ', ', report_data[i, "bold"], ')`')
+        code_line_i = paste0('`r params$report_makelist(', code_line_i, ', ', report_data[i, "italic"], ', ', report_data[i, "bold"], ')`')
       }else{
         code_line_i = paste0('`r paste0("', bold_italic_db(i)[[1]],'", ', code_line_i,', "', bold_italic_db(i)[[2]],'"', ')`')
       }
@@ -109,7 +112,7 @@ create_report_template = function(report_data, report_id){
                            report_data[i, "inputId_for_query"])
 
       if(report_data[i, "bullet_point"] == TRUE){
-        code_line_i = paste0('`r makelist(', code_line_i, ', ', report_data[i, "italic"], ', ', report_data[i, "bold"], ')`')
+        code_line_i = paste0('`r params$report_makelist(', code_line_i, ', ', report_data[i, "italic"], ', ', report_data[i, "bold"], ')`')
       }else{
         code_line_i = paste0('`r ',
                              'if(sum(',
@@ -150,29 +153,13 @@ create_report_template = function(report_data, report_id){
     'date: "`r format(Sys.time())`"',
     'params:',
     '  paramlist: paramlist',
+    '  report_translate: report_translate',
+    '  report_makelist: report_makelist',
+    '  widgets_table_global: widgets_table_global',
     '---',
     '',
     '```{r setup, include=FALSE}',
     'knitr::opts_chunk$set(echo = TRUE)',
-    '```',
-    '',
-    '```{r include=FALSE}',
-    '# Function for rendering lists',
-    'makelist = function(x, italic, bold){',
-    '    if(italic == TRUE & bold == FALSE){',
-    '        x = paste0("<i>", x, "</i>")',
-    '    }',
-    '    if(italic == FALSE & bold == TRUE){',
-    '        x = paste0("<b>", x, "</b>")',
-    '    }',
-    '    if(italic == TRUE & bold == TRUE){',
-    '        x = paste0("<b><i>", x, "</i></b>")',
-    '    }',
-    '    html_text = paste("<body><ul>",',
-    '                      paste(sapply(x, function(y){paste0("<li>", y, "</li>")}), collapse = ""),',
-    '                      "</ul></body>")',
-    '    html_output = HTML(html_text)',
-    '    return(html_output)}',
     '```',
     '',
     '<br>',

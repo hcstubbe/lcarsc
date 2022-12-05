@@ -74,6 +74,8 @@ golem::add_fct("json_parser", with_test = TRUE)
 golem::add_fct("create_summary", with_test = TRUE)
 golem::add_fct("get_settings_data", with_test = TRUE)
 golem::add_fct("create_report", with_test = TRUE)
+golem::add_fct("report_makelist", with_test = TRUE)
+golem::add_fct("report_translate", with_test = TRUE)
 
 
 ## External resources
