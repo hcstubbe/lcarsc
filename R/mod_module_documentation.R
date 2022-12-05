@@ -7,7 +7,15 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#'
+#' @importFrom RMariaDB dbExistsTable
+#'
+#' @importFrom golem get_golem_options
+#'
+#' @importFrom DT datatable
+#'
 #' @import dplyr
+#'
 mod_module_documentation_ui  <- function(id) {
   ns = NS(id)
   widget_data_input = load_widget_data(pool_config = golem::get_golem_options("pool_config"),
@@ -77,7 +85,7 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
                                          production_mode = golem::get_golem_options("production_mode"))
 
     # Get the data base connection
-    pool = get_golem_options("pool")
+    pool = golem::get_golem_options("pool")
 
 
     # Get settings data
@@ -173,19 +181,22 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
     }
 
 
+
     # Report server ----
-    rv_downstream_report = reactiveValues()
-    rv_downstream_report$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
-    rv_downstream_report$selected_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]]})
-    rv_downstream_report$selected_visit_id = reactive({input$visit_selector})
-    rv_downstream_report$entry_id = reactive({
-      db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', input$visit_selector, sep = '_'), " WHERE row_id = '", ((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]], "'")
-      entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
-      entry_id
-    })
-    mod_module_reports_server(id = "module_reports_1",
-                              rv_in = rv_downstream_report,
-                              widgets_table_global = widgets_table_global)
+    if(RMariaDB::dbExistsTable(pool, "report_editor_table_vars")){
+      rv_downstream_report = reactiveValues()
+      rv_downstream_report$pid = reactive({computeFT(input$show_preliminary)$pid[input$responses_user_rows_selected]})
+      rv_downstream_report$selected_row_id = reactive({((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]]})
+      rv_downstream_report$selected_visit_id = reactive({input$visit_selector})
+      rv_downstream_report$entry_id = reactive({
+        db_cmd = paste0("SELECT entry_id FROM ", paste('visit_table', input$visit_selector, sep = '_'), " WHERE row_id = '", ((reactiveValuesToList(rv_out_row))[[paste0("row_selected_", input$visit_selector)]])()[["row"]], "'")
+        entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
+        entry_id
+      })
+      mod_module_reports_server(id = "module_reports_1",
+                                rv_in = rv_downstream_report,
+                                widgets_table_global = widgets_table_global)
+    }
 
 
 
