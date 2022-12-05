@@ -18,7 +18,7 @@ mod_module_reports_controls_ui <- function(id) {
 
   tagList(
     wellPanel(title = "Controls",
-                        actionButton(ns("update_widgets_button"), "Update", icon("hammer", verify_fa = FALSE)),
+                        actionButton(ns("update_widgets_button"), "Update", icon("sync", verify_fa = FALSE)),
                         downloadButton(ns("downloadData"), "Download", icon = icon("download", verify_fa = FALSE)),
                         actionButton(ns("uploadData"), "Upload", icon = icon("upload", verify_fa = FALSE))
     )
@@ -49,7 +49,7 @@ mod_module_reports_controls_server <- function(id) {
               tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
               fluidPage(
                 fluidRow(
-                  actionButton(ns("update_widgets_button_confirm"), "Update", icon("update", verify_fa = FALSE)),
+                  actionButton(ns("update_widgets_button_confirm"), "Update", icon("sync", verify_fa = FALSE)),
                   modalButton("Dismiss", icon = icon("remove", verify_fa = FALSE))
                 )
               )
