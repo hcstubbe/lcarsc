@@ -93,7 +93,9 @@ create_report_template = function(report_data, report_id){
                            report_data[i, "visit_id_for_query"],
                            "$",
                            report_data[i, "inputId_for_query"])
-      if(report_data[i, "include_translation"] == TRUE){
+      if(report_data[i, "is_icd10"] == TRUE){
+        code_line_i = paste0('params$report_icd10_add_descr(', code_line_i, ', params$icd10_codes)')
+      }else if(report_data[i, "include_translation"] == TRUE){
         code_line_i = paste0('params$report_translate(', code_line_i, ', "', report_data[i, "inputId_for_query"], '", ', 'params$widgets_table_global)')
       }
       if(report_data[i, "bullet_point"] == TRUE){
@@ -149,16 +151,25 @@ create_report_template = function(report_data, report_id){
   code_lines = c(
     '---',
     'title: "LCARS-C report"',
-    'output: html_document',
+    'output:',
+    '  html_document:',
+    '    theme: default',
+    '    highlight: default',
     'date: "`r format(Sys.time())`"',
     'params:',
     '  paramlist: paramlist',
     '  report_translate: report_translate',
     '  report_makelist: report_makelist',
     '  widgets_table_global: widgets_table_global',
+    '  report_icd10_add_descr: report_icd10_add_descr',
     '  icd10_codes: icd10_codes',
     '---',
-    '',
+    '<style type="text/css">',
+    '    body, td {font-size: 12px;}',
+    'h1.title {font-size: 24px; color: Black;}',
+    'h1 { /* Header 1 */ font-size: 20px; color: Black;}',
+    'h2 { /* Header 2 */ font-size: 18px; color: Black;}',
+    '</style>',
     '```{r setup, include=FALSE}',
     'knitr::opts_chunk$set(echo = TRUE)',
     '```',

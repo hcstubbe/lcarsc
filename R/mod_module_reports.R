@@ -82,6 +82,7 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
         params <- list(paramlist = paramlist,
                        report_makelist = report_makelist,
                        report_translate = report_translate,
+                       report_icd10_add_descr = report_icd10_add_descr,
                        widgets_table_global = widgets_table_global,
                        icd10_codes = NA)
 
