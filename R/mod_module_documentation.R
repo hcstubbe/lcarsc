@@ -105,13 +105,15 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
       )
     }
 
-	widgets_table_global = widget_data_input$widgets_table_global
-	all_visits = widget_data_input$all_visits
-	all_tabs = widget_data_input$all_tabs
-  ordered_visits = widget_data_input$ordered_visits
-	visit_choices = widget_data_input$visit_choices
 
-	rv_downstream = reactiveValues()
+    # Get widget data ----
+  	widgets_table_global = widget_data_input$widgets_table_global
+  	all_visits = widget_data_input$all_visits
+  	all_tabs = widget_data_input$all_tabs
+    ordered_visits = widget_data_input$ordered_visits
+  	visit_choices = widget_data_input$visit_choices
+
+  	rv_downstream = reactiveValues()
 
     # Auxiliary functions ----
 
@@ -339,9 +341,6 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
         }
       })
     }
-
-
-
 
 
 
