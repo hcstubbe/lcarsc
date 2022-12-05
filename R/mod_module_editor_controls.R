@@ -147,68 +147,68 @@ mod_module_editor_controls_server <- function(id) {
     #   )
     # })
 
-    # delete dialogue ----
-    observeEvent(input$delete_widgets_button_dialog, {
-      removeModal()
-      showModal(
-        modalDialog(
-          title = "Delete & reload",
-          div(tags$head(tags$style(".modal-dialog{ width:400px}")),
-              tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
-              fluidPage(
-                fluidRow(
-                  checkboxGroupInput(ns("tab_to_del_pool"), "Select data table ID for deleting", choices = dbListTables(pool)),
-                  checkboxGroupInput(ns("tab_to_del_config"), "Select config table ID for deleting", choices = dbListTables(pool_config)),
-                  actionButton(ns("delete_widgets_button_confirm"), "Confirm", icon = icon("trash",verify_fa = FALSE)),
-                  actionButton(ns("delete_widgets_button_close"), "Close & relod", icon = icon("update",verify_fa = FALSE))
-                )
-              )
-          ),
-          easyClose = FALSE, footer = NULL
-        )
-      )
-    })
+    # # delete dialogue ----
+    # observeEvent(input$delete_widgets_button_dialog, {
+    #   removeModal()
+    #   showModal(
+    #     modalDialog(
+    #       title = "Delete & reload",
+    #       div(tags$head(tags$style(".modal-dialog{ width:400px}")),
+    #           tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+    #           fluidPage(
+    #             fluidRow(
+    #               checkboxGroupInput(ns("tab_to_del_pool"), "Select data table ID for deleting", choices = dbListTables(pool)),
+    #               checkboxGroupInput(ns("tab_to_del_config"), "Select config table ID for deleting", choices = dbListTables(pool_config)),
+    #               actionButton(ns("delete_widgets_button_confirm"), "Confirm", icon = icon("trash",verify_fa = FALSE)),
+    #               actionButton(ns("delete_widgets_button_close"), "Close & relod", icon = icon("update",verify_fa = FALSE))
+    #             )
+    #           )
+    #       ),
+    #       easyClose = FALSE, footer = NULL
+    #     )
+    #   )
+    # })
 
 
 
-    # Observe delete confirmation
-    observeEvent(input$delete_widgets_button_confirm, {
-      dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='FALSE'")
-      tab_to_del_pool = input$tab_to_del_pool
-      if(!is.null(tab_to_del_pool)){
-        for (i in tab_to_del_pool){
-          if(i %in% dbListTables(pool)){
-            dbRemoveTable(pool, i)
-            showNotification(paste0("Data table", i, " deleted!"), type = "warning")
-          } else {showNotification(paste0("Data table", i, " NOT found!"), type = "error")}
-        }
-      }
-
-
-      tab_to_del_config = input$tab_to_del_config
-      if(!is.null(tab_to_del_config)){
-        for (i in tab_to_del_config){
-          if(i %in% dbListTables(pool_config)){
-            dbRemoveTable(pool_config, i)
-            showNotification(paste0("Config table", i, " deleted!"), type = "warning")
-          } else {showNotification(paste0("Config table", i, " NOT found!"), type = "error")}
-        }
-      }
-
-    })
-
-
-    # Function for closing the delete modal
-    close_delete_modal = function(){
-      removeModal()
-      session$reload()
-    }
-
-
-    # Observe closing button of delete modal
-    observeEvent(input$delete_widgets_button_close, {
-      close_delete_modal()
-    })
+    # # Observe delete confirmation
+    # observeEvent(input$delete_widgets_button_confirm, {
+    #   dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='FALSE'")
+    #   tab_to_del_pool = input$tab_to_del_pool
+    #   if(!is.null(tab_to_del_pool)){
+    #     for (i in tab_to_del_pool){
+    #       if(i %in% dbListTables(pool)){
+    #         dbRemoveTable(pool, i)
+    #         showNotification(paste0("Data table", i, " deleted!"), type = "warning")
+    #       } else {showNotification(paste0("Data table", i, " NOT found!"), type = "error")}
+    #     }
+    #   }
+    #
+    #
+    #   tab_to_del_config = input$tab_to_del_config
+    #   if(!is.null(tab_to_del_config)){
+    #     for (i in tab_to_del_config){
+    #       if(i %in% dbListTables(pool_config)){
+    #         dbRemoveTable(pool_config, i)
+    #         showNotification(paste0("Config table", i, " deleted!"), type = "warning")
+    #       } else {showNotification(paste0("Config table", i, " NOT found!"), type = "error")}
+    #     }
+    #   }
+    #
+    # })
+    #
+    #
+    # # Function for closing the delete modal
+    # close_delete_modal = function(){
+    #   removeModal()
+    #   session$reload()
+    # }
+    #
+    #
+    # # Observe closing button of delete modal
+    # observeEvent(input$delete_widgets_button_close, {
+    #   close_delete_modal()
+    # })
 
     # Handle uploads ----
 
