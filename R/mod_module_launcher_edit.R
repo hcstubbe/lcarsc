@@ -43,7 +43,7 @@ mod_module_launcher_edit_ui <- function(id){
           sidebarMenu(
             menuItem(internal_app_data$lang_sel$tab_start, tabName = "start", icon = icon("info", verify_fa = FALSE)),
             menuItem("Library", tabName = "library", icon = icon("book", verify_fa = FALSE)),
-            menuItem("Editor", tabName = "editor", icon = icon("keyboard-o", verify_fa = FALSE)),
+            menuItem("Editor", tabName = "editor", icon = icon("keyboard", verify_fa = FALSE)),
             menuItem("Preview", tabName = "preview", icon = icon("video-camera", verify_fa = FALSE))
             ,
             if("lcarsM" %in% rownames(installed.packages()) & add_mobile_app == TRUE){
