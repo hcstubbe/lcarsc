@@ -10,9 +10,10 @@
 #' @importFrom shinydashboard box
 #' @importFrom utils zip
 #' @importFrom readr write_csv
-#' @importFrom RMariaDB dbReadTable dbListTables dbRemoveTable
+#' @importFrom RMariaDB dbReadTable dbListTables dbRemoveTable dbAppendTable dbCreateTable dbExistsTable
 #' @importFrom golem get_golem_options
 #' @importFrom shiny NS tagList
+#' @importFrom readr read_delim
 mod_module_reports_controls_ui <- function(id) {
   ns = NS(id)
 
@@ -67,7 +68,6 @@ mod_module_reports_controls_server <- function(id) {
 
     # Upload data
     observeEvent(input$uploadData, {
-      dbExecute(pool_config, "UPDATE start_config SET `tested_ecrf`='FALSE'")
       showModal(
         modalDialog(
           title = "Upload widget data",
@@ -77,6 +77,13 @@ mod_module_reports_controls_server <- function(id) {
                 fluidRow(
                   h4("Upload report variables"),
                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
+                            multiple = FALSE,
+                            accept = c(".csv")),
+                  modalButton("Done", icon = icon("check", verify_fa = FALSE))
+                ),
+                fluidRow(
+                  h4("Upload ICD10 codes"),
+                  fileInput(ns("icd10_upload"), "Upload data file (colon separated values file with 2 columns: icd10, description)",
                             multiple = FALSE,
                             accept = c(".csv")),
                   modalButton("Done", icon = icon("check", verify_fa = FALSE))
@@ -121,12 +128,32 @@ mod_module_reports_controls_server <- function(id) {
 
     # Handle uploads ----
     observe({
+      # Report editor items
       if (is.null(input$vars_upload)) return()
       input_csv_vars = read.csv(input$vars_upload$datapath)
       input_csv_vars$row_id = uuid::UUIDgenerate(use.time = FALSE, n = nrow(input_csv_vars))
-      tryCatch(dbAppendTable(pool,
+      tryCatch(RMariaDB::dbAppendTable(pool,
                              "report_editor_table_vars",
                              input_csv_vars),
+               error = function(e) showNotification(paste0("Data not saved: check format! Original error message: ", e), type = "error", duration = NULL))
+    })
+
+    observe({
+      if (is.null(input$icd10_upload)) return()
+      input_csv_icd10 = readr::read_delim(input$icd10_upload$datapath,
+                                   delim = ";",
+                                   escape_double = FALSE,
+                                   trim_ws = TRUE)
+      if(!all(colnames(input_csv_icd10) %in% c("icd10",	"description"))){
+        input_csv_icd10 = NULL
+      }else if(!RMariaDB::dbExistsTable(pool, "reference_icd10_codes")){
+        RMariaDB::dbCreateTable(pool,
+                                "reference_icd10_codes",
+                                input_csv_icd10)
+      }
+      tryCatch(RMariaDB::dbAppendTable(pool,
+                             "reference_icd10_codes",
+                             input_csv_icd10),
                error = function(e) showNotification(paste0("Data not saved: check format! Original error message: ", e), type = "error", duration = NULL))
     })
 

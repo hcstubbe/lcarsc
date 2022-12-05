@@ -11,6 +11,7 @@
 #' @importFrom golem get_golem_options
 #'
 #' @importFrom rmarkdown render
+#' @importFrom RMariaDB dbReadTable
 mod_module_reports_ui <- function(id){
   ns <- NS(id)
   uiOutput(ns("report_ui"))
@@ -81,7 +82,17 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
         params <- list(paramlist = paramlist,
                        report_makelist = report_makelist,
                        report_translate = report_translate,
-                       widgets_table_global = widgets_table_global)
+                       widgets_table_global = widgets_table_global,
+                       icd10_codes = NA)
+
+        if(any(report_data$is_icd10 == TRUE)){
+          params$icd10_codes = tryCatch(RMariaDB::dbReadTable(pool,
+                                                              "reference_icd10_codes"),
+                   error = function(e) showNotification(paste0("Reference ICD10 could not be loaded! Original error message: ",
+                                                               e),
+                                                        type = "error",
+                                                        duration = NULL))
+        }
 
         # Knit the document, passing in the `params` list, and eval it in a
         # child of the global environment (this isolates the code in the document

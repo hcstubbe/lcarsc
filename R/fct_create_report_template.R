@@ -1,6 +1,6 @@
 #' create_report_template
 #'
-#' @description A fct function for creating the R markdown template.
+#' @description A fct function for creating the R markdown template for reports.
 #'
 #' @return The return value, if any, from executing the function.
 #'
@@ -156,6 +156,7 @@ create_report_template = function(report_data, report_id){
     '  report_translate: report_translate',
     '  report_makelist: report_makelist',
     '  widgets_table_global: widgets_table_global',
+    '  icd10_codes: icd10_codes',
     '---',
     '',
     '```{r setup, include=FALSE}',
