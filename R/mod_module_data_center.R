@@ -42,6 +42,7 @@ mod_module_data_center_ui <- function(id){
                                              width = 12,
                                              solidHeader = TRUE,
                                              div(
+                                               mod_module_reports_controls_ui(ns("module_reports_controls_1")),
                                                mod_module_reports_editor_ui(ns("module_reports_editor_1"))
                                              )
                                              )
@@ -194,6 +195,9 @@ mod_module_data_center_server <- function(id){
       }
     )
 
+
+    # Start controls server ----
+    mod_module_reports_controls_server("module_reports_controls_1")
 
 
   })
