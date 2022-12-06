@@ -26,7 +26,6 @@ mod_module_reports_editor_server <- function(id) {
     pool = get_golem_options("pool")
     widget_data_input = load_widget_data(pool_config = golem::get_golem_options("pool_config"),
                                          production_mode = golem::get_golem_options("production_mode"))
-    all_visits_report_editor = widget_data_input$all_visits_report_editor
     widgets_table_global_widgets_report = widget_data_input$widgets_table_global_widgets_report
     widgets_table_global_widgets_report = widgets_table_global_widgets_report[widgets_table_global_widgets_report$inputId != "origin_of_variable",]
 
@@ -35,8 +34,6 @@ mod_module_reports_editor_server <- function(id) {
     # Run when starting module ----
 
     ## Start sub-module server
-
-    # mod_module_editor_controls_server("mod_module_editor_controls")
 
     ## Start sub-module server
     rv_downstream_vars = reactiveValues()
@@ -56,7 +53,7 @@ mod_module_reports_editor_server <- function(id) {
                                simple = TRUE,
                                modal_width = ".modal-dialog{ width:400px}",
                                widgets_table_global = widgets_table_global_widgets_report,
-                               all_visits = all_visits_report_editor,
+                               all_visits = NULL,
                                visit_id = "report_editor",
                                add.copy.btn = TRUE,
                                num_entries = 20,
@@ -66,8 +63,6 @@ mod_module_reports_editor_server <- function(id) {
                                use_move_order = TRUE,
                                keep_copy_order = FALSE,
                                is_editor_or_vi = TRUE)
-
-
   })
 }
 

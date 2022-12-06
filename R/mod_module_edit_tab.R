@@ -453,7 +453,8 @@ mod_module_edit_tab_server<- function(id,
       }
 
       widget_data = widgets_table[widgets_table$widget == TRUE,]
-      updateSelectizeInputFromDb(session = session, pool = pool, tbl_id = "reference_icd10_codes" , widget_data = widget_data)
+      updateSelectizeInputFromDb(session = session, pool = pool, tbl_id = tbl_id, widget_data = widget_data)
+
 
     })
 

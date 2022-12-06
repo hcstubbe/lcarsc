@@ -37,7 +37,7 @@ update_all_fields = function(session, db_data, widget_data, tbl_id = NULL){
       shiny::updateCheckboxInput(inputId = x, session = session, value = db_data[,x])
     }
 
-    if(widget_type == "selectInput" | widget_type == "selectInputFromDatabase"){
+    if(widget_type == "selectInput"){
       selected = db_data[,x]
       if(is.null(selected)){
         selected = character(0)
@@ -48,6 +48,18 @@ update_all_fields = function(session, db_data, widget_data, tbl_id = NULL){
       }
       shiny::updateSelectInput(inputId = x, session = session, selected = selected)
     }
+
+    # if(widget_type == "selectInputFromDatabase"){
+    #   selected = db_data[,x]
+    #   if(is.null(selected)){
+    #     selected = character(0)
+    #   }else if(length(selected) == 0){
+    #     selected = character(0)
+    #   }else if(is.na(selected)){
+    #     selected = character(0)
+    #   }
+    #   shiny::updateSelectInput(inputId = x, session = session, selected = selected)
+    # }
 
 
     # This updates the checkboxGroupInputFromDatabase input for the entry_ids

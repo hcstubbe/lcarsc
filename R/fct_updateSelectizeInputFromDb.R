@@ -6,7 +6,7 @@
 #'
 #' @noRd
 
-updateSelectizeInputFromDb = function(session, pool, tbl_id, widget_data){
+updateSelectizeInputFromDb = function(session, pool, tbl_id, widget_data, add_choices = NULL){
 
 
   widget_ids = widget_data$inputId
@@ -14,8 +14,9 @@ updateSelectizeInputFromDb = function(session, pool, tbl_id, widget_data){
   lapply(widget_ids, function(x){
 
     widget_type = widget_data[widget_data$inputId == x,"type"]
+    widget_type = widget_type[widget_type == "selectInputFromDatabase"]
 
-    if(widget_type == "selectInputFromDatabase"){
+    if(length(widget_type) > 0){
       choices_var_col = widget_data[widget_data$inputId == x,"choicesFromVar"]
       choice_name_col = widget_data[widget_data$inputId == x,"namesFromVar"]
       tbl_id = widget_data[widget_data$inputId == x,"tbl_id"]

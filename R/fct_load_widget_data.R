@@ -34,10 +34,6 @@ load_widget_data = function(pool_config, production_mode){
 
 
 
-  # Get production mode, read raw data and format into widget_data, which can be used for further processing.
-  prod_mod = get_production_mode(production_mode = production_mode,
-                                 pool_config = pool_config)
-
   all_visits = db_read_app_data(conn = pool_config, x_table = "visits", prod_mod = prod_mod)
 
   widget_data = list(all_visits = all_visits,
