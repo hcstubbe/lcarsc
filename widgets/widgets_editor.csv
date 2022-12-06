@@ -1,78 +1,81 @@
-inputId,widget_tab,data_type,r_class,label,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choicesFromVar,tbl_id,widget,form_required,vi,v0,v1,vi_required,v0_required,v1_required,conditional,appear_if
-row_id,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-entry_id,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-entry_number,all,INTEGER,integer,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-entry_id_parent,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-visit_id_parent,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-is_child_entry,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-user_modified,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-editing_user,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-locked_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-pid,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-date_modified,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-visit_id,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-deleted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-submitted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
-inputId,vars,TEXT,character,Variable/Input ID,TRUE,,,,,,,36,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-origin_of_var,vars,TEXT,character,Origin,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-order_of_var,vars,INTEGER,integer,Order of the variable,TRUE,,,,,,,,,,numericInputCouter,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-label,vars,TEXT,character,Lable,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-include_translation,vars,BOOLEAN,logical,Include translations for label and choices,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-label_translation,vars,TEXT,character,Lable translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation
-visit_for_var,vars,TEXT,character,Visit,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,,,,,,,,,visit_id_visits,editor_table_visit,TRUE,TRUE,,,,,,,FALSE,
-mandatory,vars,BOOLEAN,logical,Mandatory,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,No,Yes,No,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-panel,vars,TEXT,character,Panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,General,General,Signs & Symptoms,Management,Outcome,,,,panel,editor_table_vars,TRUE,TRUE,,,,,,,FALSE,
-subgroup,vars,TEXT,character,Subgroup/Sub-panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,None,None,Symptoms,Signs,General approach,Specific treatment,,,subgroup,editor_table_vars,TRUE,TRUE,,,,,,,FALSE,
-type,vars,TEXT,character,Input type,FALSE,,,,,,,,,,selectInput,widgets_editor,textInput,textInput,numericInput,radioButtons,selectInput,dateInput,selectInputFromDatabase,checkboxInput,,,TRUE,TRUE,,,,,,,FALSE,
-unit,vars,TEXT,character,Unit,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
-value_numeric,vars,DOUBLE,double,Value (numeric),FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
-value_char,vars,TEXT,character,Value (character),FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'textInput' | input.type == 'dateInput'
-lower,vars,DOUBLE,double,Lower normal range,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
-upper,vars,DOUBLE,double,Upper normal range,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
-min,vars,DOUBLE,double,"Minimum value (min. number if numeric, min. characters if text)",FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput' | input.type == 'textInput'
-max,vars,DOUBLE,double,"Maximum value (max. number if numeric, max. characters if text)",FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput' | input.type == 'textInput'
-step,vars,DOUBLE,double,Step,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
-width,vars,DOUBLE,double,Width,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
-selected,vars,TEXT,character,Selected,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice1,vars,TEXT,character,Choice 1,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice1_translation,vars,TEXT,character,Choice 1 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice2,vars,TEXT,character,Choice 2,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice2_translation,vars,TEXT,character,Choice 2 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice3,vars,TEXT,character,Choice 3,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice3_translation,vars,TEXT,character,Choice 3 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice4,vars,TEXT,character,Choice 4,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice4_translation,vars,TEXT,character,Choice 4 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice5,vars,TEXT,character,Choice 5,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice5_translation,vars,TEXT,character,Choice 5 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice6,vars,TEXT,character,Choice 6,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice6_translation,vars,TEXT,character,Choice 6 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice7,vars,TEXT,character,Choice 7,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice7_translation,vars,TEXT,character,Choice 7 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice8,vars,TEXT,character,Choice 8,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice8_translation,vars,TEXT,character,Choice 8 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice9,vars,TEXT,character,Choice 9,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice9_translation,vars,TEXT,character,Choice 9 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice10,vars,TEXT,character,Choice 10,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice10_translation,vars,TEXT,character,Choice 10 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice11,vars,TEXT,character,Choice 11,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice11_translation,vars,TEXT,character,Choice 11 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-choice12,vars,TEXT,character,Choice 12,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
-choice12_translation,vars,TEXT,character,Choice 12 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
-description,vars,TEXT,character,Description,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-conditional,vars,BOOLEAN,logical,Conditional variable,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-appear_if,vars,TEXT,character,Condition (use JavaScript expressions; e.g.: input.[Visit ID]_[Input ID] == 'Yes'),FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.conditional
-visit_id_visits,visits,TEXT,character,Visit id,TRUE,,,,,,,16,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-visit_title,visits,TEXT,character,Visit title,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-order,visits,INTEGER,integer,Order of visits,TRUE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-select_show_cols,visits,BOOLEAN,logical,Select columns to display,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-show_col_1,visits,TEXT,character,Display column 1 (inputId of variable),FALSE,,,,,,,,,,textInput,widgets_editor,None,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.select_show_cols
-show_col_2,visits,TEXT,character,Display column 2 (inputId of variable),FALSE,,,,,,,,,,textInput,widgets_editor,None,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.select_show_cols
-show_col_3,visits,TEXT,character,Display column 3 (inputId of variable),FALSE,,,,,,,,,,textInput,widgets_editor,None,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.select_show_cols
-is_child,visits,BOOLEAN,logical,Is child visit,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-parent_ids,visits,TEXT,character,Parent visits,FALSE,,,,,,,,,,checkboxGroupInputFromDatabase,widgets_editor,,,,,,,,,visit_id_visits,,TRUE,TRUE,,,,,,,TRUE,input.is_child
-tab_title,panels,TEXT,character,tab_title,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-position,panels,INTEGER,integer,Position of the tab,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-panel1up,panels,TEXT,character,panel1up,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-panel2up,panels,TEXT,character,panel2up,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-panel1down,panels,TEXT,character,panel1down,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-panel2down,panels,TEXT,character,panel2down,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+inputId,widget_tab,data_type,r_class,label,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choicesFromVar,namesFromVar,tbl_id,widget,form_required,vi,v0,v1,vi_required,v0_required,v1_required,conditional,appear_if
+row_id,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+entry_id,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+entry_number,all,INTEGER,integer,,FALSE,,,, ,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+entry_id_parent,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+visit_id_parent,all,TEXT,character,,FALSE,,,, ,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+is_child_entry,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+user_modified,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+editing_user,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+locked_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+pid,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+date_modified,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+visit_id,all,TEXT,character,,FALSE,,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+deleted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+submitted_row,all,BOOLEAN,logical,,FALSE,,,,,,,,,,,,,,,,,,,,,,,FALSE,FALSE,,,,,,,FALSE,
+inputId,vars,TEXT,character,Variable/Input ID,TRUE,,,,,,,36,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+origin_of_var,vars,TEXT,character,Origin,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+order_of_var,vars,INTEGER,integer,Order of the variable,TRUE,,,,,,,,,,numericInputCouter,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+label,vars,TEXT,character,Lable,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+include_translation,vars,BOOLEAN,logical,Include translations for label and choices,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+label_translation,vars,TEXT,character,Lable translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation
+visit_for_var,vars,TEXT,character,Visit,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,,,,,,,,,visit_id_visits,visit_id_visits,editor_table_visit,TRUE,TRUE,,,,,,,FALSE,
+mandatory,vars,BOOLEAN,logical,Mandatory,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,No,Yes,No,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+panel,vars,TEXT,character,Panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,General,General,Signs & Symptoms,Management,Outcome,,,,panel,panel,editor_table_vars,TRUE,TRUE,,,,,,,FALSE,
+subgroup,vars,TEXT,character,Subgroup/Sub-panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,None,None,Symptoms,Signs,General approach,Specific treatment,,,subgroup,subgroup,editor_table_vars,TRUE,TRUE,,,,,,,FALSE,
+type,vars,TEXT,character,Input type,FALSE,,,,,,,,,,selectInput,widgets_editor,textInput,textInput,numericInput,radioButtons,selectInput,dateInput,selectInputFromDatabase,checkboxInput,,,,TRUE,TRUE,,,,,,,FALSE,
+tbl_id,vars,TEXT,character,Table ID for query (advanced)!,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'selectInputFromDatabase'
+choicesFromVar,vars,TEXT,character,Choices from Variable (advanced)!,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'selectInputFromDatabase'
+namesFromVar,vars,TEXT,character,Names From Variable (advanced)!,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'selectInputFromDatabase'
+unit,vars,TEXT,character,Unit,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
+value_numeric,vars,DOUBLE,double,Value (numeric),FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
+value_char,vars,TEXT,character,Value (character),FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'textInput' | input.type == 'dateInput'
+lower,vars,DOUBLE,double,Lower normal range,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
+upper,vars,DOUBLE,double,Upper normal range,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
+min,vars,DOUBLE,double,"Minimum value (min. number if numeric, min. characters if text)",FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput' | input.type == 'textInput'
+max,vars,DOUBLE,double,"Maximum value (max. number if numeric, max. characters if text)",FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput' | input.type == 'textInput'
+step,vars,DOUBLE,double,Step,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
+width,vars,DOUBLE,double,Width,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
+selected,vars,TEXT,character,Selected,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice1,vars,TEXT,character,Choice 1,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice1_translation,vars,TEXT,character,Choice 1 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice2,vars,TEXT,character,Choice 2,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice2_translation,vars,TEXT,character,Choice 2 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice3,vars,TEXT,character,Choice 3,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice3_translation,vars,TEXT,character,Choice 3 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice4,vars,TEXT,character,Choice 4,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice4_translation,vars,TEXT,character,Choice 4 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice5,vars,TEXT,character,Choice 5,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice5_translation,vars,TEXT,character,Choice 5 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice6,vars,TEXT,character,Choice 6,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice6_translation,vars,TEXT,character,Choice 6 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice7,vars,TEXT,character,Choice 7,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice7_translation,vars,TEXT,character,Choice 7 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice8,vars,TEXT,character,Choice 8,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice8_translation,vars,TEXT,character,Choice 8 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice9,vars,TEXT,character,Choice 9,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice9_translation,vars,TEXT,character,Choice 9 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice10,vars,TEXT,character,Choice 10,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice10_translation,vars,TEXT,character,Choice 10 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice11,vars,TEXT,character,Choice 11,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice11_translation,vars,TEXT,character,Choice 11 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+choice12,vars,TEXT,character,Choice 12,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'radioButtons' | input.type == 'selectInput'
+choice12_translation,vars,TEXT,character,Choice 12 translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation & (input.type == 'radioButtons' | input.type == 'selectInput')
+description,vars,TEXT,character,Description,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+conditional,vars,BOOLEAN,logical,Conditional variable,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+appear_if,vars,TEXT,character,Condition (use JavaScript expressions; e.g.: input.[Visit ID]_[Input ID] == 'Yes'),FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.conditional
+visit_id_visits,visits,TEXT,character,Visit id,TRUE,,,,,,,16,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+visit_title,visits,TEXT,character,Visit title,TRUE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+order,visits,INTEGER,integer,Order of visits,TRUE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+select_show_cols,visits,BOOLEAN,logical,Select columns to display,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+show_col_1,visits,TEXT,character,Display column 1 (inputId of variable),FALSE,,,,,,,,,,textInput,widgets_editor,None,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.select_show_cols
+show_col_2,visits,TEXT,character,Display column 2 (inputId of variable),FALSE,,,,,,,,,,textInput,widgets_editor,None,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.select_show_cols
+show_col_3,visits,TEXT,character,Display column 3 (inputId of variable),FALSE,,,,,,,,,,textInput,widgets_editor,None,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.select_show_cols
+is_child,visits,BOOLEAN,logical,Is child visit,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+parent_ids,visits,TEXT,character,Parent visits,FALSE,,,,,,,,,,checkboxGroupInputFromDatabase,widgets_editor,,,,,,,,,visit_id_visits,,,TRUE,TRUE,,,,,,,TRUE,input.is_child
+tab_title,panels,TEXT,character,tab_title,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+position,panels,INTEGER,integer,Position of the tab,FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+panel1up,panels,TEXT,character,panel1up,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+panel2up,panels,TEXT,character,panel2up,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+panel1down,panels,TEXT,character,panel1down,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
+panel2down,panels,TEXT,character,panel2down,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
