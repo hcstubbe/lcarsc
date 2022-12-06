@@ -1,49 +1,49 @@
-inputId,widget_tab,data_type,r_class,label,label_translation,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,subgroup,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choice8,choice9,choice10,choice11,choice12,choice1_translation,choice2_translation,choice3_translation,choice4_translation,choice5_translation,choice6_translation,choice7_translation,choice8_translation,choice9_translation,choice10_translation,choice11_translation,choice12_translation,widget,form_required,conditional,appear_if
-row_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-entry_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-entry_number,all,INTEGER,integer,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-entry_id_parent,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-visit_id_parent,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-is_child_entry,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-user_modified,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-editing_user,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-locked_row,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-pid,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-date_modified,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-visit_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-deleted_row,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-submitted_row,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-documented_case,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-app_entry_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
-diag_start,diagnosis,TEXT,character,Start,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-diag_end,diagnosis,TEXT,character,End,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-diag_name,diagnosis,TEXT,character,Diagnosis,,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,TRUE,FALSE,NA
-diag_icd_10,diagnosis,TEXT,character,ICD-10,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-diag_stage_system,diagnosis,TEXT,character,Staging system,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-diag_stage,diagnosis,TEXT,character,Stage,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-diag_classification_system,diagnosis,TEXT,character,Classification system,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-diag_classification,diagnosis,TEXT,character,Classification,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-diagn_comment,diagnosis,TEXT,character,Comment,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-med_start,medication,TEXT,character,Start,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_medication,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-med_end,medication,TEXT,character,End,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_medication,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-med_dosing,medication,DOUBLE,double,Dosis,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,numericInput,widgets_medication,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-med_dosing_unit,medication,TEXT,character,Unit,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,NA,mg,g,UI,ml,µg,gtt,NA,NA,NA,NA,NA,NA,mg,g,UI,ml,µg,gtt,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-med_formulation,medication,TEXT,character,Formulation,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,NA,pill,soulution,,,,,NA,NA,NA,NA,NA,NA,pill,soulution,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-med_route,medication,TEXT,character,Route of application,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,NA,p.o.,s.c.,s.l.,i.v.,p.i.,NA,NA,NA,NA,NA,NA,NA,p.o.,s.c.,s.l.,i.v.,p.i.,NA,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-med_substance,medication,TEXT,character,Substance,,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,TRUE,FALSE,NA
-med_comment,medication,TEXT,character,Comment,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_acqusition_date,samples,TEXT,character,Acquisition date,,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_id,samples,TEXT,character,Sample ID,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,TRUE,FALSE,NA
-smp_origin_blood,samples,BOOLEAN,character,Origin: blood,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_amount_blood,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_blood
-smp_origin_saliva,samples,BOOLEAN,character,Origin: saliva,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_amount_saliva,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_saliva
-smp_origin_urine,samples,BOOLEAN,character,Origin: urine,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_amount_urine,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_urine
-smp_origin_stool,samples,BOOLEAN,character,Origin: stool,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_amount_stool,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_stool
-smp_origin_biopsy,samples,BOOLEAN,character,Origin: biopsy (please specify in comment),,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_amount_biopsy,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,pcs,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_biopsy
-smp_origin_other,samples,BOOLEAN,character,Origin: other (please specify in comment),,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
-smp_amount_other,samples,DOUBLE,double,Amount (please specify amount in comment),,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_other
-smp_comment,samples,TEXT,character,Comment,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_samples,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+inputId,widget_tab,data_type,r_class,label,label_translation,mandatory,plausible,lower,upper,unit,value,min,max,step,width,type,panel,subgroup,tbl_id,choicesFromVar,namesFromVar,selected,choice1,choice2,choice3,choice4,choice5,choice6,choice7,choice8,choice9,choice10,choice11,choice12,choice1_translation,choice2_translation,choice3_translation,choice4_translation,choice5_translation,choice6_translation,choice7_translation,choice8_translation,choice9_translation,choice10_translation,choice11_translation,choice12_translation,widget,form_required,conditional,appear_if
+row_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+entry_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+entry_number,all,INTEGER,integer,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+entry_id_parent,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+visit_id_parent,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+is_child_entry,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+user_modified,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+editing_user,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+locked_row,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+pid,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+date_modified,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+visit_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+deleted_row,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+submitted_row,all,BOOLEAN,logical,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+documented_case,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+app_entry_id,all,TEXT,character,,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,,,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,FALSE,FALSE,NA
+diag_start,diagnosis,TEXT,character,Start,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_diagnosis,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+diag_end,diagnosis,TEXT,character,End,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_diagnosis,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+diag_name,diagnosis,TEXT,character,Diagnosis,,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,TRUE,FALSE,NA
+diag_icd_10,diagnosis,TEXT,character,ICD-10,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+diag_stage_system,diagnosis,TEXT,character,Staging system,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+diag_stage,diagnosis,TEXT,character,Stage,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+diag_classification_system,diagnosis,TEXT,character,Classification system,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+diag_classification,diagnosis,TEXT,character,Classification,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+diagn_comment,diagnosis,TEXT,character,Comment,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_diagnosis,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+med_start,medication,TEXT,character,Start,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_medication,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+med_end,medication,TEXT,character,End,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_medication,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+med_dosing,medication,DOUBLE,double,Dosis,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,numericInput,widgets_medication,NA,,,,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+med_dosing_unit,medication,TEXT,character,Unit,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,,,,NA,mg,g,UI,ml,µg,gtt,NA,NA,NA,NA,NA,NA,mg,g,UI,ml,µg,gtt,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+med_formulation,medication,TEXT,character,Formulation,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,,,,NA,pill,soulution,,,,,NA,NA,NA,NA,NA,NA,pill,soulution,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+med_route,medication,TEXT,character,Route of application,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,selectInput,widgets_medication,NA,,,,NA,p.o.,s.c.,s.l.,i.v.,p.i.,NA,NA,NA,NA,NA,NA,NA,p.o.,s.c.,s.l.,i.v.,p.i.,NA,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+med_substance,medication,TEXT,character,Substance,,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,TRUE,FALSE,NA
+med_comment,medication,TEXT,character,Comment,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_medication,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_acqusition_date,samples,TEXT,character,Acquisition date,,TRUE,NA,NA,NA,NA,NA,NA,NA,NA,NA,dateInput,widgets_samples,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_id,samples,TEXT,character,Sample ID,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_samples,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,FALSE,TRUE,FALSE,NA
+smp_origin_blood,samples,BOOLEAN,character,Origin: blood,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_blood,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,,,,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_blood
+smp_origin_saliva,samples,BOOLEAN,character,Origin: saliva,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_saliva,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,,,,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_saliva
+smp_origin_urine,samples,BOOLEAN,character,Origin: urine,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_urine,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,,,,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_urine
+smp_origin_stool,samples,BOOLEAN,character,Origin: stool,,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_stool,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,ml,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,,,,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_stool
+smp_origin_biopsy,samples,BOOLEAN,character,Origin: biopsy (please specify in comment),,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_biopsy,samples,DOUBLE,double,Amount,,FALSE,NA,NA,NA,pcs,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,,,,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_biopsy
+smp_origin_other,samples,BOOLEAN,character,Origin: other (please specify in comment),,FALSE,NA,NA,NA,NA,FALSE,NA,NA,NA,NA,checkboxInput,widgets_samples,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
+smp_amount_other,samples,DOUBLE,double,Amount (please specify amount in comment),,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,numericInput,widgets_samples,NA,,,,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Unknown,NA,NA,NA,NA,NA,NA,TRUE,FALSE,TRUE,input.smp_origin_other
+smp_comment,samples,TEXT,character,Comment,,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,textInput,widgets_samples,NA,,,,NA,,,,,,,NA,NA,NA,NA,NA,NA,,,,,,,NA,NA,NA,NA,NA,NA,TRUE,FALSE,FALSE,NA
