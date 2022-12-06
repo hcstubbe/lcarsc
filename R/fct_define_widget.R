@@ -109,10 +109,11 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
                   choices)
       choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
       names(choices) = choices
-      wlist_i = list(selectInput(inputId = ns(widget_data$inputId[i]),
+      wlist_i = list(selectizeInput(inputId = ns(widget_data$inputId[i]),
                                  label = widget_data$label[i],
                                  choices = choices,
-                                 selected = widget_data$selected[i])
+                                 selected = widget_data$selected[i],
+                                 options = list(create = TRUE))
       )
     }
 

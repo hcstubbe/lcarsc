@@ -36,17 +36,6 @@ format_input_for_database = function(input_data,
 
   input_data = data.frame(input_data)
 
-  # Replace "New choice" with actual value from new choice text input
-  choicesFromVar = !sapply(widgets_table$choicesFromVar, function(x) is.null(x) | x == "" | is.na(x))
-  choicesFromVar = names(choicesFromVar) %in% colnames(input_data) & choicesFromVar & !(names(choicesFromVar) %in% c("inputId", "visit_for_var"))
-  if(any(choicesFromVar)){
-    for(i in which(choicesFromVar)){
-      if(input_data[,widgets_table$choicesFromVar[i]] != "" & widgets_table$type[i] != "checkboxGroupInputFromDatabase"){
-        input_data[,widgets_table$inputId[i]] = input_data[,widgets_table$choicesFromVar[i]]
-      }
-    }
-  }
-
 
   # Set conditional variables to NA, if their condition (appear_if) is FALSE
   if(any(widgets_table$conditional == TRUE)) {
