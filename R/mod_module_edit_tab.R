@@ -742,7 +742,7 @@ mod_module_edit_tab_server<- function(id,
         update_all_fields(session = session,
                           db_data = SQL_df_selected,
                           widget_data = widgets_table[widgets_table$widget == TRUE,],
-                          tbl_id = tbl_id)
+                          tbl_id = tbl_id, pool = pool)
 
       }
 

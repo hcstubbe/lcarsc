@@ -33,3 +33,24 @@ updateSelectizeInputFromDb = function(session, pool, tbl_id, widget_data, add_ch
 
 }
 
+
+updateSelectizeInputFromDb_single = function(x, session, pool, tbl_id, widget_data, add_choices = NULL, selected = NULL){
+
+  widget_type = widget_data[widget_data$inputId == x,"type"]
+  widget_type = widget_type[widget_type == "selectInputFromDatabase"]
+
+  if(length(widget_type) > 0){
+    choices_var_col = widget_data[widget_data$inputId == x,"choicesFromVar"]
+    choice_name_col = widget_data[widget_data$inputId == x,"namesFromVar"]
+    tbl_id = widget_data[widget_data$inputId == x,"tbl_id"]
+    db_cmd = paste(sep = " ", "SELECT", paste(choices_var_col, choice_name_col, sep = ", "), "FROM", tbl_id)
+
+    choice_data = RMariaDB::dbGetQuery(pool, db_cmd)
+    choices = choice_data[,choices_var_col]
+    names(choices) = choice_data[,choice_name_col]
+
+    shiny::updateSelectizeInput(inputId = x, session = session, selected = selected, choices = choices, server = TRUE)
+  }
+
+}
+
