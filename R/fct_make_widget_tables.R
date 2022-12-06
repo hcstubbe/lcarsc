@@ -277,7 +277,7 @@ make_widget_tables = function(pool,
 
   # Save results and write tables to file and database
   colnames(visits)[colnames(visits) == "visit_id_visits"] = "visit_id"
-  widget_tables = c(list("visits" = visits, "panel_tabs" = panel_tabs, "widgets" = var_table), internal_app_data[c("widgets_editor", "visits_editor", "widgets_report_editor")])
+  widget_tables = c(list("visits" = visits, "panel_tabs" = panel_tabs, "widgets" = var_table), internal_app_data[c("widgets_editor", "visits_editor", "widgets_template", "widgets_report_editor")])
 
 
   # Update tables on database
