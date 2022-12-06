@@ -62,9 +62,9 @@ mod_module_documentation_ui  <- function(id) {
              br(),
              # mod_module_documentation_summary_ui(ns("module_documentation_summary_1"))
       ),
-      if(settgins_data$add_child_visits == TRUE){column(4, # if(settigns_data$add_visit_summary == TRUE){4}else{8},
+      column(4, # if(settigns_data$add_visit_summary == TRUE){4}else{8},
              uiOutput(ns("visit_submission_panel")),
-             uiOutput(ns("ui_child_visits")))}else{NULL},
+             if(settgins_data$add_child_visits == TRUE){uiOutput(ns("ui_child_visits"))}else{NULL}),
       if(TRUE){column(4, # if(settigns_data$add_visit_summary == TRUE){4}else{8},
                       uiOutput(ns("ui_report")))}else{NULL}
 
