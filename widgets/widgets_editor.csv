@@ -21,8 +21,8 @@ include_translation,vars,BOOLEAN,logical,Include translations for label and choi
 label_translation,vars,TEXT,character,Lable translation,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.include_translation
 visit_for_var,vars,TEXT,character,Visit,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,,,,,,,,,visit_id_visits,editor_table_visit,TRUE,TRUE,,,,,,,FALSE,
 mandatory,vars,BOOLEAN,logical,Mandatory,FALSE,,,,,FALSE,,,,,checkboxInput,widgets_editor,No,Yes,No,,,,,,,,TRUE,TRUE,,,,,,,FALSE,
-panel,vars,TEXT,character,Panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,General,New panel,General,Signs & Symptoms,Management,Outcome,,,panel_new,,TRUE,TRUE,,,,,,,FALSE,
-subgroup,vars,TEXT,character,Subgroup/Sub-panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,None,New subgroup,None,Symptoms,Signs,General approach,Specific treatment,,subgroup_new,,TRUE,TRUE,,,,,,,FALSE,
+panel,vars,TEXT,character,Panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,General,General,Signs & Symptoms,Management,Outcome,,,,panel,editor_table_vars,TRUE,TRUE,,,,,,,FALSE,
+subgroup,vars,TEXT,character,Subgroup/Sub-panel,FALSE,,,,,,,,,,selectInputFromDatabase,widgets_editor,None,None,Symptoms,Signs,General approach,Specific treatment,,,subgroup,editor_table_vars,TRUE,TRUE,,,,,,,FALSE,
 type,vars,TEXT,character,Input type,FALSE,,,,,,,,,,selectInput,widgets_editor,textInput,textInput,numericInput,radioButtons,selectInput,dateInput,selectInputFromDatabase,checkboxInput,,,TRUE,TRUE,,,,,,,FALSE,
 unit,vars,TEXT,character,Unit,FALSE,,,,,,,,,,textInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'
 value_numeric,vars,DOUBLE,double,Value (numeric),FALSE,,,,,,,,,,numericInput,widgets_editor,,,,,,,,,,,TRUE,TRUE,,,,,,,TRUE,input.type == 'numericInput'

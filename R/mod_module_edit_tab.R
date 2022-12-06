@@ -445,11 +445,15 @@ mod_module_edit_tab_server<- function(id,
       iv$enable()
 
       if(!is.null(input$selected_visit_id)){
+
         if(input$selected_visit_id != "all_visits"){
           shiny::updateSelectInput(inputId = "visit_for_var", session = session, selected = input$selected_visit_id)
           shiny::updateSelectInput(inputId = "visit_id_for_query", session = session, selected = input$selected_visit_id)
         }
       }
+
+      widget_data = widgets_table[widgets_table$widget == TRUE,]
+      updateSelectizeInputFromDb(session = session, pool = pool, tbl_id = "reference_icd10_codes" , widget_data = widget_data)
 
     })
 
