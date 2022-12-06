@@ -1,18 +1,11 @@
 #' updateSelectizeInputFromDb
 #'
-#' @description A fct function
-#'
-#' @return The return value, if any, from executing the function.
-#'
-#' @noRd
-#' updateSelectizeInputFromDb
-#'
 #' @description A fct function for updating selectizeInputs from database
 #'
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-#'
+
 updateSelectizeInputFromDb = function(session, pool, tbl_id, widget_data){
 
 
