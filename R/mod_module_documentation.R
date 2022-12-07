@@ -195,9 +195,16 @@ mod_module_documentation_server <- function(id, data_table1, data_table2, previe
         entry_id = (RMariaDB::dbGetQuery(pool, db_cmd))$entry_id
         entry_id
       })
-      mod_module_reports_server(id = "module_reports_1",
-                                rv_in = rv_downstream_report,
-                                widgets_table_global = widgets_table_global)
+
+      tryCatch(
+        mod_module_reports_server(id = "module_reports_1",
+                                  rv_in = rv_downstream_report,
+                                  widgets_table_global = widgets_table_global),
+        error = function(e) {
+          showNotification(paste0("Starting submodule data center failed: ", e), duration = 300, type = "error")
+          return(NULL)
+        }
+      )
     }
 
 

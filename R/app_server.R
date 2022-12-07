@@ -15,9 +15,23 @@ app_server <- function( input, output, session ) {
 
   # Your application server logic
   if(prod_mod == "production"){
-    mod_module_launcher_server("mod_module_launcher_1")
+    tryCatch(
+      mod_module_launcher_server("mod_module_launcher_1")
+      ,
+      error = function(e) {
+        showNotification(paste0("Starting production launcher failed: ", e), duration = 10, type = "error")
+        return(NULL)
+      }
+    )
   }
   if(prod_mod == "editor"){
-    mod_module_launcher_edit_server("mod_module_launcher_edit_1")
+    tryCatch(
+      mod_module_launcher_edit_server("mod_module_launcher_edit_1")
+      ,
+      error = function(e) {
+        showNotification(paste0("Starting production launcher failed: ", e), duration = 10, type = "error")
+        return(NULL)
+      }
+    )
   }
 }
