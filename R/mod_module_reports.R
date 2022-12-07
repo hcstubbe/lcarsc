@@ -78,13 +78,7 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
         }
         names(paramlist) = paste0("visit_table_", names(paramlist))
 
-        # Set up parameters to pass to Rmd document
-        params <- list(paramlist = paramlist,
-                       report_makelist = report_makelist,
-                       report_translate = report_translate,
-                       report_icd10_add_descr = report_icd10_add_descr,
-                       widgets_table_global = widgets_table_global,
-                       icd10_codes = NA)
+
 
 
         icd10_codes = tryCatch(RMariaDB::dbReadTable(pool,
@@ -98,8 +92,16 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
                  })
 
         if(any(report_data$is_icd10 == TRUE) & class(icd10_codes) == "data.frame" ){
-          params$icd10_codes = icd10_codes
+          paramlist$icd10_codes = icd10_codes
         }
+
+
+        # Set up parameters to pass to Rmd document
+        params <- list(paramlist = paramlist,
+                       report_makelist = report_makelist,
+                       report_translate = report_translate,
+                       report_icd10_add_descr = report_icd10_add_descr,
+                       widgets_table_global = widgets_table_global)
 
 
         # Knit the document, passing in the `params` list, and eval it in a

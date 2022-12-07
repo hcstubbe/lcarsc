@@ -94,7 +94,7 @@ create_report_template = function(report_data, report_id){
                            "$",
                            report_data[i, "inputId_for_query"])
       if(report_data[i, "is_icd10"] == TRUE){
-        code_line_i = paste0('params$report_icd10_add_descr(', code_line_i, ', params$icd10_codes)')
+        code_line_i = paste0('params$report_icd10_add_descr(', code_line_i, ', params$paramlist$icd10_codes)')
       }else if(report_data[i, "include_translation"] == TRUE){
         code_line_i = paste0('params$report_translate(', code_line_i, ', "', report_data[i, "inputId_for_query"], '", ', 'params$widgets_table_global)')
       }
@@ -162,7 +162,6 @@ create_report_template = function(report_data, report_id){
     '  report_makelist: report_makelist',
     '  widgets_table_global: widgets_table_global',
     '  report_icd10_add_descr: report_icd10_add_descr',
-    '  icd10_codes: icd10_codes',
     '---',
     '<style type="text/css">',
     '    body, td {font-size: 14px;}',
