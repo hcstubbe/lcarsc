@@ -225,35 +225,13 @@ define_widget = function(widget_data, ns, pid, tbl_id, selection){
     }
 
     if(widget_data$type[i] == "selectInputFromDatabase" & widget_data$conditional[i] == TRUE){
-      if(is.na(widget_data$tbl_id[[i]]) | widget_data$tbl_id[[i]] == ""){
-        sql_df = loadData(pool, tbl_id) %>% filter(deleted_row == FALSE) # here loadData does not match the pid. Therefore the choices will be selected from all possible values from the referenced table.
-        choices = c(sql_df[,widget_data$choicesFromVar[i]] %>% as.factor() %>% levels(),
-                    sql_df[,widget_data$inputId[i]] %>% as.factor() %>% levels())
-      }else{
-        sql_df = loadData(pool, widget_data$tbl_id[[i]]) %>% filter(deleted_row == FALSE) # here loadData does not match the pid. Therefore the choices will be selected from all possible values from the referenced table.
-        choices = c(sql_df[,widget_data$choicesFromVar[i]] %>% as.factor() %>% levels())
-      }
-      choices = c(widget_data$choice1[[i]],
-                  widget_data$choice2[[i]],
-                  widget_data$choice3[[i]],
-                  widget_data$choice4[[i]],
-                  widget_data$choice5[[i]],
-                  widget_data$choice6[[i]],
-                  widget_data$choice7[[i]],
-                  widget_data$choice8[[i]],
-                  widget_data$choice9[[i]],
-                  widget_data$choice10[[i]],
-                  widget_data$choice11[[i]],
-                  widget_data$choice12[[i]],
-                  choices)
-      choices = choices[!is.na(choices) & !duplicated(choices) & choices != ""]
-      names(choices) = choices
       wlist_i = list(
         conditionalPanel(condition = widget_data$appear_if[i],
-                         selectInput(inputId = ns(widget_data$inputId[i]),
-                                     label = widget_data$label[i],
-                                     choices = choices,
-                                     selected = widget_data$selected[i]),
+                         selectizeInput(inputId = ns(widget_data$inputId[i]),
+                                        label = widget_data$label[i],
+                                        choices = NULL,
+                                        selected = widget_data$selected[i],
+                                        options = list(create = TRUE)),
                          ns = ns)
       )
     }
