@@ -462,58 +462,66 @@ mod_module_edit_tab_server<- function(id,
     #### Submit new row ----
     observeEvent(input$submit, priority = 20,{
 
-      if (iv$is_valid()) {
-        rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
-        new_data = formData()
-        if(is_child_visit == FALSE & is_editor_or_vi == FALSE){
-          entry_id = paste(visit_id, rv_in$pid(), uuid::UUIDgenerate(), sep = "_")
-          entry_id_parent = NA
-          visit_id_parent = NA
-          is_child_entry = FALSE
-        }else if(is_child_visit == TRUE & is_editor_or_vi == FALSE){
-          db_cmd = paste0("SELECT entry_id, visit_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
-          parent_data = RMariaDB::dbGetQuery(pool, db_cmd)
-          entry_id = NA
-          entry_id_parent = parent_data$entry_id
-          visit_id_parent = parent_data$visit_id
-          is_child_entry = TRUE
-        }else{
-          entry_id = NA
-          entry_id_parent = NA
-          visit_id_parent = NA
-          is_child_entry = FALSE
+      append_new_row = function(){
+        if (iv$is_valid()) {
+          rv_uiid$new_uiid = uuid::UUIDgenerate(use.time = FALSE) # this line is required to force updated reactivity and unique row_id
+          new_data = formData()
+          if(is_child_visit == FALSE & is_editor_or_vi == FALSE){
+            entry_id = paste(visit_id, rv_in$pid(), uuid::UUIDgenerate(), sep = "_")
+            entry_id_parent = NA
+            visit_id_parent = NA
+            is_child_entry = FALSE
+          }else if(is_child_visit == TRUE & is_editor_or_vi == FALSE){
+            db_cmd = paste0("SELECT entry_id, visit_id FROM ", paste('visit_table', rv_in$parent_visit_id(), sep = '_'), " WHERE row_id = '", rv_in$parent_row_id(), "'")
+            parent_data = RMariaDB::dbGetQuery(pool, db_cmd)
+            entry_id = NA
+            entry_id_parent = parent_data$entry_id
+            visit_id_parent = parent_data$visit_id
+            is_child_entry = TRUE
+          }else{
+            entry_id = NA
+            entry_id_parent = NA
+            visit_id_parent = NA
+            is_child_entry = FALSE
+          }
+          new_data$entry_id = entry_id
+          new_data$entry_id_parent = entry_id_parent
+          new_data$visit_id_parent = visit_id_parent
+          new_data$is_child_entry = is_child_entry
+          if(is_editor_or_vi == FALSE){
+            db_cmd = paste0("SELECT COUNT(*) FROM ", paste('visit_table', visit_id, sep = '_'))
+            row_count = RMariaDB::dbGetQuery(pool, db_cmd)
+            new_data$entry_number = as.integer(row_count[[1,1]])
+          }
+          dbAppendTable(pool, tbl_id, new_data)
+          close()
+
+          if(create_new_pid == TRUE){
+            showModal(modalDialog(title = "New PID",
+                                  div(id=(ns("show_new_pid")),
+                                      tags$head(tags$style(".modal-dialog{ width:400px}")),
+                                      tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
+                                      h3(paste0("New PID: ", new_data$pid))
+                                  ),
+                                  easyClose = FALSE,
+                                  footer = modalButton("Close")
+            ))
+          }
+
+          showNotification("Data saved", type = "message")
+          shinyjs::reset("entry_form")
         }
-        new_data$entry_id = entry_id
-        new_data$entry_id_parent = entry_id_parent
-        new_data$visit_id_parent = visit_id_parent
-        new_data$is_child_entry = is_child_entry
-        if(is_editor_or_vi == FALSE){
-          db_cmd = paste0("SELECT COUNT(*) FROM ", paste('visit_table', visit_id, sep = '_'))
-          row_count = RMariaDB::dbGetQuery(pool, db_cmd)
-          new_data$entry_number = as.integer(row_count[[1,1]])
-        }
-        dbAppendTable(pool, tbl_id, new_data)
-        close()
 
-        if(create_new_pid == TRUE){
-          showModal(modalDialog(title = "New PID",
-                                div(id=(ns("show_new_pid")),
-                                    tags$head(tags$style(".modal-dialog{ width:400px}")),
-                                    tags$head(tags$style(HTML(".shiny-split-layout > div {overflow: visible}"))),
-                                    h3(paste0("New PID: ", new_data$pid))
-                                ),
-                                easyClose = FALSE,
-                                footer = modalButton("Close")
-          ))
-        }
+     # Update response table
 
-        showNotification("Data saved", type = "message")
-        shinyjs::reset("entry_form")
-
-
-        # Update response table
-        update_dt()
       }
+
+      tryCatch(append_new_row(),
+               error = function(e) {
+                 showNotification(paste0("Error while saving new data! Original error message: ", e), type = "error", duration = NULL)
+                 # return(NULL)
+               })
+      update_dt()
 
 
     })
