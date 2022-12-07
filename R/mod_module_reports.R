@@ -97,9 +97,10 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
                    return(NA)
                  })
 
-        if(any(report_data$is_icd10 == TRUE) & !class(icd10_codes) == "data.frame" ){
+        if(any(report_data$is_icd10 == TRUE) & class(icd10_codes) == "data.frame" ){
           params$icd10_codes = icd10_codes
         }
+
 
         # Knit the document, passing in the `params` list, and eval it in a
         # child of the global environment (this isolates the code in the document

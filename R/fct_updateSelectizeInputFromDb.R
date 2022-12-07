@@ -25,6 +25,7 @@ updateSelectizeInputFromDb = function(session, pool, tbl_id, widget_data, add_ch
       choice_data = RMariaDB::dbGetQuery(pool, db_cmd)
       choices = choice_data[,choices_var_col]
       names(choices) = choice_data[,choice_name_col]
+      choices = c("NA" = NA, choices)
 
       shiny::updateSelectizeInput(inputId = x, session = session, selected = NULL, choices =  choices, server = TRUE)
     }
