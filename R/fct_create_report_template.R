@@ -99,9 +99,9 @@ create_report_template = function(report_data, report_id){
         code_line_i = paste0('params$report_translate(', code_line_i, ', "', report_data[i, "inputId_for_query"], '", ', 'params$widgets_table_global)')
       }
       if(report_data[i, "bullet_point"] == TRUE){
-        code_line_i = paste0('`r params$report_makelist(', code_line_i, ', ', report_data[i, "italic"], ', ', report_data[i, "bold"], ')`')
+        code_line_i = paste0('`r tryCatch( params$report_makelist(', code_line_i, ', ', report_data[i, "italic"], ', ', report_data[i, "bold"], '),error = function(e) {print(paste0("Error in report script! Original error message: ", e))})`')
       }else{
-        code_line_i = paste0('`r paste0("', bold_italic_db(i)[[1]],'", ', code_line_i,', "', bold_italic_db(i)[[2]],'"', ')`')
+        code_line_i = paste0('`r tryCatch( paste0("', bold_italic_db(i)[[1]],'", ', code_line_i,', "', bold_italic_db(i)[[2]],'"', '),error = function(e) {print(paste0("Error in report script! Original error message: ", e))})`')
       }
 
     }
@@ -114,9 +114,9 @@ create_report_template = function(report_data, report_id){
                            report_data[i, "inputId_for_query"])
 
       if(report_data[i, "bullet_point"] == TRUE){
-        code_line_i = paste0('`r params$report_makelist(', code_line_i, ', ', report_data[i, "italic"], ', ', report_data[i, "bold"], ')`')
+        code_line_i = paste0('`r tryCatch( params$report_makelist(', code_line_i, ', ', report_data[i, "italic"], ', ', report_data[i, "bold"], '),error = function(e) {print(paste0("Error in report script! Original error message: ", e))})`')
       }else{
-        code_line_i = paste0('`r ',
+        code_line_i = paste0('`r tryCatch( ',
                              'if(sum(',
                              var_i,
                              ' == "',
@@ -128,7 +128,7 @@ create_report_template = function(report_data, report_id){
                              '", "',
                              bold_italic_db(i)[[2]],
                              '"',
-                             ')}else{NULL}`')
+                             ')}else{NULL},error = function(e) {print(paste0("Error in report script! Original error message: ", e))})`')
       }
     }
 
