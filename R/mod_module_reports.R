@@ -88,12 +88,10 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
                                            e),
                                     type = "error",
                                     duration = NULL)
-                   return(NA)
+                   return(data.frame(icd10 = NA, description = NA))
                  })
 
-        if(any(report_data$is_icd10 == TRUE) & class(icd10_codes) == "data.frame" ){
-          paramlist$icd10_codes = icd10_codes
-        }
+        paramlist$icd10_codes = icd10_codes
 
 
         # Set up parameters to pass to Rmd document
