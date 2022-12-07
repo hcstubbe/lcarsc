@@ -86,13 +86,19 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
                        widgets_table_global = widgets_table_global,
                        icd10_codes = NA)
 
-        if(any(report_data$is_icd10 == TRUE)){
-          params$icd10_codes = tryCatch(RMariaDB::dbReadTable(pool,
-                                                              "reference_icd10_codes"),
-                   error = function(e) showNotification(paste0("Reference ICD10 could not be loaded! Original error message: ",
-                                                               e),
-                                                        type = "error",
-                                                        duration = NULL))
+
+        icd10_codes = tryCatch(RMariaDB::dbReadTable(pool,
+                                       "reference_icd10_codes"),
+                 error = function(e) {
+                   showNotification(paste0("Reference ICD10 could not be loaded! Original error message: ",
+                                           e),
+                                    type = "error",
+                                    duration = NULL)
+                   return(NA)
+                 })
+
+        if(any(report_data$is_icd10 == TRUE) & !is.na(icd10_codes) ){
+          params$icd10_codes = icd10_codes
         }
 
         # Knit the document, passing in the `params` list, and eval it in a
