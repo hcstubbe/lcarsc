@@ -97,7 +97,7 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
                    return(NA)
                  })
 
-        if(any(report_data$is_icd10 == TRUE) & !is.na(icd10_codes) ){
+        if(any(report_data$is_icd10 == TRUE) & !class(icd10_codes) == "data.frame" ){
           params$icd10_codes = icd10_codes
         }
 
@@ -127,7 +127,6 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
           collapsible = TRUE,
           collapsed = FALSE,
           fluidPage(
-            sliderInput(ns("slider"), "Slider", 1, 100, 50),
             downloadButton(ns("report"), "Generate report")
           )
         ))
