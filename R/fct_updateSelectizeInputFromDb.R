@@ -6,7 +6,7 @@
 #'
 #' @noRd
 
-updateSelectizeInputFromDb = function(session, pool, tbl_id, widget_data, add_choices = NULL){
+updateSelectizeInputFromDb = function(session, pool, tbl_id, widget_data, selected = NULL, add_choices = NULL){
 
 
   widget_ids = widget_data$inputId
@@ -27,7 +27,12 @@ updateSelectizeInputFromDb = function(session, pool, tbl_id, widget_data, add_ch
       names(choices) = choice_data[,choice_name_col]
       choices = c("NA" = NA, choices)
 
-      shiny::updateSelectizeInput(inputId = x, session = session, selected = NULL, choices =  choices, server = TRUE)
+      # if(sum(!is.na(selected)) > 0 & !(selected %in% choices)){
+      #   if(is.null(names(selected))){ names(selected) = selected }
+      #   choices = c(choices, selected)
+      # }
+
+      shiny::updateSelectizeInput(inputId = x, session = session, selected = selected, choices = choices, server = TRUE)
     }
 
   })
@@ -49,6 +54,11 @@ updateSelectizeInputFromDb_single = function(x, session, pool, tbl_id, widget_da
     choice_data = RMariaDB::dbGetQuery(pool, db_cmd)
     choices = choice_data[,choices_var_col]
     names(choices) = choice_data[,choice_name_col]
+
+    if(sum(!is.na(selected)) > 0 & !(selected %in% choices)){
+      if(is.null(names(selected))){ names(selected) = selected }
+      choices = c(choices, selected)
+    }
 
     shiny::updateSelectizeInput(inputId = x, session = session, selected = selected, choices = choices, server = TRUE)
   }
