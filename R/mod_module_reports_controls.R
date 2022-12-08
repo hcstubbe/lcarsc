@@ -79,15 +79,19 @@ mod_module_reports_controls_server <- function(id) {
                   fileInput(ns("vars_upload"), "Upload data file (CSV)",
                             multiple = FALSE,
                             accept = c(".csv")),
-                  modalButton("Done", icon = icon("check", verify_fa = FALSE))
-                ),
-                fluidRow(
+                  br(),
                   h4("Upload ICD10 codes"),
                   fileInput(ns("icd10_upload"), "Upload data file (colon separated values file with 2 columns: icd10, description)",
                             multiple = FALSE,
                             accept = c(".csv")),
+                  br(),
+                  h4("Upload ATC codes"),
+                  fileInput(ns("atc_upload"), "Upload data file (colon separated values file with 2 columns: atc, description)",
+                            multiple = FALSE,
+                            accept = c(".csv")),
+                  br(),
                   modalButton("Done", icon = icon("check", verify_fa = FALSE))
-                )
+                ),
               )
           ),
           easyClose = TRUE, footer = NULL
@@ -154,6 +158,26 @@ mod_module_reports_controls_server <- function(id) {
       tryCatch(RMariaDB::dbAppendTable(pool,
                              "reference_icd10_codes",
                              input_csv_icd10),
+               error = function(e) showNotification(paste0("Data not saved: check format! Original error message: ", e), type = "error", duration = NULL))
+    })
+
+
+    observe({
+      if (is.null(input$atc_upload)) return()
+      input_csv_atc = readr::read_delim(input$atc_upload$datapath,
+                                          delim = ";",
+                                          escape_double = FALSE,
+                                          trim_ws = TRUE)
+      if(!all(colnames(input_csv_atc) %in% c("atc",	"description"))){
+        input_csv_atc = NULL
+      }else if(!RMariaDB::dbExistsTable(pool, "reference_atc_codes")){
+        RMariaDB::dbCreateTable(pool,
+                                "reference_atc_codes",
+                                input_csv_atc)
+      }
+      tryCatch(RMariaDB::dbAppendTable(pool,
+                                       "reference_atc_codes",
+                                       input_csv_atc),
                error = function(e) showNotification(paste0("Data not saved: check format! Original error message: ", e), type = "error", duration = NULL))
     })
 

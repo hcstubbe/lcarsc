@@ -94,11 +94,26 @@ mod_module_reports_server <- function(id, rv_in, widgets_table_global){
         paramlist$icd10_codes = icd10_codes
 
 
+        atc_codes = tryCatch(RMariaDB::dbReadTable(pool,
+                                                     "reference_atc_codes"),
+                               error = function(e) {
+                                 showNotification(paste0("Reference atc could not be loaded! Original error message: ",
+                                                         e),
+                                                  type = "error",
+                                                  duration = NULL)
+                                 return(data.frame(atc = NA, description = NA))
+                               })
+
+        paramlist$atc_codes = atc_codes
+
+
+
         # Set up parameters to pass to Rmd document
         params <- list(paramlist = paramlist,
                        report_makelist = report_makelist,
                        report_translate = report_translate,
                        report_icd10_add_descr = report_icd10_add_descr,
+                       report_atc_add_descr = report_atc_add_descr,
                        widgets_table_global = widgets_table_global)
 
 
