@@ -23,11 +23,11 @@ get_production_mode = function(production_mode, pool_config){
     production_mode = start_config$production_mode
     if(length(production_mode) == 0){
       production_mode = "editor"
+      RMariaDB::dbRemoveTable(conn = pool_config,
+                              name = "start_config")
       RMariaDB::dbCreateTable(conn = pool_config,
                               name = "start_config",
                               fields = data.frame(production_mode = production_mode, tested_ecrf = 'FALSE'))
-      RMariaDB::dbRemoveTable(conn = pool_config,
-                              name = "start_config")
       RMariaDB::dbAppendTable(conn = pool_config,
                               name = "start_config",
                               value = data.frame(production_mode = production_mode, tested_ecrf = 'FALSE'))
