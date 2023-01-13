@@ -16,9 +16,7 @@ get_production_mode = function(production_mode, pool_config){
     return(production_mode)
   }
 
-
-  tabels_config = RMariaDB::dbListTables(pool_config)
-  if( "start_config" %in% tabels_config ){
+  if(RMariaDB::dbExistsTable(pool_config, "start_config")){
     start_config = RMariaDB::dbReadTable(pool_config, "start_config")
     production_mode = start_config$production_mode
     if(length(production_mode) == 0){
