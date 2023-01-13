@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: usertest
       
   lcarsc:
-    image: hstubbe/lcarsc:test
+    image: hstubbe/lcarsc:1.0
     restart: always
     ports:
       - 3838:3838
