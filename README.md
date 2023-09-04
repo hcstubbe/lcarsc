@@ -49,5 +49,5 @@ lcarsc::run_app(ecrf_database_driver = RSQLite::SQLite(),
         options = list(host = '0.0.0.0', port = 3838))
 ```
 
-## Furter configuraiton examples
+## Furter examples
 Plese refer to this [link](https://github.com/hcstubbe/lcarsc/tree/master/shinyproxy) for further configuration examples.
