@@ -50,4 +50,4 @@ lcarsc::run_app(ecrf_database_driver = RSQLite::SQLite(),
 ```
 
 ## Furter examples
-Plese refer to this [link](https://github.com/hcstubbe/lcarsc/tree/master/shinyproxy) for further configuration examples.
+Please refer to this [link](https://github.com/hcstubbe/lcarsc/tree/master/shinyproxy) for further configuration examples.
