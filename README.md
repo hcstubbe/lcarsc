@@ -8,7 +8,7 @@ software for clinical research and other data-focused research projects.
 It is based on [R Shiny](https://github.com/rstudio/shiny) and the
 [golem](https://github.com/ThinkR-open/golem) framework.
 
-## New version: LCARS-M2
+## ✨ New version: LCARS-M2 ✨
 
 Please refer to the new version LCARS mark-II (LCARS-M2) [here](https://github.com/hcstubbe/lcars-m2). The new version was designed using [Python](https://www.python.org/)/[Django](https://www.djangoproject.com/). It incorporates the experience and learning points from the LCARS-C prototype.
 
